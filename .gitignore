@@ -218,3 +218,23 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+.env.*
+
+!.env.example
+
+.venv/
+
+*.py[cod]
+
+.ipynb_checkpoints/
+
+.DS_Store
+
+data/raw/
+
+data/processed/
+
+*.parquet
+
+*.sql
