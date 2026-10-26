@@ -1,5 +1,6 @@
-# 밤티 코드 주의
+# ohlson.py
 
+# 밤티 코드 주의
 
 # read data from csv and filter the data for strict input_ready
 from pathlib import Path
