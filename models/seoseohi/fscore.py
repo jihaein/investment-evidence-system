@@ -7,6 +7,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = PROJECT_ROOT / "data" / "seoseohi_main"
 ANNUAL_FILE = DATA_DIR / "02_재무_연간_2013-2019.csv"
 LTD_FILE = DATA_DIR / "30_총장기부채_합계확인상태.csv"
+ISSUE_FILE = DATA_DIR / "09_증자감자현황_2015-2019.csv"
+NEW_SHARE_TYPES = ["유상증자"]
 
 #LTD = long-term debt, 장기부채
 #총 장기부채 = 장기차입금 + 사채 + 유동성장기차입금 + 유동성사채
@@ -166,6 +168,44 @@ def add_f6_delta_liquid(df):
 
 # F7. 보통주 신규 발행 없음 -> 1점 (발행 형태 규칙 결정 필요)
 
+# read share issuance records: one row per issuance
+def load_issues(path):
+    df = read_csv_text(path, has_korean_header=True)
+    out = pd.DataFrame({
+        "stock_code": df["stock_code"],
+        "issue_date": pd.to_datetime(df["isu_dcrs_de"], format="%Y.%m.%d", errors="coerce"),
+        "issue_type": df["isu_dcrs_stle"],
+        "stock_kind": df["isu_dcrs_stock_knd"],
+        "quantity": pd.to_numeric(df["isu_dcrs_qy"].str.replace(",", ""), errors="coerce"),
+        "issue_rcept_no": df["rcept_no"],
+    })
+    out = out.dropna(subset=["issue_date"])
+    out = out.drop_duplicates(subset=["stock_code", "issue_date", "issue_type", "stock_kind", "quantity"])
+    out["fiscal_year"] = out["issue_date"].dt.year
+    return out
+
+# count new common share offers per company and year
+def count_equity_offers(issues, new_share_types):
+    is_common = issues["stock_kind"] == "보통주"
+    is_offer = issues["issue_type"].str.contains("|".join(new_share_types))
+    offers = issues[is_common & is_offer]
+    counts = offers.groupby(["stock_code", "fiscal_year"]).size()
+    return counts.rename("equity_offer_count").reset_index()
+
+# put the offer count next to each company-year now
+def attach_equity_offers(data, offer_counts):
+    out = data.merge(offer_counts, on=["stock_code", "fiscal_year"], how="left")
+    out["equity_offer_count"] = out["equity_offer_count"].fillna(0).astype(int)
+    return out
+
+# F7. 그해 보통주 신규 발행 없음 -> 1점 (외부 자금 조달에 기대지 않았는가)
+def add_f7_no_equity_offer(df):
+    out = df.copy()
+    out["f7_no_equity_offer"] = (out["equity_offer_count"] == 0).astype("Int64")
+    return out
+
+
+
 # F8. 매출총이익률이 전년보다 상승 -> 1점 (매출 대비 남는 돈이 늘었는가)
 # 영업이익률이 아니라 매출총이익률을 씀
 def add_f8_delta_margin(df):
@@ -196,12 +236,13 @@ SIGNAL_STEPS = [
     add_f4_accrual,
     add_f5_delta_lever,
     add_f6_delta_liquid,
+    add_f7_no_equity_offer,
     add_f8_delta_margin,
     add_f9_delta_turn,
 ]
 
 SIGNAL_COLUMNS = [
-    "f1_roa", "f2_cfo", "f3_delta_roa", "f4_accrual", "f5_delta_lever", "f6_delta_liquid", "f8_delta_margin", "f9_delta_turn"
+    "f1_roa", "f2_cfo", "f3_delta_roa", "f4_accrual", "f5_delta_lever", "f6_delta_liquid", "f7_no_equity_offer", "f8_delta_margin", "f9_delta_turn"
 ]
 
 # run every step in order
@@ -223,17 +264,24 @@ if __name__ == "__main__":
     annual = load_annual(ANNUAL_FILE)
     ltd = load_ltd(LTD_FILE)
     data = combine(annual, ltd)
- 
+
+    # ---- 3단계: 신주발행 (add_signals보다 먼저!) ----
+    issues = load_issues(ISSUE_FILE)
+    offer_counts = count_equity_offers(issues, NEW_SHARE_TYPES)
+    data = attach_equity_offers(data, offer_counts)
+
     # ---- 2단계: 신호 계산 ----
     data = add_prior_years(data)
     data = add_signals(data)
-    data = data[data["fiscal_year"] >= 2015]   # F-Score 산출 대상 연도
+    data = data[data["fiscal_year"] >= 2015]
+
  
     print("계산 대상 행:", len(data), "(기대 95 = 19종목 × 5년)")
     print("기준 변경 행:", data["basis_changed"].sum())
     print()
     print("[신호별 빈칸 수]")
     print(data[SIGNAL_COLUMNS].isna().sum())
+
  
     # 손계산 대조: 대한광통신 2015년
     pd.set_option("display.float_format", "{:,.4f}".format)
@@ -242,3 +290,11 @@ if __name__ == "__main__":
     print(check[["roa", "roa_prev", "delta_roa", "accrual", "lever", "lever_prev",
                  "liquid", "liquid_prev", "margin", "margin_prev", "turn", "turn_prev"]].T)
     print(check[SIGNAL_COLUMNS].T)
+
+        # ---- F7 확인 ----
+    print()
+    print("[09번 발행 형태별 건수 (중복 제거 후)]")
+    print(issues["issue_type"].value_counts())
+    print()
+    print("[F7 = 0 (신규 발행 있음)]")
+    print(data[data["f7_no_equity_offer"] == 0][["company_name", "fiscal_year", "equity_offer_count"]])
