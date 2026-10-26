@@ -29,6 +29,20 @@ ohlson_input_final.csv: 종목 * 거래일. 재무값은 분기마다, 시가총
     → decide_interpretable → evaluate_pairs → CSV 저장
 """
 
+
+"""
+[남은 일] (2026-10-26 기준)
+1. 본 데이터로 테스트
+   - 본 데이터에 분기별 지배주주 값(순이익 TTM, 자본, 4분기 전 자본)이 없음
+   - 데이터 담당에게 요청 필요. 받으면 입력표만 바꾸고 이 파일은 그대로
+   - 그 전까지는 기존 ohlson_input_final(다날 제외, 분기 갱신)로 분석
+   - build_ohlson_input.py(04 + 05, 연간 갱신)는 사업보고서 공시일 값 대조용
+2. 성능 검증: 백테스트와 2020년 이후 사후 검증 (기준값 r, ω 0.5, s 2%p 조정)
+3. 팀 재검토: ω 0.5 기준(low가 268행뿐), 변화 크기(조금/많이)를 점수에 넣을지
+4. F-Score, DuPont과 합치기
+"""
+
+
 from pathlib import Path
 import pandas as pd
 
