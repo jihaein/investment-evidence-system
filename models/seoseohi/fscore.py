@@ -252,6 +252,14 @@ def add_signals(df):
         out = step(out)
     return out
 
+# sum the nine signals into the F-Score (0~9)
+# 신호 중 하나라도 빈칸이면 총점도 빈칸(일부만 더한 점수는 다른 회사와 비교할 수 없음)
+def add_fscore(df):
+    out = df.copy()
+    out["f_score"] = out[SIGNAL_COLUMNS].sum(axis=1, min_count=len(SIGNAL_COLUMNS))
+    out["f_score"] = out["f_score"].astype("Int64")
+    out[SIGNAL_COLUMNS].sum(axis=1, min_count=len(SIGNAL_COLUMNS))
+    return out
 
 
 # 실행
@@ -274,6 +282,7 @@ if __name__ == "__main__":
     data = add_prior_years(data)
     data = add_signals(data)
     data = data[data["fiscal_year"] >= 2015]
+    data = add_fscore(data)
 
  
     print("계산 대상 행:", len(data), "(기대 95 = 19종목 × 5년)")
@@ -291,10 +300,11 @@ if __name__ == "__main__":
                  "liquid", "liquid_prev", "margin", "margin_prev", "turn", "turn_prev"]].T)
     print(check[SIGNAL_COLUMNS].T)
 
-        # ---- F7 확인 ----
+    print("계산 대상 행:", len(data))
+    print("F-Score 빈칸:", data["f_score"].isna().sum())
     print()
-    print("[09번 발행 형태별 건수 (중복 제거 후)]")
-    print(issues["issue_type"].value_counts())
+    print("[F-Score 분포]")
+    print(data["f_score"].value_counts().sort_index())
     print()
-    print("[F7 = 0 (신규 발행 있음)]")
-    print(data[data["f7_no_equity_offer"] == 0][["company_name", "fiscal_year", "equity_offer_count"]])
+    print("[회사 × 연도 F-Score]")
+    print(data.pivot(index="company_name", columns="fiscal_year", values="f_score"))
