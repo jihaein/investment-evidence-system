@@ -1,0 +1,6 @@
+﻿stock_code,buy_date,eval_date,f_score_drop,risk_drop,risk_level_add,risk_score,fiscal_year_buy,fiscal_year_eval,f_score_buy,f_score_eval,rcept_no_buy,rcept_no_eval,same_report,hold_reason,risk_scale_status
+010170,2016-06-30,2019-06-28,4,1,0,1,2015,2018,7,3,20160330000304,20190401004420,False,,confirmed
+036890,2016-06-30,2019-06-28,3,1,0,1,2015,2018,7,4,20160330002144,20190401001548,False,,confirmed
+010170,2017-06-30,2017-12-28,0,,,,2016,2016,7,7,20170331004818,20170331004818,True,same_report,confirmed
+052270,2016-06-30,2019-06-28,,,,,,,,,,,,after_delisting,confirmed
+010170,2015-06-30,2016-06-30,,,,,,,,,,,,buy_no_data,confirmed

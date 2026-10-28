@@ -1,0 +1,5 @@
+﻿model,stock_code,buy_date,eval_date,risk_score,risk_max,interpretable,hold_reason,scale_status,f_score_buy,f_score_eval,f_score_drop,risk_drop,risk_level_add,same_report,fiscal_year_buy,fiscal_year_eval,rcept_no_buy,rcept_no_eval,omega_state_buy,omega_state_eval,s_buy,s_eval,delta_s,ri_dir,omega_dir,ri_change_size
+fscore,010170,2016-03-31,2016-12-21,,3,False,same_report,confirmed,7,7,0,,,True,2015,2015,20160330000304,20160330000304,,,,,,,,
+ohlson,010170,2016-03-31,2016-12-21,1,2,True,,confirmed,,,,,,,,,,,lowest,lowest,-0.06799056819939202,-0.16154905486852705,-0.09355848666913504,down,flat,large
+fscore,010170,2016-06-30,2019-06-28,1,3,True,,confirmed,7,3,4,1,0,False,2015,2018,20160330000304,20190401004420,,,,,,,,
+ohlson,010170,2016-06-30,2019-06-28,0,2,True,,confirmed,,,,,,,,,,,lowest,high,-0.04347253142028836,0.07369169418616002,0.11716422560644837,up,up,large
