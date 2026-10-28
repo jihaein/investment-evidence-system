@@ -503,6 +503,28 @@ def report_pair_deltas(df):
     return pairs
 
 
+def build_table():
+    annual = load_annual(ANNUAL_FILE)
+    ltd = load_ltd(LTD_FILE)
+    data = combine(annual, ltd)
+    data = attach_f7(data, load_f7(F7_FILE))
+    data = add_prior_years(data)
+    data = apply_same_basis_prior(data, load_same_basis(SAME_BASIS_FILE))
+    data = add_signals(data)
+    data = data[data["fiscal_year"] >= FIRST_SCORE_YEAR].copy()
+    data = add_fscore(data)
+    return data
+
+def fscore_compare(table, stock_code, buy_date, now_date):
+    return evaluate_pair(table, stock_code, buy_date, now_date)
+
+
+if __name__ == "__main__":
+    table = build_table()
+    print(fscore_compare(table, "010170", "2016-06-30", "2019-06-28")["risk_score"])
+
+
+"""
 # =============================================================================
 # 실행
 # =============================================================================
@@ -591,3 +613,6 @@ if __name__ == "__main__":
     eval_table.to_csv(OUTPUT_DIR / "fscore_eval.csv", index=False, encoding="utf-8-sig")
     print()
     print("저장 완료:", OUTPUT_DIR)
+
+
+"""

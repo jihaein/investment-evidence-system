@@ -282,7 +282,23 @@ def evaluate_pairs(df, pairs, max_gap_days, ri_small, ri_large):
     return pd.DataFrame(rows)
 
 
+def build_table(r=0.05, vt=0, omega_high=0.5, hold_rules=None):
+    hold_rules = hold_rules or ["flag_not_strict", "flag_capital_impairment"]
+    raw = load_input(INPUT_PATH)
+    raw = raw[~raw["stock_code"].isin(EXCLUDE_STOCKS)]
+    result = add_ohlson_values(raw, r=r, vt=vt)
+    result = add_flags(result, omega_max=1 + r)
+    result = add_omega_state(result, omega_high=omega_high)
+    result = decide_interpretable(result, hold_rules=hold_rules)
+    return result
 
+def ohlson_compare(table, stock_code, buy_date, now_date,
+                   max_gap_days=7, ri_small=0.02, ri_large=0.05):
+    return evaluate_pair(table, stock_code, buy_date, now_date,
+                         max_gap_days, ri_small, ri_large)
+
+
+"""
 # 실행 
 
 if __name__ == "__main__":
@@ -354,3 +370,5 @@ if __name__ == "__main__":
     result[daily_columns].to_csv(OUTPUT_DIR / "ohlson_daily.csv", index=False, encoding="utf-8-sig")
     eval_table.to_csv(OUTPUT_DIR / "ohlson_eval.csv", index=False, encoding="utf-8-sig")
     print("저장 완료:", OUTPUT_DIR)
+
+"""

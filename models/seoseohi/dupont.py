@@ -242,6 +242,7 @@ def company_ato_at_date(ttm, assets, stock_code, asof_date) -> dict:
     return {"stock_code": stock_code, "asof_date": asof_date, "ato": ato, "fs_div": row["fs_div"], "trade_date": row["trade_date"], "period": a["period"], "note": None}
 
 
+
 # step 4) this function mirrors industry_pm_median_asof.
 
 def industry_ato_median_asof(ttm, assets, ksic, ksic_code, asof_date, min_peers=3) -> dict:
