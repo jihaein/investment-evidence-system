@@ -1,19 +1,18 @@
 ﻿"""
 fscore.py — 서서히 모델 중 Piotroski F-Score
-
-[무엇을 하나]
+[what]
 회사 × 연도마다 재무제표로 9개 질문(F1~F9)에 0 또는 1점을 주고 합쳐 F-Score(0~9)를 만든다.
 그다음 매수일과 평가일(현재 날짜)의 F-Score를 비교해 하락폭(매수일 점수 - 평가일 점수)을 구하고,
 위험점수(0~2, 임시안)로 환산한다. 하락폭이 양수면 점수가 떨어진 것(위험 증가)이다.
 
-[데이터] 구글 드라이브 "서서히 모델 본 데이터/F-score" 폴더 (기준 원본 v23)
-    02_재무_연간_2013-2019.csv              연간 재무 (2줄 헤더: 영문 + 한글)
-    30_총장기부채_합계확인상태.csv            총장기부채 당기·전기 (1줄 헤더)
-    FScore_동일기준_비교기간보완.csv          기준(연결/별도)이 바뀐 해의 같은 기준 과거값 (1줄 헤더)
-    F7_보통주유상증자_연도별판정.csv          F7 최종 판정 (1줄 헤더)
-    09_증자감자현황_2015-2019.csv             F7 대조용 (2줄 헤더)
+[data] 
+    02_재무_연간_2013-2019.csv              연간 재무
+    30_총장기부채_합계확인상태.csv            총장기부채 당기·전기
+    FScore_동일기준_비교기간보완.csv          기준(연결/별도)이 바뀐 해의 같은 기준 과거값 
+    F7_보통주유상증자_연도별판정.csv          F7 최종 판정 
+    09_증자감자현황_2015-2019.csv             F7 대조용
 
-[규칙] (F-score 폴더 00_안내.md)
+[rule]
     - 순이익은 기업 전체 순이익(ifrs_ProfitLoss). 지배주주 순이익이 아님
     - F5 장기부채는 30번 합계. 장기차입금 한 계정만 쓰지 않음
     - 연결·별도 금액을 섞어 전년 대비 개선을 판정하지 않음
@@ -24,7 +23,7 @@ fscore.py — 서서히 모델 중 Piotroski F-Score
     - 빈칸은 0이 아니라 "값 없음"
     - 상장폐지 이후 기간은 분석 대상 아님
 
-[실행 순서]
+[progress]
     읽기 → F7 붙이기 → 전년·전전년 값 붙이기 → 같은 기준 과거값으로 교체
     → F1~F9 → F-Score → 확인 → 매수일·평가일 비교와 위험점수 → 저장
 """
@@ -32,14 +31,8 @@ fscore.py — 서서히 모델 중 Piotroski F-Score
 from pathlib import Path
 import pandas as pd
 
-
-# =============================================================================
-# 0. 경로와 설정
-# =============================================================================
-
-# 이 파일 기준으로 프로젝트 맨 위 폴더를 찾는다 (parents[2] = 두 단계 위)
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DATA_DIR = PROJECT_ROOT / "data" / "fscore"          # 드라이브의 F-score 폴더를 그대로 복사
+DATA_DIR = PROJECT_ROOT / "data" / "fscore"         
 OUTPUT_DIR = Path(__file__).parent / "output"
 
 ANNUAL_FILE = DATA_DIR / "02_재무_연간_2013-2019.csv"
@@ -65,9 +58,8 @@ RISK_SCALE = [
 # 2차: 평가일 F-Score가 이 값 이하이면 위험점수 +1 (재무적으로 약한 집단. Piotroski 2000)
 LEVEL_ADD_MAX_SCORE = 1
 LEVEL_ADD_POINTS = 1
-HOLD_IF_SAME_REPORT = True     # 매수일·평가일이 같은 보고서면 위험점수 유보 (정민 결정)
+HOLD_IF_SAME_REPORT = True     # 매수일·평가일이 같은 보고서면 위험점수 유보
 
-# 02번 원본 컬럼명 → 짧은 이름 (주석: 쓰는 신호)
 ANNUAL_COLUMNS = {
     "ifrs_ProfitLoss": "ni",                                   # 당기순이익(기업 전체)   F1 F3 F4
     "ifrs_CashFlowsFromUsedInOperatingActivities": "cfo",      # 영업활동현금흐름        F2 F4
@@ -79,7 +71,6 @@ ANNUAL_COLUMNS = {
     "ifrs_GrossProfit": "gross_profit",                        # 매출총이익             F8
 }
 
-# 동일기준 보완 파일의 컬럼명 → 짧은 이름
 SAME_BASIS_COLUMNS = {
     "ifrs_Assets": "assets",
     "ifrs_ProfitLoss": "ni",
@@ -89,7 +80,6 @@ SAME_BASIS_COLUMNS = {
     "ifrs_CurrentLiabilities": "current_liabilities",
 }
 
-# 9개 신호 컬럼 (합계와 확인에 사용)
 SIGNAL_COLUMNS = [
     "f1_roa", "f2_cfo", "f3_delta_roa", "f4_accrual",
     "f5_delta_lever", "f6_delta_liquid", "f7_no_equity_offer",
@@ -97,11 +87,7 @@ SIGNAL_COLUMNS = [
 ]
 
 
-# =============================================================================
-# 1. 데이터 읽기
-# =============================================================================
-
-# CSV를 모두 글자로 읽는다. 한글 헤더(2번째 줄)가 있는 파일만 그 줄을 건너뛴다
+# 1. read data
 def read_csv_text(path, has_korean_header):
     skip = [1] if has_korean_header else None
     return pd.read_csv(path, header=0, skiprows=skip, dtype=str,
@@ -139,10 +125,8 @@ def combine(annual, ltd):
     return merged.sort_values(["stock_code", "fiscal_year"]).reset_index(drop=True)
 
 
-# =============================================================================
-# 2. F7 판정 붙이기 (데이터 담당의 연도별 최종 판정)
-# =============================================================================
 
+# 2. F7 판정 붙이기
 # F7 연도별판정: common_equity_issued=True이면 F7=0, False이면 F7=1
 def load_f7(path):
     df = read_csv_text(path, has_korean_header=False)
@@ -157,9 +141,7 @@ def attach_f7(data, f7):
     return data.merge(f7, on=["stock_code", "fiscal_year"], how="left")
 
 
-# =============================================================================
 # 3. 전년·전전년 값 붙이기와 같은 기준 과거값 교체
-# =============================================================================
 
 # 연도를 +1(+2) 한 복사본을 붙여, 한 줄에 올해 값과 전년(전전년) 값이 나란히 오게 한다
 # shift 대신 merge: 중간 연도가 빠져 있어도 엉뚱한 해의 값이 붙지 않는다
@@ -219,9 +201,8 @@ def apply_same_basis_prior(data, same_basis):
     return out
 
 
-# =============================================================================
+
 # 4. F1~F9 신호와 F-Score
-# =============================================================================
 
 # 조건을 0/1로 바꾸되, 원래 값이 빈칸이면 신호도 빈칸 (빈칸은 0점이 아니다)
 def to_signal(condition, value):
@@ -277,7 +258,7 @@ def add_f4_accrual(df):
 
 
 # F5. 장기부채 / 평균 총자산이 전년보다 하락 → 1점 (장기 빚 부담이 줄었는가)
-# 예외(정민 결정): 당기말·전기말 장기부채가 모두 0이면 1점. 빚 부담이 줄지는 않았지만
+# 예외: 당기말·전기말 장기부채가 모두 0이면 1점. 빚 부담이 줄지는 않았지만
 # 무차입이라는 양호한 상태를 유지했기 때문. (원 논문 규칙은 변화가 0이라 0점)
 def add_f5_delta_lever(df):
     out = df.copy()
@@ -302,7 +283,6 @@ def add_f6_delta_liquid(df):
 
 
 # F7. 그해 보통주 유상증자 없음 → 1점 (외부 자금 조달에 기대지 않았는가)
-# 데이터 담당의 연도별 판정(F7_score)을 그대로 쓴다
 def add_f7_no_equity_offer(df):
     out = df.copy()
     out["f7_no_equity_offer"] = out["f7_score_official"].astype("Int64")
@@ -329,7 +309,7 @@ def add_f9_delta_turn(df):
     return out
 
 
-# 실행 순서. 함수 이름을 괄호 없이 담아두고 add_signals에서 하나씩 실행한다
+# 실행 순서
 SIGNAL_STEPS = [
     add_base_values,
     add_f1_roa,
@@ -358,10 +338,7 @@ def add_fscore(df):
     return out
 
 
-# =============================================================================
-# 5. F7 대조 (09번으로 직접 판정한 결과와 데이터 담당 판정 비교)
-# =============================================================================
-
+# 5. F7 대조 
 # 09번: 발행 한 건이 한 줄
 def load_issues(path):
     df = read_csv_text(path, has_korean_header=True)
@@ -372,7 +349,7 @@ def load_issues(path):
         "stock_kind": df["isu_dcrs_stock_knd"],
         "quantity": pd.to_numeric(df["isu_dcrs_qy"].str.replace(",", ""), errors="coerce"),
     })
-    out = out.dropna(subset=["issue_date"])                     # "-" 등 해당 없음 행 제거
+    out = out.dropna(subset=["issue_date"])                    
     out = out.drop_duplicates(subset=["stock_code", "issue_date", "issue_type", "stock_kind", "quantity"])
     out["fiscal_year"] = out["issue_date"].dt.year              # 발행일 연도 = 회계연도 (12월 결산)
     return out
@@ -397,9 +374,8 @@ def compare_f7(data, own_years):
     return diff[["company_name", "fiscal_year", "f7_own", "f7_no_equity_offer", "f7_status"]]
 
 
-# =============================================================================
+
 # 6. 매수일·평가일 비교
-# =============================================================================
 
 # 그날까지 공시된 사업보고서 중 가장 최근 것의 F-Score (미래 정보 차단)
 def find_fscore_as_of(df, stock_code, date):
@@ -525,9 +501,7 @@ if __name__ == "__main__":
 
 
 """
-# =============================================================================
 # 실행
-# =============================================================================
 
 if __name__ == "__main__":
     pd.set_option("display.max_columns", None)
