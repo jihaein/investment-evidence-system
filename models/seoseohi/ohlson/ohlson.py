@@ -1,21 +1,21 @@
 """
 ohlson.py — 서서히 모델 중 수정 Ohlson 모델
 
-[무엇을 하나]
+[what]
 매수일과 평가일의 잔여이익(RI)과 이익 지속성(ω)을 비교해서
 "샀을 때보다 회사가 나빠졌는가"를 0~2점으로 판정한다.
 
-[계산식]
+[calculation formula]
     RI   = NI - r * BV(전기)
     Prem = 시가총액 - BV(최근) - vt
     ω    = (1 + r) * Prem / (Prem + RI)
     s    = RI / BV(전기) ← 회사 크기와 상관없이 RI를 비교하기 위한 비율
     ω와 RI는 곱하지 않고 따로 본다.
 
-[입력]
+[input]
 ohlson_input_final.csv: 종목 * 거래일. 재무값은 분기마다, 시가총액은 매일 바뀐다.
 
-[팀 결정 사항] (2026-10-26)
+[team decisions] 
     r = 5%            국채 3.9%는 2026년 금리라 분석 기간(2016~2019)과 맞지 않아 조정
     NI = 지배주주 순이익 TTM (최근 4분기 합)
     ω 상태            높음(ω ≥ 0.5) / 낮음(0 ≤ ω < 0.5) / 최하(적자 등 계산 불가)
@@ -24,7 +24,7 @@ ohlson_input_final.csv: 종목 * 거래일. 재무값은 분기마다, 시가총
     변화 크기         2~5%p "조금", 5%p 이상 "많이" → 아직 기록만, 점수에는 미반영
     유보              데이터 품질 문제(strict 아님), 자본잠식, 재무제표 기준 변경, 데이터 없음
 
-[실행 순서]
+[process]
     load_input → add_ohlson_values → add_flags → add_omega_state
     → decide_interpretable → evaluate_pairs → CSV 저장
 """
@@ -347,7 +347,7 @@ if __name__ == "__main__":
     eval_table = evaluate_pairs(result, test_pairs, max_gap_days, ri_small, ri_large)
     eval_table["score"] = eval_table["score"].astype("Int64")   # 빈칸을 허용하는 정수형
 
-    # 이번 실행에 쓴 설정을 결과에 기록 (파일만 보고도 어떤 설정인지 알 수 있게)
+    # 이번 실행에 쓴 설정을 결과에 기록
     eval_table["r_used"] = r
     eval_table["omega_high"] = omega_high
     eval_table["ri_small"] = ri_small
