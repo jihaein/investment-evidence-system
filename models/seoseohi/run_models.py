@@ -14,7 +14,7 @@ fscore.py와 ohlson/ohlson.py는 고치지 않고 그대로 가져다 쓴다.
     table = run_ohlson(pairs)       # Ohlson만
 
 [결과 표의 공통 열]
-    model           "fscore" 또는 "ohlson"
+    model           "fscore", "ohlson" 또는 "dupont" (run_dupont는 외부 데이터 경로 환경변수가 필요)
     stock_code, buy_date, eval_date
     risk_score      위험점수. 높을수록 위험. 유보면 빈칸(<NA>)
     risk_max        이 모델의 최대 점수 (F-Score 3, Ohlson 2). 모델마다 눈금이 다르다
@@ -58,6 +58,7 @@ OHLSON_SETTINGS = {
 OHLSON_HOLD_RULES = ["flag_not_strict", "flag_capital_impairment"]   # 유보 조건: 데이터 품질 문제만
 OHLSON_RISK_MAX = 2
 FSCORE_RISK_MAX = 3
+DUPONT_RISK_MAX = 3
 
 CORE_COLUMNS = ["model", "stock_code", "buy_date", "eval_date", "risk_score", "risk_max",
                 "interpretable", "hold_reason", "scale_status"]
@@ -65,6 +66,8 @@ FSCORE_DETAIL = ["f_score_buy", "f_score_eval", "f_score_drop", "risk_drop", "ri
                  "same_report", "fiscal_year_buy", "fiscal_year_eval", "rcept_no_buy", "rcept_no_eval"]
 OHLSON_DETAIL = ["omega_state_buy", "omega_state_eval", "s_buy", "s_eval", "delta_s",
                  "ri_dir", "omega_dir", "ri_change_size"]
+DUPONT_DETAIL = ["dPM_adj_pp", "dATO_rel_pct", "partial", "peer_fallback", "fs_div_flag",
+                 "delisted", "delisted_in_window", "note"]
 
 
 
@@ -149,9 +152,68 @@ def run_ohlson(pairs):
     return to_standard("ohlson", table, OHLSON_RISK_MAX, "confirmed", OHLSON_DETAIL)
 
 
-# 두 모델을 모두 돌려 한 표로 합친다 (쌍마다 모델 수만큼 줄)
-def run_all(pairs):
-    both = pd.concat([run_fscore(pairs), run_ohlson(pairs)], ignore_index=True)
+# DuPont: dupont.py의 dupont_compare를 그대로 쓴다 (dupont.py는 고치지 않음).
+# 데이터 위치는 환경변수 SEOSEOHI_TTM_DIR, SEOSEOHI_FINAL_DATA_DIR (.env 가능)로 받는다. 코드에 경로를 박지 않는다.
+def dupont_module():
+    root = str(HERE.parents[1])                                 # dupont.py가 `models.seoseohi.config`를 import한다
+    if root not in sys.path:
+        sys.path.insert(0, root)
+    import importlib
+    return importlib.import_module("models.seoseohi.dupont")
+
+
+@lru_cache(maxsize=1)
+def build_dupont_data():
+    import os
+    dp = dupont_module()
+    pl = importlib_pipeline()
+    missing = [k for k in ("SEOSEOHI_TTM_DIR", "SEOSEOHI_FINAL_DATA_DIR") if not os.getenv(k)]
+    if missing:
+        dp.load_dotenv()                                        # .env에 있을 수 있다
+        missing = [k for k in missing if not os.getenv(k)]
+    if missing:
+        raise RuntimeError("DuPont 데이터 경로 환경변수가 없습니다: " + ", ".join(missing))
+    return pl.load_data()
+
+
+def importlib_pipeline():
+    import importlib
+    dupont_module()
+    return importlib.import_module("models.seoseohi.pipeline")
+
+
+def run_dupont(pairs):
+    dp = dupont_module()
+    data = build_dupont_data()
+    rows = []
+    for stock_code, buy_date, eval_date in pairs:
+        r = dp.dupont_compare(data["ttm"], data["assets"], data["ksic"], data["stocks"], stock_code, buy_date, eval_date)
+        pm, ato = r["pm_detail"], r["ato_detail"]
+        score = r["score"]
+        notes = [n for n in (pm.get("note"), ato.get("note")) if n]
+        rows.append({
+            "stock_code": stock_code, "buy_date": buy_date, "eval_date": eval_date,
+            "risk_score": score,
+            "hold_reason": "" if score is not None else "|".join(notes) or "no_score",
+            "dPM_adj_pp": r["dPM_adj_pp"], "dATO_rel_pct": r["dATO_rel_pct"],
+            # 한쪽 지표만으로 낸 점수는 partial로 표시한다 (점수는 dupont.py 규칙 그대로)
+            "partial": score is not None and (r["dPM_adj_pp"] is None or r["dATO_rel_pct"] is None),
+            "peer_fallback": "전체 표본 대체" in " ".join(str(pm.get(k, "")) for k in ("basis_buy", "basis_now")),
+            "fs_div_flag": pm.get("fs_div_flag"),
+            "delisted": r["delisted"], "delisted_in_window": r["delisted_in_window"],
+            "note": "|".join(notes),
+        })
+    table = pd.DataFrame(rows)
+    table["risk_score"] = table["risk_score"].astype("Int64")
+    return to_standard("dupont", table, DUPONT_RISK_MAX, "provisional", DUPONT_DETAIL)
+
+
+# 모델을 모두 돌려 한 표로 합친다 (쌍마다 모델 수만큼 줄)
+def run_all(pairs, include_dupont=False):
+    parts = [run_fscore(pairs), run_ohlson(pairs)]
+    if include_dupont:                                          # DuPont은 외부 데이터 경로가 필요해 선택 사항
+        parts.append(run_dupont(pairs))
+    both = pd.concat(parts, ignore_index=True)
     return both.sort_values(["stock_code", "buy_date", "eval_date", "model"]).reset_index(drop=True)
 
 
@@ -176,6 +238,15 @@ OHLSON_CHECK = [
 ]
 
 
+# DuPont은 외부 데이터 경로(환경변수)가 있을 때만 점검한다. 현진소재 기대값은 pipeline.py 주석(점수 3, 상장폐지)과 같다
+DUPONT_CHECK = [
+    (("053660", "2017-06-30", "2019-12-30"), 3, ""),
+    (("083650", "2017-06-30", "2019-12-30"), 3, ""),
+    (("036890", "2017-06-30", "2019-12-30"), 0, ""),
+    (("050540", "2017-06-30", "2019-12-30"), None, "결측"),
+]
+
+
 def check_model(name, run, cases):
     result = run([pair for pair, _, _ in cases])
     ok_all = True
@@ -192,6 +263,11 @@ def check_model(name, run, cases):
 if __name__ == "__main__":
     ok_f = check_model("F-Score", run_fscore, FSCORE_CHECK)
     ok_o = check_model("Ohlson", run_ohlson, OHLSON_CHECK)
+    import os
+    if os.getenv("SEOSEOHI_TTM_DIR") and os.getenv("SEOSEOHI_FINAL_DATA_DIR"):
+        ok_o &= check_model("DuPont", run_dupont, DUPONT_CHECK)
+    else:
+        print("[DuPont] 환경변수 SEOSEOHI_TTM_DIR / SEOSEOHI_FINAL_DATA_DIR가 없어 건너뜀")
     print()
     print("F-Score 눈금 상태:", run_fscore([FSCORE_CHECK[0][0]]).loc[0, "scale_status"])
     both = run_all([FSCORE_CHECK[0][0], OHLSON_CHECK[1][0]])
