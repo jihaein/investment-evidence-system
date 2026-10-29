@@ -1,19 +1,19 @@
 """
-run_models.py — 서서히 모델의 F-Score와 Ohlson을 같은 방식으로 돌리는 연결 파일
+run_models.py
 
-[무엇을 하나]
+[what]
 (종목, 매수일, 평가일) 쌍 목록을 넣으면 두 모델이 각자 위험점수를 계산하고,
 결과를 같은 모양의 표로 돌려준다. 오케스트라는 이 표만 읽으면 된다.
 fscore.py와 ohlson/ohlson.py는 고치지 않고 그대로 가져다 쓴다.
 
-[쓰는 법]
+[how to use]
     from run_models import run_all, run_fscore, run_ohlson
     pairs = [("010170", "2016-06-30", "2019-06-28"), ...]
-    table = run_all(pairs)          # 두 모델 결과를 한 표로 (모델마다 한 줄)
+    table = run_all(pairs)         
     table = run_fscore(pairs)       # F-Score만
     table = run_ohlson(pairs)       # Ohlson만
 
-[결과 표의 공통 열]
+[common column]
     model           "fscore", "ohlson" 또는 "dupont" (run_dupont는 외부 데이터 경로 환경변수가 필요)
     stock_code, buy_date, eval_date
     risk_score      위험점수. 높을수록 위험. 유보면 빈칸(<NA>)
@@ -23,12 +23,11 @@ fscore.py와 ohlson/ohlson.py는 고치지 않고 그대로 가져다 쓴다.
     scale_status    눈금이 팀 확정이면 "confirmed", 임시면 "provisional"
     + 모델별 근거 열 (F-Score: f_score_buy 등 / Ohlson: omega_state_buy 등)
 
-[주의]
+[warning]
     - 점수 눈금이 다르다 (F-Score 0~3, Ohlson 0~2). 합치는 방법은 팀이 정한다
     - 유보는 0점이 아니다. 합칠 때 "판단 안 함"으로 따로 다뤄야 한다
     - Ohlson 설정(r, vt 등)은 ohlson.py 실행부와 같아야 한다 → 직접 실행하면 점검한다
 
-[직접 실행] python run_models.py  → 두 모델의 테스트 쌍이 기대 점수와 같은지 점검
 """
 
 import importlib.util
@@ -46,7 +45,6 @@ if not OHLSON_PATH.exists():
     OHLSON_PATH = HERE / "ohlson.py"
 OUTPUT_DIR = HERE / "output"
 
-# ohlson.py 실행부(if __name__ == "__main__")의 모델 설정과 같아야 한다
 OHLSON_SETTINGS = {
     "r": 0.05,              # 자기자본비용
     "vt": 0,                # 비재무 정보. 0 고정
@@ -89,9 +87,8 @@ def ohlson_module():
     return load_module("ohlson", OHLSON_PATH)
 
 
-# 2. 모델별 계산 표 만들기
-
-# F-Score: 회사 × 연도 점수 표 (fscore.py 실행부 1~4단계)
+# 2
+# F-Score: 회사 × 연도 점수 표
 @lru_cache(maxsize=1)
 def build_fscore_table():
     fs = fscore_module()
@@ -104,7 +101,7 @@ def build_fscore_table():
     return fs.add_fscore(data)
 
 
-# Ohlson: 회사 × 거래일 계산 표 (ohlson.py 실행부 계산 부분)
+# Ohlson: 회사 × 거래일 계산 표 
 @lru_cache(maxsize=1)
 def build_ohlson_table():
     oh = ohlson_module()
@@ -119,7 +116,6 @@ def build_ohlson_table():
 
 
 # 3. 공통 모양으로 바꾸기
-
 def to_standard(model, table, risk_max, scale_status, detail_columns):
     out = pd.DataFrame({
         "model": model,
@@ -219,7 +215,6 @@ def run_all(pairs, include_dupont=False):
 
 
 # 4. 직접 실행: 
-
 # (쌍, 기대 위험점수, 기대 유보 사유). 점수가 있으면 유보 사유는 빈 글자
 FSCORE_CHECK = [
     (("010170", "2016-06-30", "2019-06-28"), 1, ""),                  # 7 → 3, 하락 4 → 1점
