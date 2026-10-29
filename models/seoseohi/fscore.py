@@ -126,8 +126,7 @@ def combine(annual, ltd):
 
 
 
-# 2. F7 판정 붙이기 (데이터 담당의 연도별 최종 판정)
-
+# 2. F7 판정 붙이기
 # F7 연도별판정: common_equity_issued=True이면 F7=0, False이면 F7=1
 def load_f7(path):
     df = read_csv_text(path, has_korean_header=False)
@@ -502,9 +501,7 @@ if __name__ == "__main__":
 
 
 """
-# =============================================================================
 # 실행
-# =============================================================================
 
 if __name__ == "__main__":
     pd.set_option("display.max_columns", None)
