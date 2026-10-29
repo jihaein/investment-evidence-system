@@ -43,10 +43,10 @@ def test_dupont_expected_scores_and_holds(case):
     _check(rm.run_dupont, case)
 
 
-@pytest.mark.xfail(strict=True, raises=KeyError,
-                   reason="fscore.evaluate_pairs는 요청한 쌍이 전부 유보이면 fiscal_year_buy 열이 없어 KeyError. fscore.py 수정 전까지 알려진 문제")
-def test_fscore_all_held_request_known_bug():
-    rm.run_fscore([rm.FSCORE_CHECK[3][0]])                   # after_delisting 하나만
+def test_fscore_all_held_request_returns_holds():
+    table = rm.run_fscore([rm.FSCORE_CHECK[3][0], rm.FSCORE_CHECK[4][0]])   # after_delisting, buy_no_data만
+    assert list(table["hold_reason"]) == ["after_delisting", "buy_no_data"]
+    assert table["risk_score"].isna().all() and not table["interpretable"].any()
 
 
 def test_hold_is_not_zero_in_standard_table():
