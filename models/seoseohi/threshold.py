@@ -12,7 +12,7 @@ threshold.py - 임계모델 1차 구현
 3. 점수판: z_t = (r_t - μ_t) / σ_t,  S_t = max(0, S_(t-1) - z_t - k)
     매수일에 S=0에서 시작해 평가일까지 계속 이어서 계산
 4. 경보 = 조건1 and 조건2 (조건3은 설정으로 켜고 끈다)
-    조건1: 누적 수익률 < 0 (기준일 = 매수일과 90거래일 전 중 더 가까운 날)
+    조건1: 누적 수익률 < 0 (기준일 = 매수일과 120거래일 전 중 더 가까운 날)
     조건2: S_t >= h
     조건3: 점수가 0에서 하루 만에 h 이상이 된 구간이 아닐 것(기본: 사용x, 기록은 남김)
 5. 알림은 꺼져있다가 켜지는 날에만(alarm_onset)
@@ -70,7 +70,6 @@ RET_GAP_WARN = 0.005                    # 등락률과 종가 수익률이 이�
 
 
 # 1. 주가 읽기
-
 def to_number(series):
     return pd.to_numeric(series.astype(str).str.replace(",", "").str.strip(), errors="coerce")
 
@@ -92,7 +91,6 @@ def load_prices(path=PRICE_PATH):
 
 
 # 2. 종목별 수익률·"평소" 계산 (매수일과 상관없이 날짜마다 정해진다)
-
 def window_stats(r, window):
     lo, hi = window
     length = hi - lo + 1                                              # 예: 30~90 → 61개
@@ -136,7 +134,6 @@ def prepared_prices():
 
 
 # 3. 점수판 계산: 매수일에 0에서 시작해 이어서 계산
-
 def run_cusum(g, buy_idx, end_idx, k, h, baseline=None, cond3=None):
     n = len(g)
     ret, mu, sigma = g["ret"].to_numpy(), g["mu"].to_numpy(), g["sigma"].to_numpy()
@@ -220,7 +217,6 @@ def cusum_frame(g, buy_idx, end_idx, k, h, baseline=None, cond3=None):
 
 
 # 4. 매수일·평가일 쌍 평가
-
 def locate(g, date, max_gap_days=MAX_GAP_DAYS):
     d = pd.Timestamp(date)
     idx = int(g["trade_date"].searchsorted(d, side="right")) - 1       # d 이전(포함) 마지막 거래일
@@ -258,6 +254,9 @@ def evaluate_pair(by_stock, stock_code, buy_date, eval_date, k, h, baseline=None
         "cusum_eval": float(res["S"][e]),
         "cum_ret_eval": float(res["cum_ret"][e]),
         "first_alarm_date": g["trade_date"].iloc[first[0]] if len(first) else pd.NaT,
+        "last_alarm_date": g["trade_date"].iloc[first[-1]] if len(first) else pd.NaT,           # 보유 중 마지막으로 경보가 켜져 있던 날
+        "days_since_last_alarm": int(e - first[-1]) if len(first) else pd.NA,                   # 그날부터 평가일까지 거래일 수
+        "alarm_in_hold": bool(len(first)),                                                      # 매수 이후 평가일까지 경보가 한 번이라도 켜졌나
         "days_to_first_alarm": int(first[0] - b) if len(first) else pd.NA,
         "n_onsets": int(res["onset"][live].sum()),
         "alarm_days": int(res["alarm"][live].sum()),
@@ -285,7 +284,6 @@ def run_threshold(pairs, k=DEFAULT_K, h=DEFAULT_H, baseline=None, cond3=None):
 
 
 # 5. 경보 빈도 확인 (k × h): 아무 일 없어도 얼마나 자주 울리는가
-
 # 각 날의 종가 기준, 이후 horizon거래일 안의 가장 낮은 누적 수익률 (뒤에 자료가 모자란 날은 비움)
 def forward_min_return(g, horizon=HIT_HORIZON_DAYS):
     cum = g["cum_index"].to_numpy()
@@ -355,7 +353,6 @@ def frequency_table(by_stock, k_list=K_LIST, h_list=H_LIST, horizons=(250, 500),
 
 
 # 6. 실행: 데이터 점검 → 경보 빈도 → 알려진 사례
-
 EXAMPLE_PAIRS = [
     ("053660", "2016-06-30", "2019-06-28"),    # 현진소재: F-Score 7 → 1로 서서히 악화
     ("010170", "2016-06-30", "2019-06-28"),    # 대한광통신: 2018년 급락

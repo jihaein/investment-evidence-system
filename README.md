@@ -2,7 +2,6 @@
 
 보유 종목의 가치 훼손 위험을 근거로 점검하는 시스템의 모델 쪽 저장소. 지금 구현된 것은 **서서히 모델**(F-Score, Ohlson, DuPont)이다. 급락 모델과 반박 모델은 아직 없다.
 
-결과는 임시 규칙(`provisional-0`) 기준이다. 팀 결정 D01~D10이 정해지기 전이라 확정된 위험 판정이 아니며, 유보(점수 없음)는 0점이 아니다. 대시보드(`fds_dashboard`)와의 연결 설계는 그 저장소의 `docs/INTEGRATION_DESIGN.md`에 있다.
 
 ## 구조
 
@@ -11,7 +10,9 @@
 | `models/seoseohi/fscore.py` | F-Score 계산과 매수일·평가일 위험점수(0~3) |
 | `models/seoseohi/ohlson/ohlson.py` | Ohlson RI·ω 비교와 위험점수(0~2) |
 | `models/seoseohi/dupont.py`, `pipeline.py` | DuPont PM·ATO 비교와 위험점수(0~3) |
-| `models/seoseohi/run_models.py` | 세 모델을 같은 표준 표로 돌리는 연결 파일 (`run_fscore`, `run_ohlson`, `run_dupont`, `run_all`) |
+| `models/seoseohi/run_models.py` | 세 모델을 같은 표준 표로 돌리는 연결 파일 (`run_fscore`, `run_ohlson`, `run_dupont`, `run_all`)과 임계 모델 경보 `run_gate` |
+| `models/seoseohi/threshold.py` | 임계 모델: 매수일 이후 주가가 꾸준히 나빠지는지 보는 경보기(켜짐/꺼짐, 점수 아님) |
+| `models/seoseohi/link_fundamentals.py` | 가격 경보 뒤에 F-Score·Ohlson 악화가 확인되는지 보는 평가 |
 | `models/seoseohi/export_contract.py` | 표준 표를 대시보드가 읽는 계약 JSON으로 내보냄 |
 | `contracts/risk_result.schema.json` | 계약 JSON 스키마 |
 | `tests/seoseohi/test_run_models.py` | 기대값, 유보, 계약 스키마 점검 |
@@ -41,6 +42,9 @@ from run_models import run_all
 pairs = [("010170", "2016-06-30", "2019-06-28")]      # (종목, 매수일, 평가일)
 run_all(pairs)                                          # F-Score, Ohlson
 run_all(pairs, include_dupont=True)                     # DuPont 환경변수 필요
+
+from run_models import run_gate
+run_gate(pairs)                                         # 임계 모델 경보. 점수가 아니라 켜짐/꺼짐이라 run_all에는 포함되지 않는다
 ```
 
 점검과 계약 생성:
@@ -57,6 +61,7 @@ python models/seoseohi/export_contract.py --buy 2016-06-30 --eval 2019-12-30 --s
 
 ## 알려진 한계
 
+- 임계 모델(`run_gate`)은 점수가 아니라 경보다. 합산하지 않으며, 본 데이터(19종목 × 5년)에서 경보는 이후의 큰 하락이나 F-Score·Ohlson 악화를 예고하지 않았다(`link_fundamentals.py`). "가격이 이미 약해졌다"는 상태 알림으로만 읽는다. 경보가 며칠만 켜졌다 꺼지므로 `alarm_on`(평가일 상태)보다 `alarm_in_hold`(보유 중 발생 여부)로 읽는 편이 안전하다.
 - 점수 눈금이 모델마다 다르다(0~3, 0~2, 0~3). 이 계약은 합산하지 않으며 통합 판정은 D10 전까지 보류다.
 - DuPont의 ATO는 평균 총자산 기준이고, 업종 중위수에 대상 기업이 포함된다(D08, D09).
 - 한쪽 지표만으로 낸 DuPont 점수는 `partial=True`로 표시된다.
