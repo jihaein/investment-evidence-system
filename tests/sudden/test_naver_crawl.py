@@ -178,3 +178,9 @@ def test_main_does_not_reuse_unquoted_record_for_quoted_search(tmp_path, monkeyp
     assert n.main(argv) == 0 and sent == ['"현진소재"']              # 따옴표 방식은 새로 검색
     assert n.main(argv) == 0 and sent == ['"현진소재"']              # 그 뒤로는 재사용
     assert (out / 'summary_053660.json').exists()
+
+
+def test_search_title_drops_new_window_label():
+    html = ('<div><a data-heatmap-target=".tit" href="https://publisher.test/1">미코, CB 전환청구권 행사'
+            '<span class="blind">새 창 열림</span></a></div>')
+    assert n.parse_search(html)[0][0]['title'] == '미코, CB 전환청구권 행사'

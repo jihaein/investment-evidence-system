@@ -129,7 +129,9 @@ def parse_search(html):
             if nav:
                 break
             parent = parent.parent
-        results.append({'title': tidy(node.text()), 'original_url': original, 'naver_url': nav})
+        # 제목 링크 안의 접근성 문구 '새 창 열림'은 제목이 아니다
+        title = re.sub(r'\s*새 창 열림$', '', tidy(node.text()))
+        results.append({'title': title, 'original_url': original, 'naver_url': nav})
     # 구형 목록에서 제목 링크가 없더라도 네이버 기사 주소는 보존한다.
     if not results:
         urls = {canonical(n.attrs.get('href', '')) for n in tree.root.nodes() if n.tag == 'a'} - {None}
