@@ -1,0 +1,19 @@
+{
+  "phase": "pre_registered_contract_focused_sample",
+  "rule_sha256": {
+    "news_facts.py": "6ceae4b8170554e79e847316da20647e71b96ddb848e85418a8efbb668afaea1",
+    "news_review.py": "cc23eb757a164b43feddfa5f481cced630c3e10a2aff2ee1f9903fcca025600e",
+    "np_scores.py": "05d91fc6b5854d62f2c6888730753dd681625b45cf0282c2718bbe785e8a29de",
+    "np_config.json": "b946829cff8d548653253516f751840ba65a152139e01c96880c91070790d4f1"
+  },
+  "stocks": [
+    "036890",
+    "010170"
+  ],
+  "date_range": [
+    "2017-01-01",
+    "2019-12-31"
+  ],
+  "selection": "각 회사의 새로운 공급계약 보도를 검색해 최초로 확인된 과거 기사 날짜를 선택. 예측은 라벨 저장 전 실행하지 않음. 현재 캐시에 없는 기사만 사용.",
+  "limits": "계약 유형 확인용 목적 표본이며 전체 뉴스·급락 원인·N/P 예측 성능의 대표 표본이 아님."
+}

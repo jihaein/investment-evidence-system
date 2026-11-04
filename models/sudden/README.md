@@ -43,7 +43,29 @@ DNS 조회를 포함한 개별 요청의 전체 대기시간은 30초로 제한�
 ```
 
 검색 목록을 우선순위·날짜순으로 읽고 `query_alt`도 각각 검색한다.
-`search_terms.csv`의 수동 약칭·종속회사 칸은 아직 사용하지 않는다.
+
+## 전 종목 수집
+
+`--stock`에 `all` 또는 쉼표 목록을 줄 수 있다. 여러 종목은 우선순위 → 날짜 → 종목 순으로 섞어서 돌기 때문에,
+중간에 멈춰도 우선순위 1(사건 창, 19종목 1,228일)이 먼저 채워진다.
+
+```powershell
+.\.venv\Scripts\python.exe models/sudden/naver_crawl.py --stock all --start 2015-01-01 --end 2019-12-31 --max-priority 1 --out models/sudden/cache/naver_full
+```
+
+- **검색어 따옴표**: 기본으로 `"미코"`처럼 따옴표로 감싸 정확히 일치하는 기사만 찾는다.
+  일반 단어 이름(미코·DMS·네이블·우전)에 관계없는 기사가 섞여 30페이지 상한에 걸리는 것을 줄인다.
+  `--no-quote`는 2026-11-04 파일럿·홀드아웃 수집과 같은 방식이다.
+  따옴표 방식이 다른 예전 기록은 재사용하지 않고 다시 검색해 덮어쓰므로,
+  **전체 수집은 `--out models/sudden/cache/naver_full`처럼 별도 폴더에** 해서 파일럿·홀드아웃 DB를 보존한다.
+  뒤 단계(`news_review.py`, `np_scores.py`, `validate_np.py`, `evaluate_holdout.py`)는 `--cache`로 같은 폴더를 준다.
+- **추가 검색어**: `output/search_terms.csv`의 `약칭`·`영문명`·`주요_종속회사` 칸을 그 행의 `from`~`to` 기간에
+  추가 검색어로 쓴다. 여러 개는 `|`로 구분한다(예: `디엠에스|DMS Co`). 칸을 채우면 그 종목의 예정 검색이 늘어나서
+  `news_review.py`의 수집 완료 점검도 새 검색어까지 기다린다. `제외_접두어`는 아직 사용하지 않는다.
+  관련성 분류는 아직 `stock_names.csv`의 회사명만 보므로, 영문명·종속회사로 찾은 기사는 관련 없음으로 분류될 수 있다.
+- **디스크**: 응답 원문을 모두 저장한다. 남은 디스크가 `--min-free-gb`(기본 5GB)보다 적으면 다음 검색 전에 멈춘다.
+- 검색 기록에는 목록상의 검색어(`query`)와 실제로 보낸 검색어(`search_query`)를 같이 남긴다.
+  `summary_종목코드.json`과 `event_links_종목코드.jsonl`은 종목마다 쓴다.
 `--max-pages` 기본값은 검색어·날짜당 30페이지다. 상한에 닿으면 `incomplete`로 남는다.
 다음 실행에서 `--max-pages`를 늘리면 해당 검색을 첫 페이지부터 다시 수집한다.
 진행 기록은 검색 단위이며, 중간 페이지부터 이어받는 방식은 아니다.
@@ -293,6 +315,14 @@ P도 지원되는 사실 후보 묶음으로 기준 분포를 다시 만든다. 
 실행 실패와 구분하려면 JSON의 지표별 `hold_reason`을 확인한다.
 
 ## 규칙을 동결한 새 종목 검토
+
+> **팀 공유용 평가 자료**: `cache/`는 Git에서 제외되므로, 기사 본문·제목·발췌가 없는 파일만
+> [`eval/`](eval/)에 복사해 두었다. 사전 등록 계획(`plan_v*.json`, `sampling_v*.json`, `sample_plan_v*.csv`),
+> 검토 라벨(`annotations_*.json`: 기사 URL·본문 SHA-256·사실 필드·짧은 메모), 재현 확인(`verification_v3.json`)이다.
+> 평가 결과(`evaluation_*`, `regression_*`)는 기사 제목·발췌를 담고 있어 올리지 않았다. 같은 명령으로 다시 만든다.
+> 기사 본문은 각자 수집기로 받아야 하고, 라벨의 SHA-256으로 같은 본문인지 확인한다.
+> 아래 명령의 `cache/naver/holdout/plan_*.json`·`annotations_*.json` 경로는 `models/sudden/eval/`의 같은 이름 파일로 바꿔도 된다.
+> 라벨 검토자는 사람이 아니라 AI 보조 검토(`reviewer: assistant_content_review`)다. 사람 검수 전까지 정답 자료가 아니라 검토 기록으로 본다.
 
 ```powershell
 .\.venv\Scripts\python.exe models/sudden/evaluate_holdout.py

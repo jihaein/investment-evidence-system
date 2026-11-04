@@ -1,0 +1,61 @@
+{
+  "offline_reproducible": true,
+  "preregistration_unchanged": true,
+  "frozen_source_checks": {
+    "news_facts.py": true,
+    "news_review.py": true,
+    "np_scores.py": true,
+    "np_config.json": true,
+    "evaluate_holdout.py": true,
+    "validate_np.py": true,
+    "naver_crawl.py": true
+  },
+  "data_sha256": {
+    "sampling_v3.json": "7d30e134a0578d22fc5b36ec554266433398dc88681175a0ec8dcd190b50d9e2",
+    "plan_v3.json": "b36f11eb0135c98752df26a138644042da688103fb89e740315f436adf5f2e05",
+    "annotations_v3.json": "f1f1115e8b42b0856803b969efd623dd64fd3e77eee69f27967c057d47e1e2a8",
+    "evaluation_v3.json": "fad0a9a22a52ee80ead13fcff5d1bab505f812f1852197d72f795ca1a743a63f"
+  },
+  "original_evaluations_preserved": true,
+  "coverage": [
+    {
+      "case_id": "contract_068790_20180328",
+      "coverage": {
+        "expected_searches": 1,
+        "completed_searches": 1,
+        "unfinished_searches": [],
+        "unavailable_articles": [],
+        "automated_body_exclusions": 0,
+        "external_only_results": 17,
+        "time_exclusions": [],
+        "collection_complete": true
+      },
+      "preexisting_articles": []
+    },
+    {
+      "case_id": "contract_083650_20180611",
+      "coverage": {
+        "expected_searches": 1,
+        "completed_searches": 1,
+        "unfinished_searches": [],
+        "unavailable_articles": [],
+        "automated_body_exclusions": 0,
+        "external_only_results": 5,
+        "time_exclusions": [],
+        "collection_complete": true
+      },
+      "preexisting_articles": []
+    }
+  ],
+  "summary": {
+    "evaluated_cases": 2,
+    "article_count": 21,
+    "primary_fact_articles": 17,
+    "correct_extractions": 7,
+    "multi_fact_articles": 0,
+    "fact_coverage": 0.4117647058823529,
+    "held_fact_articles": 4,
+    "field_error_articles": 6
+  },
+  "limits": "Two contract-focused convenience samples; labels are assistant review before prediction, not independent human gold. No cross-contract negative pairs within each case. N/P not evaluated."
+}

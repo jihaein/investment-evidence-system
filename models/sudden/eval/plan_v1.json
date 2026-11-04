@@ -1,0 +1,24 @@
+{
+  "phase": "rules_frozen_before_new_articles",
+  "cases": [
+    {
+      "drop_id": "096350_20180525",
+      "stock": "096350",
+      "start": "2018-05-21",
+      "end": "2018-05-25"
+    },
+    {
+      "drop_id": "010170_20180228",
+      "stock": "010170",
+      "start": "2018-02-23",
+      "end": "2018-02-28"
+    }
+  ],
+  "scope": "사건 창에서 사실 추출·묶음만 검토. 180일 기준 미수집이므로 N/P는 평가하지 않음.",
+  "rule_sha256": {
+    "news_facts.py": "95a1a83456795c94cc803569b14c764ad0e8f4de37ca5623198f210766f0ef33",
+    "news_review.py": "cc23eb757a164b43feddfa5f481cced630c3e10a2aff2ee1f9903fcca025600e",
+    "np_scores.py": "50224bb156dcf74bfe8fbab0d0892e42e7390928bc30936c6143d0e2dce628b6",
+    "np_config.json": "b946829cff8d548653253516f751840ba65a152139e01c96880c91070790d4f1"
+  }
+}

@@ -1,0 +1,293 @@
+{
+  "phase": "regression_after_rule_change",
+  "reviewer": "assistant_content_review",
+  "limits": "이미 내용 검토와 규칙 보완에 사용한 사례. 새 기사 정확도 평가와 구분.",
+  "articles": [
+    {
+      "url": "https://n.news.naver.com/mnews/article/001/0010106737",
+      "article_sha256": "e8b123919e749bc9f81a075220657321db12dc22a77a25c7b2ba7fe95c4ff00b",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": true,
+      "group": "daechang_supply_contract_20180525",
+      "expected": {
+        "actor": "대창솔루션",
+        "action": "supply_contract",
+        "target": "nuclear_waste_container",
+        "fields.amount_krw": "9100000000",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "캐나다",
+        "fields.counterparty": "한산"
+      },
+      "note": "한산과 캐나다 원전 핵폐기물 컨테이너 공급. 표현·금액 반올림 차이가 있는 같은 계약 후보.",
+      "absent_fields": [
+        "contract_end",
+        "contract_start"
+      ]
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/003/0008615013",
+      "article_sha256": "292ad8650aefde057e3fab8a76833ee46f8361862320b6030774d6a017e14db2",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": true,
+      "group": "daechang_supply_contract_20180525",
+      "expected": {
+        "actor": "대창솔루션",
+        "action": "supply_contract",
+        "target": "nuclear_waste_container",
+        "fields.amount_krw": "9100000000",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "캐나다",
+        "fields.counterparty": "한산"
+      },
+      "note": "한산과 캐나다 원전 핵폐기물 컨테이너 공급. 표현·금액 반올림 차이가 있는 같은 계약 후보.",
+      "absent_fields": [
+        "contract_end",
+        "contract_start"
+      ]
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/009/0004156956",
+      "article_sha256": "8ec4a26d4afb063717e29023c3233e16f7e594b3688461e5635be5e8999b22c1",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": true,
+      "group": "daechang_supply_contract_20180525",
+      "expected": {
+        "actor": "대창솔루션",
+        "action": "supply_contract",
+        "target": "nuclear_waste_container",
+        "fields.amount_krw": "9100000000",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "캐나다",
+        "fields.counterparty": "한산",
+        "fields.contract_end": "2019-12-31"
+      },
+      "note": "한산과 캐나다 원전 핵폐기물 컨테이너 공급. 표현·금액 반올림 차이가 있는 같은 계약 후보.",
+      "absent_fields": [
+        "contract_start"
+      ]
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/011/0003303228",
+      "article_sha256": "0b6f62f76a4666e6678b21c0721171abcd67accdf7b10fc10ef84dcf354d8b27",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": false,
+      "group": null,
+      "expected": {},
+      "note": "여러 종목 증시 일정 모음"
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/011/0003305802",
+      "article_sha256": "57f1199b1ddd8df708559f7574b28072cc775b3abc8b7bf39e65dcf15e9eaa65",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": true,
+      "group": "daechang_supply_contract_20180525",
+      "expected": {
+        "actor": "대창솔루션",
+        "action": "supply_contract",
+        "target": "nuclear_waste_container",
+        "fields.amount_krw": "9100000000",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "캐나다",
+        "fields.counterparty": "한산"
+      },
+      "note": "한산과 캐나다 원전 핵폐기물 컨테이너 공급. 표현·금액 반올림 차이가 있는 같은 계약 후보.",
+      "absent_fields": [
+        "contract_end",
+        "contract_start"
+      ]
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/015/0003946705",
+      "article_sha256": "7f517c924ee30d42f7358798682e12cddfd4a01a423c41f8392ce7fd909c961c",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": true,
+      "group": "daechang_supply_contract_20180525",
+      "expected": {
+        "actor": "대창솔루션",
+        "action": "supply_contract",
+        "target": "nuclear_waste_container",
+        "fields.amount_krw": "9107730000",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "캐나다",
+        "fields.contract_end": "2019-12-31"
+      },
+      "note": "한산과 캐나다 원전 핵폐기물 컨테이너 공급. 표현·금액 반올림 차이가 있는 같은 계약 후보.",
+      "absent_fields": [
+        "counterparty",
+        "contract_start"
+      ]
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/015/0003946714",
+      "article_sha256": "448b1a4f9e3d29b69131456cb5f85f062d2e1a287976e9a35bd2e96e84f2de18",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": true,
+      "group": "daechang_supply_contract_20180525",
+      "expected": {
+        "actor": "대창솔루션",
+        "action": "supply_contract",
+        "target": "nuclear_waste_container",
+        "fields.amount_krw": "9110000000",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "캐나다",
+        "fields.counterparty": "한산",
+        "fields.contract_end": "2019-12-31",
+        "fields.contract_start": "2018-05-25"
+      },
+      "note": "한산과 캐나다 원전 핵폐기물 컨테이너 공급. 표현·금액 반올림 차이가 있는 같은 계약 후보.",
+      "absent_fields": []
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/016/0001397468",
+      "article_sha256": "9b7feb7dfea0a6da32293312a6f16957eb018542efdc16432d080bd5001b54c3",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": true,
+      "group": "daechang_supply_contract_20180525",
+      "expected": {
+        "actor": "대창솔루션",
+        "action": "supply_contract",
+        "target": "nuclear_waste_container",
+        "fields.amount_krw": "9107730000",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "캐나다",
+        "fields.counterparty": "한산",
+        "fields.contract_end": "2019-12-31"
+      },
+      "note": "한산과 캐나다 원전 핵폐기물 컨테이너 공급. 표현·금액 반올림 차이가 있는 같은 계약 후보.",
+      "absent_fields": [
+        "contract_start"
+      ]
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/018/0004110510",
+      "article_sha256": "4459338662e85b0cc58890ed6a1e670863ffb8aa25f3bef6ebad8cf45aa5d544",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": true,
+      "group": "daechang_supply_contract_20180525",
+      "expected": {
+        "actor": "대창솔루션",
+        "action": "supply_contract",
+        "target": "nuclear_waste_container",
+        "fields.amount_krw": "9100000000",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "캐나다",
+        "fields.counterparty": "한산",
+        "fields.contract_end": "2019-12-31",
+        "fields.contract_start": "2018-05-25"
+      },
+      "note": "한산과 캐나다 원전 핵폐기물 컨테이너 공급. 표현·금액 반올림 차이가 있는 같은 계약 후보.",
+      "absent_fields": []
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/018/0004110705",
+      "article_sha256": "27c580e537873212ebf530082bbf7a41e42596885d0a83fe0b37e90c4291aaa7",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": true,
+      "group": "daechang_supply_contract_20180525",
+      "expected": {
+        "actor": "대창솔루션",
+        "action": "supply_contract",
+        "target": "nuclear_waste_container",
+        "fields.amount_krw": "9100000000",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "캐나다"
+      },
+      "note": "한산과 캐나다 원전 핵폐기물 컨테이너 공급. 표현·금액 반올림 차이가 있는 같은 계약 후보.",
+      "absent_fields": [
+        "counterparty",
+        "contract_end",
+        "contract_start"
+      ]
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/030/0002710913",
+      "article_sha256": "f7c785089811f92679ce76721566c7aee57dfe65877220e0ab479290d3f17452",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": true,
+      "group": "daechang_supply_contract_20180525",
+      "expected": {
+        "actor": "대창솔루션",
+        "action": "supply_contract",
+        "target": "nuclear_waste_container",
+        "fields.amount_krw": "9110000000",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "캐나다",
+        "fields.counterparty": "한산",
+        "fields.contract_end": "2019-12-31",
+        "fields.contract_start": "2018-05-25"
+      },
+      "note": "한산과 캐나다 원전 핵폐기물 컨테이너 공급. 표현·금액 반올림 차이가 있는 같은 계약 후보.",
+      "absent_fields": []
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/215/0000637901",
+      "article_sha256": "f8aee47b15d7660815fc8b58ccf163df216e0db2e233e391b13b17d10cc5d18d",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": false,
+      "group": null,
+      "expected": {},
+      "note": "자동 시세·가격 반응"
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/215/0000638274",
+      "article_sha256": "9eb9a3da7489b65e094bc534d3d67d5684cbea2bd051524eac827686c1ec23dd",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": false,
+      "group": null,
+      "expected": {},
+      "note": "자동 시세·가격 반응"
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/277/0004245041",
+      "article_sha256": "25237683d62183558caeb55ba9c574088829d3a4eb349432722af6b0adff8034",
+      "drop_id": "096350_20180525",
+      "has_primary_fact": true,
+      "group": "daechang_supply_contract_20180525",
+      "expected": {
+        "actor": "대창솔루션",
+        "action": "supply_contract",
+        "target": "nuclear_waste_container",
+        "fields.amount_krw": "9107730000",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "캐나다",
+        "fields.counterparty": "한산",
+        "fields.contract_end": "2019-12-31",
+        "fields.contract_start": "2018-05-25"
+      },
+      "note": "한산과 캐나다 원전 핵폐기물 컨테이너 공급. 표현·금액 반올림 차이가 있는 같은 계약 후보.",
+      "absent_fields": []
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/008/0004016727",
+      "article_sha256": "1dd2fd43c9c38b4fa1d4d12d88f44109ee63cd49578406be4507d35ffb583322",
+      "drop_id": "010170_20180228",
+      "has_primary_fact": true,
+      "group": "daehan_equity_issue_20180228",
+      "expected": {
+        "actor": "대한광통신",
+        "action": "equity_issue",
+        "target": "paid_in_equity",
+        "fields.amount_krw": "80500000000"
+      },
+      "note": "유상증자 총액 805억원. 시설자금 600억원+운영자금 205억원이며 제목에도 총액 명시."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/011/0003233185",
+      "article_sha256": "f5f45e011ba388726c2d13e074ad385c3ca46858585c08151165e62f8f75efa4",
+      "drop_id": "010170_20180228",
+      "has_primary_fact": false,
+      "group": null,
+      "expected": {},
+      "note": "자동 시세·가격 반응"
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/030/0002687288",
+      "article_sha256": "958145365415591153af97cd7fba3a666072b25207be29000353976844f32af6",
+      "drop_id": "010170_20180228",
+      "has_primary_fact": false,
+      "group": null,
+      "expected": {},
+      "note": "슈프리마 분석으로 대한광통신은 비교표의 부수 언급"
+    }
+  ]
+}

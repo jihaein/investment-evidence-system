@@ -1,0 +1,546 @@
+{
+  "phase": "content_review_before_prediction",
+  "reviewer": "assistant_content_review_not_independent_human_gold",
+  "created_at": "2026-11-04T05:33:09.368611+00:00",
+  "plan_sha256": "b36f11eb0135c98752df26a138644042da688103fb89e740315f436adf5f2e05",
+  "notes": [
+    "기사별 원문 금액을 보존. 다른 기사 값으로 결측을 채우지 않음.",
+    "계약 종료일의 월일만 있으면 발행 연도를 기준으로 같은 해로 해석한 라벨이며 노트에 명시. 지난 8일은 발행 연월로 해석.",
+    "국가가 상대 회사의 소재지로만 등장하면 공급지역은 추정하지 않음. 제목의 中에 공급은 공급 목적지로 검토.",
+    "여러 회사 공시·시세·뉴스 모음은 단일 주 사실 없음으로 검토.",
+    "동일 계약 보도라는 검토 그룹과 각 원문 세부 금액 일치는 별도로 평가."
+  ],
+  "articles": [
+    {
+      "url": "https://n.news.naver.com/mnews/article/001/0009987267",
+      "article_sha256": "09f0f2eb0a279b77d317b6fa255a1f5f9d43646e6793f6155ea4df57004f9abf",
+      "case_id": "contract_068790_20180328",
+      "has_primary_fact": true,
+      "group": "dms_jiangxi_20180328",
+      "expected": {
+        "actor": "DMS",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "디스플레이패널제조용공정장비",
+        "fields.currency": "KRW",
+        "fields.amount_krw": "6100000000",
+        "fields.contract_end": "2018-11-05"
+      },
+      "accepted_values": {
+        "actor": [
+          "디엠에스"
+        ]
+      },
+      "absent_fields": [
+        "counterparty",
+        "contract_start",
+        "delivery_region"
+      ],
+      "note": "동일 3월28일 계약 보도. 61억1742만원과 61억1743만원은 원문 차이를 보존. 중국 업체라는 말만으로 상대 이름이나 공급지역을 채우지 않음. 종료일 11월5일의 연도는 발행 연도로 해석."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/003/0008511502",
+      "article_sha256": "7739e34503ef972c34607e54900d6e106856734a305697ac79cc29ca02da7eae",
+      "case_id": "contract_068790_20180328",
+      "has_primary_fact": true,
+      "group": "dms_jiangxi_20180328",
+      "expected": {
+        "actor": "DMS",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "디스플레이패널제조용공정장비",
+        "fields.currency": "KRW",
+        "fields.amount_krw": "6100000000",
+        "fields.contract_end": "2018-11-05"
+      },
+      "accepted_values": {
+        "actor": [
+          "디엠에스"
+        ]
+      },
+      "absent_fields": [
+        "counterparty",
+        "contract_start",
+        "delivery_region"
+      ],
+      "note": "동일 3월28일 계약 보도. 61억1742만원과 61억1743만원은 원문 차이를 보존. 중국 업체라는 말만으로 상대 이름이나 공급지역을 채우지 않음. 종료일 11월5일의 연도는 발행 연도로 해석."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/008/0004029465",
+      "article_sha256": "e94f66986ba72662e0de5193e080d81a8db844d6952ca72f19a1f0ab782b9d67",
+      "case_id": "contract_068790_20180328",
+      "has_primary_fact": true,
+      "group": "dms_jiangxi_20180328",
+      "expected": {
+        "actor": "DMS",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "디스플레이패널제조용공정장비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "Jiangxi Infintech Optoelectronics Co.,Ltd",
+        "fields.amount_krw": "6100000000",
+        "fields.contract_end": "2018-11-05",
+        "fields.delivery_region": "중국"
+      },
+      "accepted_values": {
+        "actor": [
+          "디엠에스"
+        ],
+        "fields.counterparty": [
+          "Jiangxi Infintech Optoelectronics Co.,Ltd",
+          "Jiangxi Infintech Optoelectronics",
+          "Jiangxi Infintech Optoelectronics Co.,Ltd."
+        ]
+      },
+      "absent_fields": [
+        "contract_start"
+      ],
+      "note": "동일 3월28일 계약 보도. 61억1742만원과 61억1743만원은 원문 차이를 보존. 중국 업체라는 말만으로 상대 이름이나 공급지역을 채우지 않음. 종료일 11월5일의 연도는 발행 연도로 해석."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/009/0004123584",
+      "article_sha256": "9a3180bc3a95007bd25a05e3ec3f6fc961ba68e4cf2a483785074fe5c98a9ff3",
+      "case_id": "contract_068790_20180328",
+      "has_primary_fact": false,
+      "group": null,
+      "expected": {},
+      "accepted_values": {},
+      "absent_fields": [],
+      "note": "단일 회사의 주 사실이 아닌 여러 회사 공시/뉴스 모음 또는 자동 시세 기사."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/011/0003255425",
+      "article_sha256": "a8e6c5486ae07fb7fa80e50c511cfac19c6603af57794413c508d7fd684d2d92",
+      "case_id": "contract_068790_20180328",
+      "has_primary_fact": true,
+      "group": "dms_jiangxi_20180328",
+      "expected": {
+        "actor": "DMS",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "디스플레이패널제조용공정장비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "중국 장시성 신시내티 옵토일렉트로닉스",
+        "fields.amount_krw": "6100000000"
+      },
+      "accepted_values": {
+        "actor": [
+          "디엠에스"
+        ],
+        "fields.counterparty": [
+          "장시성 신시내티 옵토일렉트로닉스",
+          "장시성 신시내티 옵토일렉트로닉스",
+          "신시내티 옵토일렉트로닉스"
+        ]
+      },
+      "absent_fields": [
+        "contract_start",
+        "contract_end",
+        "delivery_region"
+      ],
+      "note": "동일 3월28일 계약 보도. 61억1742만원과 61억1743만원은 원문 차이를 보존. 중국 업체라는 말만으로 상대 이름이나 공급지역을 채우지 않음. 종료일 11월5일의 연도는 발행 연도로 해석."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/015/0003915013",
+      "article_sha256": "d0adcddaa1423cd81ec2780c18ef199d278353b5e8647201535d16c9857eb259",
+      "case_id": "contract_068790_20180328",
+      "has_primary_fact": true,
+      "group": "dms_jiangxi_20180328",
+      "expected": {
+        "actor": "DMS",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "디스플레이패널제조용공정장비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "Jiangxi Infintech Optoelectronics Co.,Ltd",
+        "fields.amount_krw": "6117420000",
+        "fields.contract_end": "2018-11-05"
+      },
+      "accepted_values": {
+        "actor": [
+          "디엠에스"
+        ],
+        "fields.counterparty": [
+          "Jiangxi Infintech Optoelectronics Co.,Ltd",
+          "Jiangxi Infintech Optoelectronics",
+          "Jiangxi Infintech Optoelectronics Co.,Ltd."
+        ]
+      },
+      "absent_fields": [
+        "contract_start",
+        "delivery_region"
+      ],
+      "note": "동일 3월28일 계약 보도. 61억1742만원과 61억1743만원은 원문 차이를 보존. 중국 업체라는 말만으로 상대 이름이나 공급지역을 채우지 않음. 종료일 11월5일의 연도는 발행 연도로 해석."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/016/0001372370",
+      "article_sha256": "d051c865bcba392f2e8e79f3307e671243e4b537dcd4690d2258723c1fee77b2",
+      "case_id": "contract_068790_20180328",
+      "has_primary_fact": true,
+      "group": "dms_jiangxi_20180328",
+      "expected": {
+        "actor": "DMS",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "디스플레이패널제조용공정장비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "Jiangxi Infintech Optoelectronics",
+        "fields.amount_krw": "6117430000",
+        "fields.contract_end": "2018-11-05"
+      },
+      "accepted_values": {
+        "actor": [
+          "디엠에스"
+        ],
+        "fields.counterparty": [
+          "Jiangxi Infintech Optoelectronics Co.,Ltd",
+          "Jiangxi Infintech Optoelectronics",
+          "Jiangxi Infintech Optoelectronics Co.,Ltd."
+        ]
+      },
+      "absent_fields": [
+        "contract_start",
+        "delivery_region"
+      ],
+      "note": "동일 3월28일 계약 보도. 61억1742만원과 61억1743만원은 원문 차이를 보존. 중국 업체라는 말만으로 상대 이름이나 공급지역을 채우지 않음. 종료일 11월5일의 연도는 발행 연도로 해석."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/030/0002694595",
+      "article_sha256": "3074b05d1454787ea09c2547bca724d7367f1a09d9682ec21342f4c12811d595",
+      "case_id": "contract_068790_20180328",
+      "has_primary_fact": true,
+      "group": "dms_jiangxi_20180328",
+      "expected": {
+        "actor": "DMS",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "디스플레이패널제조용공정장비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "Jiangxi Infintech Optoelectronics Co.,Ltd",
+        "fields.amount_krw": "6120000000",
+        "fields.contract_start": "2018-03-27",
+        "fields.contract_end": "2018-11-05",
+        "fields.delivery_region": "중국"
+      },
+      "accepted_values": {
+        "actor": [
+          "디엠에스"
+        ],
+        "fields.counterparty": [
+          "Jiangxi Infintech Optoelectronics Co.,Ltd",
+          "Jiangxi Infintech Optoelectronics",
+          "Jiangxi Infintech Optoelectronics Co.,Ltd."
+        ]
+      },
+      "absent_fields": [],
+      "note": "동일 3월28일 계약 보도. 61억1742만원과 61억1743만원은 원문 차이를 보존. 중국 업체라는 말만으로 상대 이름이나 공급지역을 채우지 않음. 종료일 11월5일의 연도는 발행 연도로 해석."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/215/0000616050",
+      "article_sha256": "4d55df53ec57ff868a5a557a14c691f34ec09825c861b92fc5d24a22eafcfb21",
+      "case_id": "contract_068790_20180328",
+      "has_primary_fact": false,
+      "group": null,
+      "expected": {},
+      "accepted_values": {},
+      "absent_fields": [],
+      "note": "단일 회사의 주 사실이 아닌 여러 회사 공시/뉴스 모음 또는 자동 시세 기사."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/277/0004205763",
+      "article_sha256": "2ae67abc9f46cd88ea6297493c81d088e6fb3242469c7c93bfb646d8041b69aa",
+      "case_id": "contract_068790_20180328",
+      "has_primary_fact": true,
+      "group": "dms_jiangxi_20180328",
+      "expected": {
+        "actor": "DMS",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "디스플레이패널제조용공정장비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "Jiangxi Infintech Optoelectronics",
+        "fields.amount_krw": "6100000000"
+      },
+      "accepted_values": {
+        "actor": [
+          "디엠에스"
+        ],
+        "fields.counterparty": [
+          "Jiangxi Infintech Optoelectronics Co.,Ltd",
+          "Jiangxi Infintech Optoelectronics",
+          "Jiangxi Infintech Optoelectronics Co.,Ltd."
+        ]
+      },
+      "absent_fields": [
+        "contract_start",
+        "contract_end",
+        "delivery_region"
+      ],
+      "note": "동일 3월28일 계약 보도. 61억1742만원과 61억1743만원은 원문 차이를 보존. 중국 업체라는 말만으로 상대 이름이나 공급지역을 채우지 않음. 종료일 11월5일의 연도는 발행 연도로 해석."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/001/0010140743",
+      "article_sha256": "db82268b3c5f01088c4cb51d0a587a1416b37ab9e8d19efa17fa2c12bf470cdc",
+      "case_id": "contract_083650_20180611",
+      "has_primary_fact": true,
+      "group": "bhi_khnp_20180611",
+      "expected": {
+        "actor": "비에이치아이",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "원자력발전설비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "한국수력원자력",
+        "fields.amount_krw": "44000000000"
+      },
+      "accepted_values": {
+        "fields.counterparty": [
+          "한수원"
+        ]
+      },
+      "absent_fields": [
+        "contract_start",
+        "contract_end",
+        "delivery_region"
+      ],
+      "note": "한국수력원자력의 원자력 발전설비 계약. 상대방 소재지만으로 국내 공급을 추정하지 않음. 지난 8일은 발행 연월인 2018-06-08. 로봇 기사 기간 설명의 약 2개월보다 명시된 시작·종료 날짜를 검토."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/003/0008645746",
+      "article_sha256": "63c94a192746573ea453ddc0c6be4255e2b6631d8da453feaaf66169a3185a24",
+      "case_id": "contract_083650_20180611",
+      "has_primary_fact": true,
+      "group": "bhi_khnp_20180611",
+      "expected": {
+        "actor": "비에이치아이",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "원자력발전설비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "한국수력원자력",
+        "fields.amount_krw": "44040000000",
+        "fields.contract_start": "2018-06-08",
+        "fields.contract_end": "2020-06-17"
+      },
+      "accepted_values": {
+        "fields.counterparty": [
+          "한수원"
+        ]
+      },
+      "absent_fields": [
+        "delivery_region"
+      ],
+      "note": "한국수력원자력의 원자력 발전설비 계약. 상대방 소재지만으로 국내 공급을 추정하지 않음. 지난 8일은 발행 연월인 2018-06-08. 로봇 기사 기간 설명의 약 2개월보다 명시된 시작·종료 날짜를 검토."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/008/0004062948",
+      "article_sha256": "d2efeae12577085e5da849cb604526c1be439ee49276e641c2ea8d38f9fa06c2",
+      "case_id": "contract_083650_20180611",
+      "has_primary_fact": true,
+      "group": "bhi_khnp_20180611",
+      "expected": {
+        "actor": "비에이치아이",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "원자력발전설비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "한국수력원자력",
+        "fields.amount_krw": "44000000000",
+        "fields.contract_end": "2020-06-17"
+      },
+      "accepted_values": {
+        "fields.counterparty": [
+          "한수원"
+        ]
+      },
+      "absent_fields": [
+        "contract_start",
+        "delivery_region"
+      ],
+      "note": "한국수력원자력의 원자력 발전설비 계약. 상대방 소재지만으로 국내 공급을 추정하지 않음. 지난 8일은 발행 연월인 2018-06-08. 로봇 기사 기간 설명의 약 2개월보다 명시된 시작·종료 날짜를 검토."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/011/0003318768",
+      "article_sha256": "a3cfc2aaf6755cad9403811aff0ae08e69b65476e4d3f8803d09b4223d938994",
+      "case_id": "contract_083650_20180611",
+      "has_primary_fact": true,
+      "group": "bhi_khnp_20180611",
+      "expected": {
+        "actor": "비에이치아이",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "원자력발전설비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "한국수력원자력",
+        "fields.amount_krw": "44000000000",
+        "fields.contract_end": "2020-06-17"
+      },
+      "accepted_values": {
+        "fields.counterparty": [
+          "한수원"
+        ]
+      },
+      "absent_fields": [
+        "contract_start",
+        "delivery_region"
+      ],
+      "note": "한국수력원자력의 원자력 발전설비 계약. 상대방 소재지만으로 국내 공급을 추정하지 않음. 지난 8일은 발행 연월인 2018-06-08. 로봇 기사 기간 설명의 약 2개월보다 명시된 시작·종료 날짜를 검토."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/011/0003319913",
+      "article_sha256": "27c64f1944f8c55aa4c27c64c998fcf0509b610260f0ebc456fa93a51d65b20e",
+      "case_id": "contract_083650_20180611",
+      "has_primary_fact": false,
+      "group": null,
+      "expected": {},
+      "accepted_values": {},
+      "absent_fields": [],
+      "note": "단일 회사의 주 사실이 아닌 여러 회사 공시/뉴스 모음 또는 자동 시세 기사."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/015/0003958588",
+      "article_sha256": "01fde6bdb1b99a81a9f77d36571f34eb1fcd5e0679dfacc032a786831eed655e",
+      "case_id": "contract_083650_20180611",
+      "has_primary_fact": true,
+      "group": "bhi_khnp_20180611",
+      "expected": {
+        "actor": "비에이치아이",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "원자력발전설비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "한국수력원자력",
+        "fields.amount_krw": "44040000000",
+        "fields.contract_start": "2018-06-08",
+        "fields.contract_end": "2020-06-17"
+      },
+      "accepted_values": {
+        "fields.counterparty": [
+          "한수원"
+        ]
+      },
+      "absent_fields": [
+        "delivery_region"
+      ],
+      "note": "한국수력원자력의 원자력 발전설비 계약. 상대방 소재지만으로 국내 공급을 추정하지 않음. 지난 8일은 발행 연월인 2018-06-08. 로봇 기사 기간 설명의 약 2개월보다 명시된 시작·종료 날짜를 검토."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/015/0003958597",
+      "article_sha256": "7c67a486768d881bd457adee83d851c9639cca6554ca062db01cc6af1f1653c7",
+      "case_id": "contract_083650_20180611",
+      "has_primary_fact": true,
+      "group": "bhi_khnp_20180611",
+      "expected": {
+        "actor": "비에이치아이",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "원자력발전설비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "한국수력원자력",
+        "fields.amount_krw": "44040000000",
+        "fields.contract_end": "2020-06-17"
+      },
+      "accepted_values": {
+        "fields.counterparty": [
+          "한수원"
+        ]
+      },
+      "absent_fields": [
+        "contract_start",
+        "delivery_region"
+      ],
+      "note": "한국수력원자력의 원자력 발전설비 계약. 상대방 소재지만으로 국내 공급을 추정하지 않음. 지난 8일은 발행 연월인 2018-06-08. 로봇 기사 기간 설명의 약 2개월보다 명시된 시작·종료 날짜를 검토."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/016/0001403801",
+      "article_sha256": "2d77b4807d4a12cc7bcc61e9c82a5bf5c8417c7e69573dad14863a8979ad91bd",
+      "case_id": "contract_083650_20180611",
+      "has_primary_fact": true,
+      "group": "bhi_khnp_20180611",
+      "expected": {
+        "actor": "비에이치아이",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "원자력발전설비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "한국수력원자력",
+        "fields.amount_krw": "44040000000",
+        "fields.contract_end": "2020-06-17"
+      },
+      "accepted_values": {
+        "fields.counterparty": [
+          "한수원"
+        ]
+      },
+      "absent_fields": [
+        "contract_start",
+        "delivery_region"
+      ],
+      "note": "한국수력원자력의 원자력 발전설비 계약. 상대방 소재지만으로 국내 공급을 추정하지 않음. 지난 8일은 발행 연월인 2018-06-08. 로봇 기사 기간 설명의 약 2개월보다 명시된 시작·종료 날짜를 검토."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/018/0004123124",
+      "article_sha256": "599892967466db096be52485a80a3c9f58ba6f3b6d89ca2680dbbbfbe2c001dd",
+      "case_id": "contract_083650_20180611",
+      "has_primary_fact": false,
+      "group": null,
+      "expected": {},
+      "accepted_values": {},
+      "absent_fields": [],
+      "note": "단일 회사의 주 사실이 아닌 여러 회사 공시/뉴스 모음 또는 자동 시세 기사."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/030/0002714753",
+      "article_sha256": "834b80756c49011f84935385b584f9e567d69cfc4ee3920e96725c3b75cc938f",
+      "case_id": "contract_083650_20180611",
+      "has_primary_fact": true,
+      "group": "bhi_khnp_20180611",
+      "expected": {
+        "actor": "비에이치아이",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "원자력발전설비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "한국수력원자력",
+        "fields.amount_krw": "44040000000",
+        "fields.contract_start": "2018-06-08",
+        "fields.contract_end": "2020-06-17",
+        "fields.delivery_region": "국내"
+      },
+      "accepted_values": {
+        "fields.counterparty": [
+          "한수원"
+        ]
+      },
+      "absent_fields": [],
+      "note": "한국수력원자력의 원자력 발전설비 계약. 상대방 소재지만으로 국내 공급을 추정하지 않음. 지난 8일은 발행 연월인 2018-06-08. 로봇 기사 기간 설명의 약 2개월보다 명시된 시작·종료 날짜를 검토."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/277/0004255376",
+      "article_sha256": "388c4b0398a67b0f34b30e6ba1831f1fc06e98e794366d5c326da80afcffa339",
+      "case_id": "contract_083650_20180611",
+      "has_primary_fact": true,
+      "group": "bhi_khnp_20180611",
+      "expected": {
+        "actor": "비에이치아이",
+        "action": "supply_contract",
+        "stage": "announced",
+        "target": "원자력발전설비",
+        "fields.currency": "KRW",
+        "fields.counterparty": "한국수력원자력",
+        "fields.amount_krw": "44040000000"
+      },
+      "accepted_values": {
+        "fields.counterparty": [
+          "한수원"
+        ]
+      },
+      "absent_fields": [
+        "contract_start",
+        "contract_end",
+        "delivery_region"
+      ],
+      "note": "한국수력원자력의 원자력 발전설비 계약. 상대방 소재지만으로 국내 공급을 추정하지 않음. 지난 8일은 발행 연월인 2018-06-08. 로봇 기사 기간 설명의 약 2개월보다 명시된 시작·종료 날짜를 검토."
+    }
+  ]
+}

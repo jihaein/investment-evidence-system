@@ -1,0 +1,765 @@
+{
+  "phase": "regression_multifact_content_review",
+  "reviewer": "assistant_content_review",
+  "limits": "기존 검토 기사의 계약별 보조 라벨이며 독립 평가가 아님. 원래 동결 라벨은 별도 보존.",
+  "articles": [
+    {
+      "url": "https://n.news.naver.com/mnews/article/001/0009730918",
+      "article_sha256": "753141d2312d32e3d99c13a67e868ad438ee9158e9d8e77f5769e3eeada0fcb5",
+      "case_id": "contract_036890_20171205",
+      "has_primary_fact": true,
+      "group": "jinsung_caterpillar_20171205",
+      "expected": {
+        "actor": "진성티이씨",
+        "action": "supply_contract",
+        "target": "부품",
+        "fields.amount_krw": "373100000000",
+        "fields.counterparty": "캐터필러",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "미주 및 해외"
+      },
+      "accepted_values": {
+        "target": [
+          "중장비하부주행체부품",
+          "건설중장비부품",
+          "하부주행체부품",
+          "RollerIdlerSeal하부주행체부품"
+        ],
+        "fields.counterparty": [
+          "캐터필라",
+          "Caterpillar",
+          "Caterpillar inc & Caterpillar SARL",
+          "미국 Caterpillar inc & Caterpillar SARL"
+        ],
+        "fields.delivery_region": [
+          "미주와 해외",
+          "미주및해외",
+          "미주와해외"
+        ]
+      },
+      "absent_fields": [
+        "contract_end",
+        "contract_start"
+      ],
+      "note": "캐터필러 하부주행체 부품 계약. 부분 금액과 전체 금액·기사의 반올림 수준을 구분. 캐터필러 본사 국가와 납품지역을 동일시하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/003/0008326536",
+      "article_sha256": "1e92d0ef77fec01d746a4fda8097b5b15a867845dd272b88989f1a3c8aee3067",
+      "case_id": "contract_036890_20171205",
+      "has_primary_fact": true,
+      "group": "jinsung_caterpillar_20171205",
+      "expected": {
+        "actor": "진성티이씨",
+        "action": "supply_contract",
+        "target": "부품",
+        "fields.amount_krw": "373108870000",
+        "fields.counterparty": "캐터필러",
+        "fields.currency": "KRW",
+        "fields.contract_end": "2022-07-31",
+        "fields.delivery_region": "미주 및 해외"
+      },
+      "accepted_values": {
+        "target": [
+          "중장비하부주행체부품",
+          "건설중장비부품",
+          "하부주행체부품",
+          "RollerIdlerSeal하부주행체부품"
+        ],
+        "fields.counterparty": [
+          "캐터필라",
+          "Caterpillar",
+          "Caterpillar inc & Caterpillar SARL",
+          "미국 Caterpillar inc & Caterpillar SARL"
+        ],
+        "fields.delivery_region": [
+          "미주와 해외",
+          "미주및해외",
+          "미주와해외"
+        ]
+      },
+      "absent_fields": [
+        "contract_start"
+      ],
+      "note": "캐터필러 하부주행체 부품 계약. 부분 금액과 전체 금액·기사의 반올림 수준을 구분. 캐터필러 본사 국가와 납품지역을 동일시하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/008/0003974337",
+      "article_sha256": "e41e026d4716912475a29dd3b72a7f1eaac588e010d8c2894a273c7d6ce3e553",
+      "case_id": "contract_036890_20171205",
+      "has_primary_fact": true,
+      "group": "jinsung_caterpillar_20171205",
+      "expected": {
+        "actor": "진성티이씨",
+        "action": "supply_contract",
+        "target": "부품",
+        "fields.amount_krw": "373108874433",
+        "fields.counterparty": "캐터필러",
+        "fields.currency": "KRW",
+        "fields.contract_end": "2022-07-31",
+        "fields.delivery_region": "미주, 아시아, 유럽"
+      },
+      "accepted_values": {
+        "target": [
+          "중장비하부주행체부품",
+          "건설중장비부품",
+          "하부주행체부품",
+          "RollerIdlerSeal하부주행체부품"
+        ],
+        "fields.counterparty": [
+          "캐터필라",
+          "Caterpillar",
+          "Caterpillar inc & Caterpillar SARL",
+          "미국 Caterpillar inc & Caterpillar SARL"
+        ],
+        "fields.delivery_region": [
+          "미주, 아시아, 유럽외",
+          "미주,아시아,유럽",
+          "미주·아시아·유럽"
+        ]
+      },
+      "absent_fields": [
+        "contract_start"
+      ],
+      "note": "캐터필러 하부주행체 부품 계약. 부분 금액과 전체 금액·기사의 반올림 수준을 구분. 캐터필러 본사 국가와 납품지역을 동일시하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/009/0004061204",
+      "article_sha256": "8f8ed85e57f376548a371171522400e1685554465e7cfabc07a74fdd91963ecd",
+      "case_id": "contract_036890_20171205",
+      "has_primary_fact": true,
+      "group": "jinsung_caterpillar_20171205",
+      "expected": {
+        "actor": "진성티이씨",
+        "action": "supply_contract",
+        "target": "부품",
+        "fields.amount_krw": "373100000000",
+        "fields.counterparty": "캐터필러",
+        "fields.currency": "KRW"
+      },
+      "accepted_values": {
+        "target": [
+          "중장비하부주행체부품",
+          "건설중장비부품",
+          "하부주행체부품",
+          "RollerIdlerSeal하부주행체부품"
+        ],
+        "fields.counterparty": [
+          "캐터필라",
+          "Caterpillar",
+          "Caterpillar inc & Caterpillar SARL",
+          "미국 Caterpillar inc & Caterpillar SARL"
+        ]
+      },
+      "absent_fields": [
+        "contract_end",
+        "contract_start",
+        "delivery_region"
+      ],
+      "note": "캐터필러 하부주행체 부품 계약. 부분 금액과 전체 금액·기사의 반올림 수준을 구분. 캐터필러 본사 국가와 납품지역을 동일시하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/011/0003168024",
+      "article_sha256": "dfea8a5ebebc63e6dc4c0bd5006dfa6afb63910a503aa272f7626d60b1211a0e",
+      "case_id": "contract_036890_20171205",
+      "has_primary_fact": true,
+      "group": "jinsung_caterpillar_20171205",
+      "expected": {
+        "actor": "진성티이씨",
+        "action": "supply_contract",
+        "target": "부품",
+        "fields.amount_krw": "373100000000",
+        "fields.counterparty": "캐터필러",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "미주 및 해외"
+      },
+      "accepted_values": {
+        "target": [
+          "중장비하부주행체부품",
+          "건설중장비부품",
+          "하부주행체부품",
+          "RollerIdlerSeal하부주행체부품"
+        ],
+        "fields.counterparty": [
+          "캐터필라",
+          "Caterpillar",
+          "Caterpillar inc & Caterpillar SARL",
+          "미국 Caterpillar inc & Caterpillar SARL"
+        ],
+        "fields.delivery_region": [
+          "미주와 해외",
+          "미주및해외",
+          "미주와해외"
+        ]
+      },
+      "absent_fields": [
+        "contract_end",
+        "contract_start"
+      ],
+      "note": "캐터필러 하부주행체 부품 계약. 부분 금액과 전체 금액·기사의 반올림 수준을 구분. 캐터필러 본사 국가와 납품지역을 동일시하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/011/0003168167",
+      "article_sha256": "d527eae5e5e36308bccfc0c2e6f1c308e90e5ccfd43bb269ef9d87aeda597258",
+      "case_id": "contract_036890_20171205",
+      "has_primary_fact": false,
+      "group": null,
+      "expected": {},
+      "note": "여러 종목 공시 모음 또는 자동 시세. 회사 단일 핵심 계약 기사로 취급하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/014/0003918975",
+      "article_sha256": "5c869829dd1ddd23d32a936e39e40c9e10e86adfb0d6bfef0bbb36bb2251f362",
+      "case_id": "contract_036890_20171205",
+      "has_primary_fact": true,
+      "group": "jinsung_caterpillar_20171205",
+      "expected": {
+        "actor": "진성티이씨",
+        "action": "supply_contract",
+        "target": "부품",
+        "fields.amount_krw": "373100000000",
+        "fields.counterparty": "캐터필러",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "미주 및 해외"
+      },
+      "accepted_values": {
+        "target": [
+          "중장비하부주행체부품",
+          "건설중장비부품",
+          "하부주행체부품",
+          "RollerIdlerSeal하부주행체부품"
+        ],
+        "fields.counterparty": [
+          "캐터필라",
+          "Caterpillar",
+          "Caterpillar inc & Caterpillar SARL",
+          "미국 Caterpillar inc & Caterpillar SARL"
+        ],
+        "fields.delivery_region": [
+          "미주와 해외",
+          "미주및해외",
+          "미주와해외"
+        ]
+      },
+      "absent_fields": [
+        "contract_end",
+        "contract_start"
+      ],
+      "note": "캐터필러 하부주행체 부품 계약. 부분 금액과 전체 금액·기사의 반올림 수준을 구분. 캐터필러 본사 국가와 납품지역을 동일시하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/016/0001324349",
+      "article_sha256": "7884d1cd50ab98e057c5c98d1a0a9aa234c6c5332a8e877c435b887d92002688",
+      "case_id": "contract_036890_20171205",
+      "has_primary_fact": true,
+      "group": "jinsung_caterpillar_20171205",
+      "expected": {
+        "actor": "진성티이씨",
+        "action": "supply_contract",
+        "target": "부품",
+        "fields.amount_krw": "373108870000",
+        "fields.counterparty": "캐터필러",
+        "fields.currency": "KRW",
+        "fields.contract_end": "2022-07-31",
+        "fields.delivery_region": "미주 및 해외"
+      },
+      "accepted_values": {
+        "target": [
+          "중장비하부주행체부품",
+          "건설중장비부품",
+          "하부주행체부품",
+          "RollerIdlerSeal하부주행체부품"
+        ],
+        "fields.counterparty": [
+          "캐터필라",
+          "Caterpillar",
+          "Caterpillar inc & Caterpillar SARL",
+          "미국 Caterpillar inc & Caterpillar SARL"
+        ],
+        "fields.delivery_region": [
+          "미주와 해외",
+          "미주및해외",
+          "미주와해외"
+        ]
+      },
+      "absent_fields": [
+        "contract_start"
+      ],
+      "note": "캐터필러 하부주행체 부품 계약. 부분 금액과 전체 금액·기사의 반올림 수준을 구분. 캐터필러 본사 국가와 납품지역을 동일시하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/018/0003985823",
+      "article_sha256": "3eff919fbe0d322060da3f64d9b5c61a5f87e44080dc9f97e950d7af5a589978",
+      "case_id": "contract_036890_20171205",
+      "has_primary_fact": true,
+      "group": "jinsung_caterpillar_20171205",
+      "expected": {
+        "actor": "진성티이씨",
+        "action": "supply_contract",
+        "target": "부품",
+        "fields.amount_krw": "373100000000",
+        "fields.counterparty": "캐터필러",
+        "fields.currency": "KRW",
+        "fields.contract_end": "2022-07-31",
+        "fields.delivery_region": "미주 및 해외"
+      },
+      "accepted_values": {
+        "target": [
+          "중장비하부주행체부품",
+          "건설중장비부품",
+          "하부주행체부품",
+          "RollerIdlerSeal하부주행체부품"
+        ],
+        "fields.counterparty": [
+          "캐터필라",
+          "Caterpillar",
+          "Caterpillar inc & Caterpillar SARL",
+          "미국 Caterpillar inc & Caterpillar SARL"
+        ],
+        "fields.delivery_region": [
+          "미주와 해외",
+          "미주및해외",
+          "미주와해외"
+        ]
+      },
+      "absent_fields": [
+        "contract_start"
+      ],
+      "note": "캐터필러 하부주행체 부품 계약. 부분 금액과 전체 금액·기사의 반올림 수준을 구분. 캐터필러 본사 국가와 납품지역을 동일시하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/018/0003985939",
+      "article_sha256": "06735291f7d3a45a59ed4a1e91c555aaa2b39da3b2807c596df174eb59a1182c",
+      "case_id": "contract_036890_20171205",
+      "has_primary_fact": false,
+      "group": null,
+      "expected": {},
+      "note": "여러 종목 공시 모음 또는 자동 시세. 회사 단일 핵심 계약 기사로 취급하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/030/0002664132",
+      "article_sha256": "e7cf64f4e29ad2ad70a8912eb35ebb13226370c4d76d21b5dda1b4fab9f95934",
+      "case_id": "contract_036890_20171205",
+      "has_primary_fact": true,
+      "group": "jinsung_caterpillar_20171205",
+      "expected": {
+        "actor": "진성티이씨",
+        "action": "supply_contract",
+        "target": "부품",
+        "fields.amount_krw": "373110000000",
+        "fields.counterparty": "캐터필러",
+        "fields.currency": "KRW",
+        "fields.contract_end": "2022-07-31",
+        "fields.contract_start": "2017-08-01",
+        "fields.delivery_region": "미주, 아시아, 유럽"
+      },
+      "accepted_values": {
+        "target": [
+          "중장비하부주행체부품",
+          "건설중장비부품",
+          "하부주행체부품",
+          "RollerIdlerSeal하부주행체부품"
+        ],
+        "fields.counterparty": [
+          "캐터필라",
+          "Caterpillar",
+          "Caterpillar inc & Caterpillar SARL",
+          "미국 Caterpillar inc & Caterpillar SARL"
+        ],
+        "fields.delivery_region": [
+          "미주, 아시아, 유럽외",
+          "미주,아시아,유럽",
+          "미주·아시아·유럽"
+        ]
+      },
+      "absent_fields": [],
+      "note": "캐터필러 하부주행체 부품 계약. 부분 금액과 전체 금액·기사의 반올림 수준을 구분. 캐터필러 본사 국가와 납품지역을 동일시하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/277/0004133759",
+      "article_sha256": "14ad29157397d5284cdd608da2757a23c1f9a658662946927e13823f982215d3",
+      "case_id": "contract_036890_20171205",
+      "has_primary_fact": true,
+      "group": "jinsung_caterpillar_20171205",
+      "expected": {
+        "actor": "진성티이씨",
+        "action": "supply_contract",
+        "target": "부품",
+        "fields.amount_krw": "373100000000",
+        "fields.counterparty": "캐터필러",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "미주 및 해외"
+      },
+      "accepted_values": {
+        "target": [
+          "중장비하부주행체부품",
+          "건설중장비부품",
+          "하부주행체부품",
+          "RollerIdlerSeal하부주행체부품"
+        ],
+        "fields.counterparty": [
+          "캐터필라",
+          "Caterpillar",
+          "Caterpillar inc & Caterpillar SARL",
+          "미국 Caterpillar inc & Caterpillar SARL"
+        ],
+        "fields.delivery_region": [
+          "미주와 해외",
+          "미주및해외",
+          "미주와해외"
+        ]
+      },
+      "absent_fields": [
+        "contract_end",
+        "contract_start"
+      ],
+      "note": "캐터필러 하부주행체 부품 계약. 부분 금액과 전체 금액·기사의 반올림 수준을 구분. 캐터필러 본사 국가와 납품지역을 동일시하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/001/0009793583",
+      "article_sha256": "ae7efd41f9fe8d7b970eb4e9b54236650c8d97f315496b05b09a6ea169ae2076",
+      "case_id": "contract_010170_20180105",
+      "has_primary_fact": true,
+      "group": "multiple_contracts_001/0009793583",
+      "requires_split": true,
+      "expected": {
+        "actor": "대한광통신",
+        "action": "supply_contract",
+        "target": "multiple_contracts"
+      },
+      "note": "신도링크/유럽 계약과 BK/이란 계약 2건을 함께 보도. 합계 금액을 단일 계약금액으로 추출하면 오류.",
+      "expected_facts": [
+        {
+          "expected": {
+            "actor": "대한광통신",
+            "action": "supply_contract",
+            "target": "광섬유",
+            "fields.amount_krw": "55100000000",
+            "fields.counterparty": "신도링크",
+            "fields.currency": "KRW"
+          },
+          "accepted_values": {
+            "fields.counterparty": [
+              "신도링크(주)"
+            ]
+          },
+          "absent_fields": [
+            "contract_start"
+          ]
+        },
+        {
+          "expected": {
+            "actor": "대한광통신",
+            "action": "supply_contract",
+            "target": "광섬유",
+            "fields.amount_krw": "15500000000",
+            "fields.counterparty": "BK INTERNATIONAL",
+            "fields.currency": "KRW"
+          },
+          "accepted_values": {
+            "fields.counterparty": [
+              "BK인터내셔널",
+              "비케이인터내셔널",
+              "BK INTERNATIONAL.CO.,LTD"
+            ]
+          },
+          "absent_fields": [
+            "contract_start"
+          ]
+        }
+      ]
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/003/0008378589",
+      "article_sha256": "8d827541eaaa53d59d54e3caca26730720ec45f025a578698c45742a117d18ec",
+      "case_id": "contract_010170_20180105",
+      "has_primary_fact": true,
+      "group": "multiple_contracts_003/0008378589",
+      "requires_split": true,
+      "expected": {
+        "actor": "대한광통신",
+        "action": "supply_contract",
+        "target": "multiple_contracts"
+      },
+      "note": "신도링크/유럽 계약과 BK/이란 계약 2건을 함께 보도. 합계 금액을 단일 계약금액으로 추출하면 오류.",
+      "expected_facts": [
+        {
+          "expected": {
+            "actor": "대한광통신",
+            "action": "supply_contract",
+            "target": "광섬유",
+            "fields.amount_krw": "55105320000",
+            "fields.counterparty": "신도링크",
+            "fields.currency": "KRW"
+          },
+          "accepted_values": {
+            "fields.counterparty": [
+              "신도링크(주)"
+            ]
+          },
+          "absent_fields": [
+            "contract_start"
+          ]
+        },
+        {
+          "expected": {
+            "actor": "대한광통신",
+            "action": "supply_contract",
+            "target": "광섬유",
+            "fields.amount_krw": "15495170000",
+            "fields.counterparty": "BK INTERNATIONAL",
+            "fields.currency": "KRW"
+          },
+          "accepted_values": {
+            "fields.counterparty": [
+              "BK인터내셔널",
+              "비케이인터내셔널",
+              "BK INTERNATIONAL.CO.,LTD"
+            ]
+          },
+          "absent_fields": [
+            "contract_start"
+          ]
+        }
+      ]
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/008/0003988919",
+      "article_sha256": "30a2623b588e102c4c7e472020a1ab3024e4fe240adcbe6be24c4117fb7c954b",
+      "case_id": "contract_010170_20180105",
+      "has_primary_fact": true,
+      "group": "multiple_contracts_008/0003988919",
+      "requires_split": true,
+      "expected": {
+        "actor": "대한광통신",
+        "action": "supply_contract",
+        "target": "multiple_contracts"
+      },
+      "note": "신도링크/유럽 계약과 BK/이란 계약 2건을 함께 보도. 합계 금액을 단일 계약금액으로 추출하면 오류.",
+      "expected_facts": [
+        {
+          "expected": {
+            "actor": "대한광통신",
+            "action": "supply_contract",
+            "target": "광섬유",
+            "fields.amount_krw": "55100000000",
+            "fields.counterparty": "신도링크",
+            "fields.currency": "KRW",
+            "fields.delivery_region": "유럽"
+          },
+          "accepted_values": {
+            "fields.counterparty": [
+              "신도링크(주)"
+            ]
+          },
+          "absent_fields": [
+            "contract_start"
+          ]
+        },
+        {
+          "expected": {
+            "actor": "대한광통신",
+            "action": "supply_contract",
+            "target": "광섬유",
+            "fields.amount_krw": "15500000000",
+            "fields.counterparty": "BK INTERNATIONAL",
+            "fields.currency": "KRW",
+            "fields.delivery_region": "이란"
+          },
+          "accepted_values": {
+            "fields.counterparty": [
+              "BK인터내셔널",
+              "비케이인터내셔널",
+              "BK INTERNATIONAL.CO.,LTD"
+            ]
+          },
+          "absent_fields": [
+            "contract_start"
+          ]
+        }
+      ]
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/011/0003190473",
+      "article_sha256": "be545efb9ead6d706c6fb6561316bcbeff40449337333f05147288e37411e998",
+      "case_id": "contract_010170_20180105",
+      "has_primary_fact": false,
+      "group": null,
+      "expected": {},
+      "note": "여러 종목 공시 모음 또는 자동 시세. 회사 단일 핵심 계약 기사로 취급하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/011/0003190521",
+      "article_sha256": "d1f36f15cb70153f3625d4ab761aa06b6dbbeb35e941da9bfd6f9885b6245b8b",
+      "case_id": "contract_010170_20180105",
+      "has_primary_fact": false,
+      "group": null,
+      "expected": {},
+      "note": "여러 종목 공시 모음 또는 자동 시세. 회사 단일 핵심 계약 기사로 취급하지 않음."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/016/0001337125",
+      "article_sha256": "1e0cbeb87eab25f0c3e170515ab329d0430a7d924f63cfb4ca3123481390d1a9",
+      "case_id": "contract_010170_20180105",
+      "has_primary_fact": true,
+      "group": "multiple_contracts_016/0001337125",
+      "requires_split": true,
+      "expected": {
+        "actor": "대한광통신",
+        "action": "supply_contract",
+        "target": "multiple_contracts"
+      },
+      "note": "신도링크/유럽 계약과 BK/이란 계약 2건을 함께 보도. 합계 금액을 단일 계약금액으로 추출하면 오류.",
+      "expected_facts": [
+        {
+          "expected": {
+            "actor": "대한광통신",
+            "action": "supply_contract",
+            "target": "광섬유",
+            "fields.amount_krw": "55105320000",
+            "fields.counterparty": "신도링크",
+            "fields.currency": "KRW",
+            "fields.delivery_region": "유럽",
+            "fields.contract_end": "2021-12-30"
+          },
+          "accepted_values": {
+            "fields.counterparty": [
+              "신도링크(주)"
+            ]
+          },
+          "absent_fields": [
+            "contract_start"
+          ]
+        },
+        {
+          "expected": {
+            "actor": "대한광통신",
+            "action": "supply_contract",
+            "target": "광섬유",
+            "fields.amount_krw": "15495170000",
+            "fields.counterparty": "BK INTERNATIONAL",
+            "fields.currency": "KRW",
+            "fields.delivery_region": "이란",
+            "fields.contract_end": "2021-12-31"
+          },
+          "accepted_values": {
+            "fields.counterparty": [
+              "BK인터내셔널",
+              "비케이인터내셔널",
+              "BK INTERNATIONAL.CO.,LTD"
+            ]
+          },
+          "absent_fields": [
+            "contract_start"
+          ]
+        }
+      ]
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/030/0002672446",
+      "article_sha256": "c6feeaf750bea2d507bd478bbcf07942261b54daa61567ee2898f67dc4a55b0d",
+      "case_id": "contract_010170_20180105",
+      "has_primary_fact": true,
+      "group": "daehan_shindolink",
+      "expected": {
+        "actor": "대한광통신",
+        "action": "supply_contract",
+        "target": "광섬유",
+        "fields.amount_krw": "55110000000",
+        "fields.counterparty": "신도링크",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "유럽",
+        "fields.contract_start": "2018-01-04",
+        "fields.contract_end": "2021-12-30"
+      },
+      "accepted_values": {
+        "fields.counterparty": [
+          "신도링크(주)"
+        ]
+      },
+      "note": "별도 계약 한 건에 관한 공시형 기사. 신도링크 유럽 계약과 BK 이란 계약은 다른 계약."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/030/0002672447",
+      "article_sha256": "3e34f57336e7eea0a8f77dbfaef2d0304343ffff620f94b7d6ba82ecbba9c893",
+      "case_id": "contract_010170_20180105",
+      "has_primary_fact": true,
+      "group": "daehan_bk",
+      "expected": {
+        "actor": "대한광통신",
+        "action": "supply_contract",
+        "target": "광섬유",
+        "fields.amount_krw": "15500000000",
+        "fields.counterparty": "BK INTERNATIONAL.CO.,LTD",
+        "fields.currency": "KRW",
+        "fields.delivery_region": "이란",
+        "fields.contract_start": "2018-01-04",
+        "fields.contract_end": "2021-12-31"
+      },
+      "accepted_values": {
+        "fields.counterparty": [
+          "BK인터내셔널",
+          "비케이인터내셔널",
+          "BK INTERNATIONAL"
+        ]
+      },
+      "note": "별도 계약 한 건에 관한 공시형 기사. 신도링크 유럽 계약과 BK 이란 계약은 다른 계약."
+    },
+    {
+      "url": "https://n.news.naver.com/mnews/article/277/0004152679",
+      "article_sha256": "4ade399b010ce7014b108e78efe879aa6748d54137716d562cf3d63cac2c71b8",
+      "case_id": "contract_010170_20180105",
+      "has_primary_fact": true,
+      "group": "multiple_contracts_277/0004152679",
+      "requires_split": true,
+      "expected": {
+        "actor": "대한광통신",
+        "action": "supply_contract",
+        "target": "multiple_contracts"
+      },
+      "note": "신도링크/유럽 계약과 BK/이란 계약 2건을 함께 보도. 합계 금액을 단일 계약금액으로 추출하면 오류.",
+      "expected_facts": [
+        {
+          "expected": {
+            "actor": "대한광통신",
+            "action": "supply_contract",
+            "target": "광섬유",
+            "fields.amount_krw": "55000000000",
+            "fields.counterparty": "신도링크",
+            "fields.currency": "KRW",
+            "fields.delivery_region": "유럽"
+          },
+          "accepted_values": {
+            "fields.counterparty": [
+              "신도링크(주)"
+            ]
+          },
+          "absent_fields": [
+            "contract_start"
+          ]
+        },
+        {
+          "expected": {
+            "actor": "대한광통신",
+            "action": "supply_contract",
+            "target": "광섬유",
+            "fields.amount_krw": "15000000000",
+            "fields.counterparty": "BK INTERNATIONAL",
+            "fields.currency": "KRW",
+            "fields.delivery_region": "이란"
+          },
+          "accepted_values": {
+            "fields.counterparty": [
+              "BK인터내셔널",
+              "비케이인터내셔널",
+              "BK INTERNATIONAL.CO.,LTD"
+            ]
+          },
+          "absent_fields": [
+            "contract_start"
+          ]
+        }
+      ]
+    }
+  ]
+}
