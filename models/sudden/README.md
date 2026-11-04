@@ -328,6 +328,19 @@ P도 지원되는 사실 후보 묶음으로 기준 분포를 다시 만든다. 
 > 아래 명령의 `cache/naver/holdout/plan_*.json`·`annotations_*.json` 경로는 `models/sudden/eval/`의 같은 이름 파일로 바꿔도 된다.
 > 라벨 검토자는 사람이 아니라 AI 보조 검토(`reviewer: assistant_content_review`)다. 사람 검수 전까지 정답 자료가 아니라 검토 기록으로 본다.
 
+### 사람 검수
+
+[`eval/human_review_v3.csv`](eval/human_review_v3.csv)는 v3 라벨 21건(주 사실 있음 17, 없음 4)의 검수표다.
+엑셀로 열어 `기사_URL`의 원문과 `AI_` 칸을 비교하고, `검수자`·`판정`(맞음/틀림/모름)·`틀린_필드`(여러 개는 `|`)·
+`올바른_값`·`검수_메모`를 채운다. `AI_허용값`은 다른 표기도 정답으로 인정한 값이다.
+
+```powershell
+.\.venv\Scripts\python.exe models/sudden/review_sheet.py --compare
+```
+
+AI 값을 보고 판정하는 확인 검수라 독립 라벨링보다 일치율이 높게 나올 수 있다. 결과를 보고할 때 이 한계를 같이 적는다.
+`review_sheet.py`는 검수표가 이미 있으면 덮어쓰지 않는다.
+
 ```powershell
 .\.venv\Scripts\python.exe models/sudden/evaluate_holdout.py
 ```
