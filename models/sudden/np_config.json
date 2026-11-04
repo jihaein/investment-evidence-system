@@ -1,0 +1,7 @@
+{
+  "news_representation": "facts-v1",
+  "facts_min_p_baseline_groups": 20,
+  "group_similarity_cut": 0.42,
+  "p_observation_max_hours": 72,
+  "small_baseline_warning_below": 20
+}
