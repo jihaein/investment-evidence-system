@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "risk_result.schema.json",
+  "title": "서서히 모델 위험 결과 (임시 규칙)",
+  "type": "object",
+  "required": ["schema_version", "generated_at", "rule_version", "open_decisions", "models_computed", "cases"],
+  "properties": {
+    "schema_version": { "type": "string", "pattern": "^0\\.\\d+$" },
+    "generated_at": { "type": "string" },
+    "source_commit": { "type": ["string", "null"] },
+    "source_dirty": { "type": "boolean" },
+    "rule_version": { "type": "string" },
+    "open_decisions": { "type": "array", "items": { "type": "string", "pattern": "^D\\d{2}$" } },
+    "models_computed": { "type": "array", "items": { "enum": ["fscore", "ohlson", "dupont"] } },
+    "notes": { "type": "array", "items": { "type": "string" } },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["stock_code", "buy_date", "eval_date", "models", "integrated"],
+        "properties": {
+          "stock_code": { "type": "string", "pattern": "^\\d{6}$" },
+          "buy_date": { "type": "string", "format": "date" },
+          "eval_date": { "type": "string", "format": "date" },
+          "models": {
+            "type": "object",
+            "required": ["fscore", "ohlson", "dupont"],
+            "additionalProperties": false,
+            "properties": {
+              "fscore": { "$ref": "#/$defs/model" },
+              "ohlson": { "$ref": "#/$defs/model" },
+              "dupont": { "$ref": "#/$defs/model" }
+            }
+          },
+          "integrated": {
+            "type": "object",
+            "required": ["status", "reason"],
+            "properties": { "status": { "const": "hold" }, "reason": { "type": "string" } }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "model": {
+      "type": "object",
+      "required": ["risk_score", "risk_max", "interpretable", "hold_reason", "scale_status", "evidence"],
+      "properties": {
+        "risk_score": { "type": ["integer", "null"], "minimum": 0 },
+        "risk_max": { "type": "integer", "minimum": 1 },
+        "interpretable": { "type": "boolean" },
+        "hold_reason": { "type": ["string", "null"] },
+        "scale_status": { "enum": ["confirmed", "provisional"] },
+        "evidence": { "type": "object" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "interpretable": { "const": true } } },
+          "then": { "properties": { "risk_score": { "type": "integer" } } },
+          "else": { "properties": { "risk_score": { "type": "null" } } }
+        }
+      ]
+    }
+  }
+}

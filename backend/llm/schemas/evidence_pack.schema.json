@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "evidence_pack.schema.json",
+  "title": "LLM 근거 묶음 (input 1~4)",
+  "type": "object",
+  "required": [
+    "pack_version",
+    "created_at",
+    "request",
+    "rule_version",
+    "data_period",
+    "warnings",
+    "reading_rules",
+    "integrated",
+    "inputs",
+    "evidence_index"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "pack_version": { "type": "string" },
+    "created_at": { "type": "string" },
+    "request": {
+      "type": "object",
+      "required": ["stock_code", "company_name", "buy_date", "eval_date"],
+      "additionalProperties": false,
+      "properties": {
+        "stock_code": { "type": "string", "pattern": "^[0-9]{6}$" },
+        "company_name": { "type": ["string", "null"] },
+        "buy_date": { "type": "string" },
+        "eval_date": { "type": "string" }
+      }
+    },
+    "rule_version": { "type": "string" },
+    "open_decisions": { "type": "array", "items": { "type": "string" } },
+    "data_period": {
+      "type": "object",
+      "required": ["from", "to"],
+      "properties": { "from": { "type": "string" }, "to": { "type": "string" } }
+    },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "reading_rules": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "integrated": {
+      "type": "object",
+      "required": ["status", "reason"],
+      "properties": {
+        "status": { "const": "hold" },
+        "reason": { "type": "string" },
+        "meaning": { "type": "string" }
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "required": ["investor_opinion", "models", "propositions", "input4"],
+      "additionalProperties": false,
+      "properties": {
+        "investor_opinion": {
+          "type": "object",
+          "required": ["text", "untrusted"],
+          "properties": {
+            "text": { "type": ["string", "null"] },
+            "untrusted": { "const": true },
+            "note": { "type": "string" }
+          }
+        },
+        "models": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/model" }
+        },
+        "propositions": { "type": ["array", "null"] },
+        "input4": { "type": ["object", "array", "null"] }
+      }
+    },
+    "evidence_index": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "model"],
+        "properties": {
+          "id": { "$ref": "#/$defs/evidence_id" },
+          "model": { "$ref": "#/$defs/model_name" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "model_name": { "enum": ["fscore", "ohlson", "dupont", "gate"] },
+    "evidence_id": { "type": "string", "pattern": "^(FS|OH|DP|GT)-[0-9]+$" },
+    "hold": {
+      "type": ["object", "null"],
+      "required": ["codes", "meanings"],
+      "properties": {
+        "codes": { "type": "array", "items": { "type": "string" } },
+        "meanings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["id", "statement", "values", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/evidence_id" },
+        "statement": { "type": "string", "minLength": 1 },
+        "values": { "type": "object" },
+        "source": { "type": "object" }
+      }
+    },
+    "model": {
+      "type": "object",
+      "required": ["model", "kind", "status", "hold", "card", "evidence"],
+      "properties": {
+        "model": { "$ref": "#/$defs/model_name" },
+        "kind": { "enum": ["score", "gate"] },
+        "status": { "enum": ["scored", "held", "not_computed"] },
+        "risk_score": { "type": ["integer", "null"] },
+        "risk_max": { "type": ["integer", "null"] },
+        "scale_status": { "type": ["string", "null"] },
+        "alarm_in_hold": { "type": ["boolean", "null"] },
+        "alarm_on": { "type": ["boolean", "null"] },
+        "settings": { "type": "object" },
+        "hold": { "$ref": "#/$defs/hold" },
+        "card": {
+          "type": "object",
+          "required": [
+            "name",
+            "kind",
+            "scale",
+            "measures",
+            "how_to_read",
+            "holds",
+            "limits"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/evidence" }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "gate" } } },
+          "then": {
+            "not": {
+              "anyOf": [
+                { "required": ["risk_score"] },
+                { "required": ["risk_max"] }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": { "const": "scored" },
+              "kind": { "const": "score" }
+            }
+          },
+          "then": {
+            "properties": {
+              "risk_score": { "type": "integer" },
+              "hold": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "status": { "enum": ["held", "not_computed"] } }
+          },
+          "then": { "properties": { "hold": { "type": "object" } } }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "news_representation": "lexical-v1",
+  "group_similarity_cut": 0.42,
+  "p_observation_max_hours": 72,
+  "small_baseline_warning_below": 20
+}

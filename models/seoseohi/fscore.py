@@ -457,6 +457,8 @@ def evaluate_pairs(df, pairs):
     table = pd.DataFrame(rows)
     for col in ["f_score_drop", "risk_drop", "risk_level_add", "risk_score",
                 "fiscal_year_buy", "fiscal_year_eval", "f_score_buy", "f_score_eval"]:
+        if col not in table.columns:      # 요청한 쌍이 전부 유보이면 이 열들이 아예 없다
+            table[col] = None
         table[col] = table[col].astype("Int64")
     table["risk_scale_status"] = "confirmed" if RISK_SCALE_CONFIRMED else "provisional"
     return table
