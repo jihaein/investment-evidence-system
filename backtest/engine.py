@@ -26,7 +26,7 @@ def load_daily_price() -> pd.DataFrame:
     return data
 
 # step 6: putting everything together in a function
-def run_strategy(basket, sell_schedule):    
+def run_strategy(basket, sell_schedule, recovery_rate = 1.0):    
     
     # 1. day-0 setup   ← your Step 2 code (compute n, investable, per_stock, holdings, cash)
     n = len(basket.columns) # number of stock codes listed
@@ -44,11 +44,20 @@ def run_strategy(basket, sell_schedule):
     # 보유가치
     holdings = pd.Series(data=per_stock, index=basket.columns)
 
-    # 2. daily loop  (dates, the loop, record W)
-
     # get the days to walk
     dates = basket.index[basket.index >= '2016-01-04']  # start from the first trading day of 2016
 
+
+    # detecting delistings
+    window_end   = dates[-1]
+    delist_dates = {}
+    for s in basket.columns:
+        last = basket[s].last_valid_index()
+        if last is not None and last < window_end:
+            delist_dates[s] = last
+
+
+    # 2. daily loop  (dates, the loop, record W)
     records = []
     for date in dates:
         # update cash with daily interest
@@ -65,8 +74,14 @@ def run_strategy(basket, sell_schedule):
             cash += proceeds - sell_cost
             holdings[s] = 0 # gone; from now it sits in cash, not the market
 
+        # forced delisting sells (at recovery_rate), only if still held
+        for s in [s for s, d in delist_dates.items() if d == date]:
+            if holdings[s] > 0:
+                proceeds = holdings[s] * recovery_rate
+                cash += proceeds - proceeds * COST_RATE
+                holdings[s] = 0
+
         # record W
         W = holdings.sum() + cash
         records.append(W)
-    ser_sell_cash = pd.Series(data=records, index=dates)
-    return ser_sell_cash
+    return pd.Series(data=records, index=dates)
