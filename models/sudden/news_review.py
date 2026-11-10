@@ -1,4 +1,5 @@
 """수집 뉴스 관련성·가격 반응 분류와 시점별 유사 기사 묶음. LLM/외부 접속 없음."""
+import os
 import argparse
 import csv
 import hashlib
@@ -10,6 +11,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+OUT = HERE / os.getenv('SUDDEN_OUTPUT', 'output')     # 다른 표본(예: output_2023)을 쓸 때 바꾼다
 RULE_VERSION = 'news-review-1'
 # 동일 사건이라는 확정 판정이 아닌, 사람이 확인 가능한 유사 보도 후보 묶음이다.
 SIMILARITY_CUT = 0.42
@@ -167,25 +169,26 @@ def coverage(searches, event):
     import naver_crawl as crawl
     args = SimpleNamespace(stock=event['stock_code'], start=event['n_base_start'][:10],
                            end=event['news_window_end'][:10], max_priority=3)
-    expected = {(r['date'], q) for r, q in crawl.tasks(HERE / 'output/crawl_plan.csv', args)}
+    expected = {(r['date'], q) for r, q in crawl.tasks(OUT / 'crawl_plan.csv', args)}
     by_key = {(s['date'], s['query']): s for s in searches if s['stock_code'] == event['stock_code']}
     missing = sorted(expected - by_key.keys())
     unfinished = [{'date': d, 'query': q, 'status': by_key[d, q]['status']}
-                  for d, q in sorted(expected & by_key.keys()) if by_key[d, q]['status'] not in ('complete', 'empty')]
+                  for d, q in sorted(expected & by_key.keys()) if by_key[d, q]['status'] not in ('complete', 'empty', 'capped')]   # capped: 의도한 페이지 상한
     return {'expected_searches': len(expected), 'completed_searches': len(expected)-len(missing)-len(unfinished),
             'missing_searches': [{'date': d, 'query': q} for d, q in missing], 'unfinished_searches': unfinished,
             'search_coverage_complete': not missing and not unfinished,
+            'capped_searches': sum(by_key[k]['status'] == 'capped' for k in expected & by_key.keys()),
             'external_only_results': sum(not r['naver_url'] for k,s in by_key.items() if k in expected for r in s.get('results', []))}
 
 
 def build_report(drop_id, cache):
     """현재 DB에서 재계산한다. 점수 계산에서도 오래된 검토 JSON을 신뢰하지 않는다."""
     cache = Path(cache)
-    with (HERE / 'output/drop_events.csv').open(encoding='utf-8-sig', newline='') as f:
+    with (OUT / 'drop_events.csv').open(encoding='utf-8-sig', newline='') as f:
         event = next((r for r in csv.DictReader(f) if r['drop_id'] == drop_id), None)
     if event is None:
         raise ValueError('사건 ID를 찾지 못했습니다')
-    with (HERE / 'output/stock_names.csv').open(encoding='utf-8-sig', newline='') as f:
+    with (OUT / 'stock_names.csv').open(encoding='utf-8-sig', newline='') as f:
         names = [r['company_name'] for r in csv.DictReader(f) if r['stock_code'] == event['stock_code']]
     db_path = cache / 'crawl.sqlite3'
     if not db_path.exists():
@@ -199,7 +202,7 @@ def build_report(drop_id, cache):
         articles = [a for a in articles if a['url'] in urls]
     reviewed, datasets = prepare(articles, event, names)
     cover = coverage(searches, event)
-    pending = urls - {a['url'] for a in articles if a.get('status') in ('complete', 'excluded_automated')}
+    pending = urls - {a['url'] for a in articles if a.get('status') in ('complete', 'excluded_automated', 'excluded_title_mismatch')}
     cover['unavailable_article_count'] = len(pending)
     cover['title_excluded_article_count'] = sum(a.get('status') == 'excluded_automated' for a in articles)
     report = {'drop_id': drop_id, 'rule_version': RULE_VERSION, 'event': event,

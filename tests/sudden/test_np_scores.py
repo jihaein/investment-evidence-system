@@ -109,3 +109,20 @@ def test_missing_publisher_holds_p_but_keeps_n():
 def test_observation_config_cannot_exceed_available_grouping_horizon(hours):
     with pytest.raises(ValueError):
         s.score({'event': EVENT}, [], {**CONFIG, 'p_observation_max_hours': hours})
+
+
+def test_pooled_scope_needs_pool_and_uses_other_stocks():
+    with pytest.raises(ValueError):
+        calculate_pooled(basic(), None)
+    pool = [{'stock_code': 'BBB', 'group_id': f'g{i}', 'is_fact': True,
+             'first_published_at': f'2018-11-{i + 1:02d}T10:00:00+09:00',
+             'members': [{'url': f'u{i}', 'publisher': 'x', 'published_at': f'2018-11-{i + 1:02d}T10:00:00+09:00',
+                          'modified_at': None}]} for i in range(3)]
+    p = calculate_pooled(basic(), pool)['groups'][0]['P']
+    assert p['baseline_scope'] == 'pooled' and p['baseline_group_count'] == 3 and p['value'] == 0.5
+
+
+def calculate_pooled(articles, pool):
+    rows, _ = r.prepare(articles, EVENT, ['현진소재'])
+    report = {'drop_id': '053660_20181219', 'event': EVENT, 'coverage': {}, 'ready_for_baseline_analysis': True}
+    return s.score(report, rows, {**CONFIG, 'p_baseline_scope': 'pooled'}, pool)

@@ -37,6 +37,7 @@ events.py — 급락 모델 1단계: 급락 사건 목록
     stock_names.csv      종목별 기간별 이름 (뉴스는 그 당시 이름으로 검색한다. 예: 050540 엠피씨 → 한국코퍼레이션)
 """
 
+import os
 import argparse
 import sys
 from datetime import timedelta
@@ -50,10 +51,10 @@ ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / "models" / "seoseohi"))
 import threshold as T  # noqa: E402  (주가 파일 경로와 숫자 변환을 같이 쓴다)
 
-PRICE_PATH = T.PRICE_PATH
+PRICE_PATH = Path(os.getenv("SUDDEN_PRICES", T.PRICE_PATH))   # 다른 기간 주가 파일을 쓸 때 바꾼다
 CACHE_DIR = HERE / "cache"
-INDEX_CACHE = CACHE_DIR / "index_daily.csv"
-OUTPUT_DIR = HERE / "output"
+INDEX_CACHE = Path(os.getenv("SUDDEN_INDEX", CACHE_DIR / "index_daily.csv"))
+OUTPUT_DIR = HERE / os.getenv("SUDDEN_OUTPUT", "output")     # 다른 표본(예: output_2023)을 쓸 때 바꾼다
 
 # ---- 설정 (설계서 v3 2절. 모두 초기값) ----
 EVENT_START, EVENT_END = "2016-01-01", "2019-12-31"   # 사건을 찾는 기간 (2015년 주가는 σ 계산에만 쓴다)
@@ -98,6 +99,7 @@ def load_prices(path=PRICE_PATH):
         "ret": T.to_number(raw["FLUC_RT"]) / 100,              # 거래소 등락률 (보정일에도 정상 수익률)
         "volume": T.to_number(raw["ACC_TRDVOL"]),
         "mktcap": T.to_number(raw["MKTCAP"]),
+        "sect": raw["SECT_TP_NM"].fillna("").str.strip() if "SECT_TP_NM" in raw else "",
     })
     return prices.sort_values(["stock_code", "trade_date"]).reset_index(drop=True)
 
@@ -148,7 +150,8 @@ def load_index(prices, index_csv=None, refresh=False):
 
 
 # 2. 급락일 찾기
-def add_abnormal(prices, index=None):
+def add_abnormal(prices, index=None, model="market_adjusted"):
+    """model: market_adjusted(v3, AR = r - r_m) 또는 market_model(v3.1, D-120~D-1 회귀 α·β의 잔차와 잔차 표준편차)."""
     df = prices.copy()
     if index is not None:
         df = df.merge(index, on=["trade_date", "market"], how="left")
@@ -161,8 +164,19 @@ def add_abnormal(prices, index=None):
         g["ret_close"] = g["close"].pct_change()
         g["corp_action"] = ((g["ret"] - g["ret_close"]).abs() > RET_GAP_WARN) & ~g["halted"]
         g["after_halt"] = g["halted"].shift(1, fill_value=False) & ~g["halted"]
-        g["ar"] = g["ret"].where(~g["halted"]) - g["index_ret"]
-        g["sigma"] = g["ar"].rolling(SIGMA_WINDOW, min_periods=MIN_OBS).std().shift(1)   # D-120 ~ D-1만
+        if model == "market_model":
+            r, m = g["ret"].where(~g["halted"]), g["index_ret"].where(~g["halted"])
+            roll = lambda s: s.rolling(SIGMA_WINDOW, min_periods=MIN_OBS)
+            cov = roll(r).cov(m).shift(1)                   # D-120 ~ D-1만
+            var_m, var_r = roll(m).var().shift(1), roll(r).var().shift(1)
+            beta = cov / var_m
+            alpha = roll(r).mean().shift(1) - beta * roll(m).mean().shift(1)
+            g["beta"] = beta
+            g["ar"] = r - (alpha + beta * g["index_ret"])
+            g["sigma"] = (var_r - cov ** 2 / var_m).clip(lower=0) ** 0.5
+        else:
+            g["ar"] = g["ret"].where(~g["halted"]) - g["index_ret"]
+            g["sigma"] = g["ar"].rolling(SIGMA_WINDOW, min_periods=MIN_OBS).std().shift(1)   # D-120 ~ D-1만
         g["z"] = g["ar"] / g["sigma"]
         g["mktcap_prev"] = g["mktcap"].shift(1)                                          # D-1 시가총액
         g["row"] = np.arange(len(g))
@@ -170,8 +184,14 @@ def add_abnormal(prices, index=None):
     return pd.concat(parts, ignore_index=True)
 
 
-def exclusion_reason(row, apply_mktcap):
+def exclusion_reason(row, apply_mktcap, common_only=False):
     reasons = []
+    if common_only:                                         # v3.1: 보통주만, 관리종목 제외
+        code, name, sect = str(row["stock_code"]), str(row["company_name"]), str(row.get("sect", ""))
+        if not code.endswith("0") or "스팩" in name or "리츠" in name or name.endswith(("우", "우B", "우C")):
+            reasons.append("not_common_stock")
+        if "관리" in sect:
+            reasons.append("administrative_issue")
     if row["corp_action"]:
         reasons.append("corp_action_day")                     # 권리락·배당락·분할·병합 의심일
     if row["after_halt"]:
@@ -205,11 +225,12 @@ def unjudged_big_drops(df, start=EVENT_START, end=EVENT_END, cut=-0.10):
     return out.reset_index(drop=True)
 
 
-def detect_events(prices, index=None, apply_mktcap=APPLY_MKTCAP, start=EVENT_START, end=EVENT_END):
-    df = add_abnormal(prices, index)
+def detect_events(prices, index=None, apply_mktcap=APPLY_MKTCAP, start=EVENT_START, end=EVENT_END,
+                  model="market_adjusted", common_only=False):
+    df = add_abnormal(prices, index, model)
     cal = trading_calendar(prices, index)
     hits = df[(df["z"] <= Z_CUT) & df["trade_date"].between(start, end)].copy()
-    hits["excluded"] = [exclusion_reason(r, apply_mktcap) for _, r in hits.iterrows()]
+    hits["excluded"] = [exclusion_reason(r, apply_mktcap, common_only) for _, r in hits.iterrows()]
     hits["drop_id"] = ""
 
     events, sessions = [], []
@@ -241,7 +262,7 @@ def detect_events(prices, index=None, apply_mktcap=APPLY_MKTCAP, start=EVENT_STA
                 "n_hit_days": 1, "last_hit_date": D.strftime("%Y-%m-%d"),
                 "mktcap_prev_eok": round(r["mktcap_prev"] / 1e8, 1) if pd.notna(r["mktcap_prev"]) else None,
                 "mktcap_ok": bool(r["mktcap_prev"] >= MIN_MKTCAP) if pd.notna(r["mktcap_prev"]) else None,
-                "near_delisting": near, "market_adjusted": index is not None,
+                "near_delisting": near, "market_adjusted": index is not None, "ar_model": model,
                 "decision_time": at_close(D),                   # 판단 시각 t0: 이 시각 이후 정보는 쓰지 않는다
                 "news_window_start": win_start,                 # 이 시각 '초과'부터 (D-3 거래일 15:30)
                 "news_window_end": at_close(D),                 # 이 시각 '이하'까지 (= 판단 시각)
@@ -274,18 +295,20 @@ if __name__ == "__main__":
     ap.add_argument("--apply-mktcap", action="store_true", help="D-1 시가총액 1,000억 원 미만을 거른다")
     ap.add_argument("--start", default=EVENT_START, help="사건을 찾을 시작일 (기본 2016-01-01)")
     ap.add_argument("--end", default=EVENT_END, help="사건을 찾을 마지막 날 (기본 2019-12-31)")
+    ap.add_argument("--v31", action="store_true", help="설계서 v3.1: 시장모형 AR, 시가총액 1,000억 이상, 보통주만, 관리종목 제외")
     args = ap.parse_args()
 
     prices = load_prices()
     index = None if args.no_market else load_index(prices, args.index_csv, args.refresh_index)
-    events, sessions, candidates = detect_events(prices, index, apply_mktcap=args.apply_mktcap or APPLY_MKTCAP,
-                                                 start=args.start, end=args.end)
+    model = "market_model" if args.v31 else "market_adjusted"
+    events, sessions, candidates = detect_events(prices, index, apply_mktcap=args.apply_mktcap or args.v31 or APPLY_MKTCAP,
+                                                 start=args.start, end=args.end, model=model, common_only=args.v31)
     names = stock_names(prices)
-    unjudged = unjudged_big_drops(add_abnormal(prices, index), args.start, args.end)
+    unjudged = unjudged_big_drops(add_abnormal(prices, index, model), args.start, args.end)
 
     print(f"[기간] {args.start} ~ {args.end}")
     print(f"[설정] 시장 조정 {'예' if index is not None else '아니요 (근사)'} / z <= {Z_CUT} / σ: D-{SIGMA_WINDOW} ~ D-1 "
-          f"/ 묶음 {GROUP_DAYS}거래일 / 판단 시각 {DECISION_TIME} / 시가총액 거르기 {'예' if args.apply_mktcap else '아니요(표시만)'}")
+          f"/ 묶음 {GROUP_DAYS}거래일 / 판단 시각 {DECISION_TIME} / 시가총액 거르기 {'예' if (args.apply_mktcap or args.v31) else '아니요(표시만)'}")
     if index is not None:
         miss = prices.merge(index, on=["trade_date", "market"], how="left")["index_ret"].isna().sum()
         print(f"시장지수가 없는 날: {miss}행 (첫날 등)")

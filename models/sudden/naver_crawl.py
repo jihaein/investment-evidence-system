@@ -5,6 +5,7 @@
 --stock all(또는 쉼표 목록)이면 여러 종목을 우선순위·날짜순으로 섞어서 수집한다.
 검색어는 기본으로 따옴표로 감싸 정확히 일치하는 기사만 찾는다(--no-quote로 이전 방식).
 """
+import os
 import argparse
 import csv
 import hashlib
@@ -23,7 +24,8 @@ from urllib.parse import parse_qs, urlencode, urlparse
 import requests
 
 HERE = Path(__file__).resolve().parent
-TERMS_PATH = HERE / 'output/search_terms.csv'
+OUT = HERE / os.getenv('SUDDEN_OUTPUT', 'output')     # 다른 표본(예: output_2023)을 쓸 때 바꾼다
+TERMS_PATH = OUT / 'search_terms.csv'
 TERM_COLUMNS = ('약칭', '영문명', '주요_종속회사')  # 팀이 채우는 추가 검색어 칸. 여러 개는 | 로 구분
 KST = timezone(timedelta(hours=9))
 VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'}
@@ -272,7 +274,8 @@ def search_url(query, day):
         'nso': f'so:dd,p:from{day.replace("-", "")}to{day.replace("-", "")},a:all'})
 
 
-def search(fetch, query, day, max_pages):
+def search(fetch, query, day, max_pages, cap_ok=False):
+    """cap_ok이면 페이지 상한에서 멈춘 검색을 의도된 상한(capped)으로 기록한다(기준 기간 표본 수집)."""
     url = search_url(query, day)
     seen_urls, seen_results, records, raw_files = set(), set(), [], []
     for page in range(max_pages):
@@ -304,7 +307,7 @@ def search(fetch, query, day, max_pages):
         if empty or not next_url:
             return ('complete' if records else 'empty'), records, raw_files, None
         url = next_url
-    return 'incomplete', records, raw_files, '페이지 상한 도달'
+    return ('capped' if cap_ok else 'incomplete'), records, raw_files, '페이지 상한 도달'
 
 
 def stock_filter(stock):
@@ -323,6 +326,22 @@ def extra_terms(path=TERMS_PATH):
             if words:
                 terms.setdefault(r['stock_code'], []).append((r['from'], r['to'], words))
     return terms
+
+
+def title_names(stock_code, query, path=None):
+    """제목 매칭에 쓰는 이름: 이름표(stock_names.csv)의 모든 이름 + 지금 검색어. news_review.classify와 같은 이름을 쓴다."""
+    global _NAMES
+    if _NAMES is None:
+        _NAMES = {}
+        names_path = Path(path or OUT / 'stock_names.csv')
+        if names_path.exists():
+            with names_path.open(encoding='utf-8-sig', newline='') as f:
+                for r in csv.DictReader(f):
+                    _NAMES.setdefault(r['stock_code'], set()).add(r['company_name'])
+    return _NAMES.get(stock_code, set()) | {query.strip('"')}
+
+
+_NAMES = None
 
 
 def search_query(term, quote=True):
@@ -351,7 +370,7 @@ def export(db, directory, stocks, selected_keys=None):
         with (directory / f'{name}.jsonl').open('w', encoding='utf-8') as f:
             for record in records:
                 f.write(json.dumps(record, ensure_ascii=False) + '\n')
-    with (HERE / 'output/drop_events.csv').open(encoding='utf-8-sig', newline='') as f:
+    with (OUT / 'drop_events.csv').open(encoding='utf-8-sig', newline='') as f:
         all_events = list(csv.DictReader(f))
     return {stock: export_stock(directory, stock, searches, articles,
                                 [e for e in all_events if e['stock_code'] == stock], selected_keys)
@@ -396,9 +415,13 @@ def main(argv=None):
     ap.add_argument('--end', default='2018-12-19')
     ap.add_argument('--max-priority', type=int, choices=(1, 2, 3), default=1)
     ap.add_argument('--max-pages', type=int, default=30)
+    ap.add_argument('--capped-ok', action='store_true', help='모든 검색에서 페이지 상한 도달을 capped(의도한 상한)로 기록')
+    ap.add_argument('--title-match', action='store_true',
+                    help='검색 결과 제목에 회사 이름이 없으면 본문을 받지 않고 링크만 기록 (내용 분석은 제목에 이름이 있는 기사만 쓴다)')
+    ap.add_argument('--baseline-max-pages', type=int, help='기준 기간(우선순위 2·3) 검색의 페이지 상한. 상한 도달은 capped로 기록')
     ap.add_argument('--delay', type=float, default=3)
     ap.add_argument('--skip-automated', action='store_true', help='명확한 자동 시세 제목은 링크만 기록하고 본문 접속을 생략')
-    ap.add_argument('--plan', type=Path, default=HERE / 'output/crawl_plan.csv')
+    ap.add_argument('--plan', type=Path, default=OUT / 'crawl_plan.csv')
     ap.add_argument('--terms', type=Path, default=TERMS_PATH, help='팀이 채운 추가 검색어 표')
     ap.add_argument('--no-quote', action='store_true', help='검색어를 따옴표 없이 보냄 (2026-11-04 파일럿·홀드아웃 방식)')
     ap.add_argument('--min-free-gb', type=float, default=5, help='남은 디스크가 이보다 적으면 멈춤 (응답 원문을 모두 저장한다)')
@@ -428,11 +451,14 @@ def main(argv=None):
         data = {'stock_code': row['stock_code'], 'date': row['date'], 'query': query, 'search_query': sent,
                 'priority': int(row['priority']), 'drop_ids': row['drop_ids'], 'collected_at': now()}
         # 같은 검색어라도 따옴표 여부가 다르면 결과가 달라서 재사용하지 않는다 (예전 기록은 search_query가 없다 = 따옴표 없음)
-        if old and old[0] in ('complete', 'empty') and json.loads(old[1]).get('search_query', query) == sent:
+        if old and old[0] in ('complete', 'empty', 'capped') and json.loads(old[1]).get('search_query', query) == sent:
             data = json.loads(old[1])
         else:
             try:
-                status, results, raw_files, reason = search(fetch, sent, row['date'], args.max_pages)
+                baseline = int(row['priority']) > 1 and args.baseline_max_pages
+                pages = args.baseline_max_pages if baseline else args.max_pages
+                extra = {'cap_ok': True} if (baseline or args.capped_ok) else {}
+                status, results, raw_files, reason = search(fetch, sent, row['date'], pages, **extra)
                 data.update(status=status, results=results, raw_files=raw_files, reason=reason)
             except (requests.RequestException, ParseError, ValueError) as exc:
                 status = 'request_failed' if isinstance(exc, requests.RequestException) else 'parse_failed'
@@ -444,7 +470,13 @@ def main(argv=None):
             if not url:
                 continue
             old_article = db.execute('SELECT status FROM articles WHERE url=?', (url,)).fetchone()
-            if old_article and (old_article[0] == 'complete' or (args.skip_automated and old_article[0] == 'excluded_automated')):
+            if old_article and (old_article[0] == 'complete' or (args.skip_automated and old_article[0] == 'excluded_automated')
+                                or (args.title_match and old_article[0] == 'excluded_title_mismatch')):
+                continue
+            if args.title_match and result['title'] and not any(n in result['title'] for n in title_names(row['stock_code'], query)):
+                save(db, 'articles', url, 'excluded_title_mismatch', {
+                    'url': url, 'title': result['title'], 'status': 'excluded_title_mismatch',
+                    'reason': '검색 결과 제목에 회사 이름 없음: 본문 접속 생략', 'collected_at': now()})
                 continue
             if args.skip_automated:
                 from news_review import automated_title

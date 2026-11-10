@@ -11,6 +11,7 @@ from pathlib import Path
 
 import news_review as review
 import news_facts as facts
+import p_pool
 
 HERE = Path(__file__).resolve().parent
 RULE_VERSION = 'np-provisional-1'
@@ -83,7 +84,7 @@ def propagation(group, baseline_groups, event, max_hours):
                   formula='(less + 0.5 * ties) / baseline_group_count', **details)
 
 
-def score(report, rows, config):
+def score(report, rows, config, pool=None):
     method = config.get('news_representation', 'lexical-v1')
     if method not in ('lexical-v1', 'facts-v1'):
         raise ValueError('news_representation은 lexical-v1 또는 facts-v1이어야 합니다')
@@ -100,6 +101,12 @@ def score(report, rows, config):
     warning_min = config['small_baseline_warning_below']
     if isinstance(warning_min, bool) or not isinstance(warning_min, int) or warning_min < 1:
         raise ValueError('small_baseline_warning_below는 양의 정수여야 합니다')
+    scope = config.get('p_baseline_scope', 'own')
+    if scope not in ('own', 'pooled'):
+        raise ValueError('p_baseline_scope는 own 또는 pooled여야 합니다')
+    if scope == 'pooled' and pool is None:
+        raise ValueError('p_baseline_scope=pooled에는 p_pool.build_pool 결과가 필요합니다')
+    pool_days, p_scale = config.get('p_pool_days', 365), config.get('p_scale', 'none')
     event = report['event']
     result = {'drop_id': report['drop_id'], 'rule_version': 'np-facts-provisional-2' if fact_mode else RULE_VERSION,
               'news_representation': method,
@@ -133,8 +140,14 @@ def score(report, rows, config):
         return result
     for group in groups:
         n = (facts.novelty if fact_mode else novelty)(group, by_url, n_base)
-        p = metric(reason='fact_extraction_needs_review') if fact_mode and group.get('grouping_method') != facts.VERSION else propagation(group, p_groups, event, max_hours)
-        if fact_mode and p['status'] == 'computed' and p['baseline_group_count'] < min_fact_p:
+        if fact_mode and group.get('grouping_method') != facts.VERSION:
+            p = metric(reason='fact_extraction_needs_review')
+        elif scope == 'pooled':
+            p = p_pool.pooled_propagation(group, event, pool, max_hours, pool_days, p_scale,
+                                          min_fact_p if fact_mode else 1)
+        else:
+            p = propagation(group, p_groups, event, max_hours)
+        if scope == 'own' and fact_mode and p['status'] == 'computed' and p['baseline_group_count'] < min_fact_p:
             p.update(status='held', hold_reason='fact_reference_sample_too_small',
                      diagnostic_percentile=p['value'], value=None, minimum_reference_groups=min_fact_p)
         result['groups'].append({**group, 'N': n, 'P': p})
@@ -163,7 +176,8 @@ def main(argv=None):
     try:
         config = json.loads(args.config.read_text(encoding='utf-8'))
         report, rows = review.build_report(args.drop_id, args.cache)
-        result = score(report, rows, config)
+        pool = p_pool.build_pool(p_pool.load_rows(args.cache)) if config.get('p_baseline_scope') == 'pooled' else None
+        result = score(report, rows, config, pool)
     except (ValueError, KeyError) as exc:
         ap.error(str(exc))
     out = args.cache / 'scores'

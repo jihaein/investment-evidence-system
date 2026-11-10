@@ -31,13 +31,14 @@ events.py가 만든 사건 표(drop_events.csv)와 이름 표(stock_names.csv)�
     search_terms.csv   종목별 검색어 표 (팀이 약칭·영문명·종속회사·제외 접두어를 채운다)
 """
 
+import os
 import argparse
 from pathlib import Path
 
 import pandas as pd
 
 HERE = Path(__file__).resolve().parent                       # models/sudden
-OUTPUT_DIR = HERE / "output"
+OUTPUT_DIR = HERE / os.getenv("SUDDEN_OUTPUT", "output")     # 다른 표본(예: output_2023)을 쓸 때 바꾼다
 EVENTS_PATH = OUTPUT_DIR / "drop_events.csv"
 NAMES_PATH = OUTPUT_DIR / "stock_names.csv"
 PLAN_PATH = OUTPUT_DIR / "crawl_plan.csv"
@@ -74,7 +75,9 @@ def alt_names(name_rows, d):
     return sorted(alts - {current})
 
 
-def build_plan(events, names, max_priority=3):
+def build_plan(events, names, max_priority=3, baseline_every=1):
+    """baseline_every > 1이면 기준 기간(우선순위 2·3) 날짜를 그 간격으로만 남긴다(사건 창은 모두). 날짜 서수로 고르므로
+    겹치는 사건끼리 같은 날을 고른다."""
     days = {}
     for _, e in events.iterrows():
         D = to_day(e["D"])
@@ -91,6 +94,8 @@ def build_plan(events, names, max_priority=3):
     rows = []
     for (code, d), slot in sorted(days.items()):
         if slot["priority"] > max_priority:
+            continue
+        if slot["priority"] > 1 and baseline_every > 1 and d.toordinal() % baseline_every:
             continue
         name_rows = by_code.get(code)
         rows.append({
@@ -120,12 +125,13 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="크롤링할 날짜 목록 만들기")
     ap.add_argument("--max-priority", type=int, default=3, choices=[1, 2, 3],
                     help="1: 사건 창만, 2: + 파급력 기준, 3: 전체 (기본)")
+    ap.add_argument("--baseline-every", type=int, default=1, help="기준 기간 날짜를 N일에 하루만 수집 (2023~2025 대형주 표본: 7)")
     args = ap.parse_args()
     if not EVENTS_PATH.exists():
         raise SystemExit("drop_events.csv가 없습니다. 먼저 python models/sudden/events.py 를 실행하세요.")
 
     events, names = load()
-    plan = build_plan(events, names, args.max_priority)
+    plan = build_plan(events, names, args.max_priority, args.baseline_every)
     OUTPUT_DIR.mkdir(exist_ok=True)
     plan.to_csv(PLAN_PATH, index=False, encoding="utf-8-sig")
     wrote_terms = write_search_terms(names)

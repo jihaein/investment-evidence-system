@@ -2,6 +2,7 @@
 기준 기간 없이 추출·묶음만 평가한다. 예측을 본 뒤 라벨을 자동 생성하지 않는다.
 """
 
+import os
 import argparse
 import csv
 import hashlib
@@ -17,6 +18,7 @@ import news_facts as facts
 import news_review as review
 
 HERE = Path(__file__).resolve().parent
+OUT = HERE / os.getenv('SUDDEN_OUTPUT', 'output')     # 다른 표본(예: output_2023)을 쓸 때 바꾼다
 
 
 def article_hash(article):
@@ -34,12 +36,12 @@ def load_case(cache, spec):
         end=datetime.combine(day,time.max,tzinfo=crawl.KST)
         expected={(spec['start'],spec['query'])}
     else:
-        with (HERE/'output/drop_events.csv').open(encoding='utf-8-sig',newline='') as f:
+        with (OUT / 'drop_events.csv').open(encoding='utf-8-sig',newline='') as f:
             event=next((e for e in csv.DictReader(f) if e['drop_id']==spec['drop_id']),None)
         if not event:
             raise ValueError('사건 ID 없음: '+spec['drop_id'])
         args=SimpleNamespace(stock=spec['stock'],start=spec['start'],end=spec['end'],max_priority=1)
-        expected={(r['date'],q) for r,q in crawl.tasks(HERE/'output/crawl_plan.csv',args)}
+        expected={(r['date'],q) for r,q in crawl.tasks(OUT / 'crawl_plan.csv',args)}
     with sqlite3.connect(cache/'crawl.sqlite3') as db:
         searches=[json.loads(p) for p, in db.execute('SELECT payload FROM searches')]
         articles={url:json.loads(p) for url,p in db.execute('SELECT url,payload FROM articles')}
