@@ -262,10 +262,14 @@ def majority(runs, text_with_title):
     return out, {'units_proposed': quote_total, 'units_quote_ok': sum(len(ok) for ok, _ in checked)}
 
 
-def relation(unit_type, direction, hypothesis):
+def relation(unit_type, direction, hypothesis, positive_supports=True):
+    """설계서 5.4: 긍정 방향이면 +와 -를 맞바꾼다. positive_supports=False면 좋은 소식은 반증(-)만 하고
+    지지(+)는 하지 않는다(예: 좋은 소식은 H1을 반증하지만 H3·H5의 지지 근거로 쓰지 않음). 2026-11-10 관계표 수정안."""
     r = RELATION.get(unit_type, {}).get(hypothesis, '0')
     if direction == '긍정' and unit_type not in NO_DIRECTION:
         r = {'+': '-', '-': '+'}.get(r, r)
+        if r == '+' and not positive_supports:
+            r = '0'
     return r
 
 
@@ -308,7 +312,8 @@ def merge(units):
 # 판정 설정. 기본값은 설계서 그대로다. 바꾼 값은 튜닝(2023~2024 표본)에서만 고르고 모두 기록한다(tune.py).
 PARAMS = {'gap': 0.5,                 # 5.6절 동률 차이 기준
           'positive_weight': 1.0,     # 긍정 방향 단위(좋은 소식) 가중 배수. 1이면 설계서 그대로
-          'market_only_holds': False}  # True면 시장 규칙(K) 단위만으로는 판정하지 않고 판단보류
+          'market_only_holds': False,  # True면 시장 규칙(K) 단위만으로는 판정하지 않고 판단보류
+          'positive_supports': True}   # False면 좋은 소식은 반증만 하고 지지하지 않음 (관계표 수정안)
 
 
 def score(units, params=None):
@@ -317,7 +322,7 @@ def score(units, params=None):
     for u in units:
         w = u['w'] * (params['positive_weight'] if u['direction'] == '긍정' and u['type'] not in NO_DIRECTION else 1.0)
         for h in HYPOTHESES:
-            r = relation(u['type'], u['direction'], h)
+            r = relation(u['type'], u['direction'], h, params['positive_supports'])
             if r == '+':
                 support[h] += w
             elif r == '-':
@@ -332,7 +337,7 @@ def decide(units, gap=None, params=None):
     support, refute = score(units, params)
     cands = [h for h in HYPOTHESES if support[h] > 0]
     base = {'support': support, 'refute': refute}
-    evidence = [u for u in units if any(relation(u['type'], u['direction'], h) != '0' for h in HYPOTHESES)]
+    evidence = [u for u in units if any(relation(u['type'], u['direction'], h, params['positive_supports']) != '0' for h in HYPOTHESES)]
     if params['market_only_holds'] and evidence and all(u.get('market_rule') or u['type'].startswith('K') for u in evidence):
         return {**base, 'hypothesis': 'H0', 'verdict': '판단보류', 'reason': 'market_rule_only', 'runner_up': None}
     if not cands:
@@ -354,7 +359,8 @@ def judge(units, gap=None, params=None):
     flags = {'fragile': False, 'unverified_basis': False, 'mixed': [], 'low_confidence': False}
     top = main['hypothesis']
     if top != 'H0':
-        contrib = [u for u in units if relation(u['type'], u['direction'], top) == '+']
+        ps = {**PARAMS, **(params or {})}['positive_supports']
+        contrib = [u for u in units if relation(u['type'], u['direction'], top, ps) == '+']
         removable = [u for u in contrib if not u.get('mandatory')]   # 필수 공시는 빼지 않는다
         if removable:
             biggest = max(removable, key=lambda u: u['w'])
@@ -516,6 +522,7 @@ def main(argv=None):
     ap.add_argument('--market-only-holds', action='store_true', help='시장 규칙 단위만 있는 사건은 판단보류 (tune.py 참고)')
     ap.add_argument('--positive-weight', type=float, help='좋은 소식 단위 가중 배수 (기본 1.0 = 설계서)')
     ap.add_argument('--gap', type=float, help='판정 동률 차이 기준 (기본 0.5 = 설계서)')
+    ap.add_argument('--positive-refutes-only', action='store_true', help='좋은 소식은 반증만 하고 지지하지 않음 (관계표 수정안)')
     ap.add_argument('--no-dart', action='store_true', help='DART 공시 없이 실행')
     args = ap.parse_args(argv)
     lf.load_env()
@@ -528,6 +535,8 @@ def main(argv=None):
         PARAMS['positive_weight'] = args.positive_weight
     if args.gap is not None:
         PARAMS['gap'] = args.gap
+    if args.positive_refutes_only:
+        PARAMS['positive_supports'] = False
     with (OUT / 'drop_events.csv').open(encoding='utf-8-sig', newline='') as f:
         events = list(csv.DictReader(f))
     ids = set(args.drop_id or [])

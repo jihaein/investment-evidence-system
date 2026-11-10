@@ -193,6 +193,8 @@ def main(argv=None):
         for s in csv.DictReader(f):
             sessions.setdefault(s['drop_id'], []).append(s)
     out = collect(events, sessions, key)
+    import earnings                                         # 실적 공시는 분기 재무로 방향을 붙여 F1 단위로 (earnings.py)
+    earnings.enrich(out, {e['drop_id']: e['company_name'] for e in events}, key)
     CACHE.mkdir(parents=True, exist_ok=True)
     units_path().write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding='utf-8')
     n_units = sum(len(v['units']) for v in out.values())

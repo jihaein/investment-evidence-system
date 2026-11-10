@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sudden_result.schema.json",
+  "title": "급락 모델 판정 결과 (임시 규칙)",
+  "description": "급락 사건마다 ACH 판정·플래그·근거 단위. 백테스트와 대시보드는 이 파일을 읽기만 하고 판정을 다시 계산하지 않는다. 기사 본문·발췌는 넣지 않는다(근거는 URL과 유형만).",
+  "type": "object",
+  "required": ["schema_version", "generated_at", "rule_version", "sample", "params", "cases"],
+  "properties": {
+    "schema_version": { "type": "string", "pattern": "^0\\.\\d+$" },
+    "generated_at": { "type": "string" },
+    "source_commit": { "type": ["string", "null"] },
+    "source_dirty": { "type": "boolean" },
+    "rule_version": { "type": "string" },
+    "prompt_version": { "type": ["string", "null"] },
+    "classifier_model": { "type": ["string", "null"] },
+    "params": { "type": "object" },
+    "sample": {
+      "type": "object",
+      "required": ["name", "split"],
+      "properties": {
+        "name": { "type": "string" },
+        "split": { "type": ["string", "null"] },
+        "first_drop_date": { "type": ["string", "null"], "format": "date" },
+        "last_drop_date": { "type": ["string", "null"], "format": "date" }
+      }
+    },
+    "notes": { "type": "array", "items": { "type": "string" } },
+    "cases": { "type": "array", "items": { "$ref": "#/$defs/case" } }
+  },
+  "$defs": {
+    "hypothesis": { "enum": ["H1", "H2", "H3", "H4", "H5"] },
+    "by_hypothesis": {
+      "type": "object",
+      "required": ["H1", "H2", "H3", "H4", "H5"],
+      "additionalProperties": false,
+      "patternProperties": { "^H[1-5]$": { "type": "number", "minimum": 0 } }
+    },
+    "case": {
+      "type": "object",
+      "required": ["drop_id", "stock_code", "company_name", "drop_date", "decision_time", "verdict", "hypothesis",
+                   "hold_reason", "scores", "flags", "inputs", "evidence"],
+      "properties": {
+        "drop_id": { "type": "string", "pattern": "^\\d{6}_\\d{8}$" },
+        "stock_code": { "type": "string", "pattern": "^\\d{6}$" },
+        "company_name": { "type": "string" },
+        "market": { "type": ["string", "null"] },
+        "drop_date": { "type": "string", "format": "date" },
+        "decision_time": { "type": "string", "description": "판정에 쓴 정보의 마감 시각(급락일 장 마감). 매매는 이 뒤 거래일부터 가능하다." },
+        "z": { "type": ["number", "null"] },
+        "ar_pct": { "type": ["number", "null"] },
+        "verdict": { "enum": ["가치훼손", "비가치", "판단보류"] },
+        "hypothesis": { "anyOf": [{ "$ref": "#/$defs/hypothesis" }, { "type": "null" }] },
+        "hold_reason": { "type": ["string", "null"] },
+        "runner_up": { "anyOf": [{ "$ref": "#/$defs/hypothesis" }, { "type": "null" }] },
+        "scores": {
+          "type": "object",
+          "required": ["support", "refute"],
+          "properties": { "support": { "$ref": "#/$defs/by_hypothesis" }, "refute": { "$ref": "#/$defs/by_hypothesis" } }
+        },
+        "flags": {
+          "type": "object",
+          "required": ["fragile", "unverified_basis", "mixed", "low_confidence"],
+          "properties": {
+            "fragile": { "type": "boolean" },
+            "unverified_basis": { "type": "boolean" },
+            "mixed": { "type": "array", "items": { "type": "string" } },
+            "low_confidence": { "type": "boolean" }
+          }
+        },
+        "inputs": {
+          "type": "object",
+          "required": ["news_docs", "dart_units", "market_units"],
+          "properties": {
+            "news_docs": { "type": "integer", "minimum": 0 },
+            "dart_units": { "type": ["integer", "null"], "minimum": 0 },
+            "market_units": { "type": ["integer", "null"], "minimum": 0 }
+          }
+        },
+        "evidence": { "type": "array", "items": { "$ref": "#/$defs/unit" } }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "verdict": { "enum": ["가치훼손", "비가치"] } } },
+          "then": { "properties": { "hypothesis": { "$ref": "#/$defs/hypothesis" }, "hold_reason": { "type": "null" } } },
+          "else": { "properties": { "hold_reason": { "type": "string" } } }
+        },
+        {
+          "if": { "properties": { "verdict": { "const": "가치훼손" } } },
+          "then": { "properties": { "hypothesis": { "enum": ["H1", "H2"] } } }
+        },
+        {
+          "if": { "properties": { "verdict": { "const": "비가치" } } },
+          "then": { "properties": { "hypothesis": { "enum": ["H3", "H4", "H5"] } } }
+        }
+      ]
+    },
+    "unit": {
+      "type": "object",
+      "required": ["unit_id", "source", "type", "direction", "weight", "mandatory", "urls"],
+      "properties": {
+        "unit_id": { "type": "string" },
+        "source": { "enum": ["news", "dart", "market"] },
+        "type": { "type": "string", "pattern": "^[A-Z]\\d[a-z]?$" },
+        "direction": { "enum": ["긍정", "부정", "없음"] },
+        "weight": { "type": "number", "minimum": 0 },
+        "mandatory": { "type": "boolean" },
+        "certainty": { "type": ["string", "null"] },
+        "label": { "type": ["string", "null"], "description": "단위 요약(회사-사건). 기사 발췌가 아니다." },
+        "filing": { "type": ["string", "null"], "description": "공시 제목 또는 시장 규칙 수치 (source가 dart·market일 때만)" },
+        "urls": { "type": "array", "items": { "type": "string" } }
+      },
+      "allOf": [
+        { "if": { "properties": { "source": { "const": "news" } } }, "then": { "properties": { "filing": { "type": "null" } } } }
+      ]
+    }
+  }
+}

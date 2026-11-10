@@ -126,3 +126,13 @@ def test_params_market_only_holds_and_positive_weight():
     good = unit('F2', 1.0, direction='긍정')                       # 좋은 소식 + 급락 → H3 지지
     assert ach.decide([good])['hypothesis'] == 'H3'
     assert ach.decide([good], params={'positive_weight': 0.0})['hypothesis'] == 'H0'
+
+
+def test_positive_refutes_only_keeps_h1_refutation_but_drops_h3_support():
+    good = unit('F2', 1.0, direction='긍정')
+    assert ach.relation('F2', '긍정', 'H1', positive_supports=False) == '-'
+    assert ach.relation('F2', '긍정', 'H3', positive_supports=False) == '0'
+    out = ach.decide([good], params={'positive_supports': False})
+    assert out['hypothesis'] == 'H0' and out['refute']['H1'] == 1.0
+    mixed = ach.decide([good, unit('M3', 0.6, direction='없음')], params={'positive_supports': False})
+    assert mixed['hypothesis'] == 'H3' and mixed['support']['H3'] == 0.6      # 심리성은 직접 근거가 있을 때만

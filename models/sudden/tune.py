@@ -18,7 +18,12 @@ import ach
 import backtest as bt
 
 HERE = Path(__file__).resolve().parent
-GRID = {'market_only_holds': [False, True], 'positive_weight': [1.0, 0.5, 0.0], 'gap': [0.3, 0.5, 0.7]}
+GRIDS = {
+    # 2026-11-10 첫 튜닝: 설정 세 가지
+    'settings': {'market_only_holds': [False, True], 'positive_weight': [1.0, 0.5, 0.0], 'gap': [0.3, 0.5, 0.7]},
+    # 2026-11-10 관계표 수정안: 좋은 소식은 반증만 (positive_supports=False)
+    'relation': {'positive_supports': [True, False], 'market_only_holds': [False, True], 'gap': [0.5]},
+}
 
 
 def rejudge(results, params):
@@ -57,22 +62,25 @@ def load_rows(ach_dir):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--ach', type=Path, default=HERE / 'cache/naver_2023/ach')
+    ap.add_argument('--grid', choices=sorted(GRIDS), default='settings')
     args = ap.parse_args(argv)
-    results = [json.loads(f.read_text(encoding='utf-8')) for f in sorted(args.ach.glob('*_*.json'))]
+    grid = GRIDS[args.grid]
+    results = [json.loads(f.read_text(encoding='utf-8')) for f in sorted(args.ach.glob('[0-9]*_[0-9]*.json'))]   # 사건 파일만
     rows = load_rows(args.ach)
     log = []
-    for combo in itertools.product(*GRID.values()):
-        params = dict(zip(GRID, combo))
+    for combo in itertools.product(*grid.values()):
+        params = dict(zip(grid, combo))
         log.append({'params': params, **evaluate(rows, rejudge(results, params))})
     out = {'run_at': datetime.now().isoformat(timespec='seconds'), 'ach_dir': str(args.ach), 'events': len(rows),
-           'grid': GRID, 'objective': 'CAR(1,60) 비가치 - 가치훼손 > 0 (비가치가 더 회복), 사건 수가 너무 적은 설정은 피한다',
+           'grid_name': args.grid, 'grid': grid, 'objective': 'CAR(1,60) 비가치 - 가치훼손 > 0 (비가치가 더 회복), 사건 수가 너무 적은 설정은 피한다',
            'tried': log}
-    (args.ach / 'tuning_log.json').write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding='utf-8')
-    print(f"{'market_only':>11} {'pos_w':>5} {'gap':>4} | 가치훼손 비가치 보류 fragile | CAR60 차이   t     p   | CAR20 차이   t     p")
+    name = 'tuning_log.json' if args.grid == 'settings' else f'tuning_log_{args.grid}.json'
+    (args.ach / name).write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding='utf-8')
+    print(' '.join(f'{k[:12]:>12}' for k in grid) + " | 가치훼손 비가치 보류 fragile | CAR60 차이   t     p   | CAR20 차이   t     p")
     for e in log:
         p, v, c6, c2 = e['params'], e['verdicts'], e['CAR_60'], e['CAR_20']
         fmt = lambda x, f: format(x, f) if x is not None else '-'
-        print(f"{str(p['market_only_holds']):>11} {p['positive_weight']:>5} {p['gap']:>4} | {v['가치훼손']:>6} {v['비가치']:>6} {v['판단보류']:>4} {e['fragile']:>6}"
+        print(' '.join(f'{str(p[k]):>12}' for k in grid) + f" | {v['가치훼손']:>6} {v['비가치']:>6} {v['판단보류']:>4} {e['fragile']:>6}"
               f" | {fmt(c6['diff'], '+.3f'):>7} {fmt(c6['t'], '.2f'):>5} {fmt(c6['p'], '.2f'):>5}"
               f" | {fmt(c2['diff'], '+.3f'):>7} {fmt(c2['t'], '.2f'):>5} {fmt(c2['p'], '.2f'):>5}")
     return 0

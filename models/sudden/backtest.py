@@ -128,7 +128,7 @@ def run(ach_dir):
     df['halted'] = df['volume'].fillna(0) == 0
     by_stock = {c: g.sort_values('trade_date').reset_index(drop=True) for c, g in df.groupby('stock_code')}
     rows = []
-    for f in sorted(Path(ach_dir).glob('*_*.json')):
+    for f in sorted(Path(ach_dir).glob('[0-9]*_[0-9]*.json')):   # 사건 파일만 (tuning_log 등 제외)
         r = json.loads(f.read_text(encoding='utf-8'))
         stock = by_stock.get(r['stock_code'])
         if stock is None:
