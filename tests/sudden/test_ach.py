@@ -136,3 +136,14 @@ def test_positive_refutes_only_keeps_h1_refutation_but_drops_h3_support():
     assert out['hypothesis'] == 'H0' and out['refute']['H1'] == 1.0
     mixed = ach.decide([good, unit('M3', 0.6, direction='없음')], params={'positive_supports': False})
     assert mixed['hypothesis'] == 'H3' and mixed['support']['H3'] == 0.6      # 심리성은 직접 근거가 있을 때만
+
+
+def test_min_support_ratio_holds_weakly_supported_winner():
+    # 좋은 소식이 H3·H5를 크게 지지하고 H1을 반증, 부정 C2 하나(0.6)가 H1·H2를 지지 → H2가 반증 0으로 이긴다(설계서 규칙)
+    units = [unit('F2', 4.0, direction='긍정'), unit('F1', 4.0, direction='긍정'), unit('C2', 0.6)]
+    assert ach.decide(units)['verdict'] == '가치훼손'
+    held = ach.decide(units, params={'min_support_ratio': 0.25})
+    assert held['verdict'] == '판단보류' and held['reason'] == 'weak_support'
+    assert held['hypothesis'] == 'H2' and held['runner_up'] == 'H3'
+    main, _ = ach.judge(design_example(), params={'min_support_ratio': 0.25})   # 5.7 예시(H1 1.31이 최대 지지)는 그대로
+    assert main['verdict'] == '가치훼손'

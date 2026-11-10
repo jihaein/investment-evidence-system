@@ -504,8 +504,11 @@ def main(argv=None):
     summaries = export(db, args.out, stocks, selected_keys)
     db.close()
     print(json.dumps(summaries, ensure_ascii=False, indent=2))
-    done = all(all(s in ('complete', 'empty') for s in m['search_statuses'])
-               and set(m['article_statuses']) <= {'complete', 'excluded_automated'} and not m['pending_articles']
+    # --capped-ok·--baseline-max-pages의 capped와 --title-match의 제목 불일치는 의도한 결과라 완료로 본다
+    ok_search = {'complete', 'empty'} | ({'capped'} if args.capped_ok or args.baseline_max_pages else set())
+    ok_article = {'complete', 'excluded_automated'} | ({'excluded_title_mismatch'} if args.title_match else set())
+    done = all(all(s in ok_search for s in m['search_statuses'])
+               and set(m['article_statuses']) <= ok_article and not m['pending_articles']
                for m in summaries.values())
     return 0 if done and len(selected_keys) == sum(sum(m['search_statuses'].values()) for m in summaries.values()) else 1
 

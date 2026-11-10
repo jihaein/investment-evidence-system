@@ -313,7 +313,8 @@ def merge(units):
 PARAMS = {'gap': 0.5,                 # 5.6절 동률 차이 기준
           'positive_weight': 1.0,     # 긍정 방향 단위(좋은 소식) 가중 배수. 1이면 설계서 그대로
           'market_only_holds': False,  # True면 시장 규칙(K) 단위만으로는 판정하지 않고 판단보류
-          'positive_supports': True}   # False면 좋은 소식은 반증만 하고 지지하지 않음 (관계표 수정안)
+          'positive_supports': True,   # False면 좋은 소식은 반증만 하고 지지하지 않음 (관계표 수정안)
+          'min_support_ratio': 0.0}    # 이긴 가설의 지지가 가장 큰 지지의 이 비율 미만이면 판단보류(weak_support). 0이면 설계서 그대로
 
 
 def score(units, params=None):
@@ -347,6 +348,11 @@ def decide(units, gap=None, params=None):
     top = tie[0]
     rest = sorted([h for h in cands if h != top], key=lambda h: (refute[h], -support[h]))
     runner = rest[0] if rest else None
+    strongest = max(cands, key=lambda h: support[h])
+    if support[top] < params['min_support_ratio'] * support[strongest]:
+        # 반증이 적다는 이유만으로 근거가 거의 없는 가설이 이기는 경우(예: 단위 하나 0.6 vs 다른 가설 지지 28).
+        # 근거가 크게 엇갈린다는 뜻이라 판정하지 않는다.
+        return {**base, 'hypothesis': top, 'verdict': '판단보류', 'reason': 'weak_support', 'runner_up': strongest}
     close_other = [h for h in tie[1:] if GROUP[h] != GROUP[top] and support[top] - support[h] < gap]
     if close_other:
         return {**base, 'hypothesis': top, 'verdict': '판단보류', 'reason': 'competing_groups_too_close',
@@ -523,6 +529,8 @@ def main(argv=None):
     ap.add_argument('--positive-weight', type=float, help='좋은 소식 단위 가중 배수 (기본 1.0 = 설계서)')
     ap.add_argument('--gap', type=float, help='판정 동률 차이 기준 (기본 0.5 = 설계서)')
     ap.add_argument('--positive-refutes-only', action='store_true', help='좋은 소식은 반증만 하고 지지하지 않음 (관계표 수정안)')
+    ap.add_argument('--min-support-ratio', type=float,
+                    help='이긴 가설의 지지가 최대 지지의 이 비율 미만이면 판단보류 (기본 0 = 설계서, 채택값 0.25)')
     ap.add_argument('--no-dart', action='store_true', help='DART 공시 없이 실행')
     args = ap.parse_args(argv)
     lf.load_env()
@@ -537,6 +545,8 @@ def main(argv=None):
         PARAMS['gap'] = args.gap
     if args.positive_refutes_only:
         PARAMS['positive_supports'] = False
+    if args.min_support_ratio is not None:
+        PARAMS['min_support_ratio'] = args.min_support_ratio
     with (OUT / 'drop_events.csv').open(encoding='utf-8-sig', newline='') as f:
         events = list(csv.DictReader(f))
     ids = set(args.drop_id or [])

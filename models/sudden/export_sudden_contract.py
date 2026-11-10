@@ -20,8 +20,8 @@ ROOT = HERE.parents[1]
 SCHEMA_VERSION = '0.1'
 HYPS = ('H1', 'H2', 'H3', 'H4', 'H5')
 SAMPLES = {
-    '2015': {'out': 'output', 'ach': 'cache/naver_full/ach_f1', 'split': None, 'file': 'sudden_result.json'},
-    '2023_tune': {'out': 'output_2023', 'ach': 'cache/naver_2023/ach_f1', 'split': 'tune', 'file': 'sudden_result_2023_tune.json'},
+    '2015': {'out': 'output', 'ach': 'cache/naver_full/ach_ms', 'split': None, 'file': 'sudden_result.json'},
+    '2023_tune': {'out': 'output_2023', 'ach': 'cache/naver_2023/ach_ms', 'split': 'tune', 'file': 'sudden_result_2023_tune.json'},
 }
 PARAMS = {'gap': 0.5, 'positive_weight': 1.0, 'market_only_holds': True, 'positive_supports': True}
 NOTES = [
@@ -82,8 +82,9 @@ def case_out(r, event):
             'evidence': [unit_out(u) for u in r.get('units') or []]}
 
 
-def build(sample):
-    cfg = SAMPLES[sample]
+def build(sample, cfg=None):
+    """cfg: {'out': 사건표 폴더, 'ach': ACH 결과 폴더, 'split': ...}. 없으면 SAMPLES[sample] (HERE 기준 상대 경로도 된다)."""
+    cfg = cfg or SAMPLES[sample]
     with (HERE / cfg['out'] / 'drop_events.csv').open(encoding='utf-8-sig', newline='') as f:
         events = {e['drop_id']: e for e in csv.DictReader(f)}
     results = [json.loads(p.read_text(encoding='utf-8')) for p in sorted((HERE / cfg['ach']).glob('[0-9]*_[0-9]*.json'))]
@@ -114,9 +115,17 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--sample', choices=sorted(SAMPLES), default='2015')
     ap.add_argument('--out', type=Path)
+    ap.add_argument('--ach', type=Path, help='ACH 결과 폴더 (live.py 등, --events와 함께)')
+    ap.add_argument('--events', type=Path, help='drop_events.csv가 있는 폴더')
+    ap.add_argument('--name', help='--ach를 쓸 때 표본 이름')
     args = ap.parse_args(argv)
-    contract = build(args.sample)
-    out = args.out or ROOT / 'contracts' / SAMPLES[args.sample]['file']
+    if args.ach:
+        name = args.name or args.ach.name
+        contract = build(name, {'out': args.events, 'ach': args.ach, 'split': None})
+        out = args.out or ROOT / 'contracts' / f'sudden_result_{name}.json'
+    else:
+        contract = build(args.sample)
+        out = args.out or ROOT / 'contracts' / SAMPLES[args.sample]['file']
     out.write_text(json.dumps(contract, ensure_ascii=False, indent=1), encoding='utf-8')
     counts = {v: sum(c['verdict'] == v for c in contract['cases']) for v in ('가치훼손', '비가치', '판단보류')}
     print(json.dumps({'out': str(out), 'cases': len(contract['cases']), **counts}, ensure_ascii=False))

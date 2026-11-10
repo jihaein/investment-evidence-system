@@ -23,6 +23,8 @@ GRIDS = {
     'settings': {'market_only_holds': [False, True], 'positive_weight': [1.0, 0.5, 0.0], 'gap': [0.3, 0.5, 0.7]},
     # 2026-11-10 관계표 수정안: 좋은 소식은 반증만 (positive_supports=False)
     'relation': {'positive_supports': [True, False], 'market_only_holds': [False, True], 'gap': [0.5]},
+    # 2026-11-10 최소 지지 비율: 반증이 적다는 이유만으로 지지가 거의 없는 가설이 이기는 경우 판단보류
+    'min_support': {'market_only_holds': [True], 'min_support_ratio': [0.0, 0.15, 0.25, 0.35]},
 }
 
 
@@ -50,8 +52,8 @@ def evaluate(rows, verdicts):
     return res
 
 
-def load_rows(ach_dir):
-    with (Path(ach_dir) / 'backtest.csv').open(encoding='utf-8-sig', newline='') as f:
+def load_rows(ach_dir, backtest=None):
+    with (Path(backtest) if backtest else Path(ach_dir) / 'backtest.csv').open(encoding='utf-8-sig', newline='') as f:
         rows = list(csv.DictReader(f))
     for r in rows:
         for k in ('CAR_20', 'CAR_60'):
@@ -63,10 +65,11 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--ach', type=Path, default=HERE / 'cache/naver_2023/ach')
     ap.add_argument('--grid', choices=sorted(GRIDS), default='settings')
+    ap.add_argument('--backtest', type=Path, help='사후 CAR 파일 (기본: <ach>/backtest.csv). 단위만 바뀐 재실행 폴더에 쓴다')
     args = ap.parse_args(argv)
     grid = GRIDS[args.grid]
     results = [json.loads(f.read_text(encoding='utf-8')) for f in sorted(args.ach.glob('[0-9]*_[0-9]*.json'))]   # 사건 파일만
-    rows = load_rows(args.ach)
+    rows = load_rows(args.ach, args.backtest)
     log = []
     for combo in itertools.product(*grid.values()):
         params = dict(zip(grid, combo))

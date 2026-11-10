@@ -40,8 +40,8 @@
       "required": ["drop_id", "stock_code", "company_name", "drop_date", "decision_time", "verdict", "hypothesis",
                    "hold_reason", "scores", "flags", "inputs", "evidence"],
       "properties": {
-        "drop_id": { "type": "string", "pattern": "^\\d{6}_\\d{8}$" },
-        "stock_code": { "type": "string", "pattern": "^\\d{6}$" },
+        "drop_id": { "type": "string", "pattern": "^[0-9A-Z]{6}_\\d{8}$" },
+        "stock_code": { "type": "string", "pattern": "^[0-9A-Z]{6}$", "description": "2024년부터 신규 상장은 영문 섞인 단축코드(예: 0015N0)" },
         "company_name": { "type": "string" },
         "market": { "type": ["string", "null"] },
         "drop_date": { "type": "string", "format": "date" },
