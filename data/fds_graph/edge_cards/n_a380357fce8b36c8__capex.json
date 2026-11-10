@@ -1,0 +1,67 @@
+{
+  "edge_id": "n_a380357fce8b36c8->capex",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "반부패 감사에 의한 적발의 변화가 실물투자의 수익성·조달 여건 경로를 통해 설비투자 지출의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R10130의 적용 맥락: This paper studies how randomized municipal audits by Brazil’s Office of the Comptroller General (CGU) during 2003–2014 affected firms and workers. The CGU ran televised lotteries selecting municipalities for audits of federally funded municipal procurement (covering contracts in the two prior years); auditors publicly listed firms implicated in irregularities. The unit of analysis is firm- and worker-level administrative data (matched RAIS, procurement, BNDES loans, and PIA investment) for firms—mostly outside audited municipalities—exposed by these audits across Brazilian municipalities."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_1bc44036b54f9eb7",
+      "text": "미국 다국적기업의 해외 설비투자이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_4909e107c2a30075",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a74154d004c08e55",
+      "text": "해외 자본투자이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_e78da320e45d3558",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bf78063418ed9512",
+      "text": "신주 발행으로 조달한 자본이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_9fbc893495377352",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6c2cabe51a28dc51",
+      "text": "경영자 과신이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfa13a568153b507",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dd475677b29a07d4",
+      "text": "인수 방어 조항 제거이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_2bd5a496e1eaeda0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_4011b037bc1954b1",
+      "text": "경기침체기에 경력 시작이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_10b72d2b8f5b8e19",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a0b32e2a9856af05",
+      "text": "기업 불확실성이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "firm_uncertainty",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0a0ba1ab161b7f2c",
+      "text": "기업 자금조달 제약이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "financing_constraint",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Revealing Corruption: Firm and Worker Level Evidence from Brazil (2022, journal_of_financial_economics; CSV R10130; https://www.nber.org/papers/w29627)",
+    "author": "Emanuele Colonnelli, Spyridon Lagaras, Jacopo Ponticelli, Mounu Prem, Margarita Tsoutsoura",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

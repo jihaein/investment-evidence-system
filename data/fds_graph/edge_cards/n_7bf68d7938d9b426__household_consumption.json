@@ -1,0 +1,115 @@
+{
+  "edge_id": "n_7bf68d7938d9b426->household_consumption",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "시장 전반의 소득 이전의 변화가 가처분소득·저축 유인·소비 여력 경로를 통해 가계 소비의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06050의 적용 맥락: The paper studies nonlinear pricing of basic staples (rice, kidney beans, sugar) in rural Mexico using household-level purchase and price data collected for the Progresa evaluation across waves from 1997–2003. The setting is small, often isolated localities/municipalities where a phased, randomized rollout of the Progresa conditional cash transfer program (1998–1999 initial waves) generated exogenous variation in household incomes and eligibility. Units are households (consumers) and single local sellers; the paper combines a structural nonlinear-pricing model with village-level empirical estimation and program-induced income shocks."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_19b902ee5e476bd0",
+      "text": "부의 영구적 변화이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_d772a8e62051dddc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0c57269df15d79cc",
+      "text": "주택가격 상승이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_0ba8239edc9eaec0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7f03b1ac20587e82",
+      "text": "동료 집단의 소비이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_bdf2fce484f42d1f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_36d62802cbe0a967",
+      "text": "남편의 동료 집단 소비이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_c75e4dbe44a7e842",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d3585df04b73e2bd",
+      "text": "QE1에서 국채 대신 MBS 매입이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_23254ae8908a732b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5fad5939058c7c8c",
+      "text": "역사적 국가 역량이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_9c29c58f6a95d65a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2c61fb513851fac7",
+      "text": "통화 팽창이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_d92279d6504f4371",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_169a212481f16e8d",
+      "text": "예상 밖 인플레이션이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2a0209663dda4d2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ea6c9511d6a7f2f8",
+      "text": "실질금리이(가) 상승하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "real_rate",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_872284ddb51b02dc",
+      "text": "재기를 지원하는 파산제도 개혁이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_77cddfdc8ef1d330",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9e1ba86da3c66b73",
+      "text": "미실현 자본이득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_67c6d3b209319fcb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6d2c32fcd3ee7ef9",
+      "text": "배당소득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_77693c509b901e77",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0d8d86849560e58c",
+      "text": "이주 보조금이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_584afd2d8c566d80",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a4a41e5bdc645810",
+      "text": "총소득의 영구적 감소이(가) 상승하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_21dfbf66f3dcc4d6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_14dc545b8830bd68",
+      "text": "연속적인 경기부양 지원금 지급이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_893dc58267c154f5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7325a4092f9c10d1",
+      "text": "가계 소득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "household_income",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Nonlinear Pricing in Village Economies (2015, econometrica; CSV R06050; https://www.nber.org/papers/w21718)",
+    "author": "Orazio Attanasio, Elena Pastorino",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

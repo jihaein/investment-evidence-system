@@ -1,0 +1,73 @@
+{
+  "edge_id": "n_a6d900aebd61fccd->cash",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "불확실성 충격의 변화가 내부현금 창출·현금 유출·예비적 보유 경로를 통해 현금 보유액의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07710의 적용 맥락: Using U.S. publicly listed firm-year data (main 1993–2019; extended OLS sample 1965–2019), the paper studies how firm-level uncertainty shocks—measured by realized and option-implied stock-return volatility—affect investment, employment, sales and firms’ financial policies. Identification exploits industry-level exposures to oil, seven major currencies, and economic policy uncertainty as instruments. Analyses span U.S. industries, contrast periods of heightened aggregate financial frictions (e.g., 2008–09), and compare firms with differing ex-ante financial constraints, controlling for firm and year fixed effects."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_4ac0de40541e003c",
+      "text": "신주 발행으로 조달한 자본이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9fbc893495377352",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_99573ac99a64bf22",
+      "text": "경기침체이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_c836905751e74c2e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8b91b6c4048a8b2c",
+      "text": "인수이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_31de312977fc2ebd",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f58dbfbe197e4bf4",
+      "text": "확대된 담보 인정 범위이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e432ff4dca61e44",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_dbcc951d5edd783c",
+      "text": "경영 위험이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_ca7df404d411b010",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_74c05d1e6820978c",
+      "text": "외생적 유동성 손실이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_427698ffb44cb513",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3dc0ef39e0167f65",
+      "text": "단기 은행신용 비용 증가이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_352d8f471664c5df",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f6edc1971c4bb7de",
+      "text": "배당세 인상이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d0d150ec0651e4cb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_77039d9c32b0e5d7",
+      "text": "현금 배당 지급액이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "payout",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "The Finance Uncertainty Multiplier (2018, journal_of_political_economy; CSV R07710; https://www.nber.org/papers/w24571)",
+    "author": "Iván Alfaro, Nicholas Bloom, Xiaoji Lin",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

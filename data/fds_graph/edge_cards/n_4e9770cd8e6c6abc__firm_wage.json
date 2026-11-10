@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_4e9770cd8e6c6abc->firm_wage",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "기업의 수출 참여의 변화가 노동 수요·협상·보상 결정 경로를 통해 기업 근로자 임금의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04050의 적용 맥락: This paper studies Brazil’s formal manufacturing sector using linked employer–employee (RAIS) and customs (SECEX) data for 1986–1998. Units are firms and workers in manufacturing; analyses exploit cross-sectional variation in firm employment, wages, and export participation after late‑1980s/early‑1990s trade liberalization (tariff cuts and removal of non‑tariff barriers) and the 1995 real appreciation. The authors estimate a heterogeneous‑firm structural model (maximum likelihood) and run Mincer and firm‑level regressions to quantify trade’s effects on wage inequality."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_6ba29a574e910b6e",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a0e2e909746525dd",
+      "text": "미국 파산법 Chapter 13 보호이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_1fadff3300befb46",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3f533f23e13ee23d",
+      "text": "주 법인세 인상이(가) 상승하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_386c508084e8f61f",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3a23b7c370e345d0",
+      "text": "수출 수요 5% 증가이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_57aeb5628ca5e0da",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bb8fbd1e875f5018",
+      "text": "조정된 수출 수요 충격이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_21cbe30fb8328f03",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Trade and Inequality: From Theory to Estimation (2012, review_of_economic_studies; CSV R04050; https://www.nber.org/papers/w17991)",
+    "author": "Elhanan Helpman, Oleg Itskhoki, Marc-Andreas Muendler, Stephen J. Redding",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_d090a25801353e01->policy_rate",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "양의 산출갭 충격의 변화가 정책 반응·금융 여건 경로를 통해 정책금리의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02974의 적용 맥락: This paper analyzes U.S. quarterly macro and bond market data from June 1952–December 2007, using three-month T-bill rates, zero-coupon Treasury yields, the output gap, and inflation. It studies how time-varying Federal Reserve policy responses (a Taylor-type rule with evolving coefficients across eras including pre-Volcker, Volcker, Greenspan, and early-2000s) affect the term structure, risk premia, and yields under a no-arbitrage quadratic term-structure model where agents form expectations via a stationary VAR."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_1f03fca66eef25e2",
+      "text": "인플레이션 민감도 증가이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a416bf413e8f8470",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2ed6a1cdeab5543b",
+      "text": "양의 인플레이션 충격이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_ebe41187a5246810",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_39797f9739dbc41e",
+      "text": "외가격 풋·콜 내재변동성 비율이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_66c2f52b71bf8879",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f2e96c187cd2fafb",
+      "text": "주식 등가격 옵션 내재변동성이(가) 상승하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_e0135039a2d7fa07",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c0fc5005a0ae3a7d",
+      "text": "부정적 주택가격 충격이(가) 상승하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a3f33793033616d1",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5987ef053927b849",
+      "text": "주요 경기순환 충격이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_9bad08cd66f774e4",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Monetary Policy Shifts and the Term Structure (2009, review_of_economic_studies; CSV R02974; https://www.nber.org/papers/w15270)",
+    "author": "Andrew Ang, Jean Boivin, Sen Dong, Rudy Loo-Kung",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

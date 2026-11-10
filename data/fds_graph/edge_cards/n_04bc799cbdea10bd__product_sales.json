@@ -1,0 +1,97 @@
+{
+  "edge_id": "n_04bc799cbdea10bd->product_sales",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "미생물 수질기준 위반의 변화가 수요·가격·제품 선택 경로를 통해 제품·사업별 판매 규모의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03475의 적용 맥락: This paper studies responses from 2001–2005 by matching weekly bottled-water sales (store-week) for a national grocery chain’s Northern California and Nevada stores to EPA Safe Drinking Water Act (SDWIS) violations at community water districts mapped to zip codes. Units are store-week observations linked to population exposure; violations are publicly disclosed under the SDWA (24-hour notice for microorganisms/nitrates, 30-day for other contaminants). The analysis estimates changes in bottled-water purchases following microorganism, nitrate, and element/chemical violations."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_3e3d975fe14222ae",
+      "text": "시장 진입 순서이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_f46f9bb29a0fb91a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_bbc822a6912cefcf",
+      "text": "저품질 제품 가격이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_84a699acfcd594f2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_811ae03d3647f01a",
+      "text": "잭팟 당첨 복권의 판매이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_1b383c5e860d6cf2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fd2f0f113d4d6d0e",
+      "text": "주택소유자당 담보권 실행 건수이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_2e36393d0dd36413",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f8cb079ea8d2f2ae",
+      "text": "원소·화학물질 수질기준 위반이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_dc0fcc47b0d176d4",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2923537d27513bf6",
+      "text": "세무조사 확률 증가 발표이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_ae2b2e97cc54ad56",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5bae0e53d5693797",
+      "text": "신제품 출시이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_cd590377a1c4df0e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9b166fea58482e10",
+      "text": "준비자산 평가가치 상승이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_4cf73fb28bb462e9",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ea39a816b9f8ca77",
+      "text": "뉴욕타임스 리뷰이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_164c4e1db4fad89f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_477e9158ae0b30c6",
+      "text": "중개 수수료이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfce4a4862f18769",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a3e12ab7fb43bb26",
+      "text": "미 노동부 수탁자 의무 규칙 제안이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_1e24446d45bc919e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_276523200fff3813",
+      "text": "연금상품 비용률이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_bee99bda0408c613",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f054bc9aea2b5ff1",
+      "text": "공공 약국 진입이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_895bc1c56cab8186",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Water Quality Violations and Avoidance Behavior: Evidence from Bottled Water Consumption (2011, american_economic_review; CSV R03475; https://www.nber.org/papers/w16695)",
+    "author": "Joshua Graff Zivin, Matthew Neidell, Wolfram Schlenker",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -136,6 +136,26 @@ def test_found_path_becomes_two_pr_evidence():
     assert "판매관리비 상승" in b["evidence"][1]["statement"]
 
 
+def test_model_map_points_at_real_models_and_ids():
+    import re
+    for node_id, m in gp.load_model_map().items():
+        assert m["model"] in ("fscore", "ohlson", "dupont", "gate") and m["match"] in ("same", "part"), node_id
+        prefix = {"fscore": "FS", "ohlson": "OH", "dupont": "DP", "gate": "GT"}[m["model"]]
+        assert m["evidence"] and all(re.fullmatch(prefix + r"-[0-9]+", e) for e in m["evidence"]), node_id
+
+
+def test_model_links_name_the_model_evidence():
+    checks = PATH_ROW["checks"] + [{"node_id": "operating_margin", "label": "영업이익률", "layer": "L1", "direction": "-",
+                                    "edge_ids": ["unit_cost->operating_profit"]}]
+    b = block(path_row={**PATH_ROW, "checks": checks})
+    links = b["links"][0]["model_links"]
+    assert links == [{"node_id": "operating_margin", "label": "영업이익률", "where": "check", "model": "dupont",
+                      "indicator": "영업이익률(PM)", "match": "same", "evidence": ["DP-1"]}]
+    assert b["evidence"][0]["values"]["model_links"] == links
+    assert "모델이 재는 변수: 영업이익률(확인 조건) → 영업이익률(PM) [DP-1]." in b["evidence"][0]["statement"]
+    assert block()["links"][0]["model_links"] == [] and "모델이 재는 변수" not in block()["evidence"][0]["statement"]
+
+
 @pytest.mark.parametrize("cause, effect, sign, expected", [
     ("증가", "증가", "+", "same"), ("증가", "감소", "+", "opposite"), ("증가", "감소", "-", "same"),
     ("감소", "증가", "-", "same"), ("감소", "감소", "-", "opposite"), ("모름", "증가", "+", "not_compared"),

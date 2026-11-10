@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_d0d150ec0651e4cb->firm_exit",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "배당세 인상의 변화가 사업 수익성·유동성·퇴출 유인 경로를 통해 기업 퇴출 가능성의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R10220의 적용 맥락: This paper studies the 2013 French dividend payroll-tax reform that tripled the tax rate on dividends to owner-managers of SARL firms (from 15.5% to 46%). It uses administrative tax and accounting panel data covering the universe of private firms over 2008–2017. The unit of analysis is closely-held firms/owner-managers (SARL treated, SAS controls), exploiting legal-status variation and staggered fiscal-year treatment timing to estimate effects on payouts, retained earnings, capital and labor accumulation, revenues, and exit."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_70e02e081c77f53d",
+      "text": "해외 경쟁 심화이(가) 하락하여 기업 퇴출 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_a27ae012897c1d75",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_32d9a316a1e21c0b",
+      "text": "현장 직무훈련(TWI)이(가) 상승하여 기업 퇴출 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f03fef2267c4d671",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_15275988fbc01663",
+      "text": "Banks for All 프로그램이(가) 하락하여 기업 퇴출 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_eb4111d8ce440028",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1319a1e5b50a5194",
+      "text": "시의회 해산(CCD)이(가) 하락하여 기업 퇴출 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_9b2c8d8a0c6a12ff",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Dividend Taxes, Firm Growth, and the Allocation of Capital (2022, american_economic_review; CSV R10220; https://www.nber.org/papers/w30099)",
+    "author": "Adrien Matray",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

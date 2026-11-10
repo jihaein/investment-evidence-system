@@ -1,0 +1,73 @@
+{
+  "edge_id": "n_31de312977fc2ebd->cash",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "인수의 변화가 내부현금 창출·현금 유출·예비적 보유 경로를 통해 현금 보유액의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04009의 적용 맥락: This paper studies 5,187 target firms in 25 European countries acquired between 2001 and 2008 (acquirers in 65 countries), each becoming a wholly owned subsidiary. Exploiting European unconsolidated subsidiary disclosures (Amadeus), the authors compare firm-year outcomes—cash holdings, cash–flow sensitivities of cash and investment, and investment rates—before and after acquisition for mostly private, often small targets kept as separate subsidiaries to assess whether acquisitions ease financial constraints."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_08096f7ea97b4d22",
+      "text": "신주 발행으로 조달한 자본이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9fbc893495377352",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ae6625cfc917c314",
+      "text": "경기침체이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_c836905751e74c2e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_43908ba888b69bfa",
+      "text": "확대된 담보 인정 범위이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e432ff4dca61e44",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_cf34c2fd147e7225",
+      "text": "경영 위험이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_ca7df404d411b010",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2c2e5a1ca6523acd",
+      "text": "외생적 유동성 손실이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_427698ffb44cb513",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_4963c15cef9f5d53",
+      "text": "단기 은행신용 비용 증가이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_352d8f471664c5df",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b809f49d7e677a1f",
+      "text": "불확실성 충격이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_a6d900aebd61fccd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1836ab5910281245",
+      "text": "배당세 인상이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d0d150ec0651e4cb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_300bc97a3015f72e",
+      "text": "현금 배당 지급액이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "payout",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Financing-Motivated Acquisitions (2012, journal_of_finance; CSV R04009; https://www.nber.org/papers/w17867)",
+    "author": "Isil Erel, Yeejin Jang, Michael S. Weisbach",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

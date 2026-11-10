@@ -1,0 +1,37 @@
+{
+  "edge_id": "n_93dbc6d099aef765->risk_free_rate",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "인지된 꼬리위험 상승의 변화가 안전자산 수익률·통화정책 기대 경로를 통해 무위험금리의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06056의 적용 맥락: This paper studies the U.S. macroeconomy (post‑WWII annual data, 1950–2014) with a focus on the 2008–09 Great Recession. Units are aggregate shocks to capital quality and financial‑intermediary losses constructed from Flow of Funds market‑value series and FDIC bank‑failure data, linked to firm-, intermediary-, and household‑level decisions within a calibrated macro model. Agents non‑parametrically estimate shock distributions in real time; the paper assesses how updated beliefs about tail risk affect investment, credit spreads, employment and output."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_1f0c22d023f27616",
+      "text": "불확실성 증가이(가) 상승하여 무위험금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_00532c15a0f3fac6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6b95e8e4e260ea38",
+      "text": "가계 소비 위험이(가) 상승하여 무위험금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_90dc5aeabec91961",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8d924547aac6ea65",
+      "text": "정책금리이(가) 하락하여 무위험금리의 상승을 상쇄할 수 있음",
+      "check_node": "policy_rate",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Tail that Wags the Economy: Beliefs and Persistent Stagnation (2015, journal_of_political_economy; CSV R06056; https://www.nber.org/papers/w21719)",
+    "author": "Julian Kozlowski, Laura Veldkamp, Venky Venkateswaran",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

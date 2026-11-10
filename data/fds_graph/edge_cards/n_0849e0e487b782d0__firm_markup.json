@@ -1,0 +1,73 @@
+{
+  "edge_id": "n_0849e0e487b782d0->firm_markup",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "지역 금융 발전의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 기업 마크업의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01026의 적용 맥락: Within Italy during the late 1980s–1990s, the paper uses firm-level balance-sheet data (Centrale dei Bilanci) across provinces/regions to assess how regional financial development affects firms' mark-ups. Mark-up is measured as EBITDA divided by output, and the unit of observation is individual firms (mostly small and medium). Regressions include industry and calendar-year controls and instrument regional financial development (e.g., judicial inefficiency, social capital) to address endogeneity."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_3d18279fd323fcaa",
+      "text": "서유럽 수출이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_6fdbd1327e0a91a5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fc620a4cd115087d",
+      "text": "수출 중단이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_680ab86f18f7a8de",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_bf3150a6d57e4075",
+      "text": "수출시장 진입이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_a784f6c100e40b55",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b827e5841950f4eb",
+      "text": "수입 비중 증가와 미국 기업 퇴출이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_c72cefcde7504e52",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_829c775b78f44e8c",
+      "text": "한계비용 감소이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_941020c7f660f9d9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2b181b5290ed5e89",
+      "text": "산출물 관세 하락이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_dfe115a23deb321b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_844f962edad47a36",
+      "text": "불확실성 증가이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_00532c15a0f3fac6",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_baad6919a1852523",
+      "text": "대기업 시장점유율이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_8f14ac6a66361dee",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_929f95e58ef15d05",
+      "text": "좀비기업 신용공급이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_0810557f4e50d819",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Does Local Financial Development Matter? (2002, quarterly_journal_of_economics; CSV R01026; https://www.nber.org/papers/w8923)",
+    "author": "Luigi Guiso, Paola Sapienza, Luigi Zingales",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

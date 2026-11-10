@@ -1,0 +1,271 @@
+{
+  "edge_id": "n_d7e198df243dc753->revenue",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "양국 간 무역장벽 하락의 변화가 판매량·단가·판매시장 접근성 경로를 통해 매출액의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02693의 적용 맥락: This paper studies French manufacturing firms using firm-level sales in 1986 for 229,900 firms (34,035 exporters) across 113 destinations (including France). It examines export entry, sales distributions, and how firm efficiency, fixed entry costs, and bilateral trade barriers shape participation and sales, combining customs and administrative manufacturing data. The authors estimate a heterogeneous‑firms trade model (Melitz-style) by the method of simulated moments and run general‑equilibrium counterfactuals (e.g., lower trade barriers or entry costs) to quantify effects on firm sales, exits, and welfare."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_83003d7570ac163b",
+      "text": "모기업의 상대적 숙련노동 풍부도이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_a6f13d780255fcd4",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9698baf02a8f7aea",
+      "text": "국가 간 GDP 수렴이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_23350df6bdf0fe82",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fc643507522680c1",
+      "text": "진출국 시장 규모이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_36d2da5b038f2c09",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d409bf26f24f5749",
+      "text": "절대적인 숙련도 차이이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_bca18ff3811a693e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8bc2a551f2d42a5d",
+      "text": "유입 방향의 숙련도 비유사성이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_bdaf75fe5d0879b0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1f520d35ec7bd886",
+      "text": "해외 매출이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_5af8efbf7c088c5c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_53fbb1a8d819ecf3",
+      "text": "벤처캐피털 자금조달이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_cae43e89edea9353",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7ce5967efa9d098a",
+      "text": "노조의 승리이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_56c408243bb62e59",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_afe579115114c773",
+      "text": "무역 비용이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_4b5d356a030106bd",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_fd351b5abbcd780e",
+      "text": "비체화 지식의 이전 비용이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_e0a6c8468375b051",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6347449190b09389",
+      "text": "기업 재무레버리지이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "leverage",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_393403b96f5dc643",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f93bb130dc12ba69",
+      "text": "해외 생산 이전이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_efe2d5d9d435fd92",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_795b0c657cc93ae4",
+      "text": "담보가치 상승이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_ae6e977dc7822ba7",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_521404e575bfee87",
+      "text": "전력 부족이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_3740b54f3c456d72",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b5828290cc71d242",
+      "text": "매출만을 기준으로 한 성과급이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_67ed2f6227acee93",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_04abdc8e33d2a23f",
+      "text": "경쟁사 광고이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_01fa3ec74007756d",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ac7751c0e7702e18",
+      "text": "기업 TV 광고이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_6e83fabeeff88093",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_15209bf3aa51a8cb",
+      "text": "신칸센역 개통이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_b75aa0fbe999c645",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b303ab6321339337",
+      "text": "기업 간 회의이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_41e5efb92eb59f8c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_970749af5855083f",
+      "text": "동료 정보를 이용한 예측 경영 점수이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_f3b644c32537d062",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_272c0e877eee8649",
+      "text": "급여세 인하 노출이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2aac6633c92702b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_eb5b8d8b3976bf83",
+      "text": "불확실성 충격이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_a6d900aebd61fccd",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1b8f709ea2a65c2c",
+      "text": "기업의 인플레이션 기대이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9f91972ee7c78bc3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_40f6880a6ca6f5b1",
+      "text": "생산 역량이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_7beb3f9422ef014d",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a3ee8a74558671e2",
+      "text": "고소득 가계 지출 감소이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_b05ef959f6a7abac",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5450b8935974f1dc",
+      "text": "사모펀드 바이아웃(원문 구분)이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_962449b3dfac4f24",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_926a04fe50b692bc",
+      "text": "현장 직무훈련(TWI)이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_f03fef2267c4d671",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a87efb3a5d06ee99",
+      "text": "경쟁기업의 혁신이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_3330e3a05e29b0e5",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6bc5357c741d7d54",
+      "text": "배당세 인상이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d0d150ec0651e4cb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_814a862e12a0dba0",
+      "text": "거시경제 불확실성 증가이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_c948928380d4a4c4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_87172d668d883388",
+      "text": "코메르츠은행 대출 축소이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_145708895fc69503",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_2b9b09ace737530c",
+      "text": "자회사의 모기업 장기대출이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_58c6e569bc50d679",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5768e87dff7c0fec",
+      "text": "판매량이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "sales_volume",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2210a032d75d36d3",
+      "text": "판매단가이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "selling_price",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_76d9c5685dc1560d",
+      "text": "신사업 매출 기여이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "new_business",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8e52ff15cf8330b4",
+      "text": "핵심 고객 매출 이탈이(가) 상승하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "customer_loss",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5193157d0307fbb6",
+      "text": "외화 수출의 원화 매출이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "export_revenue",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_40b7e43ba9114c1c",
+      "text": "기업 매출 성장률이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "revenue_growth",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1e3827fc80ddefe0",
+      "text": "제품·사업별 판매 규모이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "product_sales",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f8404dae999a4f6c",
+      "text": "제품·사업별 매출액이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "product_revenue",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_38c0ca8bbc9832fc",
+      "text": "수출 판매 규모이(가) 하락하여 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "export_sales",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "An Anatomy of International Trade: Evidence from French Firms (2008, econometrica; CSV R02693; https://www.nber.org/papers/w14610)",
+    "author": "Jonathan Eaton, Samuel Kortum, Francis Kramarz",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

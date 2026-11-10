@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_4a313d0365397c3e->credit_access",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "해외 확장적 통화정책 충격의 변화가 차입 자격·담보·금융 접근성 경로를 통해 기업 신용 접근성의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06976의 적용 맥락: This paper studies global banks’ cross-currency lending, reserve holdings, and syndicated loan activity from 2000–2016 (U.S. analyses focus on 2008:Q3–2016:Q4), across six major currency areas (U.S., Eurozone, U.K., Japan, Switzerland, Canada). Units of observation include bank-quarter Call Report data, country-currency-quarter BIS claims, and syndicated loan-level bank-firm data. The institutional setting emphasizes central-bank policy rates—particularly interest on excess reserves (IOER)—FX swap markets, and regulatory capital constraints; identification exploits high-frequency FOMC surprises, exchange-rate variation, and panel fixed-effects."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_b3edc6381a5f78a6",
+      "text": "신용시장 집중도 상승이(가) 하락하여 기업 신용 접근성의 상승을 상쇄할 수 있음",
+      "check_node": "n_03434e31c77d8424",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_118fd006bffa0389",
+      "text": "현금흐름(연구 정의)이(가) 하락하여 기업 신용 접근성의 상승을 상쇄할 수 있음",
+      "check_node": "n_1a16ef3d408a838a",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Monetary Policy and Global Banking (2017, journal_of_finance; CSV R06976; https://www.nber.org/papers/w23316)",
+    "author": "Falk Brauning, Victoria Ivashina",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

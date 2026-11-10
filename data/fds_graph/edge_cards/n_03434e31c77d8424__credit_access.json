@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_03434e31c77d8424->credit_access",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "신용시장 집중도 상승의 변화가 차입 자격·담보·금융 접근성 경로를 통해 기업 신용 접근성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00219의 적용 맥락: This study uses the 1988–89 National Survey of Small Business Finances covering U.S. small non‑financial, non‑farm firms (≤500 employees) across counties/MSAs. For this triplet it compares firms by local bank‑market concentration measured via FDIC deposit Herfindahl categories (<0.10, 0.10–0.18, >0.18) and examines institutional finance incidence (share with institutional debt) among young firms—defined as <10 years (with emphasis on ≤4 years). Analysis is cross‑sectional across local markets, comparing percent financed by institutional sources in the most concentrated versus most competitive markets."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_f1f66bfcc97d29e4",
+      "text": "현금흐름(연구 정의)이(가) 하락하여 기업 신용 접근성의 상승을 상쇄할 수 있음",
+      "check_node": "n_1a16ef3d408a838a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_77828f5d95ed5983",
+      "text": "해외 확장적 통화정책 충격이(가) 상승하여 기업 신용 접근성의 상승을 상쇄할 수 있음",
+      "check_node": "n_4a313d0365397c3e",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "The Effect of Credit Market Competition on Lending Relationships (1994, quarterly_journal_of_economics; CSV R00219; https://www.nber.org/papers/w4921)",
+    "author": "Mitchell A. Petersen, Raghuram G. Rajan",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

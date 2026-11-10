@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_b1a7aca7aeb1ea31->export_sales",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "해외 공장 설립 고정비용의 변화가 해외 수요·수출 비용·시장 접근 경로를 통해 수출 판매 규모의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06329의 적용 맥락: This paper develops and estimates a multi-country general equilibrium model of multinational firms and export-platform sales, using German manufacturing firm-level data (MiDi) for 2005 to estimate firm-level fixed and variable foreign production costs and calibration with bilateral trade and multinational production data averaged 1996–2001 across 12 European and North American countries (Austria, Belgium, Canada, Switzerland, France, Germany, Ireland, Italy, Netherlands, Spain, UK, US). Units are manufacturing parent firms and majority-owned foreign affiliates; the setting emphasizes fixed entry costs, iceberg trade and foreign-production efficiency losses and counterfactuals (e.g., CETA, US technology shocks)."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_11966e5f9600ffc0",
+      "text": "모기업의 상대적 숙련노동 풍부도(원문 구분)이(가) 하락하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_c133973cf8c5106b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e64462e61f06c651",
+      "text": "통화가치 절하이(가) 하락하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d41b9d5632b18c6",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5bd8903947e06473",
+      "text": "은행 건전성 악화이(가) 상승하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_d5da1983455d75ed",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e856b7c9a42f8bb2",
+      "text": "고속 인터넷 도입이(가) 하락하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_59ae2982f562f9dc",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Global Production with Export Platforms (2016, quarterly_journal_of_economics; CSV R06329; https://www.nber.org/papers/w22236)",
+    "author": "Felix Tintelnot",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

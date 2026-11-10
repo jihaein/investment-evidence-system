@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_9bad08cd66f774e4->policy_rate",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "주요 경기순환 충격의 변화가 정책 반응·금융 여건 경로를 통해 정책금리의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07846의 적용 맥락: This paper analyzes U.S. macroeconomic quarterly data (1955–2017) using a ten-variable VAR/VECM (unemployment, per-capita GDP, investment, consumption, hours, productivity measures, labor share, inflation, federal funds rate) to identify shocks operating at business-cycle (6–32 quarters) and long-run frequencies. The units are aggregate U.S. time series; the study examines pre/post‑Volcker and Great Recession/ZLB periods, evaluates frequency-domain SVAR “max-share” shocks, and uses Bayesian VAR estimation and medium-scale DSGE model simulations to assess propagation mechanisms."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_f4bb4f4affd6da1c",
+      "text": "인플레이션 민감도 증가이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a416bf413e8f8470",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5babfa5bde8d75d7",
+      "text": "양의 인플레이션 충격이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_ebe41187a5246810",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_65bafd25d8f97f36",
+      "text": "양의 산출갭 충격이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_d090a25801353e01",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_273c3f30e8e50b25",
+      "text": "외가격 풋·콜 내재변동성 비율이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_66c2f52b71bf8879",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c812a7b032e78f5b",
+      "text": "주식 등가격 옵션 내재변동성이(가) 상승하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_e0135039a2d7fa07",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_56116a86f1bd6efe",
+      "text": "부정적 주택가격 충격이(가) 상승하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a3f33793033616d1",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Business Cycle Anatomy (2018, american_economic_review; CSV R07846; https://www.nber.org/papers/w24875)",
+    "author": "George-Marios Angeletos, Fabrice Collard, Harris Dellas",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

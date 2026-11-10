@@ -1,0 +1,85 @@
+{
+  "edge_id": "n_58b7508f0473219f->firm_tobins_q",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "기업 다각화의 변화가 기업 시장가치와 자산 기준가치의 상대적 평가 경로를 통해 기업 Tobin Q의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00087의 적용 맥락: This paper studies U.S. publicly traded firms using Compustat segment data over 1978–1990 (focus year 1984), examining how corporate diversification (number of reported segments under SFAS No.14) relates to firm value measured by Tobin’s q (replacement‑cost adjusted). The unit of observation is the firm (sample restricted to firms with average assets > $100 million). Analyses adjust for industry composition via a “chop‑shop” pure‑play counterfactual and control for size, R&D intensity, and capital‑market access in the U.S. institutional setting."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_7cd1d79161bd5f15",
+      "text": "미국 상장이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_80a71674f5510ab0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6fa5839fbf3b01ed",
+      "text": "정관에 근거한 시차임기 이사회이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_97ccba7c93d20f3c",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_88346564d715d878",
+      "text": "시차임기 이사회이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_1237ef2086e84ab2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_687be345577f1bf4",
+      "text": "은행 사업 다각화이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_dbad4e7dcb196d48",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0f7f6c833f51dd13",
+      "text": "최대주주의 현금흐름권이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_6ebf9abe0de10346",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_131cbf00bbee65a0",
+      "text": "현금흐름권의 분산이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_42e4d952dff7b1a7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c9b1ace6b47e81e9",
+      "text": "신규 자본과 기존 자본의 호환성 하락이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_9371abea531a78c3",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c4e3636ea79e90f5",
+      "text": "기업지배구조 개선안 통과이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_1b063b2ef3bcfb48",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_faab009e727ba52d",
+      "text": "매매자산 비중이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_30875eac9c2aaded",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7658f15abd1921cc",
+      "text": "은행 자산 규모이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_d13ea3b2852d36d8",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_254933d90f1cf8ab",
+      "text": "자본에 대한 사회적 근접성이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_a64611fc44507824",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Tobin's Q, Corporate Diversification and Firm Performance (1993, journal_of_political_economy; CSV R00087; https://www.nber.org/papers/w4376)",
+    "author": "Larry H.P. Lang, Rene M. Stulz",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

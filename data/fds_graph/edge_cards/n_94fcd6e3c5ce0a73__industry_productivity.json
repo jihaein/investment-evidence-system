@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_94fcd6e3c5ce0a73->industry_productivity",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "생애주기별 생산성 성장 패턴의 변화가 산업의 기술·자원 배분 효율 경로를 통해 산업 생산성의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04113의 적용 맥락: The paper compares manufacturing plant life cycles across the U.S., India, and Mexico using establishment microdata (U.S. Manufacturing Censuses 1963–2002 with emphasis on 1992–2002; India ASI and NSS rounds including 1989–1990, 1994–1995, 1999–2000, 2005–2006; Mexico Economic Census 1998, 2003, 2008). The unit is manufacturing establishments (formal and informal), analyzed by age cohorts, employment, value added, and capital. The study situates differences in organization-capital accumulation and sectoral distortions (taxes, labor regulations, transport, informality) and uses structural GE simulations to assess aggregate TFP implications."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_1d850050e95e218c",
+      "text": "고객 활동이(가) 하락하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_53ecffd8b6ac23ee",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c3e83b6fc8986326",
+      "text": "무역 자유화이(가) 하락하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_da26fc668d2b62c5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_789c45a4a2bd9974",
+      "text": "테네시강 유역개발공사의 직접 인프라 투자이(가) 하락하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_24b7da3e62eaf3c7",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_32efde8d6eb33092",
+      "text": "주 은행업 규제 완화이(가) 하락하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_c1bcbf96bc864d55",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a4549c12dee910b7",
+      "text": "법원 적체 감소를 통한 계약 집행 개선이(가) 하락하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_7e306a203ca8591c",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Life Cycle of Plants in India and Mexico (2012, quarterly_journal_of_economics; CSV R04113; https://www.nber.org/papers/w18133)",
+    "author": "Chang-Tai Hsieh, Peter J. Klenow",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

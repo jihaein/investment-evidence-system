@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_3d41b9d5632b18c6->export_sales",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "통화가치 절하의 변화가 해외 수요·수출 비용·시장 접근 경로를 통해 수출 판매 규모의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00919의 적용 맥락: Using annual plant-level panel data on 62 Colombian chemical plants operating continuously during 1982–1991, this paper estimates a dynamic structural model of firms’ export participation and export revenue decisions. The institutional setting is Colombia’s trade and exchange-rate environment (real peso depreciation and export subsidy regimes) in the 1980s–early 1990s. Units are manufacturing plants; key features include firm heterogeneity in marginal costs and foreign demand, stochastic AR processes for exchange rates and profit shocks, and stochastic sunk start-up and fixed costs of exporting. The estimated model is used to simulate devaluations and subsidy policies."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_2fb0992e7dc4ab70",
+      "text": "모기업의 상대적 숙련노동 풍부도(원문 구분)이(가) 하락하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_c133973cf8c5106b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_29a5f241609eb2fd",
+      "text": "은행 건전성 악화이(가) 상승하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_d5da1983455d75ed",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0175259470b89f26",
+      "text": "해외 공장 설립 고정비용이(가) 하락하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_b1a7aca7aeb1ea31",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f967b528fb602e61",
+      "text": "고속 인터넷 도입이(가) 하락하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_59ae2982f562f9dc",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Market Entry Costs, Producer Heterogeneity, and Export Dynamics (2001, econometrica; CSV R00919; https://www.nber.org/papers/w8629)",
+    "author": "Sanghamitra Das, Mark J. Roberts, James R. Tybout",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

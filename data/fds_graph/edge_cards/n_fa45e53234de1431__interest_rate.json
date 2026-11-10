@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_fa45e53234de1431->interest_rate",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "통화동맹 도입의 변화가 자금 수급·통화정책·가격 설정 경로를 통해 일반 금리의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04085의 적용 맥락: This paper examines how country size and currency unions affect international asset returns across developed economies (27 OECD countries) using data from roughly 1980–2007 (with subperiods 1984–1990, 1991–1998, 1998–2007). Units are country-level asset returns — forward/spot exchange-based bond returns (3-month to 5-year) and industry stock portfolios in the non-traded sector — measured for US investors. It exploits variation in countries' shares of OECD GDP/M1, cross-country differences in exchange-rate volatility and credit risk, and the policy shock of European monetary integration (EMU/Euro adoption) as an identifying event."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_39406bf082d9f299",
+      "text": "통화정책 변화이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_7d81864514f4073e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_28c2403b012276b6",
+      "text": "인수주선사의 이사회 참여 금지이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_e9b91aa47e4b5a94",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_627d63b34582fac1",
+      "text": "파산신청 위험 1%포인트 하락이(가) 상승하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_f6fae033cc7a89a7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_547af60d706a962a",
+      "text": "지급준비금 이자율이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_68281f2d7787c3bb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5a687b95ece97d06",
+      "text": "정보 비대칭이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a0923f1d27a5f697",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Country Size, Currency Unions, and International Asset Returns (2012, journal_of_finance; CSV R04085; https://www.nber.org/papers/w18057)",
+    "author": "Tarek Alexander Hassan",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

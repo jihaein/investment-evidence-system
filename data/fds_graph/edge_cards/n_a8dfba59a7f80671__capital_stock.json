@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_a8dfba59a7f80671->capital_stock",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "시장의 범위의 변화가 투자·자본 축적·자산 교체 경로를 통해 기업 생산자본의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00158의 적용 맥락: The paper analyzes two empirical settings: nineteenth‑century U.S. states (decadal data covering roughly 1840–1890, units = states) and a cross‑country sample of 65 low‑income countries (1960–1985, units = countries). It uses initial development measures (urbanization, manufacturing, per‑capita GDP), openness indicators (trade share, distance to major ports, regional railroad density) and infrastructure/education variation to study how market extent and increasing returns shaped growth during industrialization and post‑1960 development."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_2018cbf272b9ac99",
+      "text": "자본소득세이(가) 상승하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_d3a18b2fbba042fe",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_58dfab3a3d74dd98",
+      "text": "초기 순자산 증가이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_cb7b2092a6afbe84",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f2f381e237c33644",
+      "text": "급여세 인하 노출이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2aac6633c92702b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d86f1e9cab772e68",
+      "text": "생산자본 증가율이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "capital_growth",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Evidence on Growth, Increasing Returns and the Extent of the Market (1994, quarterly_journal_of_economics; CSV R00158; https://www.nber.org/papers/w4714)",
+    "author": "Alberto F. Ades, Edward L. Glaeser",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

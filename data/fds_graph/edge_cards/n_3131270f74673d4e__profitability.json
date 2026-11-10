@@ -1,0 +1,91 @@
+{
+  "edge_id": "n_3131270f74673d4e->profitability",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "중국산 수입품과의 경쟁의 변화가 매출·자산·자본 대비 이익 창출력 경로를 통해 기업 수익성(연구 정의)의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03486의 적용 맥락: This paper uses firm- and plant-level panels (up to half a million firms; IT establishment sample ≈160,000) across 12 European countries over 1996–2007 to estimate how rising Chinese import competition — especially after China’s 2001 WTO accession and the phased abolition of textile/apparel quotas (MFA reforms in 2002 and 2005) — affected firm innovation (patents, R&D), IT adoption, TFP, employment and survival. Identification exploits differential industry exposure to quota removal and pre-existing Chinese export shares, with firm and industry fixed effects and trend controls."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_d7acb4b7f0753ed8",
+      "text": "개인효과 통제 후 기업 임금 수준 상승이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_a56c441948fb8981",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_22ab8d640f55ffd0",
+      "text": "가족 구성원의 CEO 선임이(가) 상승하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_57f66ca933d23297",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_595db6d07d322bb2",
+      "text": "민간 위탁 서비스 제공(PSP)이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_5e15ae3b0899d5fd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_baa424e6f9fd3b8d",
+      "text": "전량 할인 리베이트(AUD)이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_20dadfda0dc23ade",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5a2e5c577947cf9a",
+      "text": "주주보호법 강화이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_50ee1c864984a155",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8d748b41b3862eb5",
+      "text": "정치적 연계이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_4a4ad42323bcfab3",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_06e85b91d36392ef",
+      "text": "확대된 담보 인정 범위이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e432ff4dca61e44",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a602c9daaf9d7a84",
+      "text": "신용협동조합의 저소득층 지원기관 지정이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_cbb3ed24bef4fe52",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bf3c48b4ba4c3354",
+      "text": "저소득층 신용협동조합 성장이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_70d9b308c75e9e7e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_07d72ada12ca3dc0",
+      "text": "선구매 후지불(BNPL) 제공이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_41caf6dfb67c3f07",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9e2d4065a3567087",
+      "text": "총자산수익률이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "roa",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8f173ab70fc88b24",
+      "text": "사용자본수익률이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "roce",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Trade Induced Technical Change? The Impact of Chinese Imports on Innovation, IT and Productivity (2011, review_of_economic_studies; CSV R03486; https://www.nber.org/papers/w16717)",
+    "author": "Nicholas Bloom, Mirko Draca, John Van Reenen",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

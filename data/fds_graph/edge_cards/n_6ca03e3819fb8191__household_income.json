@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_6ca03e3819fb8191->household_income",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "가치관 교육과정의 변화가 취업·임금·이전소득 경로를 통해 가계 소득의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07573의 적용 맥락: This paper reports a randomized evaluation (2015–2018) of International Care Ministries’ Transform program in the Philippines. From February–May 2015 ICM delivered Values (evangelical Protestant theology), Health, and Livelihood modules to ultra‑poor households across 320 communities chosen by 160 pastors; outcomes were surveyed ~6 months (Aug 2015–Jan 2016) and ~30 months (Nov 2017–Jun 2018) after program end. The unit of analysis is targeted households/invitees with community‑level random assignment (paired by pastor) to identify causal effects of intentionally generated religiosity on economic outcomes."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_480bbc36f70201e7",
+      "text": "농사 일정과 겹치는 축제이(가) 상승하여 가계 소득의 상승을 상쇄할 수 있음",
+      "check_node": "n_be06e79fccfbc084",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_51819dd941634451",
+      "text": "실업률이(가) 상승하여 가계 소득의 상승을 상쇄할 수 있음",
+      "check_node": "unemployment",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Randomizing Religion: The Impact of Protestant Evangelism on Economic Outcomes (2018, quarterly_journal_of_economics; CSV R07573; https://www.nber.org/papers/w24278)",
+    "author": "Gharad T. Bryan, James J. Choi, Dean Karlan",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_24b7da3e62eaf3c7->industry_productivity",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "테네시강 유역개발공사의 직접 인프라 투자의 변화가 산업의 기술·자원 배분 효율 경로를 통해 산업 생산성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04801의 적용 맥락: Analyzes the long-run causal effects of the Tennessee Valley Authority (TVA) using a county-level panel from ~1900–2000, emphasizing heavy federal investment 1934–1958 and the post-1959 self-financing period. The study compares 163 TVA counties (parts of TN, KY, AL, MS) to proposed-but-unimplemented authority regions, Southern counties, and national controls. Units are counties with outcomes like manufacturing and agricultural employment, wages, land/housing values. Institutional setting: large TVA infrastructure (dams, electricity, roads), testing agglomeration (big-push) mechanisms via structural spatial equilibrium estimation."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_7fb12e961117b6fc",
+      "text": "고객 활동이(가) 하락하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_53ecffd8b6ac23ee",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_62ded6545b52857d",
+      "text": "무역 자유화이(가) 하락하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_da26fc668d2b62c5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4ea2690098b2a57b",
+      "text": "생애주기별 생산성 성장 패턴이(가) 상승하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_94fcd6e3c5ce0a73",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_224475b30149475a",
+      "text": "주 은행업 규제 완화이(가) 하락하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_c1bcbf96bc864d55",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ca323fd6b73a1415",
+      "text": "법원 적체 감소를 통한 계약 집행 개선이(가) 하락하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_7e306a203ca8591c",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Local Economic Development, Agglomeration Economies, and the Big Push: 100 Years of Evidence from the Tennessee Valley Authority (2013, quarterly_journal_of_economics; CSV R04801; https://www.nber.org/papers/w19293)",
+    "author": "Patrick M. Kline, Enrico Moretti",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

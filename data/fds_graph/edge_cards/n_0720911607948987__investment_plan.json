@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_0720911607948987->investment_plan",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "전년도 과소지출의 변화가 향후 투자 수익성과 자금조달 전망 경로를 통해 기업 투자계획의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R10181의 적용 맥락: Using the multi-wave Duke CFO surveys (March 2019 and March 2020), this triplet compares firm-level realized capital spending in 2019 to planned capital spending for 2020. The analysis is at the firm (CFO respondent) level and restricts to firms that appear in both waves and provided their 2020 plans before March 15, 2020 (to avoid COVID-driven revisions). It documents that firms that underspent in 2019 report stronger planned capital spending in 2020, consistent with multi-year inertia in spending."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_668712dcd013cdc0",
+      "text": "신용한도 인출이(가) 하락하여 기업 투자계획의 상승을 상쇄할 수 있음",
+      "check_node": "n_b3665612198590d0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e30f11380c3b9b0a",
+      "text": "인플레이션 기대이(가) 상승하여 기업 투자계획의 상승을 상쇄할 수 있음",
+      "check_node": "n_3fc185dc9ea131b4",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Presidential Address: Corporate Finance and Reality (2022, journal_of_finance; CSV R10181; https://www.nber.org/papers/w29841)",
+    "author": "John Graham",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

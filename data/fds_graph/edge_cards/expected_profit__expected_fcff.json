@@ -1,0 +1,72 @@
+{
+  "edge_id": "expected_profit->expected_fcff",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "기대 영업이익 개선은 미래 FCFF 전망을 높일 수 있음",
+  "conditions": [
+    "세금·현금전환·재투자·이자 조정",
+    "비영업손익 제외"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_0c11bc84e99bf8ea",
+      "text": "기업 이익(연구 정의)이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_profit",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_05b079d2cf2ebaff",
+      "text": "기업 수익성(연구 정의)이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "profitability",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bdc35399853759a8",
+      "text": "영업현금흐름이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "operating_cash_flow",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_431e0ce0190a332b",
+      "text": "기업 생존 가능성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_survival",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_64adc9f1413597e1",
+      "text": "기업 퇴출 가능성이(가) 상승하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_exit",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_77cb2315f205a0b8",
+      "text": "당기순이익이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "net_income",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_66ee36ef0fb6132b",
+      "text": "기업잉여현금흐름이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "fcff",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_18be5eb6e1931963",
+      "text": "기대 미래 수익성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "future_profitability",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f22ffd4755423ddf",
+      "text": "기업 이익 지속성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "profit_persistence",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

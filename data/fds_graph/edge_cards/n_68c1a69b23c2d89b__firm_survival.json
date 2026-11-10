@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_68c1a69b23c2d89b->firm_survival",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "경영 관행의 변화가 사업 수익성·유동성·지속 가능성 경로를 통해 기업 생존 가능성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02055의 적용 맥락: This empirical study uses a novel phone survey of management practices conducted in summer 2004, matched to multi-year firm accounts and follow-up data to analyze 732 medium-sized manufacturing firms (median ~700 employees) in the US, UK, France and Germany. Unit of observation is the plant/firm and senior plant managers. The paper examines how measured management practices relate to productivity, profitability, Tobin’s Q and exit over subsequent months, and how product‑market competition and family (primo geniture) ownership help explain cross‑country and within‑country variation."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_453397c11da368f0",
+      "text": "고임금 근로자 채용이(가) 하락하여 기업 생존 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f0341cd27b625e7e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_47d92f922924060a",
+      "text": "자원 오배분 왜곡의 분산 증가이(가) 상승하여 기업 생존 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_423a5d1eb76b97f4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_910ba66a0abd3c54",
+      "text": "엔젤투자 자금조달이(가) 하락하여 기업 생존 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_df1cf69eb29f753f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ba836535c2ab1857",
+      "text": "기업 소유주 사망이(가) 상승하여 기업 생존 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_59f8bb4cd2a11654",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e2622340065c4987",
+      "text": "대출상품을 통한 금융 접근성이(가) 하락하여 기업 생존 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_e15a0c2465a96e6f",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Measuring and Explaining Management Practices Across Firms and Countries (2006, quarterly_journal_of_economics; CSV R02055; https://www.nber.org/papers/w12216)",
+    "author": "Nick Bloom, John Van Reenen",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

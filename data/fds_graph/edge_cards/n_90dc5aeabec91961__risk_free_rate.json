@@ -1,0 +1,37 @@
+{
+  "edge_id": "n_90dc5aeabec91961->risk_free_rate",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "가계 소비 위험의 변화가 안전자산 수익률·통화정책 기대 경로를 통해 무위험금리의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05188의 적용 맥락: This paper analyzes U.S. household consumption risk and asset prices, combining household-quarter consumption from the CEX (1982:Q1–2009:Q4) with aggregate prices/dividends (CRSP, 1929–2009). Units are individual households and the aggregate market. The setting is an incomplete-consumption-insurance economy with heterogeneous labor-income shocks and Epstein–Zin recursive preferences; the authors estimate a structural model to link persistent, countercyclical left-skewed idiosyncratic consumption shocks to time-series and cross-sectional asset pricing facts across business cycles."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_c729349cf294b348",
+      "text": "불확실성 증가이(가) 상승하여 무위험금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_00532c15a0f3fac6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e7bcb71f0dc52c87",
+      "text": "인지된 꼬리위험 상승이(가) 상승하여 무위험금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_93dbc6d099aef765",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b8197cee0c2d8667",
+      "text": "정책금리이(가) 하락하여 무위험금리의 상승을 상쇄할 수 있음",
+      "check_node": "policy_rate",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Asset Pricing with Countercyclical Household Consumption Risk (2014, journal_of_finance; CSV R05188; https://www.nber.org/papers/w20110)",
+    "author": "George M. Constantinides, Anisha Ghosh",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,73 @@
+{
+  "edge_id": "profitability->expected_fcff",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "수익성 개선은 자본·매출 단위당 미래 현금창출력을 높일 수 있음",
+  "conditions": [
+    "지표 정의 확인",
+    "규모와 지속성 일정",
+    "현금 전환 검토"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_123fe576f775cb45",
+      "text": "기업 이익(연구 정의)이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_profit",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_52d1ae32a4ed6346",
+      "text": "영업현금흐름이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "operating_cash_flow",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_20dd75068f6f557b",
+      "text": "기업 생존 가능성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_survival",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8fbf255495bc4be6",
+      "text": "기업 퇴출 가능성이(가) 상승하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_exit",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9b222cc3ac0f3279",
+      "text": "당기순이익이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "net_income",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f51d383d76e6c0bb",
+      "text": "기업잉여현금흐름이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "fcff",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b392baa27e087a9f",
+      "text": "기대 기업이익이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "expected_profit",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e409f9218e551cdc",
+      "text": "기대 미래 수익성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "future_profitability",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_32a834425df1f8b9",
+      "text": "기업 이익 지속성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "profit_persistence",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

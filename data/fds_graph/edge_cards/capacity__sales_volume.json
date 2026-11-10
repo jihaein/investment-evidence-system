@@ -1,0 +1,37 @@
+{
+  "edge_id": "capacity->sales_volume",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "생산능력 확대는 공급 제약을 완화",
+  "conditions": [
+    "수요 존재",
+    "기존 공급 제약",
+    "가동 가능"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_aa2665a60245b0af",
+      "text": "기업 제품 수요이(가) 하락하여 판매량의 상승을 상쇄할 수 있음",
+      "check_node": "market_demand",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0ae9aacbb250ffd0",
+      "text": "공급 차질이(가) 상승하여 판매량의 상승을 상쇄할 수 있음",
+      "check_node": "supply_disruption",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ec2559e63a99821e",
+      "text": "기업 생산량이(가) 하락하여 판매량의 상승을 상쇄할 수 있음",
+      "check_node": "firm_output",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

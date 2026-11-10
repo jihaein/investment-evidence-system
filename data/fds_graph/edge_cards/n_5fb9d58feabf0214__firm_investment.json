@@ -1,0 +1,205 @@
+{
+  "edge_id": "n_5fb9d58feabf0214->firm_investment",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "경제 전체 Tobin Q의 변화가 투자 수익성·자금조달·투자 실행 경로를 통해 기업 투자의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02860의 적용 맥락: This paper studies U.S. investment dynamics across the business cycle using firm-level (Compustat, 1962–2006), venture-backed (VentureXpert, 1975–1998) and long-run aggregate series (1900–2005). Units are firms (incumbent/public and entering/young firms), IPO flows, and aggregate nonfinancial corporate capital. The analyses exploit variation in market-to-book Tobin’s Q, IPO values, and BEA/BEA-extended capital/output series to test a model where shocks to implementation/compatibility costs hit continuing projects but not brand-new projects."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_b14e7509a1e44660",
+      "text": "투자기회가 부진할 때의 주식 발행이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_e21970b0ac3495a1",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_21bf18fd391cf25b",
+      "text": "공공지출이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_0e0c4a8fc29f2866",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3e54a4fd071f1b82",
+      "text": "노동 관련 세금이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_d405d6cbfa6cc913",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_55757f1f77dcd27e",
+      "text": "정부 인건비이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_be4e18fb65647eda",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6df40e75d751fbcf",
+      "text": "정부지출 증가이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_d58f331aaa700dd8",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ba31c0d0091861a5",
+      "text": "순증세이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_0e5201e6b136849b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_22c626c49968cb9f",
+      "text": "통화가치 절하로 인한 레버리지 증가이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_40fb171cf416047d",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_779d2537574ec26b",
+      "text": "기업의 해외투자 증가이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_219b5145438d7d03",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_52dff8cb2e5b2735",
+      "text": "채권시장 Tobin Q이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_745069c2908096c2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e4f39818958bf9f9",
+      "text": "학교채권 발행안 통과이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_8731e186ac84b27b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0e6c591d416fae7e",
+      "text": "신규 자본과 기존 자본의 호환성 하락이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_9371abea531a78c3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_018879b4c23981fc",
+      "text": "담보가치 상승이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_ae6e977dc7822ba7",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dad743d1201e2ae8",
+      "text": "주택 수요 충격이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_47e1fc2d0d8dcb1a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_96450ad440bcd6bc",
+      "text": "헤지펀드 주주행동주의이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_e714db61bdce4fcd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f4d01ea0b3bacff7",
+      "text": "충격을 받은 신탁회사와의 연계이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_11c3856b53186081",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d7bb439635ce04bb",
+      "text": "민간 위탁 서비스 제공(PSP)이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_5e15ae3b0899d5fd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e4ea49c242775818",
+      "text": "군 복무이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_323347846f30e9e0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1f4acf23811c731a",
+      "text": "신용시장 투자심리이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_794a5490befd7738",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ccf8feabcbd9eaad",
+      "text": "재기를 지원하는 파산제도 개혁이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_77cddfdc8ef1d330",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1b2df3d9913e8834",
+      "text": "최근 결성된 사모펀드이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_55f9bfd168258120",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_134f5ed5b111b7f3",
+      "text": "통화정책 충격이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_5146b34ae7fd486b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c3a6fcea8332eb9b",
+      "text": "애널리스트와 대통령의 정치적 불일치이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_508ca8a9712bfc13",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_98a22b73e0eb7b7f",
+      "text": "부정적 수요 영향이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_9602ef9733ad03ef",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a28116514b50e6e8",
+      "text": "재정 확대 없는 통화 부양이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_e67f6aa7df152924",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_730bab4bfc749395",
+      "text": "재해 발생 국가에 자회사를 둔 모기업이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_d490b30e2a7191d6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ef2e8a799677fdbf",
+      "text": "경기하강 국가에 자회사를 둔 모기업이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_6a6130c7fbec898c",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1616e1880fc6c4d1",
+      "text": "금융회사가 인지한 국가위험이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_b5092c677a71c6ce",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d1043c6aecd4e7ec",
+      "text": "인지된 국가위험 증가이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_c9861a1f0c81d6ee",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_513ad204ff205992",
+      "text": "기업의 해외위험 증가이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_09b87a99f89f72d8",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ebd5e6e05942c46a",
+      "text": "실질금리이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "real_rate",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3a77e379894dc412",
+      "text": "기업 투자계획이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "investment_plan",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Extensive and Intensive Investment over the Business Cycle (2009, journal_of_political_economy; CSV R02860; https://www.nber.org/papers/w14960)",
+    "author": "Boyan Jovanovic, Peter L. Rousseau",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,42 @@
+{
+  "edge_id": "gross_profit->operating_profit",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "영업이익 = 매출총이익 - 판매관리비",
+  "conditions": [
+    "판매관리비 일정",
+    "동일 회계 분류"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_a96a3b25eba593c6",
+      "text": "큰 폭의 통화가치 절하이(가) 하락하여 영업이익의 상승을 상쇄할 수 있음",
+      "check_node": "n_75c1390969d9c722",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c242696f9671aa4c",
+      "text": "판매관리비이(가) 상승하여 영업이익의 상승을 상쇄할 수 있음",
+      "check_node": "sga",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7e3bac134fce1217",
+      "text": "영업이익률이(가) 하락하여 영업이익의 상승을 상쇄할 수 있음",
+      "check_node": "operating_margin",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_82d3e13b9d259269",
+      "text": "매출액이(가) 하락하여 영업이익의 상승을 상쇄할 수 있음",
+      "check_node": "revenue",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

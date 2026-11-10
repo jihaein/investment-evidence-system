@@ -1,0 +1,61 @@
+{
+  "edge_id": "n_e7d18756cf85bdc6->unemployment",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "주택담보대출 금리 하락의 변화가 채용·고용 유지·구직 여건 경로를 통해 실업률의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08039의 적용 맥락: This paper examines U.S. 30‑year fixed-rate mortgage borrowers and county-level outcomes using loan-level CoreLogic data (benchmark 1995–2007) and Freddie Mac records. Units are individual mortgages/households and counties across the United States. The study focuses on how cross-sectional and time-series variation in potential savings from refinancing shapes monetary policy transmission, exploiting high-frequency FOMC announcement surprises and county panel variation to instrument mortgage-rate changes and estimating impacts on refinancing, cash-out extraction, consumption proxies, unemployment, and housing permits."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_4f9657b3e11e7152",
+      "text": "더스트볼 토양 침식이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_5d1eca681d20e229",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8fb430c23a5bdb0a",
+      "text": "한계세율 인하이(가) 상승하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_d4c0cdbfd649022d",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8e37aeb6d1e8b03f",
+      "text": "실업급여 증가이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_76cc8fb3c4670305",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c87569413bb75322",
+      "text": "할인율 상승이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_795fe4ce2c251b7f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5f0e8617e7d58c4d",
+      "text": "GDP 대비 가계부채 증가이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_6b11e51b3c23af68",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_58af3d79ef7dc1a1",
+      "text": "명목임금의 하방경직성이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_d68ffd85ea47a407",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4739aa15c73e9c07",
+      "text": "감세이(가) 상승하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_dbcfbdc757bc26b3",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "State Dependent Effects of Monetary Policy: the Refinancing Channel (2018, american_economic_review; CSV R08039; https://www.nber.org/papers/w25152)",
+    "author": "Martin Eichenbaum, Sergio Rebelo, Arlene Wong",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

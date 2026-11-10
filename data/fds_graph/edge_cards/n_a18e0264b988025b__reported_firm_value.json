@@ -1,0 +1,61 @@
+{
+  "edge_id": "n_a18e0264b988025b->reported_firm_value",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "인수 발표의 변화가 미래 현금창출력·위험에 대한 평가 경로를 통해 연구상 기업가치의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01398의 적용 맥락: Analyzes U.S. acquisition announcements of public targets during the 1998–2001 merger wave. The triplet’s unit of observation is the combined value of acquirer plus acquired firm at announcement (measured via percentage abnormal returns and dollar synergy gains) using SDC/CRSP/Compustat data. For 1998–2001 the paper reports the combined value falls by over 7% and aggregates to roughly $134 billion in losses for public-firm acquisition announcements."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_c24ed44106e75a4f",
+      "text": "재무적 곤경이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_9b5a88b17a895716",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5c948651206e1c54",
+      "text": "기대 미래 수익률이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_40bee1a76fc2c43a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3299385a66b8cb53",
+      "text": "기대 미래 현금흐름이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_4546131b0287ebf9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_87c689cce1a48d19",
+      "text": "정보기술 혁명이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_bda72ebbd6ccdd58",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d3d492d405081116",
+      "text": "평균 미래 수익성에 대한 불확실성이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_0761e51a9641c7f5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_66c914421371a957",
+      "text": "효과적인 기업문화이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_f01a30df77c4d13e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9aec484b28cba25b",
+      "text": "조작 유인 제거이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_ad6d7ebd50331d88",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Wealth Destruction on a Massive Scale? A Study of Acquiring-Firm Returns in the Recent Merger Wave (2004, journal_of_finance; CSV R01398; https://www.nber.org/papers/w10200)",
+    "author": "Sara B. Moeller, Frederik P. Schlingemann, Rene M. Stulz",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

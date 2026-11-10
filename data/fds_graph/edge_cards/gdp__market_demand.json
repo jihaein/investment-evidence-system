@@ -1,0 +1,37 @@
+{
+  "edge_id": "gdp->market_demand",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "실질 경제활동 확대는 관련 기업의 수요를 늘릴 수 있음",
+  "conditions": [
+    "경기순응적 수요 노출",
+    "해당 지역·산업 일치",
+    "역인과 검토"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_d676fc875eac4353",
+      "text": "기업 혁신 성과이(가) 하락하여 기업 제품 수요의 상승을 상쇄할 수 있음",
+      "check_node": "innovation",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_808a45aae42ec659",
+      "text": "가계 소비이(가) 하락하여 기업 제품 수요의 상승을 상쇄할 수 있음",
+      "check_node": "household_consumption",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_71bad293bb95d347",
+      "text": "산업 매출이(가) 하락하여 기업 제품 수요의 상승을 상쇄할 수 있음",
+      "check_node": "industry_sales",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

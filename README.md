@@ -15,6 +15,7 @@
 | `models/seoseohi/link_fundamentals.py` | 가격 경보 뒤에 F-Score·Ohlson 악화가 확인되는지 보는 평가 |
 | `models/seoseohi/export_contract.py` | 표준 표를 대시보드가 읽는 계약 JSON으로 내보냄 |
 | `backend/llm/` | 근거 묶음, 분석 단계(OpenAI), 경제명제(`graph_props.py`: Neo4j 인과그래프). [설명](backend/llm/README.md) |
+| `backend/graph/`, `data/fds_graph/` | FDS 공통 인과그래프 원본(JSON)과 Neo4j 적재·임베딩 스크립트, Browser 쿼리. [설명](backend/graph/README.md) |
 | `contracts/risk_result.schema.json` | 계약 JSON 스키마 |
 | `tests/seoseohi/test_run_models.py` | 기대값, 유보, 계약 스키마 점검 |
 | `data/` | 입력 CSV |

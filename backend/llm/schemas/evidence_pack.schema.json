@@ -153,7 +153,7 @@
           "items": {
             "type": "object",
             "required": ["claim", "cause", "cause_change", "effect", "effect_change", "status", "match",
-                         "path", "edges", "checks", "net_sign", "direction_check", "evidence_ids"],
+                         "path", "edges", "checks", "net_sign", "direction_check", "model_links", "evidence_ids"],
             "additionalProperties": false,
             "properties": {
               "claim": { "type": "string" },
@@ -175,6 +175,19 @@
               "checks": { "type": "array", "items": { "type": "object" } },
               "net_sign": { "enum": ["+", "-", null] },
               "direction_check": { "enum": ["same", "opposite", "not_compared", null] },
+              "model_links": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["node_id", "label", "where", "model", "indicator", "match", "evidence"],
+                  "properties": {
+                    "where": { "enum": ["path", "check"] },
+                    "model": { "enum": ["fscore", "ohlson", "dupont", "gate"] },
+                    "match": { "enum": ["same", "part"] },
+                    "evidence": { "type": "array", "items": { "$ref": "#/$defs/model_evidence_id" } }
+                  }
+                }
+              },
               "evidence_ids": { "type": "array", "items": { "type": "string", "pattern": "^PR-[0-9]+$" } }
             }
           }

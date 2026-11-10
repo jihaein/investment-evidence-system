@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_ce72db2bcae4b34b->firm_valuation",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "미국 거래소 상장의 변화가 미래 현금창출력·위험에 대한 평가 경로를 통해 기업 평가가치(연구 정의)의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02293의 적용 맥락: This paper studies non-U.S. firms’ foreign listing choices, valuations, and capital-raising from 1990–2005, comparing New York venues (NYSE, AMEX, NASDAQ, OTC/Rule 144a) to London markets (LSE Main Market, AIM). Using firm-level panel data on listings, Tobin’s q, ownership, and country legal/institutional variables, it evaluates whether regulatory changes—notably Sarbanes–Oxley (2002) and differing U.K. listing regimes—altered firms’ propensity to list, listing premia, and post-listing financing."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_1e3febe50764a2fd",
+      "text": "소수주주에 대한 법적 보호이(가) 하락하여 기업 평가가치(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_27eec5af58d4c298",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8ee5a727dde28e01",
+      "text": "군 복무이(가) 하락하여 기업 평가가치(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_323347846f30e9e0",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Has New York Become Less Competitive in Global Markets? Evaluating Foreign Listing Choices Over Time (2007, journal_of_financial_economics; CSV R02293; https://www.nber.org/papers/w13079)",
+    "author": "Craig Doidge, G. Andrew Karolyi, Rene M. Stulz",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

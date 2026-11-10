@@ -1,0 +1,23 @@
+{
+  "edge_id": "net_income_margin->net_income",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "순이익 = 매출 × 순이익률",
+  "conditions": [
+    "매출 양수 및 일정"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_8d459a6310e2c365",
+      "text": "이자비용이(가) 상승하여 당기순이익의 상승을 상쇄할 수 있음",
+      "check_node": "interest_expense",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

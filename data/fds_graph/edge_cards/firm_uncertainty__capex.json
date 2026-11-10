@@ -1,0 +1,67 @@
+{
+  "edge_id": "firm_uncertainty->capex",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "기업 불확실성의 변화가 실물투자의 수익성·조달 여건 경로를 통해 설비투자 지출의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R09300의 적용 맥락: This result is estimated at the firm level using Compustat data (the universe of U.S. public firms) and compared to the paper’s subsample of firms in the matched employer–employee dataset. The treatment is firm-level idiosyncratic uncertainty (standardized average of firm residual stock-return volatility over the prior four quarters); the outcome is firm capital expenditure. Estimation uses panel regressions with firm fixed effects and either year or industry×year fixed effects, controlling for firm characteristics (Tobin’s Q, sales, leverage, cash, EBITDA)."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_820dce24fe7ba815",
+      "text": "미국 다국적기업의 해외 설비투자이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_4909e107c2a30075",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f1a70781aa3d18c3",
+      "text": "해외 자본투자이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_e78da320e45d3558",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b79f57cb6b4bd137",
+      "text": "신주 발행으로 조달한 자본이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_9fbc893495377352",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bbb79734e263f574",
+      "text": "경영자 과신이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfa13a568153b507",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2f0291a099aa2e98",
+      "text": "인수 방어 조항 제거이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_2bd5a496e1eaeda0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d8ad998441820e05",
+      "text": "경기침체기에 경력 시작이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_10b72d2b8f5b8e19",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1cb76bcb37e57926",
+      "text": "반부패 감사에 의한 적발이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_a380357fce8b36c8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ece5a10937e72e8e",
+      "text": "기업 자금조달 제약이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "financing_constraint",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "The Pass-Through of Uncertainty Shocks to Households (2020, journal_of_financial_economics; CSV R09300; https://www.nber.org/papers/w27646)",
+    "author": "Marco Di Maggio, Amir Kermani, Rodney Ramcharan, Vincent Yao, Edison Yu",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

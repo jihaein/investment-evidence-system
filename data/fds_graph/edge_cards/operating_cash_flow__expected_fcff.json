@@ -1,0 +1,73 @@
+{
+  "edge_id": "operating_cash_flow->expected_fcff",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "영업현금흐름 개선은 미래 FCFF 전망에 기여할 수 있음",
+  "conditions": [
+    "일회성 운전자본 회수 제외",
+    "CAPEX와 이자 분류 조정",
+    "지속성 검토"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_0672cdb0480aa71c",
+      "text": "기업 이익(연구 정의)이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_profit",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ef83b86aebc64ad0",
+      "text": "기업 수익성(연구 정의)이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "profitability",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d3f38e61c4320f71",
+      "text": "기업 생존 가능성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_survival",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_cc5abf6a9398311b",
+      "text": "기업 퇴출 가능성이(가) 상승하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_exit",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_396d91ad07e0da15",
+      "text": "당기순이익이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "net_income",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3099f9e6d41fca60",
+      "text": "기업잉여현금흐름이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "fcff",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1589548f32af369c",
+      "text": "기대 기업이익이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "expected_profit",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6b29785797def8a7",
+      "text": "기대 미래 수익성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "future_profitability",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_58ea84f0dcc7617a",
+      "text": "기업 이익 지속성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "profit_persistence",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

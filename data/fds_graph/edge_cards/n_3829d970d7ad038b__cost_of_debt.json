@@ -1,0 +1,85 @@
+{
+  "edge_id": "n_3829d970d7ad038b->cost_of_debt",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "민간 신용 이용 가능성의 변화가 대출자의 위험 보상·자금 비용·가격 설정 경로를 통해 부채 조달금리의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01270의 적용 맥락: This paper uses BEA Benchmark Survey data for 1982, 1989, and 1994 to analyze roughly 30,000 foreign affiliates of about 3,700 U.S. multinational firms operating in over 150 host countries. It examines how host-country corporate tax rates, capital market depth (private credit/GDP), creditor-rights indices, political risk and inflation affect affiliate leverage, interest rates, and the mix of parent-provided versus arm’s-length borrowing. Financials follow U.S. GAAP/FASB 52, enabling within-parent cross-country comparisons to isolate responses to local tax and contracting environments (1982–1994)."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_9375ee127ee51851",
+      "text": "신용시장 집중도 상승이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_03434e31c77d8424",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5440e0aea95d15b4",
+      "text": "채권자 권리의 강도이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_8c5b68548bf4289b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_317f95beef3fa6c3",
+      "text": "자산 담보이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_c98b246ba4547f88",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a276a6088632dcd5",
+      "text": "무형자산이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_7787ed290f7fdeda",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6b06de9520926792",
+      "text": "장부가 대비 시장가 비율(B/M)이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_76ce22d1500c6175",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_71d9430276da2a80",
+      "text": "금리·환율 헤지 강도이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_b192aa69ecfae8e3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ba4ee1ea8a8942cc",
+      "text": "사모펀드 지원이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_29a522832b9858d4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_fb68565b9fbcaea0",
+      "text": "스트레스테스트 노출이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_6d0f5b8e8d0178d1",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1c574b57e70fc2ad",
+      "text": "무위험금리이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "risk_free_rate",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2576f8ce2e64252c",
+      "text": "기업 신용스프레드이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "credit_spread",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5267c492f781e4a5",
+      "text": "일반 금리이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "interest_rate",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "A Multinational Perspective on Capital Structure Choice and Internal Capital Markets (2003, journal_of_finance; CSV R01270; https://www.nber.org/papers/w9715)",
+    "author": "Mihir A. Desai, C. Fritz Foley, James R. Hines, Jr.",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

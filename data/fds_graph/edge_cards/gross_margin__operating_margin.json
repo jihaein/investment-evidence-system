@@ -1,0 +1,53 @@
+{
+  "edge_id": "gross_margin->operating_margin",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "영업이익률 = 매출총이익률 - 판매관리비/매출",
+  "conditions": [
+    "판매관리비율 일정"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_018b72ff73c57e05",
+      "text": "노동 과세이(가) 상승하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c59ee81367b30421",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_95411f9430b123c6",
+      "text": "비공식 부문 활동 비용 증가이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_4e40664422f19994",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f146d1a070610aca",
+      "text": "판매목록 선정에 가격 요소 반영이(가) 상승하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_be0f828b4caa6c17",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8ebb8770eeb6c0dc",
+      "text": "검색 방식 재설계이(가) 상승하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_52b6879b5eff3a29",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c2f13a5b975da602",
+      "text": "거시경제 불확실성 증가이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c948928380d4a4c4",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1f5f827045f89ec6",
+      "text": "기업 마크업이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "firm_markup",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

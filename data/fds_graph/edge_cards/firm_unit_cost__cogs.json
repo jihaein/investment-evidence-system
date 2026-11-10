@@ -1,0 +1,36 @@
+{
+  "edge_id": "firm_unit_cost->cogs",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "기업 단위 원가 상승은 매출원가 증가로 이어질 수 있음",
+  "conditions": [
+    "관련 제품 단위 원가",
+    "물량과 제품 구성 일정"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_ddee626b300bf4b9",
+      "text": "판매량이(가) 하락하여 매출원가의 상승을 상쇄할 수 있음",
+      "check_node": "sales_volume",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6f4613052f5742de",
+      "text": "단위당 제조원가이(가) 하락하여 매출원가의 상승을 상쇄할 수 있음",
+      "check_node": "unit_cost",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d27da3c72bed4024",
+      "text": "외화 수입의 원화 원가이(가) 하락하여 매출원가의 상승을 상쇄할 수 있음",
+      "check_node": "import_cost",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

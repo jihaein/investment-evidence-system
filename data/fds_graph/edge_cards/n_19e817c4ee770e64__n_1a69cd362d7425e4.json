@@ -1,0 +1,37 @@
+{
+  "edge_id": "n_19e817c4ee770e64->n_1a69cd362d7425e4",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "복지급여의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 노동 공급의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03094의 적용 맥락: This paper uses U.S. microdata from roughly 1975–2004 (PSID panel; time-use cross-sections 1975–2004; CEX 1980–2003) to study unmarried female household heads aged 25–55. It exploits variation across time, states, income levels, and number of children in federal and state tax and transfer rules—notably EITC expansions (1986,1990,1993), multiple tax acts, and welfare reforms including state waivers and the 1997 AFDC→TANF change—to identify how tax-induced incentives affect market work, housework, leisure, and related expenditures, using simulated tax rates (TAXSIM) and imputed earnings."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_2b6e1e18a81bd2cd",
+      "text": "보조금이(가) 상승하여 노동 공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_e1bfbd656c528913",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_21c883b1a2781e8b",
+      "text": "야간 수면 처치이(가) 상승하여 노동 공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_3f5306b6ce8b8119",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_28e2757124f68338",
+      "text": "낮잠 처치이(가) 상승하여 노동 공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_d592eb854c2f56fc",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Taxes and Time Allocation: Evidence from Single Women (2009, review_of_economic_studies; CSV R03094; https://www.nber.org/papers/w15583)",
+    "author": "Alexander M. Gelber, Joshua W. Mitchell",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

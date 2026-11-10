@@ -1,0 +1,61 @@
+{
+  "edge_id": "n_5492df3b53fe7fb0->credit_supply",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "투자심리로 인한 신용스프레드 확대의 변화가 대출자의 자금 여력·차입자 심사·대출 유인 경로를 통해 기업 신용공급의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06150의 적용 맥락: Using U.S. annual data (primarily 1929–2013, with robustness checks on 1952–2013 and 1973–2013), the paper analyzes aggregate macro outcomes and corporate finance in the United States. Units include yearly economy-wide series (Baa–Treasury spreads, term spread, excess bond premium), macro aggregates (real GDP per capita, business investment, unemployment), Flow-of-Funds net debt/equity issuance, and firm-level Compustat data (nonfinancial corporates, credit ratings, bond issuance). The setting emphasizes credit-market sentiment proxies and their link to credit-supply shifts and subsequent real activity."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_caf7a61ab841d1fe",
+      "text": "긴축 통화정책(연방기금금리 인상)이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_616526e8724aa264",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_cd80fc3477eca6aa",
+      "text": "은행의 해외 자금조달 노출이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_04eeaca7e3e30bf7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_bca593e5b496aa3f",
+      "text": "초과 채권 프리미엄 상승이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_840a448dbe3a322e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e9ffe8d5494eb8bc",
+      "text": "자본 부족이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_0d208e9eb89c8455",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_92384f2ccdc2646a",
+      "text": "상환 유예·관용 조치이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_b589640db50f7615",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d92a98af43de36b0",
+      "text": "기업집단에 대한 은행의 기존 대출 노출이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_7389c4978416dc66",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_80919f48f8acd65d",
+      "text": "기업 신용 접근성이(가) 하락하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "credit_access",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Credit-Market Sentiment and the Business Cycle (2016, quarterly_journal_of_economics; CSV R06150; https://www.nber.org/papers/w21879)",
+    "author": "David López-Salido, Jeremy C. Stein, Egon Zakrajšek",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

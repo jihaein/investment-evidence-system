@@ -1,0 +1,25 @@
+{
+  "edge_id": "n_e86012862b2b3502->credit_rating",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "시장 통합의 변화가 상환능력·재무위험 평가 경로를 통해 기업 신용등급의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00414의 적용 맥락: This paper studies capital‑market liberalizations in 20 emerging markets (monthly financial series and some annual indicators through the 1980s–mid‑1990s). Using country‑level time series — equity returns, dividend yields, market‑cap/GDP, trading turnover, net U.S. holdings and credit ratings — the authors date endogenous structural breaks in VARs and examine pre/post changes. The institutional setting comprises staggered policy reforms (ADRs, country funds, foreign‑ownership caps, exchange‑rate and regulatory reforms) associated with opening domestic equity markets to international investors."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_ef49947bb0bb76fd",
+      "text": "담보자산의 재활용 가능성이(가) 하락하여 기업 신용등급의 상승을 상쇄할 수 있음",
+      "check_node": "n_d28c7ae55796397d",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Dating the Integration of World Equity Markets (1998, journal_of_financial_economics; CSV R00414; https://www.nber.org/papers/w6724)",
+    "author": "Geert Bekaert, Campbell R. Harvey, Robin L. Lumsdaine",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

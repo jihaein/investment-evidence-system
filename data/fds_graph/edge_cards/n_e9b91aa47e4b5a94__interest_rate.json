@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_e9b91aa47e4b5a94->interest_rate",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "인수주선사의 이사회 참여 금지의 변화가 자금 수급·통화정책·가격 설정 경로를 통해 일반 금리의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05449의 적용 맥락: The paper studies U.S. NYSE-listed railroads (with industrial firms as a comparison group) over 1905–1929, exploiting the implementation of Section 10 of the Clayton Antitrust Act (passed 1914, enforced Jan 1, 1921). In this early-20th-century U.S. setting, railroads relied on bond finance and securities underwriters often held board seats; the law exogenously disrupted underwriter–board relationships and thus delegated monitoring, allowing the authors to examine effects on firm value, investment, leverage, and borrowing costs."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_25acd155ffbf80e8",
+      "text": "통화정책 변화이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_7d81864514f4073e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fb88f6d2988eabdb",
+      "text": "통화동맹 도입이(가) 상승하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_fa45e53234de1431",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b25e3313acb85e55",
+      "text": "파산신청 위험 1%포인트 하락이(가) 상승하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_f6fae033cc7a89a7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1fe7f890ae457571",
+      "text": "지급준비금 이자율이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_68281f2d7787c3bb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bbff0fe32f827ccc",
+      "text": "정보 비대칭이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a0923f1d27a5f697",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Investment Banks as Corporate Monitors in the Early 20th Century United States (2014, american_economic_review; CSV R05449; https://www.nber.org/papers/w20544)",
+    "author": "Carola Frydman, Eric Hilt",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

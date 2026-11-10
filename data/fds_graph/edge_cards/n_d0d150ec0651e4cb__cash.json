@@ -1,0 +1,73 @@
+{
+  "edge_id": "n_d0d150ec0651e4cb->cash",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "배당세 인상의 변화가 내부현금 창출·현금 유출·예비적 보유 경로를 통해 현금 보유액의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R10231의 적용 맥락: This paper studies the 2013 French dividend payroll-tax reform that tripled the tax rate on dividends to owner-managers of SARL firms (from 15.5% to 46%). It uses administrative tax and accounting panel data covering the universe of private firms over 2008–2017. The unit of analysis is closely-held firms/owner-managers (SARL treated, SAS controls), exploiting legal-status variation and staggered fiscal-year treatment timing to estimate effects on payouts, retained earnings, capital and labor accumulation, revenues, and exit."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_ce8674d069d2888b",
+      "text": "신주 발행으로 조달한 자본이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9fbc893495377352",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_158013cccc08f43c",
+      "text": "경기침체이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_c836905751e74c2e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ab7ffe8f0d1e6579",
+      "text": "인수이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_31de312977fc2ebd",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_da84ec60f2bda0af",
+      "text": "확대된 담보 인정 범위이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e432ff4dca61e44",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f7fb8fe60c269d08",
+      "text": "경영 위험이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_ca7df404d411b010",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_223a1d359b1ee739",
+      "text": "외생적 유동성 손실이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_427698ffb44cb513",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1120a25bef9f8a64",
+      "text": "단기 은행신용 비용 증가이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_352d8f471664c5df",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_005a0434fc2448df",
+      "text": "불확실성 충격이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_a6d900aebd61fccd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2d2f9e7f1bcbaca5",
+      "text": "현금 배당 지급액이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "payout",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Dividend Taxes, Firm Growth, and the Allocation of Capital (2022, american_economic_review; CSV R10231; https://www.nber.org/papers/w30099)",
+    "author": "Adrien Matray",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

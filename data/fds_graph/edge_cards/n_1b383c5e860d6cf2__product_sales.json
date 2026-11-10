@@ -1,0 +1,99 @@
+{
+  "edge_id": "n_1b383c5e860d6cf2->product_sales",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "잭팟 당첨 복권의 판매의 변화가 수요·가격·제품 선택 경로를 통해 제품·사업별 판매 규모의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01762의 적용 맥락: Using weekly store-level lottery-sales data for all Texas retailers from January 2000 to June 2002, this paper examines how the sale of winning tickets in three lotto games (Lotto Texas, Texas Two-Step, Cash 5) affects subsequent ticket sales. Units are retail outlets and 5/9-digit zip codes; the institutional setting is the Texas Lottery Commission’s statewide lotto system with publicly posted winner locations and jackpots. The random assignment of winners (conditional on contemporaneous sales) provides exogenous shocks exploited to study demand responses, spatial substitution, demographic heterogeneity, and persistence/habit-formation (addiction).",
+    "원자료 R01763의 적용 맥락: Using weekly store-level lottery-sales data for all Texas retailers from January 2000 to June 2002, this paper examines how the sale of winning tickets in three lotto games (Lotto Texas, Texas Two-Step, Cash 5) affects subsequent ticket sales. Units are retail outlets and 5/9-digit zip codes; the institutional setting is the Texas Lottery Commission’s statewide lotto system with publicly posted winner locations and jackpots. The random assignment of winners (conditional on contemporaneous sales) provides exogenous shocks exploited to study demand responses, spatial substitution, demographic heterogeneity, and persistence/habit-formation (addiction).",
+    "원자료 R01764의 적용 맥락: Using weekly store-level lottery-sales data for all Texas retailers from January 2000 to June 2002, this paper examines how the sale of winning tickets in three lotto games (Lotto Texas, Texas Two-Step, Cash 5) affects subsequent ticket sales. Units are retail outlets and 5/9-digit zip codes; the institutional setting is the Texas Lottery Commission’s statewide lotto system with publicly posted winner locations and jackpots. The random assignment of winners (conditional on contemporaneous sales) provides exogenous shocks exploited to study demand responses, spatial substitution, demographic heterogeneity, and persistence/habit-formation (addiction)."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_529cb46ebca93083",
+      "text": "시장 진입 순서이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_f46f9bb29a0fb91a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_943109ccfe1406cb",
+      "text": "저품질 제품 가격이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_84a699acfcd594f2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_14607f666524bdac",
+      "text": "주택소유자당 담보권 실행 건수이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_2e36393d0dd36413",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_912ea2f78f899f2c",
+      "text": "미생물 수질기준 위반이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_04bc799cbdea10bd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_90f6c0c74ace9b8f",
+      "text": "원소·화학물질 수질기준 위반이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_dc0fcc47b0d176d4",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8309876cc1f37552",
+      "text": "세무조사 확률 증가 발표이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_ae2b2e97cc54ad56",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_13240dcd09182591",
+      "text": "신제품 출시이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_cd590377a1c4df0e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9094740aa6a35e2e",
+      "text": "준비자산 평가가치 상승이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_4cf73fb28bb462e9",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_03df4f327a9a1fc6",
+      "text": "뉴욕타임스 리뷰이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_164c4e1db4fad89f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_cb318ae759d24915",
+      "text": "중개 수수료이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfce4a4862f18769",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5c5783338045ccfc",
+      "text": "미 노동부 수탁자 의무 규칙 제안이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_1e24446d45bc919e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8ed2f5badd33b501",
+      "text": "연금상품 비용률이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_bee99bda0408c613",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7d35f215ca35474d",
+      "text": "공공 약국 진입이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_895bc1c56cab8186",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Lucky Stores, Gambling, and Addiction: Empirical Evidence from State Lottery Sales (2005, american_economic_review; CSV R01762; https://www.nber.org/papers/w11287) / Lucky Stores, Gambling, and Addiction: Empirical Evidence from State Lottery Sales (2005, american_economic_review; CSV R01763; https://www.nber.org/papers/w11287) / Lucky Stores, Gambling, and Addiction: Empirical Evidence from State Lottery Sales (2005, american_economic_review; CSV R01764; https://www.nber.org/papers/w11287)",
+    "author": "Jonathan Guryan, Melissa S. Kearney",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

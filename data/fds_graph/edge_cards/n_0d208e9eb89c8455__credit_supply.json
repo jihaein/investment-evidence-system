@@ -1,0 +1,61 @@
+{
+  "edge_id": "n_0d208e9eb89c8455->credit_supply",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "자본 부족의 변화가 대출자의 자금 여력·차입자 심사·대출 유인 경로를 통해 기업 신용공급의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R09228의 적용 맥락: This paper studies eurozone bank-level interventions during the Global Financial Crisis and subsequent sovereign-debt shock, using hand-collected State Aid Register data on interventions from 2007–2009 and balance-sheet and loan-level outcomes through 2012. The unit of analysis is ultimate-parent banks (N=830) and bank–firm loan relationships, across eurozone countries differing in fiscal capacity and access to ECB facilities (including LTRO). The institutional setting includes national government recapitalizations, guarantees, liquidity measures, and EU Commission approvals, with fiscal constraints proxied by revenue/GDP, debt/GDP and maturing debt."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_1a7d731a8720d37d",
+      "text": "긴축 통화정책(연방기금금리 인상)이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_616526e8724aa264",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_269795e54c332b6f",
+      "text": "은행의 해외 자금조달 노출이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_04eeaca7e3e30bf7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7b2859118348a602",
+      "text": "초과 채권 프리미엄 상승이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_840a448dbe3a322e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_47e0e73912214948",
+      "text": "투자심리로 인한 신용스프레드 확대이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_5492df3b53fe7fb0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f785a396a9977b2e",
+      "text": "상환 유예·관용 조치이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_b589640db50f7615",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5ca1f2aa1722f75c",
+      "text": "기업집단에 대한 은행의 기존 대출 노출이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_7389c4978416dc66",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_efcd5de37650d4f1",
+      "text": "기업 신용 접근성이(가) 하락하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "credit_access",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Kicking the Can Down the Road: Government Interventions in the European Banking Sector (2020, review_of_financial_studies; CSV R09228; https://www.nber.org/papers/w27537)",
+    "author": "Viral V. Acharya, Lea Borchert, Maximilian Jager, Sascha Steffen",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

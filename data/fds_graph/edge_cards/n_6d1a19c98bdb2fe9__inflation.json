@@ -1,0 +1,103 @@
+{
+  "edge_id": "n_6d1a19c98bdb2fe9->inflation",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "재정 변동성 충격의 변화가 수요·공급 비용·가격 및 기대 형성 경로를 통해 물가 상승률의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03763의 적용 맥락: Analyzes how time-varying uncertainty about U.S. fiscal policy affects macro activity. The authors use quarterly consolidated government data (federal, state, local) on spending and average tax rates (labor, capital, consumption) from 1970:Q1–2010:Q2 to estimate fiscal rules with stochastic volatility. They then simulate a calibrated New Keynesian DSGE model to compute impulse responses. The setting emphasizes elevated deficits and public debt after the 2008–09 financial crisis and uncertainty over the timing and mix of fiscal consolidation; units are aggregate fiscal instruments and macro aggregates."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_6a86107147b79c22",
+      "text": "연방준비제도의 정책 조치이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_0c4ca84ffc055fa9",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c515294dd26e96d2",
+      "text": "인플레이션·실업 간 상충관계에 대한 인식이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_40e3943320b6a750",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dbaba5b25c5badb4",
+      "text": "통화 발행으로 충당한 정부 재정적자이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c3fa105332d3d747",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fcef496a3011877a",
+      "text": "외형적인 통화제도 개혁이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_60c07fb7c378c26b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_215772149316cb0f",
+      "text": "소비자신뢰의 예상 밖 변화이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_4bf1d901427b3932",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_af7dec5ff341694b",
+      "text": "초과 채권 프리미엄 상승이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_840a448dbe3a322e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9a6f2bee59c20a64",
+      "text": "은행위기이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_a8200237c77073f5",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_4fdb2eeff0859d6c",
+      "text": "기업 채무불이행 위기이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_ca5b293b2d0e7e3e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b8d7e1dc21d28880",
+      "text": "긍정적 수요 충격이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c28bd7be3acfd75b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_4320a9e6a2c08ee0",
+      "text": "재정 주도 정책 조합의 신뢰성 있는 발표이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c86b3360887a905a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_428a41e3556eb65d",
+      "text": "부채 안정화 정책의 불확실성이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_fc314bc0260a9e64",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_50d6013a64c31c88",
+      "text": "확장적 통화 충격이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_718cd50bab2a045d",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_2e02ab4733939dd0",
+      "text": "미국구제계획법 재정부양이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_feafb698e87f5e8d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_417986515d35ddec",
+      "text": "재원 확보 없는 재정 충격이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_e3983ce9b17348f1",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Fiscal Volatility Shocks and Economic Activity (2011, american_economic_review; CSV R03763; https://www.nber.org/papers/w17317)",
+    "author": "Jesús Fernández-Villaverde, Pablo A. Guerrón-Quintana, Keith Kuester, Juan Rubio-Ramírez",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

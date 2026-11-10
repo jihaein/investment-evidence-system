@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_0481c6e573d7d263->market_firm_value",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "애널리스트와 대통령 소속 정당의 불일치의 변화가 기대 현금흐름·할인율·시장 평가 경로를 통해 기업 시장가치의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08098의 적용 맥락: This paper examines U.S. corporate credit-rating analysts and their rating actions from 2000–2018. The authors link 557 analysts (primarily based in New York City and Chicago) to voter-registration party affiliations from Illinois, New Jersey, and New York City and their ratings of 1,984 U.S. firms at Fitch, Moody’s, and S&P. Exploiting variation in analysts’ alignment with the U.S. president’s party and presidential elections (notably 2016), the study compares analysts covering the same firm-quarter to estimate effects on rating changes, security prices, bond yields, and firm investment."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_f4fa9a00cb5910f4",
+      "text": "부총리 해임과 자본통제 도입이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_2c20de9d44a40a67",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e5bc11585ae35442",
+      "text": "정치적 연계 가치 하락이(가) 상승하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_887caea9bead1a55",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8a0d9b6227bee8bd",
+      "text": "제품시장 경쟁기업의 연구개발이(가) 상승하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_7488374b91e15f68",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9afe5b55b8aef1da",
+      "text": "기술적으로 가까운 기업의 연구개발이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_6725ffded8c3dafb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2b5b58fa4b19f490",
+      "text": "자사 연구개발 축적량이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_4f843c3efc6d0f7b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e051000145fa7924",
+      "text": "특허와 기업의 기술적 근접성이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_f5aecf5e9c415f69",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Partisan Professionals: Evidence from Credit Rating Analysts (2018, journal_of_finance; CSV R08098; https://www.nber.org/papers/w25292)",
+    "author": "Elisabeth Kempf, Margarita Tsoutsoura",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_a27ae012897c1d75->firm_exit",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "해외 경쟁 심화의 변화가 사업 수익성·유동성·퇴출 유인 경로를 통해 기업 퇴출 가능성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03168의 적용 맥락: This paper studies how globalization affected firm markups and U.S. welfare between 1992 and 2005, using U.S. import and domestic production data at HS 4-digit and firm-country-product (HS-10) levels. The setting is the U.S. merchandise market; units of observation include exporting countries, individual firms/products, and manufacturing sectors. Under a monopolistic-competition framework with translog preferences, the authors exploit changes in import shares, Herfindahl concentration, and product entry/exit to structurally estimate demand elasticities, markups, and welfare impacts."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_7b1009b96c5cabc8",
+      "text": "현장 직무훈련(TWI)이(가) 상승하여 기업 퇴출 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f03fef2267c4d671",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_893efc12d8bc4a83",
+      "text": "Banks for All 프로그램이(가) 하락하여 기업 퇴출 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_eb4111d8ce440028",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a2f0bebacd55691d",
+      "text": "배당세 인상이(가) 상승하여 기업 퇴출 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_d0d150ec0651e4cb",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_39f6fe69514813aa",
+      "text": "시의회 해산(CCD)이(가) 하락하여 기업 퇴출 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_9b2c8d8a0c6a12ff",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Globalization, Markups and U.S. Welfare (2010, journal_of_political_economy; CSV R03168; https://www.nber.org/papers/w15749)",
+    "author": "Robert C. Feenstra, David E. Weinstein",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

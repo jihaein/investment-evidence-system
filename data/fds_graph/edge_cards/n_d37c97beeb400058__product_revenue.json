@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_d37c97beeb400058->product_revenue",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "전문가 리뷰의 변화가 제품 판매량·가격 경로를 통해 제품·사업별 매출액의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08915의 적용 맥락: The reported $28.12 million revenue effect of professional reviews refers to the 2018 US physical book market. It is based on daily Amazon edition-level data for 2018 but scaled to market-wide US sales; units are book editions/titles. The welfare and revenue calculations come from a nested-logit structural calibration and assume professional review effects operate across all retailers."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_781d2cc7303be517",
+      "text": "현물 식량 이전이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d2a297cb3064a55",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a1c823ea32c0e1e4",
+      "text": "현금 이전이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d1623b1cd4885fb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d7b13e917a9d5ab9",
+      "text": "할인 유통채널 이용 가능성이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_f744eec7f851d8ca",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a3ccd2ede3711c87",
+      "text": "경매를 통한 배분이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_8145822a4e16c622",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b57c47c8590cb912",
+      "text": "주 전체에 적용되는 공시이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d121f562c76114d2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a79437e9ead00020",
+      "text": "광고 노출 횟수 감소이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e69827afb3bc7ec",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Digitization and Pre-Purchase Information: The Causal and Welfare Impacts of Reviews and Crowd Ratings (2020, american_economic_review; CSV R08915; https://www.nber.org/papers/w26776)",
+    "author": "Imke C. Reimers, Joel Waldfogel",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

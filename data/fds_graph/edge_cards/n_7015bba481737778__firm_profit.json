@@ -1,0 +1,109 @@
+{
+  "edge_id": "n_7015bba481737778->firm_profit",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "소비자의 정보 수준을 약사 수준으로 향상의 변화가 매출과 비용의 차이 경로를 통해 기업 이익(연구 정의)의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05291의 적용 맥락: This paper studies U.S. household purchases of consumer packaged goods using Nielsen Homescan transactions (2004–2011) linked to two PanelViews surveys (2008, 2011) and retail/wholesale scanner data. The unit of analysis is the household purchase occasion across Scantrack markets and comparable UPC product groups, with detailed case studies of over-the-counter headache remedies and pantry staples. Identification contrasts informed experts (pharmacists, physicians, chefs) and survey-measured knowledge with demographically similar shoppers within the same chain–market–quarter, interpreting experts as revealing true valuations."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_d104105320ae37b0",
+      "text": "최적 가격 대비 무료 온라인 가격 적용이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_679cbba0e41123b6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e5f5b222d803b299",
+      "text": "외국 소매기업 진입이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_0bcc9ca7e9f51415",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f4a4c7fa669f9245",
+      "text": "기업 간 회의이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_41e5efb92eb59f8c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b258de82b7161ea1",
+      "text": "상한이 있는 개인별 가격 적용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_ce82f4e00e60bc89",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9ccabb2ced1114f1",
+      "text": "최적화된 단일 가격이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_21ef5610e8a1355e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c4e03b41b4e7d21b",
+      "text": "급여세 인하 노출이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2aac6633c92702b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c69b2a3f3af35085",
+      "text": "고령 신청자의 대출 이용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_49bdd3466ef912cc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8e6d7055a2b2c255",
+      "text": "대출 이용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_d8c7cfb4e7a0fe09",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_97cfd4fddf69390d",
+      "text": "관개시설 접근성이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_e9df2180c9383572",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5567940796760c64",
+      "text": "대출자의 차입자 선별 능력이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_80f0ee23818c6c2e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bd46e18e2b6b3ce2",
+      "text": "전력 공급 배정 시간 1시간 증가이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7cd123507c4698ab",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3758dd8cdf8f007a",
+      "text": "우물 깊이이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_31fd7a36250f2264",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3fe677c91431946a",
+      "text": "임대 거래비용 감소이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7123ea6a420c5082",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_045aede005a9e446",
+      "text": "원활하게 작동하는 임대시장이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_bcb6cdc95ea9ed2b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1adbed70e4a17b20",
+      "text": "지연시간 차익거래 경쟁이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_dfa3d0ac1cf30aaf",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Do Pharmacists Buy Bayer? Informed Shoppers and the Brand Premium (2014, quarterly_journal_of_economics; CSV R05291; https://www.nber.org/papers/w20295)",
+    "author": "Bart J. Bronnenberg, Jean-Pierre Dubé, Matthew Gentzkow, Jesse M. Shapiro",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

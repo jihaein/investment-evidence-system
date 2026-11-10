@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_7e306a203ca8591c->industry_productivity",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "법원 적체 감소를 통한 계약 집행 개선의 변화가 산업의 기술·자원 배분 효율 경로를 통해 산업 생산성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07889의 적용 맥락: This triplet is evaluated for Indian states: using plant-level data from India’s Annual Survey of Industries (2000/01–2012/13) together with High Court case data (average age of pending civil cases in 2016), the authors use a structural multi-industry general-equilibrium model to compute a state-level counterfactual: how much aggregate manufacturing productivity (measured via the household consumption aggregate U) would rise if court congestion in each state were reduced to the level of the least-congested state (roughly one year). The estimated gains are about 5% on average and up to ~10% for the worst-off states."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_9efc6eeeeeb59add",
+      "text": "고객 활동이(가) 하락하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_53ecffd8b6ac23ee",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_34e55adf739f035a",
+      "text": "무역 자유화이(가) 하락하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_da26fc668d2b62c5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dce096d98e6a2f76",
+      "text": "생애주기별 생산성 성장 패턴이(가) 상승하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_94fcd6e3c5ce0a73",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_167ea70f584a09ab",
+      "text": "테네시강 유역개발공사의 직접 인프라 투자이(가) 하락하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_24b7da3e62eaf3c7",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9c0a2c5290b4ec70",
+      "text": "주 은행업 규제 완화이(가) 하락하여 산업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_c1bcbf96bc864d55",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Misallocation in the Market for Inputs: Enforcement and the Organization of Production (2018, quarterly_journal_of_economics; CSV R07889; https://www.nber.org/papers/w24937)",
+    "author": "Johannes Boehm, Ezra Oberfield",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,23 @@
+{
+  "edge_id": "equity_value->per_share_value",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "주당 내재가치 = 주주가치 / 발행주식 수",
+  "conditions": [
+    "주식 수 양수 및 일정"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_47826043ad34f705",
+      "text": "발행주식 수이(가) 상승하여 주당 내재가치의 상승을 상쇄할 수 있음",
+      "check_node": "shares_outstanding",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

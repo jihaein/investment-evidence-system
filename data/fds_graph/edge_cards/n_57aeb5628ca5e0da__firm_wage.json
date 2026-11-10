@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_57aeb5628ca5e0da->firm_wage",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "수출 수요 5% 증가의 변화가 노동 수요·협상·보상 결정 경로를 통해 기업 근로자 임금의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R09603의 적용 맥락: This paper studies how export-demand shocks affect firm quality choices, wages, and firm-to-firm production networks in Turkey using linked VAT firm-to-firm trade, customs (exports by firm-product-destination), balance-sheet, and employer–employee data for formal manufacturing firms over 2011–2015 (final manufacturing sample ≈77,418 firms). The authors exploit variation in changes in foreign imports by product-destination—emphasizing shocks from richer destinations—to analyze changes in firms’ skill intensity, supplier/customer composition, and network-wide general-equilibrium effects, combining reduced-form regressions with structural estimation."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_75fcd3b16e3a8b14",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7543de49597d39bd",
+      "text": "기업의 수출 참여이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_4e9770cd8e6c6abc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b3bcfc8cec96dd6e",
+      "text": "미국 파산법 Chapter 13 보호이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_1fadff3300befb46",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_64b2759ff0b7a493",
+      "text": "주 법인세 인상이(가) 상승하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_386c508084e8f61f",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_99f516dca6891a2e",
+      "text": "조정된 수출 수요 충격이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_21cbe30fb8328f03",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "O-Ring Production Networks (2021, journal_of_political_economy; CSV R09603; https://www.nber.org/papers/w28433)",
+    "author": "Banu Demir, Ana Cecília Fieler, Daniel Xu, Kelly Kaili Yang",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

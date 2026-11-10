@@ -1,0 +1,85 @@
+{
+  "edge_id": "n_d13ea3b2852d36d8->firm_tobins_q",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "은행 자산 규모의 변화가 기업 시장가치와 자산 기준가치의 상대적 평가 경로를 통해 기업 Tobin Q의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06902의 적용 맥락: This paper studies U.S. publicly traded bank holding companies (171 banks, 1987–2015, with emphasis on the pre‑crisis window 1987–2006) using FRY‑9C and CRSP/Compustat data to assess how market valuation (Tobin’s q and market-to-book) varies with bank asset size—particularly above the Dodd‑Frank enhanced‑supervision threshold ($50 billion in 2010 dollars). The analysis contrasts pre‑ and post‑Global Financial Crisis regulatory regimes (Basel revisions, Dodd‑Frank) and uses cross‑sectional and within‑bank variation to probe TBTF‑related valuation effects."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_1caa0a8f6ab34a4a",
+      "text": "기업 다각화이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_58b7508f0473219f",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d5ba9d4694138952",
+      "text": "미국 상장이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_80a71674f5510ab0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ec25bec4424a1639",
+      "text": "정관에 근거한 시차임기 이사회이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_97ccba7c93d20f3c",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9a51578b8a0ed995",
+      "text": "시차임기 이사회이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_1237ef2086e84ab2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9f023065cd66d273",
+      "text": "은행 사업 다각화이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_dbad4e7dcb196d48",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e946aae16822f727",
+      "text": "최대주주의 현금흐름권이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_6ebf9abe0de10346",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0f54c7fccd6fc0f3",
+      "text": "현금흐름권의 분산이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_42e4d952dff7b1a7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8ad2717b18c9e7fd",
+      "text": "신규 자본과 기존 자본의 호환성 하락이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_9371abea531a78c3",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_339ef40b67c3d903",
+      "text": "기업지배구조 개선안 통과이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_1b063b2ef3bcfb48",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4e3c660715df5260",
+      "text": "매매자산 비중이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_30875eac9c2aaded",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_aac58ffc3c524ade",
+      "text": "자본에 대한 사회적 근접성이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_a64611fc44507824",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Are Larger Banks Valued More Highly? (2017, review_of_financial_studies; CSV R06902; https://www.nber.org/papers/w23212)",
+    "author": "Bernadette A. Minton, René M. Stulz, Alvaro G. Taboada",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

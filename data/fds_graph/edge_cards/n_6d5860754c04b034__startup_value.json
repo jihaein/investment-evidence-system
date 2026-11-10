@@ -1,0 +1,25 @@
+{
+  "edge_id": "n_6d5860754c04b034->startup_value",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "후속 투자 참여 의무 조항의 변화가 신생기업의 성장기회·현금흐름·자금조달 조건 경로를 통해 신생기업 평가가치의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08586의 적용 맥락: This paper analyzes U.S. VC-backed first financing rounds (seed/Series A) between 2002–2010 (exit follow-up through March 2018), using about 1,695–2,581 deals for U.S.-headquartered startups (mostly Delaware/California). The unit of observation is the entrepreneur–lead VC first-round match and its contract (convertible preferred equity terms such as investor equity share, participation, pay-to-play, and board seats). The setting is the U.S. venture capital market; the authors model bargaining and endogenous selection via a dynamic search-and-matching equilibrium to assess contract effects on startup outcomes."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_83c25b1676fb0a2a",
+      "text": "높은 벤처캐피털의 질이(가) 하락하여 신생기업 평가가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_b1dfe1bd3ff5a0b3",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Venture Capital Contracts (2019, journal_of_financial_economics; CSV R08586; https://www.nber.org/papers/w26115)",
+    "author": "Michael Ewens, Alexander S. Gorbenko, Arthur Korteweg",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

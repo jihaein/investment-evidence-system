@@ -1,0 +1,103 @@
+{
+  "edge_id": "n_4bf1d901427b3932->inflation",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "소비자신뢰의 예상 밖 변화의 변화가 수요·공급 비용·가격 및 기대 형성 경로를 통해 물가 상승률의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02884의 적용 맥락: This paper examines U.S. quarterly macro data (1960:Q1–2008:Q4), combining Michigan Survey of Consumers expectation measures (E5Y, E12M, PFE) with BEA NIPA aggregates (real GDP, consumption), CPI inflation and short-term interest rates. Units are aggregate macro series and aggregated household survey responses. It evaluates whether unexpected movements in consumer confidence reflect informational “news” about future productivity or causal “animal spirits,” using a New Keynesian DSGE model (price stickiness, habit, adjustment costs) estimated by simulation-based indirect inference and VAR analysis."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_4975c4b00d08535f",
+      "text": "연방준비제도의 정책 조치이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_0c4ca84ffc055fa9",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c3bbf5402a521138",
+      "text": "인플레이션·실업 간 상충관계에 대한 인식이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_40e3943320b6a750",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7bccffa6ca5b7069",
+      "text": "통화 발행으로 충당한 정부 재정적자이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c3fa105332d3d747",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7b2fc02f33078f6b",
+      "text": "외형적인 통화제도 개혁이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_60c07fb7c378c26b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_83b5d2e232d8f4e9",
+      "text": "초과 채권 프리미엄 상승이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_840a448dbe3a322e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5efb9c8e82d9f3a9",
+      "text": "재정 변동성 충격이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_6d1a19c98bdb2fe9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4461fb44cdf993d5",
+      "text": "은행위기이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_a8200237c77073f5",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f45ace890f706b51",
+      "text": "기업 채무불이행 위기이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_ca5b293b2d0e7e3e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_294cce82051426c7",
+      "text": "긍정적 수요 충격이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c28bd7be3acfd75b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_eab98e699c3cdd92",
+      "text": "재정 주도 정책 조합의 신뢰성 있는 발표이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c86b3360887a905a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_21bfc12fc8cea2e4",
+      "text": "부채 안정화 정책의 불확실성이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_fc314bc0260a9e64",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_152dd259571d9085",
+      "text": "확장적 통화 충격이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_718cd50bab2a045d",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_457fc4e5c55aeda9",
+      "text": "미국구제계획법 재정부양이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_feafb698e87f5e8d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_033a191215e78834",
+      "text": "재원 확보 없는 재정 충격이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_e3983ce9b17348f1",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Information, Animal Spirits, and the Meaning of Innovations in Consumer Confidence (2009, american_economic_review; CSV R02884; https://www.nber.org/papers/w15049)",
+    "author": "Robert B. Barsky, Eric R. Sims",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

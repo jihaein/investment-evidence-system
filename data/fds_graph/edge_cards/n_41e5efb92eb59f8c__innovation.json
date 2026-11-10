@@ -1,0 +1,97 @@
+{
+  "edge_id": "n_41e5efb92eb59f8c->innovation",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "기업 간 회의의 변화가 연구개발 투입·지식 축적·혁신 유인 경로를 통해 기업 혁신 성과의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06731의 적용 맥락: In Nanchang, China, owner-managed micro, small and medium enterprises (established within the prior three years) were randomized in 2013 into monthly manager meetings for one year (Aug 2013–mid-2014) or a no-meetings control. The innovation outcome is an indicator collected only in the endline (2015) survey for whether the firm introduced new products or services in that fiscal year. The paper estimates the meetings' effect on innovation using an endline-only cross-sectional regression (comparing treated and control firms with region/sector/size controls), relying on the random assignment for identification."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_4cf3a863e56ba5f7",
+      "text": "부채 상환 압력이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_5c9feacc5e999d7a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7a891523ca032ba5",
+      "text": "기관투자자 지분 보유이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_5b4ff2e346630fad",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c0df54426a80e626",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a97515379924a426",
+      "text": "외국 모기업을 통한 수출이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_85e921ea9a332a6c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_64dff33b738dcebd",
+      "text": "은행의 재무적 곤경이(가) 상승하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_daf752b42c197388",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_045c3fa86ad211c2",
+      "text": "두 번째 특허 출원 승인이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_9ffbc362d30ea721",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2ab51cccb2c95076",
+      "text": "기업 규모에 따른 노동 규제이(가) 상승하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_ea681eb7d01352f3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9b4d0ba6bbef9e8b",
+      "text": "시장 규모 충격이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_129208427654f946",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9b469555aaa33d73",
+      "text": "정치적 동기의 공공안전 계약 수주이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_2fee6c77a04c5070",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6197f2b0b307588a",
+      "text": "연구개발 지출이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "rd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6705eb1016fb7bfe",
+      "text": "기업 연구개발 활동이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "firm_rd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0f1c3d3654d774ca",
+      "text": "기업 특허 성과이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "patenting",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2472d977c7a9ba56",
+      "text": "기업 R&D 지출액이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "firm_rd_spend",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Interfirm Relationships and Business Performance (2016, quarterly_journal_of_economics; CSV R06731; https://www.nber.org/papers/w22951)",
+    "author": "Jing Cai, Adam Szeidl",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,73 @@
+{
+  "edge_id": "n_427698ffb44cb513->cash",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "외생적 유동성 손실의 변화가 내부현금 창출·현금 유출·예비적 보유 경로를 통해 현금 보유액의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06357의 적용 맥락: This triplet examines Swedish firms that were customers of Panaxia (mostly retail firms) exposed to exogenous liquidity losses from Panaxia’s fraud and 2012 bankruptcy. Using firm-level Swedish data over 2010–2013 (treatment period 2010–2012, post-treatment 2013), the paper compares treated Panaxia clients to matched control firms and measures impacts on firm balance-sheet cash holdings (cash/assets). Identification exploits nearest-neighbor matching with bias correction and a difference-in-differences style comparison around the Panaxia event."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_7dc6a8c1abd2f1da",
+      "text": "신주 발행으로 조달한 자본이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9fbc893495377352",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_71ec5ce835f60cac",
+      "text": "경기침체이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_c836905751e74c2e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_75a7450fdd8c71b6",
+      "text": "인수이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_31de312977fc2ebd",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1c5a515ff99956c2",
+      "text": "확대된 담보 인정 범위이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e432ff4dca61e44",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6c00b46886ccc710",
+      "text": "경영 위험이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_ca7df404d411b010",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ef286cd17527c5f3",
+      "text": "단기 은행신용 비용 증가이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_352d8f471664c5df",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_595c92918e0be3fd",
+      "text": "불확실성 충격이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_a6d900aebd61fccd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d063db633f16640e",
+      "text": "배당세 인상이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d0d150ec0651e4cb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7a7bf8136fe7710a",
+      "text": "현금 배당 지급액이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "payout",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Curbing Shocks to Corporate Liquidity: The Role of Trade Credit (2016, journal_of_political_economy; CSV R06357; https://www.nber.org/papers/w22286)",
+    "author": "Niklas Amberg, Tor Jacobson, Erik von Schedvin, Robert Townsend",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,16 @@
+{
+  "edge_id": "share_issuance->shares_outstanding",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "기말 주식 수 = 기초 주식 수 + 순발행 주식 수",
+  "conditions": [
+    "자사주·소각·주식분할 별도 반영"
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

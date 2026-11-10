@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_59ae2982f562f9dc->export_sales",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "고속 인터넷 도입의 변화가 해외 수요·수출 비용·시장 접근 경로를 통해 수출 판매 규모의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07139의 적용 맥락: This paper studies the causal effect of the arrival of fast international submarine Internet cables (2006–2014) on employment, occupations, firm behavior and incomes across coastal African countries. It exploits staggered cable landings interacted with pre-existing terrestrial backbone connectivity to compare individuals (DHS, Afrobarometer, South African QLFS), firms (CIPC registry, WBES, Ethiopia LMMIS) and 0.1° grid locations before and after treatment. The institutional setting features country-specific backbones, limited local hosting, and large reductions in international transit costs that raised experienced speeds and take-up."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_679f6a8aa07dd0c6",
+      "text": "모기업의 상대적 숙련노동 풍부도(원문 구분)이(가) 하락하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_c133973cf8c5106b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6565ebc99e94496f",
+      "text": "통화가치 절하이(가) 하락하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d41b9d5632b18c6",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3d9c8142f513400c",
+      "text": "은행 건전성 악화이(가) 상승하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_d5da1983455d75ed",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ef52316f41d9bbe9",
+      "text": "해외 공장 설립 고정비용이(가) 하락하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_b1a7aca7aeb1ea31",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Arrival of Fast Internet and Employment in Africa (2017, american_economic_review; CSV R07139; https://www.nber.org/papers/w23582)",
+    "author": "Jonas Hjort, Jonas Poulsen",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

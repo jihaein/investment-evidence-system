@@ -1,0 +1,73 @@
+{
+  "edge_id": "n_0810557f4e50d819->firm_markup",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "좀비기업 신용공급의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 기업 마크업의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R09055의 적용 맥락: This paper studies the rise of “zombie credit” and its effect on inflation using firm-level (≈1.17 million firms) and product‑level CPI data across 65 industries in 12 European countries (Austria, Belgium, Germany, Denmark, Spain, Finland, France, Italy, Poland, Portugal, Sweden, Slovakia) roughly over 2009–2016 with emphasis on the post‑2012 period. The setting is post‑global financial and sovereign‑debt crises under ultra‑accommodative ECB policies (negative rates, asset purchases), where weakly‑capitalized banks and search‑for‑yield behavior provided cheap credit to impaired firms; units are firms and industry‑country “markets.”"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_548788f745ac3897",
+      "text": "지역 금융 발전이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_0849e0e487b782d0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_055a95d42117bcd6",
+      "text": "서유럽 수출이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_6fdbd1327e0a91a5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_05ea6a3dbe147806",
+      "text": "수출 중단이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_680ab86f18f7a8de",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9fe9d974e5854829",
+      "text": "수출시장 진입이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_a784f6c100e40b55",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5d0a55ca02df759e",
+      "text": "수입 비중 증가와 미국 기업 퇴출이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_c72cefcde7504e52",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f1eb4a5493039eec",
+      "text": "한계비용 감소이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_941020c7f660f9d9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_172975aa10b18174",
+      "text": "산출물 관세 하락이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_dfe115a23deb321b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_596ac85734955821",
+      "text": "불확실성 증가이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_00532c15a0f3fac6",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_01132ef145fd7e97",
+      "text": "대기업 시장점유율이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_8f14ac6a66361dee",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Zombie Credit and (Dis-)Inflation: Evidence from Europe (2020, journal_of_finance; CSV R09055; https://www.nber.org/papers/w27158)",
+    "author": "Viral V. Acharya, Matteo Crosignani, Tim Eisert, Christian Eufinger",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

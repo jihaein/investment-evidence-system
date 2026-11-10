@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_073a0d589d443a39->equity_risk_premium",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "불리한 환경 요인(nt)의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 주식위험 프리미엄의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02948의 적용 맥락: The paper studies U.S. aggregate consumption and asset markets using monthly data (primarily January 1990–March 2009, with longer annual consumption series back to the Great Depression for robustness). Units are aggregate consumption (PCE nondurables and services), the S&P 500 (prices/dividends/returns), option-implied risk-neutral variance (VIX), and 30-day T-bills. In a representative‑agent, complete‑markets US setting, the authors estimate a structural consumption-based asset pricing model (Campbell–Cochrane preferences augmented with a BEGE consumption technology) to explain the variance premium, option prices, and term‑structure dynamics."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_5a6a8d165c51a347",
+      "text": "위험회피와 불확실성이(가) 하락하여 주식위험 프리미엄의 상승을 상쇄할 수 있음",
+      "check_node": "n_602273bd556d0014",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1836233cbd75f775",
+      "text": "거시 불확실성이(가) 하락하여 주식위험 프리미엄의 상승을 상쇄할 수 있음",
+      "check_node": "aggregate_uncertainty",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Asset Return Dynamics under Bad Environment Good Environment Fundamentals (2009, journal_of_political_economy; CSV R02948; https://www.nber.org/papers/w15222)",
+    "author": "Geert Bekaert, Eric Engstrom",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,30 @@
+{
+  "edge_id": "cost_of_equity->discount_rate",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "WACC = 자기자본 비중 × 자기자본비용 + 부채 비중 × 세후부채비용",
+  "conditions": [
+    "자본구조 비중과 세율 일정",
+    "자기자본 비중 양수"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_37f92544f5f47c42",
+      "text": "이익 정보의 유용성 하락이(가) 하락하여 기업가치 할인율 WACC의 상승을 상쇄할 수 있음",
+      "check_node": "n_149b70b44dcc8ef1",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d5a7def0debcc63a",
+      "text": "부채 조달금리이(가) 하락하여 기업가치 할인율 WACC의 상승을 상쇄할 수 있음",
+      "check_node": "cost_of_debt",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

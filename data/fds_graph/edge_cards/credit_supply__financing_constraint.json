@@ -1,0 +1,29 @@
+{
+  "edge_id": "credit_supply->financing_constraint",
+  "sign": "-",
+  "empirical_sign": "n/a",
+  "mechanism": "이용 가능한 신용공급은 조달 제약을 완화",
+  "conditions": [
+    "대출 자격·가격·담보 조건 충족"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_1b9270409a7d0338",
+      "text": "계약 집행을 개선하는 법률 개혁이(가) 상승하여 기업 자금조달 제약의 상승을 상쇄할 수 있음",
+      "check_node": "n_7e704590e55d6313",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_cdc4573c3664f142",
+      "text": "인수이(가) 상승하여 기업 자금조달 제약의 상승을 상쇄할 수 있음",
+      "check_node": "n_31de312977fc2ebd",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

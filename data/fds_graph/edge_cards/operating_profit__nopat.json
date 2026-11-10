@@ -1,0 +1,25 @@
+{
+  "edge_id": "operating_profit->nopat",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "NOPAT = EBIT × (1 - 적용세율)",
+  "conditions": [
+    "세율 0 이상 1 미만",
+    "세율 일정",
+    "세금효과 적용 가능"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_cc8cfa7eeb16ff7e",
+      "text": "영업이익 적용 세율이(가) 상승하여 세후영업이익의 상승을 상쇄할 수 있음",
+      "check_node": "tax_rate",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

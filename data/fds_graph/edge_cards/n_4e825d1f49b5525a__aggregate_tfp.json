@@ -1,0 +1,79 @@
+{
+  "edge_id": "n_4e825d1f49b5525a->aggregate_tfp",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "실제 연구개발 두 배 증가의 변화가 기술·자원 배분 효율 경로를 통해 경제 총요소생산성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07792의 적용 맥락: This paper studies how China’s InnoCom R&D tax-notches affected firm R&D and productivity using administrative corporate tax returns (SAT) and manufacturing survey data over 2006–2011, exploiting the 2008 Enterprise Income Tax reform that created size-dependent R&D-intensity thresholds (3%, 4%, 6%) and a 15% preferential rate for certified high‑tech firms. The unit of observation is Chinese manufacturing firms; institutional features include certification requirements, audits, R&D reported under administrative expenses, and VAT third‑party reporting which shape relabeling and enforcement margins."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_73b569ef0c1d2ee4",
+      "text": "수요에 따른 산출 변동이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_66ea571c5d7a3cd9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f5b0fe63fcd88f8f",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_249978c6caf0381d",
+      "text": "재택근무이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_84d702456f93cfe2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_79a7d1eb1dadbd29",
+      "text": "사모펀드 바이아웃이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f9ae2e4281a68d08",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4d8412e4dc0ef476",
+      "text": "담보 인정 범위 확대 개혁이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_3923f7e0455f481f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c26d520481f9abb1",
+      "text": "S&P 500 지수 편입이(가) 상승하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_4828ef8e8fdf9cf4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9b9d67af637c15f4",
+      "text": "증권사 리서치 부서 폐쇄이(가) 상승하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_1caa058f7381b033",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_18f7c59b9c5fbdce",
+      "text": "현장 직무훈련(TWI)이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f03fef2267c4d671",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c34ac186f6163ca5",
+      "text": "업무를 대체하는 기술이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_cb25486ed7e937be",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5df54bc7203d4a9f",
+      "text": "황금사각형 도로망 개선이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_5daf9e6fa4446728",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Notching R&D Investment with Corporate Income Tax Cuts in China (2018, american_economic_review; CSV R07792; https://www.nber.org/papers/w24749)",
+    "author": "Zhao Chen, Zhikuo Liu, Juan Carlos Suárez Serrato, Daniel Yi Xu",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

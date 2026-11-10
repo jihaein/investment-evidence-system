@@ -1,0 +1,25 @@
+{
+  "edge_id": "n_5f982ea4dc0afc11->firm_output",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "광대역 인터넷 이용 가능성의 변화가 생산 투입·생산성·수요 대응 경로를 통해 기업 생산량의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05658의 적용 맥락: This paper studies Norway during 2001–2007 (firm and worker data span 2000–2008), exploiting a government broadband rollout (Høykom) that progressively installed local access points across 428 municipalities. Using linked administrative employer–employee registers, firm surveys of joint-stock firms, and municipality-level household broadband availability, it examines how increased broadband availability and subsequent firm adoption affected wages, employment, and firm value added for skilled versus unskilled workers. The staged, Telenor-operated rollout with limited public funding provides plausibly exogenous spatial–temporal variation for causal identification."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_930357b191feeb59",
+      "text": "권한 위임 효율을 미국 수준으로 향상이(가) 하락하여 기업 생산량의 상승을 상쇄할 수 있음",
+      "check_node": "n_969aee2e9134358f",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Skill Complementarity of Broadband Internet (2015, quarterly_journal_of_economics; CSV R05658; https://www.nber.org/papers/w20826)",
+    "author": "Anders Akerman, Ingvil Gaarder, Magne Mogstad",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

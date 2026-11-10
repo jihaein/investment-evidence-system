@@ -22,6 +22,7 @@ graph_props.py — input 3 (경제명제): 투자자 의견의 인과 주장을 
 
 import json
 import os
+from pathlib import Path
 
 DEFAULT_EMBED_MODEL = "text-embedding-3-small"
 DEFAULT_LINK_MODEL = "gpt-4.1-mini"
@@ -32,6 +33,7 @@ MAX_HOPS = 7
 MAX_CHECKS = 8            # 경로마다 보여 줄 확인 변수 수 (설계 변수 우선)
 CLEAR_MATCH = 0.8         # 이보다 낮은 짝짓기는 근거 문장에 '틀릴 수 있음'으로 적는다 (예: 광통신 수요 → 통화가치 절하 0.74)
 CHANGES = ["증가", "감소", "모름"]
+MAP_PATH = Path(__file__).resolve().parent / "graph_model_map.json"   # 그래프 변수 → 모델 지표 (코드 없이 고침)
 
 GRAPH_CARD = {
     "name": "FDS 공통 인과그래프 (경제명제)",
@@ -219,7 +221,8 @@ def path_statement(link):
     review = (f"관계 {n}개 모두 검토 승인됨" if approved == n
               else f"관계 {n}개 중 검토 승인 {approved}개, 검토 전 초안 {n - approved}개")
     return (f"주장 '{link['claim']}'에 맞는 그래프 경로: {labels}. {pairing}"
-            f"누적 부호는 {link['net_sign']}({meaning})이고, {DIRECTION_TEXT[link['direction_check']]}. {review}.")
+            f"누적 부호는 {link['net_sign']}({meaning})이고, {DIRECTION_TEXT[link['direction_check']]}. {review}."
+            + model_links_text(link["model_links"]))
 
 
 def checks_statement(link):
@@ -229,6 +232,30 @@ def checks_statement(link):
     names = ", ".join(one(c) for c in link["checks"])
     return (f"이 경로를 상쇄할 수 있는 조건(경로 위 카드의 깨지는 조건): {names}. "
             "그래프는 조건만 알려 주며, 이 변수가 실제로 움직였는지는 모델 근거나 데이터로 확인해야 한다.")
+
+
+def load_model_map():
+    return {k: v for k, v in json.loads(MAP_PATH.read_text(encoding="utf-8")).items() if not k.startswith("_")}
+
+
+def model_links(path, checks, model_map=None):
+    """경로·확인 조건의 변수 중 서서히 모델이 재는 것. 근거 ID는 모델 근거 묶음의 ID다."""
+    model_map = load_model_map() if model_map is None else model_map
+    found = []
+    for where, nodes in (("path", path), ("check", checks)):
+        for n in nodes:
+            m = model_map.get(n["node_id"])
+            if m and not any(f["node_id"] == n["node_id"] for f in found):
+                found.append({"node_id": n["node_id"], "label": n["label"], "where": where, **m})
+    return found
+
+
+def model_links_text(links):
+    if not links:
+        return ""
+    parts = [f"{l['label']}({'경로' if l['where'] == 'path' else '확인 조건'}) → {l['indicator']} [{', '.join(l['evidence'])}]"
+             for l in links]
+    return " 모델이 재는 변수: " + "; ".join(parts) + "."
 
 
 def evidence(eid, statement, values, source):
@@ -243,7 +270,7 @@ def link_evidence(link, next_id):
         {"path": [n["node_id"] for n in link["path"]], "net_sign": link["net_sign"],
          "direction_check": link["direction_check"], "match": link["match"],
          "match_clear": all(link["match"][k]["score"] >= CLEAR_MATCH for k in ("cause", "effect")),
-         "review_status": [e["review_status"] for e in link["edges"]]},
+         "review_status": [e["review_status"] for e in link["edges"]], "model_links": link["model_links"]},
         {"edge_ids": edge_ids, "sources": sorted({e["source_title"] for e in link["edges"]})}))
     if link["checks"]:
         items.append(evidence(
@@ -263,7 +290,8 @@ def resolve(session, client, raw):
         tc, te = top_match(session, vc), top_match(session, ve)
         weak = any(t is None or t["score"] < MIN_MATCH for t in (tc, te))
         return {**base, "status": "no_match" if weak else "no_path", "match": {"cause": tc, "effect": te},
-                "path": [], "edges": [], "checks": [], "net_sign": None, "direction_check": None, "evidence_ids": []}
+                "path": [], "edges": [], "checks": [], "net_sign": None, "direction_check": None,
+                "model_links": [], "evidence_ids": []}
     sign = net_sign(found["edges"])
     return {**base, "status": "found",
             "match": {"cause": {"node_id": found["nodes"][0]["node_id"], "label": found["nodes"][0]["label"],
@@ -272,7 +300,7 @@ def resolve(session, client, raw):
                                  "score": round(found["effect_match"], 3)}},
             "path": found["nodes"], "edges": found["edges"], "checks": found["checks"],
             "net_sign": sign, "direction_check": direction_check(raw["cause_change"], raw["effect_change"], sign),
-            "evidence_ids": []}
+            "model_links": model_links(found["nodes"], found["checks"]), "evidence_ids": []}
 
 
 def empty_block(status, reason=None, raw_error=None):

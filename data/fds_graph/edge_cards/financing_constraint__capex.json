@@ -1,0 +1,66 @@
+{
+  "edge_id": "financing_constraint->capex",
+  "sign": "-",
+  "empirical_sign": "n/a",
+  "mechanism": "조달 제약은 수익성 있는 투자 실행을 제한할 수 있음",
+  "conditions": [
+    "투자기회 존재",
+    "내부자금·대체 조달 부족"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_4a05331f1a33fcad",
+      "text": "미국 다국적기업의 해외 설비투자이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_4909e107c2a30075",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2ed1d24d22561cae",
+      "text": "해외 자본투자이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_e78da320e45d3558",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a71f7912852305af",
+      "text": "신주 발행으로 조달한 자본이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_9fbc893495377352",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c26c3917652dfd1b",
+      "text": "경영자 과신이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfa13a568153b507",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_29df4d4958de95df",
+      "text": "인수 방어 조항 제거이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_2bd5a496e1eaeda0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5a0d7bb567fd2a78",
+      "text": "경기침체기에 경력 시작이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_10b72d2b8f5b8e19",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ab0bfcee463cacaf",
+      "text": "기업 불확실성이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "firm_uncertainty",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9e5f1d9e6e274d39",
+      "text": "반부패 감사에 의한 적발이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_a380357fce8b36c8",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

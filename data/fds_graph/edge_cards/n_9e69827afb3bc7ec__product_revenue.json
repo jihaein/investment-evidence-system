@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_9e69827afb3bc7ec->product_revenue",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "광고 노출 횟수 감소의 변화가 제품 판매량·가격 경로를 통해 제품·사업별 매출액의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R10257의 적용 맥락: The paper studies US advertising markets, primarily focusing on the linear television market in 2014–2019 with cross-sectional analyses centered on 2015. Units include television outlets (network×daypart), network owners, advertisers, and individual viewers from the 2015 GfK MRI survey; data sources include Nielsen Ad Intel and S&P/SNL ownership records. The authors also analyze Facebook ad auction data from targeted ad experiments. The economic setting is competitive two-sided ad markets with multi-homing viewers and diminishing returns to impressions; counterfactuals consider mergers and Netflix carrying ads."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_70276465e9f1d77d",
+      "text": "현물 식량 이전이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d2a297cb3064a55",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a9d6d7ab0f4224fa",
+      "text": "현금 이전이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d1623b1cd4885fb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ab729e3fe4127c9f",
+      "text": "할인 유통채널 이용 가능성이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_f744eec7f851d8ca",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_734b9c266eb15fcc",
+      "text": "경매를 통한 배분이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_8145822a4e16c622",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9d9eaec49bc6d553",
+      "text": "전문가 리뷰이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d37c97beeb400058",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e5c95f4a6d0c3f9f",
+      "text": "주 전체에 적용되는 공시이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d121f562c76114d2",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Pricing Power in Advertising Markets: Theory and Evidence (2022, american_economic_review; CSV R10257; https://www.nber.org/papers/w30278)",
+    "author": "Matthew Gentzkow, Jesse M. Shapiro, Frank Yang, Ali Yurukoglu",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,73 @@
+{
+  "edge_id": "n_c72cefcde7504e52->firm_markup",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "수입 비중 증가와 미국 기업 퇴출의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 기업 마크업의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03171의 적용 맥락: This paper studies how globalization affected firm markups and U.S. welfare between 1992 and 2005, using U.S. import and domestic production data at HS 4-digit and firm-country-product (HS-10) levels. The setting is the U.S. merchandise market; units of observation include exporting countries, individual firms/products, and manufacturing sectors. Under a monopolistic-competition framework with translog preferences, the authors exploit changes in import shares, Herfindahl concentration, and product entry/exit to structurally estimate demand elasticities, markups, and welfare impacts."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_30277d8fc44efbd6",
+      "text": "지역 금융 발전이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_0849e0e487b782d0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7d737826403f054b",
+      "text": "서유럽 수출이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_6fdbd1327e0a91a5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6b544e4d3ba1ae93",
+      "text": "수출 중단이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_680ab86f18f7a8de",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_050eb89e85e08e5a",
+      "text": "수출시장 진입이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_a784f6c100e40b55",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b8dbb08ceaafb305",
+      "text": "한계비용 감소이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_941020c7f660f9d9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7c75517fd07638f2",
+      "text": "산출물 관세 하락이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_dfe115a23deb321b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c723dce908374671",
+      "text": "불확실성 증가이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_00532c15a0f3fac6",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bb9fb3da2aa407a7",
+      "text": "대기업 시장점유율이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_8f14ac6a66361dee",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a47978934070e2d0",
+      "text": "좀비기업 신용공급이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_0810557f4e50d819",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Globalization, Markups and U.S. Welfare (2010, journal_of_political_economy; CSV R03171; https://www.nber.org/papers/w15749)",
+    "author": "Robert C. Feenstra, David E. Weinstein",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

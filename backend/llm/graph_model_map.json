@@ -1,0 +1,11 @@
+{
+  "_about": "FDS 인과그래프 변수(node_id)와 서서히 모델이 재는 지표의 연결표. 코드 없이 고칠 수 있다. match: same(같은 지표) / part(모델 안의 한 항목이나 한 요소). evidence: 이 지표가 나오는 근거 ID.",
+  "operating_margin": {"model": "dupont", "indicator": "영업이익률(PM)", "match": "same", "evidence": ["DP-1"]},
+  "gross_margin": {"model": "fscore", "indicator": "F-Score 9개 항목 중 매출총이익률 개선", "match": "part", "evidence": ["FS-1"]},
+  "roa": {"model": "fscore", "indicator": "F-Score 9개 항목 중 ROA·ROA 개선", "match": "part", "evidence": ["FS-1"]},
+  "operating_cash_flow": {"model": "fscore", "indicator": "F-Score 9개 항목 중 영업현금흐름", "match": "part", "evidence": ["FS-1"]},
+  "leverage": {"model": "fscore", "indicator": "F-Score 9개 항목 중 장기부채 비율 감소", "match": "part", "evidence": ["FS-1"]},
+  "share_issuance": {"model": "fscore", "indicator": "F-Score 9개 항목 중 신주 발행 없음", "match": "part", "evidence": ["FS-1"]},
+  "cost_of_equity": {"model": "ohlson", "indicator": "RI Spread(초과이익 ÷ 전기 자본)의 자본비용", "match": "part", "evidence": ["OH-2"]},
+  "market_equity": {"model": "ohlson", "indicator": "ω(RI와 시가총액 비교)의 시가총액", "match": "part", "evidence": ["OH-1"]}
+}

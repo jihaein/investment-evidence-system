@@ -1,0 +1,61 @@
+{
+  "edge_id": "n_dbcfbdc757bc26b3->unemployment",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "감세의 변화가 채용·고용 유지·구직 여건 경로를 통해 실업률의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07743의 적용 맥락: Analyzes interwar Britain (primarily 1918–1938) at the national (UK) level, using quarterly aggregates constructed from annual Budget Financial Statements and Hansard to collect nearly 300 discrete tax legislations and classify 140 as exogenous. Units are macro quarterly outcomes (real GDP, unemployment, prices, Bank Rate) and tax changes measured as percent of GDP. The institutional setting features high post‑WWI debt, Gold Standard debates, budgetary orthodoxy, Chancellor Budget motives, and episodic rearmament that shape tax policy timing."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_14f4fe7cce7f4a6e",
+      "text": "더스트볼 토양 침식이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_5d1eca681d20e229",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d684446ab8ba40bd",
+      "text": "한계세율 인하이(가) 상승하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_d4c0cdbfd649022d",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6db5082a5ba577ec",
+      "text": "실업급여 증가이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_76cc8fb3c4670305",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_59386b9ea526ead8",
+      "text": "할인율 상승이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_795fe4ce2c251b7f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8cd88dcf374f5832",
+      "text": "GDP 대비 가계부채 증가이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_6b11e51b3c23af68",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8baaac84b18ecaf2",
+      "text": "명목임금의 하방경직성이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_d68ffd85ea47a407",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8513634572523b63",
+      "text": "주택담보대출 금리 하락이(가) 상승하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_e7d18756cf85bdc6",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Taxes and Growth: New Narrative Evidence from Interwar Britain (2018, review_of_economic_studies; CSV R07743; https://www.nber.org/papers/w24659)",
+    "author": "James Cloyne, Nicholas Dimsdale, Natacha Postel-Vinay",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_66c2f52b71bf8879->policy_rate",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "외가격 풋·콜 내재변동성 비율의 변화가 정책 반응·금융 여건 경로를 통해 정책금리의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03508의 적용 맥락: This paper studies US equity and Treasury option markets and Federal Reserve policy from 1967–2011 (fundamentals) and 1988–2011 (option sample). Using quarterly data on S&P 500 operating earnings, CPI, industrial capacity utilization, M1 money growth, 3‑month T‑bill rates, and options on the S&P 500 and 10‑year Treasury futures, the authors examine how option-implied indices (ATM implied volatility and OTM put/call volatility ratio) predict and causally relate to short‑term interest‑rate dynamics under a learning-based Taylor‑rule monetary‑policy environment."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_7b8a0a4dd49b58af",
+      "text": "인플레이션 민감도 증가이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a416bf413e8f8470",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2e5af9f070168c5a",
+      "text": "양의 인플레이션 충격이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_ebe41187a5246810",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_54e69e04863c2a8e",
+      "text": "양의 산출갭 충격이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_d090a25801353e01",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7d7bfe17b6f57cc0",
+      "text": "주식 등가격 옵션 내재변동성이(가) 상승하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_e0135039a2d7fa07",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3a34755f11776978",
+      "text": "부정적 주택가격 충격이(가) 상승하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a3f33793033616d1",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_06f37a9e2ba6db64",
+      "text": "주요 경기순환 충격이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_9bad08cd66f774e4",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Investors' and Central Bank's Uncertainty Embedded in Index Options (2011, review_of_financial_studies; CSV R03508; https://www.nber.org/papers/w16764)",
+    "author": "Alexander David, Pietro Veronesi",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

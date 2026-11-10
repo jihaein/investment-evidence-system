@@ -1,0 +1,67 @@
+{
+  "edge_id": "n_2bd5a496e1eaeda0->capex",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "인수 방어 조항 제거의 변화가 실물투자의 수익성·조달 여건 경로를 통해 설비투자 지출의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03436의 적용 맥락: This paper studies shareholder-sponsored corporate governance proposals voted at annual meetings of U.S. publicly traded firms (S&P 1500 plus ~500 widely held firms) from 1997 to 2007. The unit of analysis is the firm-meeting/proposal (vote share on governance items, notably anti-takeover G-index provisions). The institutional setting is U.S. proxy voting under SEC Rule 14a-8 where proposals are typically non-binding; outcomes include daily abnormal stock returns around vote day and multi-year firm outcomes (acquisitions, capex, Tobin’s Q)."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_fee5bc48bcaea834",
+      "text": "미국 다국적기업의 해외 설비투자이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_4909e107c2a30075",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bcc3a5f702e8d2f8",
+      "text": "해외 자본투자이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_e78da320e45d3558",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3bcaeba0f408d56a",
+      "text": "신주 발행으로 조달한 자본이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_9fbc893495377352",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a2e42a54c7896d76",
+      "text": "경영자 과신이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfa13a568153b507",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c301cda894a9e3fc",
+      "text": "경기침체기에 경력 시작이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_10b72d2b8f5b8e19",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_970a78ae7daaabe8",
+      "text": "기업 불확실성이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "firm_uncertainty",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_32414c3660162292",
+      "text": "반부패 감사에 의한 적발이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_a380357fce8b36c8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5bd7f54a90f89516",
+      "text": "기업 자금조달 제약이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "financing_constraint",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "The Vote is Cast: The Effect of Corporate Governance on Shareholder Value (2010, journal_of_finance; CSV R03436; https://www.nber.org/papers/w16574)",
+    "author": "Vicente Cuñat, Mireia Gine, Maria Guadalupe",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

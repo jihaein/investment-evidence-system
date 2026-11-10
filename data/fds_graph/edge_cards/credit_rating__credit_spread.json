@@ -1,0 +1,90 @@
+{
+  "edge_id": "credit_rating->credit_spread",
+  "sign": "-",
+  "empirical_sign": "n/a",
+  "mechanism": "신용등급 개선은 낮은 신용스프레드와 연결되는 신호",
+  "conditions": [
+    "등급 척도 방향 확인",
+    "자동 인과 전파 금지"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_2f57eaa9e3ef76cf",
+      "text": "담보자산의 재활용 가능성이(가) 상승하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_d28c7ae55796397d",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_32dd3bad5f1cf87a",
+      "text": "Fitch의 투자등급 분류이(가) 상승하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_d4dd25f78f4f320f",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_36db1856f50c3cd4",
+      "text": "Moody's 신용등급 하향이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_ee2d603b4c5ed0ab",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_50f2fdee0d44b9bc",
+      "text": "비유동성이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_43a5269b3981b6f1",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_049507a1a32cb43e",
+      "text": "외생적 현금 보유이(가) 상승하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_861959495227f09a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_55eb44475bc643f5",
+      "text": "장기 국채 수익률 변동성 증가이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_3f1aa4b078d4d713",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1d28a0c661476782",
+      "text": "자산 꼬리위험·고유위험 프리미엄이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_4d7e0a6347af2892",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7bba044cbb616731",
+      "text": "인지된 꼬리위험 상승이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_93dbc6d099aef765",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a466434a947c5f59",
+      "text": "미국 통화정책 긴축이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_9bf3da6645461c5b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7ba860741eecd773",
+      "text": "담보 비용이(가) 상승하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_efbb130f1d788db7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_751893f1d2b43906",
+      "text": "기업 채무불이행 위험이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "credit_risk",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3456b430b55f910c",
+      "text": "기업 불확실성이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "firm_uncertainty",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

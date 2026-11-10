@@ -1,0 +1,18 @@
+{
+  "edge_id": "n_6c514595fa49f932->n_5b4ff2e346630fad",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "긍정적인 현금흐름 뉴스의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 기관투자자 지분 보유의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00977의 적용 맥락: Using US firm-level data (CRSP–Compustat matched firms combined with SPECTRUM institutional-holdings data), the paper analyzes 1983–1998 (23,501 firm-years) to study how stock prices and institutional vs. individual ownership respond to firm cash-flow news. The unit of observation is the firm (returns, book-to-market, ROE, and fraction institutional ownership), within the US equity market. The analysis rests on a present-value/Campbell decomposition of returns and considers institutional constraints (tracking error, transaction/short-sale costs) as mechanisms."
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "Who Underreacts to Cash-Flow News? Evidence from Trading between Individuals and Institutions (2002, journal_of_financial_economics; CSV R00977; https://www.nber.org/papers/w8793)",
+    "author": "Randolph B. Cohen, Paul A. Gompers, Tuomo Vuolteenaho",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

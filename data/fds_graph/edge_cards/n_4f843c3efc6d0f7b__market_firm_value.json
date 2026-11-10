@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_4f843c3efc6d0f7b->market_firm_value",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "자사 연구개발 축적량의 변화가 기대 현금흐름·할인율·시장 평가 경로를 통해 기업 시장가치의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02279의 적용 맥락: This paper empirically separates technology spillovers from product-market rivalry using a panel of U.S. publicly listed firms (715 firms) matched between Compustat (accounting/segment data, 1980–2001) and USPTO patent data (patents 1963–1999). The unit is the firm-year and outcomes include market value, patents, total factor productivity and R&D. The authors construct technology closeness from patent-class shares and product-market closeness from four-digit segment sales (Compustat and BVD), exploiting within-firm time variation with fixed effects, lags and industry controls."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_d45d6f3eb62688c2",
+      "text": "부총리 해임과 자본통제 도입이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_2c20de9d44a40a67",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c4c9acba64e742ea",
+      "text": "정치적 연계 가치 하락이(가) 상승하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_887caea9bead1a55",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c8e8ed58f776f10a",
+      "text": "제품시장 경쟁기업의 연구개발이(가) 상승하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_7488374b91e15f68",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_92c6cf7131ac86a8",
+      "text": "기술적으로 가까운 기업의 연구개발이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_6725ffded8c3dafb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_373c458c8c1658b5",
+      "text": "특허와 기업의 기술적 근접성이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_f5aecf5e9c415f69",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_589ebb6d9d744856",
+      "text": "애널리스트와 대통령 소속 정당의 불일치이(가) 상승하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_0481c6e573d7d263",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Identifying Technology Spillovers and Product Market Rivalry (2007, econometrica; CSV R02279; https://www.nber.org/papers/w13060)",
+    "author": "Nicholas Bloom, Mark Schankerman, John Van Reenen",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

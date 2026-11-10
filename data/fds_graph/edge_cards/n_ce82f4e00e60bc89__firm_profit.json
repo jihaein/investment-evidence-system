@@ -1,0 +1,109 @@
+{
+  "edge_id": "n_ce82f4e00e60bc89->firm_profit",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "상한이 있는 개인별 가격 적용의 변화가 매출과 비용의 차이 경로를 통해 기업 이익(연구 정의)의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07258의 적용 맥락: This triplet refers to the second randomized pricing field experiment (Oct–Nov 2015) run with ZipRecruiter on prospective new employer “starter” firms who reached the paywall. Subjects were randomized to control ($99), uniform ($249), or implemented personalized pricing where personalized quotes were computed from registration features but capped at $499 and rounded to the nearest $9. The outcome is firm profits (revenue per consumer) measured in that field RCT, with predictions validated out-of-sample and uncertainty assessed via bootstrap/WLB methods."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_0b46e0ca834d4677",
+      "text": "최적 가격 대비 무료 온라인 가격 적용이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_679cbba0e41123b6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0c55f261b702212e",
+      "text": "소비자의 정보 수준을 약사 수준으로 향상이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7015bba481737778",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a3098e51427debef",
+      "text": "외국 소매기업 진입이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_0bcc9ca7e9f51415",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_88afae754082fd8c",
+      "text": "기업 간 회의이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_41e5efb92eb59f8c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a83a8af1e22e6e65",
+      "text": "최적화된 단일 가격이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_21ef5610e8a1355e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3938a7ddb550f463",
+      "text": "급여세 인하 노출이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2aac6633c92702b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3f2aaa1ea47a1ab3",
+      "text": "고령 신청자의 대출 이용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_49bdd3466ef912cc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_73723795059df29c",
+      "text": "대출 이용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_d8c7cfb4e7a0fe09",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c27f9bb45bb59d34",
+      "text": "관개시설 접근성이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_e9df2180c9383572",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6d6770597022ca4a",
+      "text": "대출자의 차입자 선별 능력이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_80f0ee23818c6c2e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e12dfbabae3fba20",
+      "text": "전력 공급 배정 시간 1시간 증가이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7cd123507c4698ab",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9aa3d00fb04b8a9e",
+      "text": "우물 깊이이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_31fd7a36250f2264",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3d1db7812c19ba56",
+      "text": "임대 거래비용 감소이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7123ea6a420c5082",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b3be76e760d6e0db",
+      "text": "원활하게 작동하는 임대시장이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_bcb6cdc95ea9ed2b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ad5c195ab81b6818",
+      "text": "지연시간 차익거래 경쟁이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_dfa3d0ac1cf30aaf",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Personalized Pricing and Consumer Welfare (2017, journal_of_political_economy; CSV R07258; https://www.nber.org/papers/w23775)",
+    "author": "Jean-Pierre Dubé, Sanjog Misra",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

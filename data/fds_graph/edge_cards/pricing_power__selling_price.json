@@ -1,0 +1,18 @@
+{
+  "edge_id": "pricing_power->selling_price",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "가격 결정력 강화는 단가 인상 여력을 제공",
+  "conditions": [
+    "실제 가격 전가",
+    "제품 구성 동일",
+    "수요 반응 별도"
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

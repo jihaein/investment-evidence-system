@@ -1,0 +1,115 @@
+{
+  "edge_id": "n_c75e4dbe44a7e842->household_consumption",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "남편의 동료 집단 소비의 변화가 가처분소득·저축 유인·소비 여력 경로를 통해 가계 소비의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06405의 적용 맥락: This paper uses linked administrative tax and employer-employee data covering the Danish population from 1980–1996 to study household consumption network effects. The unit is the household (with both spouses employed), consumption constructed from after-tax income and annual asset changes (wealth-tax-era data), and peer groups defined by co-workers at the plant level. Identification exploits firm-level shocks and intransitive worker–spouse–coworker network structure (distance-3 peers), combined with panel first-differencing/fixed effects; results are validated with the Danish Expenditure Survey (1994–1996)."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_ae0d4035af5eb409",
+      "text": "부의 영구적 변화이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_d772a8e62051dddc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_90bc5a0f2aad5767",
+      "text": "주택가격 상승이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_0ba8239edc9eaec0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c3dbfdadc32ce7e6",
+      "text": "시장 전반의 소득 이전이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_7bf68d7938d9b426",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_28a78d229289746f",
+      "text": "동료 집단의 소비이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_bdf2fce484f42d1f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_af3beab40e8a4254",
+      "text": "QE1에서 국채 대신 MBS 매입이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_23254ae8908a732b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0b225aad1a31c066",
+      "text": "역사적 국가 역량이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_9c29c58f6a95d65a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7302e455e6bd7dec",
+      "text": "통화 팽창이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_d92279d6504f4371",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e47c89cee4260a39",
+      "text": "예상 밖 인플레이션이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2a0209663dda4d2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e97a136be7a2399d",
+      "text": "실질금리이(가) 상승하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "real_rate",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_db73228dcecb90e5",
+      "text": "재기를 지원하는 파산제도 개혁이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_77cddfdc8ef1d330",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e682bd011d12a6d9",
+      "text": "미실현 자본이득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_67c6d3b209319fcb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7598c7bf134ed0a8",
+      "text": "배당소득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_77693c509b901e77",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3525eb6a75499305",
+      "text": "이주 보조금이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_584afd2d8c566d80",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_487cd30677a6589e",
+      "text": "총소득의 영구적 감소이(가) 상승하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_21dfbf66f3dcc4d6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_789c0694416939ba",
+      "text": "연속적인 경기부양 지원금 지급이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_893dc58267c154f5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_88dfcc3e7272d8cd",
+      "text": "가계 소득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "household_income",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Consumption Network Effects (2016, review_of_economic_studies; CSV R06405; https://www.nber.org/papers/w22357)",
+    "author": "Giacomo De Giorgi, Anders Frederiksen, Luigi Pistaferri",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

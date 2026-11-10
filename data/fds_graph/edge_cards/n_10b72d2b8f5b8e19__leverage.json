@@ -1,0 +1,133 @@
+{
+  "edge_id": "n_10b72d2b8f5b8e19->leverage",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "경기침체기에 경력 시작의 변화가 차입 수요·부채 이용 비용·자금조달 구조 경로를 통해 기업 재무레버리지의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03884의 적용 맥락: This paper studies U.S. executives who became CEOs of publicly listed firms (S&P 1500) observed in 1992–2010, exploiting cohort variation in whether managers entered the labor market during NBER‑dated recessions (proxied by birth year + 24). Using individual CEO career histories merged with Compustat and CRSP firm data, it examines how early recession exposure across cohorts affects later career trajectories, firm size and pay, and managerial policies, while controlling for firm, industry‑year, decade, and other observable characteristics."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_2665133ee4dd2f76",
+      "text": "정치적 위험이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_2586a57e0cf31297",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_91f1e4ebc3f49dde",
+      "text": "현지 법인세율이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_36003f6ef6261be6",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4f4b4aa9b970153a",
+      "text": "공모 부채시장 접근성이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_ff660d51b99d21f9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_09b40e32449c81ec",
+      "text": "해외 정치위험 노출이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_725a8026f7d3b5a0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8f9a308c1717007b",
+      "text": "경영자 과신이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfa13a568153b507",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5fd4aae288d65f93",
+      "text": "채권자 권리 강화이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_938ace6d7ebe57d2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ffe85387b09e4539",
+      "text": "Credit Lyonnais 판결이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_90529e95f4aea056",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_24bd6bea846e2348",
+      "text": "합병 경쟁에서 승리이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_9497777de2c84267",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fe45ba7488913459",
+      "text": "법인소득세 인상이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_1e62e05a74ff022c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_44a67ec036481316",
+      "text": "주정부 은행세 인상이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_1558d496837f9664",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a59d2d010ea0d49d",
+      "text": "정부 레버리지이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_192634f2465caab5",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_208705c3b14d3a32",
+      "text": "인수주선사의 이사회 참여 금지이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_e9b91aa47e4b5a94",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_015b7e6d7b391e03",
+      "text": "담보 인정 범위 확대 개혁이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_3923f7e0455f481f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_56cb647d9e3dcfbb",
+      "text": "신규 스톡옵션 부여 증가이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_7d9c9aafae18c126",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c624aca4f002ef22",
+      "text": "군사지출을 도구변수로 한 정부부채 증가이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_13bdae562acb1d2e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d408e43730377060",
+      "text": "정부부채이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_8b86b5c9a0608c1a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_794041e88ae81bb6",
+      "text": "국내 정부부채이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_36b083cc69cdf2bd",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_357a2d285c9f24ef",
+      "text": "신용 여건이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_27bfcd907e731a41",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7773fc128c588af1",
+      "text": "기업의 인플레이션 기대이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_9f91972ee7c78bc3",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Shaped by Booms and Busts: How the Economy Impacts CEO Careers and Management Styles (2011, review_of_financial_studies; CSV R03884; https://www.nber.org/papers/w17590)",
+    "author": "Antoinette Schoar, Luo Zuo",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_f03fef2267c4d671->firm_exit",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "현장 직무훈련(TWI)의 변화가 사업 수익성·유동성·퇴출 유인 경로를 통해 기업 퇴출 가능성의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R09853의 적용 맥락: This paper studies the causal impact of the U.S. Training Within Industry (TWI) program—a government-funded in-plant management training initiative delivered largely 1940–1945—on firm performance and spillovers. It uses a newly assembled panel of 11,575 U.S. war-contractor applicant firms (1935–1955 financials), primarily large manufacturers (covering ~40% of 1939 manufacturing employment), exploiting voluntary application windows, decentralized subdistrict implementation, and variation in instructor assignment. Eligibility required an active war contract; outcomes are firm-level sales, TFP, profitability, managerial practices, and supply-chain links."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_90d069ffb3ab6a80",
+      "text": "해외 경쟁 심화이(가) 하락하여 기업 퇴출 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_a27ae012897c1d75",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_253a840e27e11e8f",
+      "text": "Banks for All 프로그램이(가) 하락하여 기업 퇴출 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_eb4111d8ce440028",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a46a0fccb71a3da9",
+      "text": "배당세 인상이(가) 상승하여 기업 퇴출 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_d0d150ec0651e4cb",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_2459b95a88ca116c",
+      "text": "시의회 해산(CCD)이(가) 하락하여 기업 퇴출 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_9b2c8d8a0c6a12ff",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Dynamics and Spillovers of Management Interventions: Evidence from the Training Within Industry Program (2021, journal_of_political_economy; CSV R09853; https://www.nber.org/papers/w28833)",
+    "author": "Nicola Bianchi, Michela Giorcelli",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

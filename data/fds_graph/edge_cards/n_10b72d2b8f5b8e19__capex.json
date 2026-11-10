@@ -1,0 +1,67 @@
+{
+  "edge_id": "n_10b72d2b8f5b8e19->capex",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "경기침체기에 경력 시작의 변화가 실물투자의 수익성·조달 여건 경로를 통해 설비투자 지출의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03880의 적용 맥락: This paper studies U.S. executives who became CEOs of publicly listed firms (S&P 1500) observed in 1992–2010, exploiting cohort variation in whether managers entered the labor market during NBER‑dated recessions (proxied by birth year + 24). Using individual CEO career histories merged with Compustat and CRSP firm data, it examines how early recession exposure across cohorts affects later career trajectories, firm size and pay, and managerial policies, while controlling for firm, industry‑year, decade, and other observable characteristics."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_a2fc485d25a33dbd",
+      "text": "미국 다국적기업의 해외 설비투자이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_4909e107c2a30075",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b4bdd016053c5811",
+      "text": "해외 자본투자이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_e78da320e45d3558",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_14e2bf2b337ea2ae",
+      "text": "신주 발행으로 조달한 자본이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_9fbc893495377352",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ebf39580de6c9ca3",
+      "text": "경영자 과신이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfa13a568153b507",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_93815a99297a784c",
+      "text": "인수 방어 조항 제거이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_2bd5a496e1eaeda0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b02da4d870830ec9",
+      "text": "기업 불확실성이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "firm_uncertainty",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_507ccbe07628dae7",
+      "text": "반부패 감사에 의한 적발이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_a380357fce8b36c8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1c554be51b97440e",
+      "text": "기업 자금조달 제약이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "financing_constraint",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Shaped by Booms and Busts: How the Economy Impacts CEO Careers and Management Styles (2011, review_of_financial_studies; CSV R03880; https://www.nber.org/papers/w17590)",
+    "author": "Antoinette Schoar, Luo Zuo",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

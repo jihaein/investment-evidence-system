@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_e3983ce9b17348f1->real_rate",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "재원 확보 없는 재정 충격의 변화가 명목금리와 기대 인플레이션 경로를 통해 실질금리의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R10367의 적용 맥락: This paper studies the U.S. macroeconomy from 1960:Q1 through 2022:Q3, using aggregate quarterly series (GDP, consumption, investment, hours, inflation, real and nominal interest rates, transfers, government consumption, debt/GDP and breakeven inflation). It analyzes episodes including the Great Inflation (1960s–1980s), post‑1990s trends, the Great Recession, and the COVID‑19 recession and stimulus (CARES, ARPA), within the institutional setting of Federal Reserve monetary policy, fiscal transfers and debt maturity to assess funded versus partially unfunded fiscal shocks."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_20663b9d11273580",
+      "text": "경제심리 충격이(가) 하락하여 실질금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_ebdb6d62969d5433",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a279126b27755225",
+      "text": "소비자신뢰의 예상 밖 변화이(가) 하락하여 실질금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_4bf1d901427b3932",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_46578a99de9aa772",
+      "text": "정책 뉴스 충격이(가) 하락하여 실질금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_dff6f2217f153626",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_53c31f993be58d5b",
+      "text": "정부지출 증가이(가) 하락하여 실질금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_d58f331aaa700dd8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_830c20879e6360eb",
+      "text": "인플레이션 기대 상승이(가) 상승하여 실질금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a3187f7f917fe7ea",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0e29d32332663841",
+      "text": "금본위제 이탈이(가) 상승하여 실질금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a91f6903a1723ed6",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "A Fiscal Theory of Persistent Inflation (2022, quarterly_journal_of_economics; CSV R10367; https://www.nber.org/papers/w30727)",
+    "author": "Francesco Bianchi, Renato Faccini, Leonardo Melosi",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

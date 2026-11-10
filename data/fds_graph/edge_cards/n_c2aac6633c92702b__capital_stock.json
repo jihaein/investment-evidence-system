@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_c2aac6633c92702b->capital_stock",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "급여세 인하 노출의 변화가 투자·자본 축적·자산 교체 경로를 통해 기업 생산자본의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07368의 적용 맥락: This paper studies Sweden’s 2007–2009 employer payroll‑tax reform that halved employer payroll taxes for young birth‑cohorts (eligibility up to age 26) using population administrative employer–employee records and firm accounting data spanning the 1990s–2013. Exploiting cohort eligibility rules, timing of the two reform steps, and cross‑firm variation in pre‑reform shares of young workers, it examines causal effects on individual net/gross wages, employment and transition rates, and firm outcomes (employment, sales, capital, profits); take‑up was automatic via payroll software."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_003593045981eead",
+      "text": "시장의 범위이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_a8dfba59a7f80671",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3be1d8e3f967baaf",
+      "text": "자본소득세이(가) 상승하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_d3a18b2fbba042fe",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_580e89ac73d71630",
+      "text": "초기 순자산 증가이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_cb7b2092a6afbe84",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5b74a02e400dec77",
+      "text": "생산자본 증가율이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "capital_growth",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Payroll Taxes, Firm Behavior, and Rent Sharing: Evidence from a Young Workers' Tax Cut in Sweden (2017, american_economic_review; CSV R07368; https://www.nber.org/papers/w23976)",
+    "author": "Emmanuel Saez, Benjamin Schoefer, David Seim",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

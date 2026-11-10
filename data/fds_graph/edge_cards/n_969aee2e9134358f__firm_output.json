@@ -1,0 +1,25 @@
+{
+  "edge_id": "n_969aee2e9134358f->firm_output",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "권한 위임 효율을 미국 수준으로 향상의 변화가 생산 투입·생산성·수요 대응 경로를 통해 기업 생산량의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06165의 적용 맥락: This triplet refers to a model-based, partial-equilibrium simulation: the authors take 50 Indian manufacturing establishments (selected to match the employment size of firms in Bloom et al. 2013, i.e. roughly the top 1% by size), increase their delegation efficiency α to the U.S. calibrated level while holding general-equilibrium variables (managerial wages and creative-destruction rates) at Indian benchmark values, and track firm output over a 100-week horizon."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_37ad9b23430af37a",
+      "text": "광대역 인터넷 이용 가능성이(가) 하락하여 기업 생산량의 상승을 상쇄할 수 있음",
+      "check_node": "n_5f982ea4dc0afc11",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Lack of Selection and Limits to Delegation: Firm Dynamics in Developing Countries (2016, american_economic_review; CSV R06165; https://www.nber.org/papers/w21905)",
+    "author": "Ufuk Akcigit, Harun Alp, Michael Peters",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

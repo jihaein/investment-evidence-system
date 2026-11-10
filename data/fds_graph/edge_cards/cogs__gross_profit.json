@@ -1,0 +1,23 @@
+{
+  "edge_id": "cogs->gross_profit",
+  "sign": "-",
+  "empirical_sign": "n/a",
+  "mechanism": "매출총이익 = 매출 - 매출원가",
+  "conditions": [
+    "매출 일정"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_6d13c0c928907885",
+      "text": "매출액이(가) 하락하여 매출총이익의 상승을 상쇄할 수 있음",
+      "check_node": "revenue",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

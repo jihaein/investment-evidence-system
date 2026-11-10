@@ -1,0 +1,115 @@
+{
+  "edge_id": "n_9c29c58f6a95d65a->household_consumption",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "역사적 국가 역량의 변화가 가처분소득·저축 유인·소비 여력 경로를 통해 가계 소비의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06881의 적용 맥락: This empirical study exploits the 1698 Dai Viet–Khmer boundary in southern Vietnam to estimate long-run effects of historical state institutions. It compares nearby villages/hamlets and households using historical maps (1878–1926), South Vietnamese-era hamlet and public-opinion surveys (1969–1973), income data (1970–72), and modern household consumption surveys (VHLSS 2002–2012). The setting contrasts centralized, village-based Dai Viet administration with patron-client Khmer governance, across episodes including French colonialism, the Vietnam War, and postwar communist rule."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_653c1fdd9e891eb1",
+      "text": "부의 영구적 변화이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_d772a8e62051dddc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_045ca10fd955feca",
+      "text": "주택가격 상승이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_0ba8239edc9eaec0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f28d3f3a0baf07f2",
+      "text": "시장 전반의 소득 이전이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_7bf68d7938d9b426",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fb13c020f3a196fe",
+      "text": "동료 집단의 소비이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_bdf2fce484f42d1f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_77f1263a0e2784ac",
+      "text": "남편의 동료 집단 소비이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_c75e4dbe44a7e842",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_45c5874a47ce9d3a",
+      "text": "QE1에서 국채 대신 MBS 매입이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_23254ae8908a732b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_20bbfa39ed85b2e2",
+      "text": "통화 팽창이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_d92279d6504f4371",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f6fa6908ce96194d",
+      "text": "예상 밖 인플레이션이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2a0209663dda4d2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_edcbde6d082ec980",
+      "text": "실질금리이(가) 상승하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "real_rate",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_2046f5d3e58420c1",
+      "text": "재기를 지원하는 파산제도 개혁이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_77cddfdc8ef1d330",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0bc19fb8ca0a44f0",
+      "text": "미실현 자본이득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_67c6d3b209319fcb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_23580a54beb7a99d",
+      "text": "배당소득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_77693c509b901e77",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c0f4f3aa27d70865",
+      "text": "이주 보조금이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_584afd2d8c566d80",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ab60f600f64d64cd",
+      "text": "총소득의 영구적 감소이(가) 상승하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_21dfbf66f3dcc4d6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8551b8193299d155",
+      "text": "연속적인 경기부양 지원금 지급이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_893dc58267c154f5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a45c0023b3be2a31",
+      "text": "가계 소득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "household_income",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Historical State, Local Collective Action, and Economic Development in Vietnam (2017, econometrica; CSV R06881; https://www.nber.org/papers/w23208)",
+    "author": "Melissa Dell, Nathaniel Lane, Pablo Querubin",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

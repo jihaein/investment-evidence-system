@@ -1,0 +1,37 @@
+{
+  "edge_id": "n_00532c15a0f3fac6->risk_free_rate",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "불확실성 증가의 변화가 안전자산 수익률·통화정책 기대 경로를 통해 무위험금리의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05166의 적용 맥락: This paper analyzes the US nonfinancial corporate sector using quarterly postwar U.S. data (1959Q1–2011Q3) to estimate a business-cycle DSGE model with endogenous firm financing and ambiguity-averse households. Firms’ investment, leverage and shareholder payout decisions are modeled and matched to aggregate series; shocks include marginal product of capital and a fixed operating cost, with Markov-switching volatility and time-varying ambiguity. Estimation uses likelihood-based Bayesian methods on an MS-DSGE representation to infer causal effects of uncertainty shocks on asset prices and financial flows."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_e6edf735b319db41",
+      "text": "가계 소비 위험이(가) 상승하여 무위험금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_90dc5aeabec91961",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3ec28d20f3a62d01",
+      "text": "인지된 꼬리위험 상승이(가) 상승하여 무위험금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_93dbc6d099aef765",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e0aa59957dfcee9e",
+      "text": "정책금리이(가) 하락하여 무위험금리의 상승을 상쇄할 수 있음",
+      "check_node": "policy_rate",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Uncertainty Shocks, Asset Supply and Pricing over the Business Cycle (2014, review_of_economic_studies; CSV R05166; https://www.nber.org/papers/w20081)",
+    "author": "Francesco Bianchi, Cosmin L. Ilut, Martin Schneider",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

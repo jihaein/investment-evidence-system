@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_c948928380d4a4c4->operating_margin",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "거시경제 불확실성 증가의 변화가 매출 대비 영업비용 경로를 통해 영업이익률의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R10264의 적용 맥락: Using two survey waves in New Zealand (first wave June–Oct 2021, follow-up Nov 2021–Feb 2022), the authors survey ~4,000 firms (about 2,000 reinterviewed) employing ≥6 workers. They randomized information treatments that provided professional forecasters' mean GDP forecasts and/or the spread between optimistic and pessimistic forecasts to exogenously shift firms' macroeconomic first- and second-moment beliefs during the pandemic period. Outcomes include firms' planned and realized prices, employment, investment, sales, advertising, and decisions to adopt technologies or open facilities."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_37b718bc556e74cf",
+      "text": "노동 과세이(가) 상승하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c59ee81367b30421",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5941fd666beab667",
+      "text": "비공식 부문 활동 비용 증가이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_4e40664422f19994",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7eb6e6e237719267",
+      "text": "판매목록 선정에 가격 요소 반영이(가) 상승하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_be0f828b4caa6c17",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8d8b72ed3a6cbb23",
+      "text": "검색 방식 재설계이(가) 상승하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_52b6879b5eff3a29",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e6c0e001a568bdc6",
+      "text": "매출총이익률이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "gross_margin",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fc3653d5ccf1cf00",
+      "text": "기업 마크업이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "firm_markup",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Effect of Macroeconomic Uncertainty on Firm Decisions (2022, econometrica; CSV R10264; https://www.nber.org/papers/w30288)",
+    "author": "Saten Kumar, Yuriy Gorodnichenko, Olivier Coibion",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_149b70b44dcc8ef1->discount_rate",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "이익 정보의 유용성 하락의 변화가 자금의 기회비용·요구 위험 보상 경로를 통해 기업가치 할인율 WACC의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R10135의 적용 맥락: This paper studies U.S. publicly listed firms (Compustat and Audit Analytics) over 1999–2015, using annual firm-level panels of earnings restatements (revenue-recognition and irregularity cases) and measures of intangible investment (SG&A or R&D). It exploits regulatory variation around Sarbanes–Oxley (pre/post) and firm-level restatement episodes to estimate a calibrated dynamic general-equilibrium model in which managers choose real (intangibles) investment versus earnings misreporting, intermediaries extract information rents, and disclosure regulation affects cost of capital, firm value, and aggregate growth."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_1f0e897a6798c995",
+      "text": "자기자본비용이(가) 하락하여 기업가치 할인율 WACC의 상승을 상쇄할 수 있음",
+      "check_node": "cost_of_equity",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_169ff7a1dd1f13af",
+      "text": "부채 조달금리이(가) 하락하여 기업가치 할인율 WACC의 상승을 상쇄할 수 있음",
+      "check_node": "cost_of_debt",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Information versus Investment (2022, review_of_financial_studies; CSV R10135; https://www.nber.org/papers/w29636)",
+    "author": "Stephen J. Terry, Toni M. Whited, Anastasia A. Zakolyukina",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

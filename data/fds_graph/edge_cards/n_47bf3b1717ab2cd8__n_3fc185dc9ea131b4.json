@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_47bf3b1717ab2cd8->n_3fc185dc9ea131b4",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "포워드 가이던스 충격의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 인플레이션 기대의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R09681의 적용 맥락: This paper analyzes U.S. Federal Open Market Committee (FOMC) meetings and press conferences from 2011 through June 2019 (67 meetings, 36 press conferences), using 692 Chair Q&A answers by Ben Bernanke, Janet Yellen, and Jerome Powell. It quantifies vocal emotions via a custom deep‑learning speech classifier and textual sentiment, and links variation in voice tone to daily financial market responses (equity, volatility, bond and corporate ETFs, inflation expectations, and exchange rates), controlling for identified intraday policy shocks and the shadow federal funds rate."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_47066e0882d08bde",
+      "text": "FOMC 성명서 열람이(가) 상승하여 인플레이션 기대의 상승을 상쇄할 수 있음",
+      "check_node": "n_b2fd05f0443e5e7c",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_dd6e2219d58857a6",
+      "text": "FOMC 인플레이션 전망이(가) 상승하여 인플레이션 기대의 상승을 상쇄할 수 있음",
+      "check_node": "n_6dd15a212c16dcb7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_68539c602828475d",
+      "text": "연준 인플레이션 목표이(가) 상승하여 인플레이션 기대의 상승을 상쇄할 수 있음",
+      "check_node": "n_ca595a4e8c5bf961",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_cec7032033e9d9c0",
+      "text": "USA Today 기사이(가) 상승하여 인플레이션 기대의 상승을 상쇄할 수 있음",
+      "check_node": "n_e68fbb5895702039",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d50928f267351251",
+      "text": "휘발유 가격 상승 정보이(가) 하락하여 인플레이션 기대의 상승을 상쇄할 수 있음",
+      "check_node": "n_e2f3f6729151d49e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7f85800a1ce19201",
+      "text": "자산매입 충격이(가) 하락하여 인플레이션 기대의 상승을 상쇄할 수 있음",
+      "check_node": "n_a9f7deb4e510af66",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Voice of Monetary Policy (2021, american_economic_review; CSV R09681; https://www.nber.org/papers/w28592)",
+    "author": "Yuriy Gorodnichenko, Tho Pham, Oleksandr Talavera",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

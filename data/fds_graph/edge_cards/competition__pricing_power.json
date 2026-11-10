@@ -1,0 +1,17 @@
+{
+  "edge_id": "competition->pricing_power",
+  "sign": "-",
+  "empirical_sign": "n/a",
+  "mechanism": "대체 공급자 증가가 가격 결정력을 제약할 수 있음",
+  "conditions": [
+    "관련 시장 동일",
+    "차별화·담합·수요 변화 없음"
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

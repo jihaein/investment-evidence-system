@@ -1,0 +1,73 @@
+{
+  "edge_id": "profit_persistence->expected_fcff",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "양의 영업이익 지속성이 높아지면 미래 현금흐름 전망이 개선될 수 있음",
+  "conditions": [
+    "기초 이익 양수",
+    "현금전환·재투자 일정",
+    "적자 지속성 제외"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_0dbd0bdaf354744b",
+      "text": "기업 이익(연구 정의)이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_profit",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2df6ac6fb0bf8acc",
+      "text": "기업 수익성(연구 정의)이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "profitability",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_01a09b92249de0e8",
+      "text": "영업현금흐름이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "operating_cash_flow",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4331812279be1277",
+      "text": "기업 생존 가능성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_survival",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f9452ac745aa4a1b",
+      "text": "기업 퇴출 가능성이(가) 상승하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_exit",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ac6306ab691bc8bc",
+      "text": "당기순이익이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "net_income",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c327340a99e6c2e7",
+      "text": "기업잉여현금흐름이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "fcff",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_087a5f62ec7227ee",
+      "text": "기대 기업이익이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "expected_profit",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fd01c17aa1fb67cc",
+      "text": "기대 미래 수익성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "future_profitability",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

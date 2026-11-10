@@ -1,0 +1,18 @@
+{
+  "edge_id": "n_145708895fc69503->n_58c6e569bc50d679",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "코메르츠은행 대출 축소의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 자회사의 모기업 장기대출의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R10387의 적용 맥락: This paper studies transmission of a 2008–09 credit‑supply shock—Commerzbank’s lending cut during the global financial crisis—across German multinational parents and their international affiliates using firm‑level data (MiDi, Ustan) from roughly 2002–2015. Units are German parent firms and their foreign affiliates located worldwide. The identification exploits pre‑crisis parent reliance on Commerzbank within Germany’s relationship‑banking system to isolate an exogenous credit shock to parents and examines internal capital flows, affiliate sales and employment, and a contrasting non‑financial 2013 flood shock."
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "Tracing the International Transmission of a Crisis Through Multinational Firms (2023, journal_of_finance; CSV R10387; https://www.nber.org/papers/w31061)",
+    "author": "Marcus Biermann, Kilian Huber",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

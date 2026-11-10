@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_d3a18b2fbba042fe->capital_stock",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "자본소득세의 변화가 투자·자본 축적·자산 교체 경로를 통해 기업 생산자본의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01426의 적용 맥락: This paper uses U.S. aggregate annual data (primarily 1947–1997) to study how capital income taxation affects the wedge between expected pre-tax returns on the capital stock and consumption growth. Units are national aggregates—BEA measures of pre-tax and after-tax capital returns, per-capita nondurable and services consumption, and capital-income tax revenue (federal, state, local). The analysis relies on consumption Euler equations, VARs to form expectations, and TSLS estimates to infer capital supply elasticity and tax incidence in the mid-to-late 20th century United States."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_eb08a849274978b8",
+      "text": "시장의 범위이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_a8dfba59a7f80671",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0299f7f9fe66b181",
+      "text": "초기 순자산 증가이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_cb7b2092a6afbe84",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_32b959b489ff78b1",
+      "text": "급여세 인하 노출이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2aac6633c92702b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ab9a277f74e1e592",
+      "text": "생산자본 증가율이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "capital_growth",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "What do Aggregate Consumption Euler Equations Say about the Capital Income Tax Burden? (2004, american_economic_review; CSV R01426; https://www.nber.org/papers/w10262)",
+    "author": "Casey B. Mulligan",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

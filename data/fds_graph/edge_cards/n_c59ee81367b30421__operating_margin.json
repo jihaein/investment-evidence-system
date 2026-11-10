@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_c59ee81367b30421->operating_margin",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "노동 과세의 변화가 매출 대비 영업비용 경로를 통해 영업이익률의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00179의 적용 맥락: Combines a theoretical two-country model with panel evidence (1960–1990) for 14 OECD countries at the country-year level. Studies how redistributive fiscal policies—labor income, social security and payroll taxes financing transfers to retirees and the unemployed—affect competitiveness (manufacturing unit labor costs), relative nontradable prices, and employment. Exploits cross-country/time variation in tax rates, Calmfors–Driffill labor‑market centralization, productivity and controls under an open‑economy setting with unionized wage setting."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_dcf66fd5be0290f8",
+      "text": "비공식 부문 활동 비용 증가이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_4e40664422f19994",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6ce1a2942027a406",
+      "text": "판매목록 선정에 가격 요소 반영이(가) 상승하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_be0f828b4caa6c17",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8213936efd449604",
+      "text": "검색 방식 재설계이(가) 상승하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_52b6879b5eff3a29",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_2b3cdf7e2348b4b9",
+      "text": "거시경제 불확실성 증가이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c948928380d4a4c4",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b9f2aca5daf94a85",
+      "text": "매출총이익률이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "gross_margin",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_51a33516970c56ce",
+      "text": "기업 마크업이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "firm_markup",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Welfare State and Competitiveness (1994, american_economic_review; CSV R00179; https://www.nber.org/papers/w4810)",
+    "author": "Alberto Alesina, Roberto Perotti",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

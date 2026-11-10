@@ -1,0 +1,98 @@
+{
+  "edge_id": "n_895bc1c56cab8186->product_sales",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "공공 약국 진입의 변화가 수요·가격·제품 선택 경로를 통해 제품·사업별 판매 규모의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R10372의 적용 맥락: This paper studies the decentralized rollout of municipal public pharmacies in Chile from October 2015 to April 2018 (146 of 344 counties adopted). It analyzes county- and local-market outcomes using drug-level IQVIA data (2014–2018), municipal finance records (2013–2019), avoidable hospitalizations, and an individual-level informational field experiment conducted just before the October 2016 local election. The institutional setting is a highly concentrated private retail and wholesale pharmaceutical sector; public pharmacies are single municipal stores that procure via a public intermediary and target local residents, especially chronic-patient buyers.",
+    "원자료 R10373의 적용 맥락: This paper studies the decentralized rollout of municipal public pharmacies in Chile from October 2015 to April 2018 (146 of 344 counties adopted). It analyzes county- and local-market outcomes using drug-level IQVIA data (2014–2018), municipal finance records (2013–2019), avoidable hospitalizations, and an individual-level informational field experiment conducted just before the October 2016 local election. The institutional setting is a highly concentrated private retail and wholesale pharmaceutical sector; public pharmacies are single municipal stores that procure via a public intermediary and target local residents, especially chronic-patient buyers."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_3e4b4cbd7b2ad1a3",
+      "text": "시장 진입 순서이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_f46f9bb29a0fb91a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c0c3a62ebe7aa8dc",
+      "text": "저품질 제품 가격이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_84a699acfcd594f2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_171ae0b57b5df33c",
+      "text": "잭팟 당첨 복권의 판매이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_1b383c5e860d6cf2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_51f65bafe33348ea",
+      "text": "주택소유자당 담보권 실행 건수이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_2e36393d0dd36413",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_33d3e7861090ff9d",
+      "text": "미생물 수질기준 위반이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_04bc799cbdea10bd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d5f7f6887e98200e",
+      "text": "원소·화학물질 수질기준 위반이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_dc0fcc47b0d176d4",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_efea6db194265ddf",
+      "text": "세무조사 확률 증가 발표이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_ae2b2e97cc54ad56",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d1de55ebbd1c69bb",
+      "text": "신제품 출시이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_cd590377a1c4df0e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_2100403de0ba3c66",
+      "text": "준비자산 평가가치 상승이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_4cf73fb28bb462e9",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_286be8a7861af274",
+      "text": "뉴욕타임스 리뷰이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_164c4e1db4fad89f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f07aba2b92c9b428",
+      "text": "중개 수수료이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfce4a4862f18769",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_aad221c69d05661a",
+      "text": "미 노동부 수탁자 의무 규칙 제안이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_1e24446d45bc919e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8acb8c750b2101d5",
+      "text": "연금상품 비용률이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_bee99bda0408c613",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "The Economics of the Public Option: Evidence from Local Pharmaceutical Markets (2022, american_economic_review; CSV R10372; https://www.nber.org/papers/w30779) / The Economics of the Public Option: Evidence from Local Pharmaceutical Markets (2022, american_economic_review; CSV R10373; https://www.nber.org/papers/w30779)",
+    "author": "Juan Pablo Atal, José Ignacio Cuesta, Felipe González, Cristóbal Otero",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

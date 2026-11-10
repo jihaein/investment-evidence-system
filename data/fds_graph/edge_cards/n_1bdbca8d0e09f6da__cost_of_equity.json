@@ -1,0 +1,37 @@
+{
+  "edge_id": "n_1bdbca8d0e09f6da->cost_of_equity",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "주식시장 자유화(원문 구분)의 변화가 주식 투자자가 요구하는 수익률 경로를 통해 자기자본비용의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01194의 적용 맥락: The paper studies equity-market liberalizations in emerging-market countries roughly from the late 1970s through September 2000, using country-level S&P EMDB total-return indices for liberalizing countries (about 15 with 5-year pre/post windows around liberalization months from Bekaert & Harvey and Henry). Units are national stock-market indices; empirical analyses focus on returns around policy events that opened markets to foreign investors. The setting emphasizes institutional features—liquidity/turnover, investor protection, concentrated controlling-shareholder ownership, and cross-country variation in liberalization dates and credibility."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_91b6ef521682088f",
+      "text": "무위험금리이(가) 하락하여 자기자본비용의 상승을 상쇄할 수 있음",
+      "check_node": "risk_free_rate",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_db4468e45565b560",
+      "text": "주식 베타이(가) 하락하여 자기자본비용의 상승을 상쇄할 수 있음",
+      "check_node": "beta",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_00f71128a5c9fe94",
+      "text": "주식위험 프리미엄이(가) 하락하여 자기자본비용의 상승을 상쇄할 수 있음",
+      "check_node": "equity_risk_premium",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Equity market liberalizations as country IPOs (2003, american_economic_review; CSV R01194; https://www.nber.org/papers/w9481)",
+    "author": "Rodolfo Martell, Rene M. Stulz",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

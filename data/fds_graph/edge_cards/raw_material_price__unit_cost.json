@@ -1,0 +1,30 @@
+{
+  "edge_id": "raw_material_price->unit_cost",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "원재료 구입단가 상승이 생산 원가를 높임",
+  "conditions": [
+    "원재료 사용량 일정",
+    "헤지·장기계약·대체투입으로 상쇄되지 않음"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_72b37f8d19538abc",
+      "text": "기업 생산성이(가) 상승하여 단위당 제조원가의 상승을 상쇄할 수 있음",
+      "check_node": "firm_productivity",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_439a29f6fd841d05",
+      "text": "기업 인건비이(가) 하락하여 단위당 제조원가의 상승을 상쇄할 수 있음",
+      "check_node": "wage_bill",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

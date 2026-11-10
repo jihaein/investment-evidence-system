@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_31de312977fc2ebd->financing_constraint",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "인수의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 기업 자금조달 제약의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04007의 적용 맥락: This paper studies 5,187 target firms in 25 European countries acquired between 2001 and 2008 (acquirers in 65 countries), each becoming a wholly owned subsidiary. Exploiting European unconsolidated subsidiary disclosures (Amadeus), the authors compare firm-year outcomes—cash holdings, cash–flow sensitivities of cash and investment, and investment rates—before and after acquisition for mostly private, often small targets kept as separate subsidiaries to assess whether acquisitions ease financial constraints."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_7f9bf084a667f17e",
+      "text": "계약 집행을 개선하는 법률 개혁이(가) 상승하여 기업 자금조달 제약의 상승을 상쇄할 수 있음",
+      "check_node": "n_7e704590e55d6313",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7631c2dd653e9a1a",
+      "text": "기업 신용공급이(가) 상승하여 기업 자금조달 제약의 상승을 상쇄할 수 있음",
+      "check_node": "credit_supply",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Financing-Motivated Acquisitions (2012, journal_of_finance; CSV R04007; https://www.nber.org/papers/w17867)",
+    "author": "Isil Erel, Yeejin Jang, Michael S. Weisbach",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

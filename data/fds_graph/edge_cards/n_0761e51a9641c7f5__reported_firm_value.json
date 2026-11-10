@@ -1,0 +1,61 @@
+{
+  "edge_id": "n_0761e51a9641c7f5->reported_firm_value",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "평균 미래 수익성에 대한 불확실성의 변화가 미래 현금창출력·위험에 대한 평가 경로를 통해 연구상 기업가치의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01577의 적용 맥락: This paper studies U.S. equity valuations around the tech boom and bust, focusing on Nasdaq-listed “new economy” firms versus NYSE/Amex “old economy” firms, with emphasis on the Nasdaq peak (March 10, 2000) and broader sample windows used for estimation (annual data 1962–2002 and firm-level panels through 2002). Units are individual firms and aggregate indices; the setting is the Internet/telecom innovation era with low equity premia. The authors calibrate and estimate a structural valuation model using ROE, market-to-book, and return-volatility series to infer uncertainty about average future profitability."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_cee2aafa13daec01",
+      "text": "재무적 곤경이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_9b5a88b17a895716",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_62ae25b442b22252",
+      "text": "기대 미래 수익률이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_40bee1a76fc2c43a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_49ef4c63e9a99029",
+      "text": "기대 미래 현금흐름이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_4546131b0287ebf9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_46c0eb14c5253857",
+      "text": "정보기술 혁명이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_bda72ebbd6ccdd58",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_07a75c81d4dea0a3",
+      "text": "인수 발표이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_a18e0264b988025b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_fcc423852e93ff13",
+      "text": "효과적인 기업문화이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_f01a30df77c4d13e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d392df3cb2f73acd",
+      "text": "조작 유인 제거이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_ad6d7ebd50331d88",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Was There a Nasdaq Bubble in the Late 1990s? (2004, journal_of_financial_economics; CSV R01577; https://www.nber.org/papers/w10581)",
+    "author": "Lubos Pastor, Pietro Veronesi",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

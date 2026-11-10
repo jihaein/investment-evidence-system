@@ -1,0 +1,91 @@
+{
+  "edge_id": "n_d4dd25f78f4f320f->credit_spread",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "Fitch의 투자등급 분류의 변화가 예상 신용손실·요구 위험 보상 경로를 통해 기업 신용스프레드의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03000의 적용 맥락: The paper examines U.S. corporate bond issues and their credit ratings from Moody’s, S&P and Fitch over 2000–2008 (bond price data mainly 2002–2008). The unit of analysis is individual corporate bond issues/issuers. The institutional setting is the U.S. NRSRO-based rating regime and regulatory classification rules (notably the investment-grade vs. high-yield threshold and the ‘worst-of-two/median-of-three’ rule under NAIC/Basel II) that affect institutional demand, capital charges and index inclusion. It studies how adding a third (Fitch) rating influences spreads, rating timing, and default prediction."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_eba51c0932b6f338",
+      "text": "담보자산의 재활용 가능성이(가) 상승하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_d28c7ae55796397d",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_aee0de9651e910e7",
+      "text": "Moody's 신용등급 하향이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_ee2d603b4c5ed0ab",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_10dbfc3e0bd75ac8",
+      "text": "비유동성이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_43a5269b3981b6f1",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0f81a4daacc480a1",
+      "text": "외생적 현금 보유이(가) 상승하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_861959495227f09a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_676824931aa0cf00",
+      "text": "장기 국채 수익률 변동성 증가이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_3f1aa4b078d4d713",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bcc212d463628949",
+      "text": "자산 꼬리위험·고유위험 프리미엄이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_4d7e0a6347af2892",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c033e3d609d500a2",
+      "text": "인지된 꼬리위험 상승이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_93dbc6d099aef765",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_53ae570ef3592f1f",
+      "text": "미국 통화정책 긴축이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_9bf3da6645461c5b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c05eedef47aa9b67",
+      "text": "담보 비용이(가) 상승하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "n_efbb130f1d788db7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e1127b3eebb6d3e5",
+      "text": "기업 채무불이행 위험이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "credit_risk",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_38fe2e58f2743ee0",
+      "text": "기업 불확실성이(가) 하락하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "firm_uncertainty",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0d4c90c8fe23f905",
+      "text": "기업 신용등급이(가) 상승하여 기업 신용스프레드의 상승을 상쇄할 수 있음",
+      "check_node": "credit_rating",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Tiebreaker: Certification and Multiple Credit Ratings (2009, journal_of_finance; CSV R03000; https://www.nber.org/papers/w15331)",
+    "author": "Dion Bongaerts, K.J. Martijn Cremers, William N. Goetzmann",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

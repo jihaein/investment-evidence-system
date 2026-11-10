@@ -1,0 +1,18 @@
+{
+  "edge_id": "n_1b063b2ef3bcfb48->n_76ce22d1500c6175",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "기업지배구조 개선안 통과의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 장부가 대비 시장가 비율(B/M)의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03431의 적용 맥락: This paper studies shareholder-sponsored corporate governance proposals voted at annual meetings of U.S. publicly traded firms (S&P 1500 plus ~500 widely held firms) from 1997 to 2007. The unit of analysis is the firm-meeting/proposal (vote share on governance items, notably anti-takeover G-index provisions). The institutional setting is U.S. proxy voting under SEC Rule 14a-8 where proposals are typically non-binding; outcomes include daily abnormal stock returns around vote day and multi-year firm outcomes (acquisitions, capex, Tobin’s Q)."
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "The Vote is Cast: The Effect of Corporate Governance on Shareholder Value (2010, journal_of_finance; CSV R03431; https://www.nber.org/papers/w16574)",
+    "author": "Vicente Cuñat, Mireia Gine, Maria Guadalupe",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

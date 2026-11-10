@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_be06e79fccfbc084->household_income",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "농사 일정과 겹치는 축제의 변화가 취업·임금·이전소득 경로를 통해 가계 소득의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R09843의 적용 맥락: This paper studies long-run economic effects of Catholic patron saint day festival timing across Mexican municipalities, focusing on the historical New Spain region. It combines officially-prescribed saint-day dates (set since Spanish colonial conquest) with FAO-GAEZ estimates of local maize planting and harvest cycles to analyze municipality-level outcomes (primarily 2010 census and agricultural data). The authors evaluate whether festivals coinciding with planting or harvest reduce agricultural productivity, hinder structural transformation, and affect income, religiosity, and social capital."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_b218f24a614a125f",
+      "text": "가치관 교육과정이(가) 하락하여 가계 소득의 상승을 상쇄할 수 있음",
+      "check_node": "n_6ca03e3819fb8191",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f5e48b415ae1cb4d",
+      "text": "실업률이(가) 상승하여 가계 소득의 상승을 상쇄할 수 있음",
+      "check_node": "unemployment",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Religious Festivals and Economic Development: Evidence from the Timing of Mexican Saint Day Festivals (2021, american_economic_review; CSV R09843; https://www.nber.org/papers/w28821)",
+    "author": "Eduardo Montero, Dean Yang",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

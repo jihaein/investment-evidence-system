@@ -1,0 +1,85 @@
+{
+  "edge_id": "n_03434e31c77d8424->cost_of_debt",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "신용시장 집중도 상승의 변화가 대출자의 위험 보상·자금 비용·가격 설정 경로를 통해 부채 조달금리의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00217의 적용 맥락: This paper examines how local bank-market concentration affects lending relationships using the 1988–89 National Survey of Small Business Finances (firms in operation as of Dec 1987), a cross-sectional sample of 3,404 U.S. small non‑financial, non‑farm firms (≤500 employees) across counties/MSAs. It exploits cross-market variation in FDIC deposit Herfindahl indices (categorized <0.10, 0.10–0.18, >0.18) and state banking regimes (branching/unit‑banking) to compare credit availability, trade‑credit behavior, and interest‑rate dynamics. Institutional context: small firms rely on local banks and regulators limit banks’ equity claims."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_0afb6ed7cc9c4b7b",
+      "text": "채권자 권리의 강도이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_8c5b68548bf4289b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c09f407a11861442",
+      "text": "민간 신용 이용 가능성이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_3829d970d7ad038b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1ae4b1760878ede3",
+      "text": "자산 담보이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_c98b246ba4547f88",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3f392c44f70bae02",
+      "text": "무형자산이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_7787ed290f7fdeda",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_2bfe751a8fd524f1",
+      "text": "장부가 대비 시장가 비율(B/M)이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_76ce22d1500c6175",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8e160a55d9d5be91",
+      "text": "금리·환율 헤지 강도이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_b192aa69ecfae8e3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e63b9938ccf68b41",
+      "text": "사모펀드 지원이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_29a522832b9858d4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e99ca4a4bdf26d44",
+      "text": "스트레스테스트 노출이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_6d0f5b8e8d0178d1",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_82cfb4130e08bb2e",
+      "text": "무위험금리이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "risk_free_rate",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_baba01df57a36266",
+      "text": "기업 신용스프레드이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "credit_spread",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2e9ce1944406f21c",
+      "text": "일반 금리이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "interest_rate",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Effect of Credit Market Competition on Lending Relationships (1994, quarterly_journal_of_economics; CSV R00217; https://www.nber.org/papers/w4921)",
+    "author": "Mitchell A. Petersen, Raghuram G. Rajan",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

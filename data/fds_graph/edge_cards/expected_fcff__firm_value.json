@@ -1,0 +1,24 @@
+{
+  "edge_id": "expected_fcff->firm_value",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "기대 미래 FCFF의 현재가치 합계가 영업자산 가치",
+  "conditions": [
+    "할인율과 다른 기간 현금흐름 일정",
+    "할인계수 양수"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_d9586b66b36d5147",
+      "text": "기업가치 할인율 WACC이(가) 상승하여 영업자산 가치의 상승을 상쇄할 수 있음",
+      "check_node": "discount_rate",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

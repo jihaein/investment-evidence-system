@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_4e40664422f19994->operating_margin",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "비공식 부문 활동 비용 증가의 변화가 매출 대비 영업비용 경로를 통해 영업이익률의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04208의 적용 맥락: This paper develops and estimates a structural equilibrium search and wage-posting model of formal and informal labor in Brazil, using Pesquisa Mensal de Emprego (PME) rotating-panel data from six large metropolitan regions (2002–2007). Units are low-educated individuals (age 23–65) and heterogeneous firms deciding sector and posted wages. The institutional setting includes minimum wage, payroll and corporate taxes, employer social security contributions, severance pay, unemployment insurance (funded by labor taxes), and monitoring/fines for informality; counterfactuals simulate policy changes to informality costs and labor regulations."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_80035836a3196ae6",
+      "text": "노동 과세이(가) 상승하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c59ee81367b30421",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_39adaa437e248636",
+      "text": "판매목록 선정에 가격 요소 반영이(가) 상승하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_be0f828b4caa6c17",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b42345bf0f19aa3f",
+      "text": "검색 방식 재설계이(가) 상승하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_52b6879b5eff3a29",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c4f9aaf25be66560",
+      "text": "거시경제 불확실성 증가이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c948928380d4a4c4",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_11afd29e8df7e7fa",
+      "text": "매출총이익률이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "gross_margin",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c1a674075964750b",
+      "text": "기업 마크업이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "firm_markup",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Wages and Informality in Developing Countries (2012, american_economic_review; CSV R04208; https://www.nber.org/papers/w18347)",
+    "author": "Costas Meghir, Renata Narita, Jean-Marc Robin",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

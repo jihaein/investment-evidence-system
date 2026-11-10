@@ -1,0 +1,73 @@
+{
+  "edge_id": "n_dfe115a23deb321b->firm_markup",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "산출물 관세 하락의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 기업 마크업의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04028의 적용 맥락: Using firm–product panel data (CMIE Prowess) for Indian manufacturing around the 1991 trade liberalization (analysis focused on ~1989–1997), this paper exploits large, unanticipated cross‑industry cuts in output and input tariffs to estimate effects on factory‑gate prices, markups, and marginal costs. Units are firms and firm‑products (product‑level quantities and prices). The institutional setting features comprehensive tariff reform, input‑output linkages to construct input tariffs, and panel production‑function estimation to recover markups and marginal costs."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_3b9854625fa9ee3f",
+      "text": "지역 금융 발전이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_0849e0e487b782d0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_311002b1665b17a1",
+      "text": "서유럽 수출이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_6fdbd1327e0a91a5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_edea2758b884b3c5",
+      "text": "수출 중단이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_680ab86f18f7a8de",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_518f23b726c512a3",
+      "text": "수출시장 진입이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_a784f6c100e40b55",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_065b394fc0ddf8fe",
+      "text": "수입 비중 증가와 미국 기업 퇴출이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_c72cefcde7504e52",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_89ac362e3351727a",
+      "text": "한계비용 감소이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_941020c7f660f9d9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9f98c2a620486b7b",
+      "text": "불확실성 증가이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_00532c15a0f3fac6",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_09bec3bcba7c8496",
+      "text": "대기업 시장점유율이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_8f14ac6a66361dee",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c0e68046baa2f129",
+      "text": "좀비기업 신용공급이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_0810557f4e50d819",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Prices, Markups and Trade Reform (2012, econometrica; CSV R04028; https://www.nber.org/papers/w17925)",
+    "author": "Jan De Loecker, Pinelopi K. Goldberg, Amit K. Khandelwal, Nina Pavcnik",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

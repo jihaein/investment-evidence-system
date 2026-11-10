@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_887caea9bead1a55->market_firm_value",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "정치적 연계 가치 하락의 변화가 기대 현금흐름·할인율·시장 평가 경로를 통해 기업 시장가치의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00874의 적용 맥락: Analyzes how the 1997–98 Asian financial crisis and Malaysia’s September 1998 capital controls affected market valuations of 424 Malaysian listed firms. Using Gomez and Jomo’s coding of political ties (Mahathir- and Anwar-connected firms), the paper examines July 1997–August 1998 (crisis) and the September 1998 policy/political shock (capital controls and Anwar’s dismissal), exploiting variation in political connections, Bumiputera status, and prior foreign listings to infer changes in expected subsidies and access to international finance."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_ca1eb3adb26591f6",
+      "text": "부총리 해임과 자본통제 도입이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_2c20de9d44a40a67",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_94c6196941f14b94",
+      "text": "제품시장 경쟁기업의 연구개발이(가) 상승하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_7488374b91e15f68",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_4b4784069a1e85d0",
+      "text": "기술적으로 가까운 기업의 연구개발이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_6725ffded8c3dafb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_96536b8b47282f9b",
+      "text": "자사 연구개발 축적량이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_4f843c3efc6d0f7b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6ef58ae35eb9d575",
+      "text": "특허와 기업의 기술적 근접성이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_f5aecf5e9c415f69",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_eff5351387cbd314",
+      "text": "애널리스트와 대통령 소속 정당의 불일치이(가) 상승하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_0481c6e573d7d263",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Cronyism and Capital Controls: Evidence from Malaysia (2001, journal_of_financial_economics; CSV R00874; https://www.nber.org/papers/w8521)",
+    "author": "Simon Johnson, Todd Mitton",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

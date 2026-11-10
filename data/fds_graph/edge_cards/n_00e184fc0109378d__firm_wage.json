@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_00e184fc0109378d->firm_wage",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "외국 기업에 의한 인수의 변화가 노동 수요·협상·보상 결정 경로를 통해 기업 근로자 임금의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03426의 적용 맥락: Using the ESEE firm-level panel for Spanish manufacturing (1990–2006, ~1,800 firms across 20 two-digit NACE industries), this paper studies which domestic firms are acquired by foreign parents (foreign ownership ≥50%) and how acquisition affects innovation (product/process, foreign-technology assimilation), exports and productivity. The unit is the firm; identification leverages within-firm variation over time, industry and year controls, and propensity-score reweighting to address time-varying selection in the Spanish manufacturing/multinational entry context."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_29e27a26c969010d",
+      "text": "기업의 수출 참여이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_4e9770cd8e6c6abc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_52fceca9ccd5f458",
+      "text": "미국 파산법 Chapter 13 보호이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_1fadff3300befb46",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_336bbf908e860d8d",
+      "text": "주 법인세 인상이(가) 상승하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_386c508084e8f61f",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_56935138e60cb2b1",
+      "text": "수출 수요 5% 증가이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_57aeb5628ca5e0da",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3ff48df687a52471",
+      "text": "조정된 수출 수요 충격이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_21cbe30fb8328f03",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Innovation and Foreign Ownership (2010, american_economic_review; CSV R03426; https://www.nber.org/papers/w16573)",
+    "author": "Maria Guadalupe, Olga Kuzmina, Catherine Thomas",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,73 @@
+{
+  "edge_id": "n_c836905751e74c2e->cash",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "경기침체의 변화가 내부현금 창출·현금 유출·예비적 보유 경로를 통해 현금 보유액의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03891의 적용 맥락: This paper analyzes actively managed U.S. equity mutual funds and their managers using monthly holdings, returns, and firm data (CRSP, Thomson, Compustat) over January 1980–December 2005. Units are fund-month observations (and linked managers). The institutional setting is the U.S. mutual-fund industry, with business-cycle state defined by NBER recession months (and alternative macro indicators). The analyses examine whether and how managers shift between stock-picking and market-timing across booms and recessions, controlling for fund and manager characteristics."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_4e00e255b45716a0",
+      "text": "신주 발행으로 조달한 자본이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9fbc893495377352",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f5b02e52e4f80db2",
+      "text": "인수이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_31de312977fc2ebd",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0dfdf6fa7ef0427a",
+      "text": "확대된 담보 인정 범위이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e432ff4dca61e44",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ef7780411432f1e8",
+      "text": "경영 위험이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_ca7df404d411b010",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6ed84e1b432700ef",
+      "text": "외생적 유동성 손실이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_427698ffb44cb513",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_cb6debd541d093c4",
+      "text": "단기 은행신용 비용 증가이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_352d8f471664c5df",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c5d6fd223533b0e9",
+      "text": "불확실성 충격이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_a6d900aebd61fccd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2927dbf77562c4c9",
+      "text": "배당세 인상이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d0d150ec0651e4cb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a98ba6616a8748fa",
+      "text": "현금 배당 지급액이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "payout",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Time-Varying Fund Manager Skill (2011, journal_of_finance; CSV R03891; https://www.nber.org/papers/w17615)",
+    "author": "Marcin Kacperczyk, Stijn Van Nieuwerburgh, Laura Veldkamp",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}
