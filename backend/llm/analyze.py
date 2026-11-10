@@ -111,11 +111,22 @@ def build_messages(pack):
 
 
 # 답의 형식. 근거 ID는 이 묶음에 있는 것만 고를 수 있게 enum으로 묶는다 (OpenAI strict 규칙: 모든 칸 필수, 추가 칸 금지)
+def model_ids(pack):
+    return [e["id"] for e in pack["evidence_index"] if e["model"] != "graph"]
+
+
+def proposition_ids(pack):
+    return [e["id"] for e in pack["evidence_index"] if e["model"] == "graph"]
+
+
 def assessment_schema(pack):
-    ids = [e["id"] for e in pack["evidence_index"]]
+    ids = model_ids(pack)                                    # 판정 근거는 모델 근거만. PR(경제명제)은 따로 단다
+    prs = proposition_ids(pack)
+    pr_item = {"type": "string", "enum": prs} if prs else {"type": "string"}   # PR이 없으면 코드 확인에서 막는다
     claim = {
         "type": "object", "additionalProperties": False,
-        "required": ["id", "text", "type", "models_to_check", "verdict", "evidence_ids", "reason"],
+        "required": ["id", "text", "type", "models_to_check", "verdict", "evidence_ids", "reason",
+                     "proposition_ids", "graph_note"],
         "properties": {
             "id": {"type": "string", "description": "C1, C2 ..."},
             "text": {"type": "string", "description": "투자자 주장을 한국어 한 문장으로"},
@@ -124,6 +135,8 @@ def assessment_schema(pack):
             "verdict": {"type": "string", "enum": list(VERDICTS)},
             "evidence_ids": {"type": "array", "items": {"type": "string", "enum": ids}},
             "reason": {"type": "string", "description": "어느 근거가 왜 그 판정인지 1~2문장"},
+            "proposition_ids": {"type": "array", "items": pr_item, "description": "주장과 맞는 경제명제 근거(PR-n). 없으면 빈 배열"},
+            "graph_note": {"type": "string", "description": "경제명제 경로의 방향과 확인할 조건 1~2문장. PR이 없으면 빈 문자열"},
         },
     }
     return {
@@ -184,20 +197,36 @@ def validate_assessment(assessment, pack):
     status = {m["model"]: m["status"] for m in pack["inputs"]["models"]}
     ev_model = {e["id"]: e["model"] for e in pack["evidence_index"]}
     opinion = pack["inputs"]["investor_opinion"]["text"] or ""
-    allowed_numbers = numbers_in(json.dumps(pack["inputs"]["models"], ensure_ascii=False)) | numbers_in(opinion) \
+    pr_ids = set(proposition_ids(pack))
+    allowed_numbers = numbers_in(json.dumps(pack["inputs"]["models"], ensure_ascii=False)) | numbers_in(opinion)         | numbers_in(json.dumps(pack["inputs"].get("propositions"), ensure_ascii=False)) \
         | numbers_in(json.dumps(pack["request"], ensure_ascii=False)) | numbers_in(json.dumps(pack["data_period"]))
 
     if opinion.strip() and not assessment["claims"]:
         issues.append("오류: 의견이 있는데 주장이 하나도 없음")
     for c in assessment["claims"]:
         cid = c["id"]
+        c.setdefault("proposition_ids", [])                   # 경제명제 칸이 없던 예전 답도 같은 규칙으로 본다
+        c.setdefault("graph_note", "")
         expected_models = CLAIM_TYPES.get(c["type"], ("", [], ""))[1]
         if sorted(c["models_to_check"]) != sorted(expected_models):
             issues.append(f"경고: {cid} 유형 '{c['type']}'의 확인 모델이 표({expected_models})와 다름: {c['models_to_check']}")
         unknown = [e for e in c["evidence_ids"] if e not in ev_model]
         if unknown:
             issues.append(f"오류: {cid} 묶음에 없는 근거 ID {unknown}")
-        cited_models = {ev_model[e] for e in c["evidence_ids"] if e in ev_model}
+        pr_in_evidence = [e for e in c["evidence_ids"] if e in pr_ids]
+        if pr_in_evidence:
+            issues.append(f"오류: {cid} 경제명제 근거 {pr_in_evidence}를 판정 근거(evidence_ids)에 씀. proposition_ids에 달아야 함")
+        unknown_pr = [e for e in c["proposition_ids"] if e not in pr_ids]
+        if unknown_pr:
+            issues.append(f"오류: {cid} 묶음에 없는 경제명제 ID {unknown_pr}")
+        if c["proposition_ids"] and not c["graph_note"].strip():
+            issues.append(f"경고: {cid} 경제명제 근거를 달았는데 graph_note가 비어 있음")
+        if c["graph_note"].strip() and not c["proposition_ids"]:
+            issues.append(f"경고: {cid} graph_note가 있는데 경제명제 근거 ID가 없음")
+        mixed = sorted(m for m, words in MODEL_WORDS.items() if any(w in c["graph_note"] for w in words))             + sorted({e for e in ev_model if e not in pr_ids and e in c["graph_note"]})
+        if mixed:
+            issues.append(f"경고: {cid} graph_note에 모델 근거가 섞임: {mixed} (그래프 이야기만 써야 함)")
+        cited_models = {ev_model[e] for e in c["evidence_ids"] if e in ev_model and e not in pr_ids}
         outside = cited_models - set(c["models_to_check"])
         if outside:
             issues.append(f"오류: {cid} 확인 대상이 아닌 모델의 근거를 씀: {sorted(outside)}")
@@ -217,11 +246,11 @@ def validate_assessment(assessment, pack):
             issues.append(f"오류: {cid} '판단보류'인데 확인할 모델 {scored_checked}가 점수를 냈음")
         if c["verdict"] == "근거없음" and expected_models:
             issues.append(f"경고: {cid} '근거없음'인데 이 유형은 확인할 모델이 있음")
-        made_up = sorted(numbers_in(c["reason"]) - allowed_numbers, key=len)
+        made_up = sorted((numbers_in(c["reason"]) | numbers_in(c["graph_note"])) - allowed_numbers, key=len)
         if made_up:
             issues.append(f"오류: {cid} 근거 묶음에 없는 숫자 {made_up}")
 
-    texts = [assessment["summary"]] + [c["reason"] for c in assessment["claims"]] + [c["text"] for c in assessment["claims"]]
+    texts = [assessment["summary"]] + [c["reason"] for c in assessment["claims"]] + [c["text"] for c in assessment["claims"]]         + [c["graph_note"] for c in assessment["claims"]]
     for word in BANNED:
         if any(word in t for t in texts):
             issues.append(f"오류: 금지 표현 '{word}'")
@@ -301,6 +330,8 @@ def print_result(pack, result):
     for c in a["claims"]:
         print(f"  {c['id']} [{c['type']}] {c['verdict']} {c['evidence_ids']}  {c['text']}")
         print(f"      → {c['reason']}")
+        if c.get("proposition_ids"):
+            print(f"      ⇢ 경제명제 {c['proposition_ids']}: {c['graph_note']}")
     if result.get("attempts", 1) > 1:
         print(f"  다시 묻기 {result['attempts'] - 1}회 (첫 답의 문제: {'; '.join(result['first_issues'])})")
     print(f"  요약: {a['summary']}")
@@ -336,10 +367,12 @@ if __name__ == "__main__":
     ap.add_argument("--opinion-file")
     ap.add_argument("--pack", help="저장해 둔 근거 묶음 JSON을 쓴다")
     ap.add_argument("--no-dupont", action="store_true")
+    ap.add_argument("--graph", action="store_true", help="경제명제(Neo4j 인과그래프)를 근거 묶음에 넣는다")
     ap.add_argument("--model", help="OpenAI 모델 이름 (없으면 .env의 OPENAI_MODEL, 그것도 없으면 " + DEFAULT_MODEL + ")")
     ap.add_argument("--dry-run", action="store_true", help="API를 부르지 않고 보낼 내용만 보여 준다")
     ap.add_argument("--cases", action="store_true", help="cases/analysis_cases.json의 시험 사례를 모두 돌려 채점한다")
     args = ap.parse_args()
+    load_env()                                               # --graph일 때 NEO4J_*도 .env에서 읽는다
 
     if args.cases:
         run_cases(args.model)
@@ -350,7 +383,8 @@ if __name__ == "__main__":
         if not (args.stock_code and args.buy_date and args.eval_date):
             ap.error("stock_code buy_date eval_date 가 필요합니다 (또는 --pack, --cases)")
         opinion = Path(args.opinion_file).read_text(encoding="utf-8") if args.opinion_file else args.opinion
-        pack = bp.build_pack(args.stock_code, args.buy_date, args.eval_date, opinion, include_dupont=not args.no_dupont)
+        pack = bp.build_pack(args.stock_code, args.buy_date, args.eval_date, opinion, include_dupont=not args.no_dupont,
+                             include_graph=args.graph)
 
     if args.dry_run:
         messages = build_messages(pack)

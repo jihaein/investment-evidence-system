@@ -14,6 +14,7 @@
 | `models/seoseohi/threshold.py` | 임계 모델: 매수일 이후 주가가 꾸준히 나빠지는지 보는 경보기(켜짐/꺼짐, 점수 아님) |
 | `models/seoseohi/link_fundamentals.py` | 가격 경보 뒤에 F-Score·Ohlson 악화가 확인되는지 보는 평가 |
 | `models/seoseohi/export_contract.py` | 표준 표를 대시보드가 읽는 계약 JSON으로 내보냄 |
+| `backend/llm/` | 근거 묶음, 분석 단계(OpenAI), 경제명제(`graph_props.py`: Neo4j 인과그래프). [설명](backend/llm/README.md) |
 | `contracts/risk_result.schema.json` | 계약 JSON 스키마 |
 | `tests/seoseohi/test_run_models.py` | 기대값, 유보, 계약 스키마 점검 |
 | `data/` | 입력 CSV |

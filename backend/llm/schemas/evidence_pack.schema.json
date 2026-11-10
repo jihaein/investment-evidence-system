@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "evidence_pack.schema.json",
-  "title": "LLM 근거 묶음 (input 1~4)",
+  "title": "LLM 근거 묶음 (input 1~4). input 3(propositions)은 FDS 인과그래프 근거 PR-n",
   "type": "object",
   "required": [
     "pack_version",
@@ -72,7 +72,9 @@
           "maxItems": 4,
           "items": { "$ref": "#/$defs/model" }
         },
-        "propositions": { "type": ["array", "null"] },
+        "propositions": {
+          "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/propositions" }]
+        },
         "input4": { "type": ["object", "array", "null"] }
       }
     },
@@ -83,14 +85,15 @@
         "required": ["id", "model"],
         "properties": {
           "id": { "$ref": "#/$defs/evidence_id" },
-          "model": { "$ref": "#/$defs/model_name" }
+          "model": { "enum": ["fscore", "ohlson", "dupont", "gate", "graph"] }
         }
       }
     }
   },
   "$defs": {
     "model_name": { "enum": ["fscore", "ohlson", "dupont", "gate"] },
-    "evidence_id": { "type": "string", "pattern": "^(FS|OH|DP|GT)-[0-9]+$" },
+    "evidence_id": { "type": "string", "pattern": "^(FS|OH|DP|GT|PR)-[0-9]+$" },
+    "model_evidence_id": { "type": "string", "pattern": "^(FS|OH|DP|GT)-[0-9]+$" },
     "hold": {
       "type": ["object", "null"],
       "required": ["codes", "meanings"],
@@ -104,11 +107,90 @@
       "required": ["id", "statement", "values", "source"],
       "additionalProperties": false,
       "properties": {
-        "id": { "$ref": "#/$defs/evidence_id" },
+        "id": { "$ref": "#/$defs/model_evidence_id" },
         "statement": { "type": "string", "minLength": 1 },
         "values": { "type": "object" },
         "source": { "type": "object" }
       }
+    },
+    "graph_evidence": {
+      "type": "object",
+      "required": ["id", "statement", "values", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^PR-[0-9]+$" },
+        "statement": { "type": "string", "minLength": 1 },
+        "values": { "type": "object" },
+        "source": { "type": "object" }
+      }
+    },
+    "graph_match": {
+      "type": ["object", "null"],
+      "required": ["node_id", "label", "score"],
+      "properties": {
+        "node_id": { "type": "string" },
+        "label": { "type": "string" },
+        "score": { "type": "number" }
+      }
+    },
+    "propositions": {
+      "type": "object",
+      "required": ["model", "kind", "status", "graph_version", "reason", "raw_error", "card", "links", "evidence"],
+      "additionalProperties": false,
+      "properties": {
+        "model": { "const": "graph" },
+        "kind": { "const": "proposition" },
+        "status": { "enum": ["computed", "no_links", "not_computed"] },
+        "graph_version": { "type": ["string", "null"] },
+        "reason": { "type": ["string", "null"] },
+        "raw_error": { "type": ["string", "null"] },
+        "card": {
+          "type": "object",
+          "required": ["name", "kind", "scale", "measures", "how_to_read", "limits"]
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["claim", "cause", "cause_change", "effect", "effect_change", "status", "match",
+                         "path", "edges", "checks", "net_sign", "direction_check", "evidence_ids"],
+            "additionalProperties": false,
+            "properties": {
+              "claim": { "type": "string" },
+              "cause": { "type": "string" },
+              "cause_change": { "enum": ["증가", "감소", "모름"] },
+              "effect": { "type": "string" },
+              "effect_change": { "enum": ["증가", "감소", "모름"] },
+              "status": { "enum": ["found", "no_match", "no_path"] },
+              "match": {
+                "type": "object",
+                "required": ["cause", "effect"],
+                "properties": {
+                  "cause": { "$ref": "#/$defs/graph_match" },
+                  "effect": { "$ref": "#/$defs/graph_match" }
+                }
+              },
+              "path": { "type": "array", "items": { "type": "object" } },
+              "edges": { "type": "array", "items": { "type": "object" } },
+              "checks": { "type": "array", "items": { "type": "object" } },
+              "net_sign": { "enum": ["+", "-", null] },
+              "direction_check": { "enum": ["same", "opposite", "not_compared", null] },
+              "evidence_ids": { "type": "array", "items": { "type": "string", "pattern": "^PR-[0-9]+$" } }
+            }
+          }
+        },
+        "evidence": { "type": "array", "items": { "$ref": "#/$defs/graph_evidence" } }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "computed" } } },
+          "then": { "properties": { "evidence": { "minItems": 1 } } }
+        },
+        {
+          "if": { "properties": { "status": { "enum": ["no_links", "not_computed"] } } },
+          "then": { "properties": { "reason": { "type": "string" }, "evidence": { "maxItems": 0 } } }
+        }
+      ]
     },
     "model": {
       "type": "object",
