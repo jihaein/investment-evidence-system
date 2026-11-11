@@ -18,6 +18,7 @@ import llm_facts as lf
 import news_facts as facts
 import news_review as review
 import np_scores
+from external_article import result_urls
 import p_pool
 
 HERE = Path(__file__).resolve().parent
@@ -37,7 +38,7 @@ def load_crawl(cache):
 
 def report_for(e, by_stock, searches, articles, names):
     ss = [s for s in by_stock[e['stock_code']] if e['n_base_start'][:10] <= s['date'] <= e['news_window_end'][:10]]
-    urls = {r['naver_url'] for s in ss for r in s.get('results', []) if r['naver_url']}
+    urls = result_urls([r for s in ss for r in s.get('results', [])], articles)
     arts = [articles[u] for u in urls if u in articles]
     reviewed, datasets = review.prepare(arts, e, names[e['stock_code']])
     cover = review.coverage(searches, e)

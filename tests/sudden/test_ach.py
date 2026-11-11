@@ -83,6 +83,9 @@ def test_selection_ranks_by_s_sel_and_fills_low_confidence():
     assert [d['bundle_id'] for d in docs] == ['g0', 'g1', 'g2']
     assert docs[0]['S_sel'] == 90.0 and docs[1]['n_missing'] and docs[2]['S_sel'] == 10.0
     assert docs[2]['low_confidence'] and not docs[0]['low_confidence']
+    assert [d['bundle_id'] for d in ach.selection(groups, rows, sessions, cap=1)] == ['g0', 'g2']   # 5건 미만이면 20점 미만으로 채움
+    many = [{**groups[0], 'group_id': f'h{i}', 'representative_url': 'u0'} for i in range(15)]
+    assert len(ach.selection(many, rows, sessions)) == 12 and len(ach.selection(many, rows, sessions, cap=None)) == 15
 
 
 def test_classifier_caches_each_run(tmp_path):
@@ -147,3 +150,20 @@ def test_min_support_ratio_holds_weakly_supported_winner():
     assert held['hypothesis'] == 'H2' and held['runner_up'] == 'H3'
     main, _ = ach.judge(design_example(), params={'min_support_ratio': 0.25})   # 5.7 예시(H1 1.31이 최대 지지)는 그대로
     assert main['verdict'] == '가치훼손'
+
+
+def test_doc_fragile_drops_one_selected_doc_at_a_time():
+    event = {'company_name': 'A사', 'index_ret_pct': '0'}
+    open_time = ach.datetime.fromisoformat('2018-01-04T09:00:00+09:00')
+
+    def doc(i):
+        return {'bundle_id': f'g{i}', 'url': f'u{i}', 'title': '제목', 'text': f'A사는 유상증자를 결정했다 {i}',
+                'published_at': '2018-01-04T10:00:00+09:00', 'session_d': 0, 'S_sel': 80.0, 'r_src': 1.0,
+                'low_confidence': False}
+
+    def classify(d, company, run):
+        return [{'quote': 'A사는 유상증자를 결정했다', 'type': 'C1', 'direction': '부정', 'event': '유상증자'}]
+    one = ach.analyze(event, [doc(1)], classify, open_time)
+    assert one['verdict'] == '가치훼손' and one['flags']['doc_fragile'] and one['flags']['doc_flips'] == 1
+    two = ach.analyze(event, [doc(1), doc(2)], classify, open_time)
+    assert two['verdict'] == '가치훼손' and not two['flags']['doc_fragile']

@@ -197,8 +197,9 @@ def build_report(drop_id, cache):
         searches = [json.loads(p) for p, in db.execute('SELECT payload FROM searches')]
         scope_searches = [s for s in searches if s['stock_code'] == event['stock_code']
                          and event['n_base_start'][:10] <= s['date'] <= event['news_window_end'][:10]]
-        urls = {r['naver_url'] for s in scope_searches for r in s.get('results', []) if r['naver_url']}
         articles = [json.loads(p) for p, in db.execute('SELECT payload FROM articles')]
+        from external_article import result_urls
+        urls = result_urls([r for s in scope_searches for r in s.get('results', [])], {a['url']: a for a in articles})
         articles = [a for a in articles if a['url'] in urls]
     reviewed, datasets = prepare(articles, event, names)
     cover = coverage(searches, event)
@@ -210,7 +211,7 @@ def build_report(drop_id, cache):
               'article_count_basis': 'article_count는 시각 검증 가능한 수집 본문 수이며 제목으로 생략한 자동 시세 본문은 제외. 내용 분석은 company_news 후보만 사용.',
               'ready_for_baseline_analysis': cover['search_coverage_complete'] and not pending,
               'limits': ['유사 보도 후보 묶음은 전재 확정이나 인과관계 판정이 아님',
-                         '외부 전용 기사 본문은 미수집', '입력 시각·수정 시각은 당시 본문 복원의 보장이 아님',
+                         '외부 전용 기사 본문은 --external로 받은 것만 포함(수정 시각이 없는 경우가 많음)', '입력 시각·수정 시각은 당시 본문 복원의 보장이 아님',
                          '관련성·분류·유사도 기준은 초기 규칙이며 N/P 점수와 급락 원인은 아직 계산하지 않음']}
     return report, reviewed
 

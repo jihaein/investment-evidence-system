@@ -174,8 +174,10 @@ def source_reliability(group, body):
     return (0.8, '보도자료') if len(early) >= 3 and '밝혔다' in body[:600] else (1.0, '일반 취재')
 
 
-def selection(groups, rows_by_url, sessions):
-    """설계서 4.5: S_sel 높은 순, 20점 이상 최대 12개, 5개 미만이면 채우고 low_confidence."""
+def selection(groups, rows_by_url, sessions, cap=12):
+    """설계서 4.5: S_sel 높은 순, 20점 이상 최대 12개, 5개 미만이면 채우고 low_confidence.
+
+    cap은 선택 민감도 측정(selection_sensitivity.py)에서만 바꾼다. None이면 20점 이상 전부."""
     docs = []
     for g in groups:
         a = rows_by_url.get(g['representative_url'])
@@ -192,7 +194,7 @@ def selection(groups, rows_by_url, sessions):
                      'n_missing': n is None, 'p_missing': p is None, 'r_src': r_src, 'source_type': src,
                      'publisher_count': g.get('publisher_count') or len({m['publisher'] for m in g['members']})})
     docs.sort(key=lambda x: (-x['S_sel'], x['published_at']))
-    picked = [dict(x, low_confidence=False) for x in docs if x['S_sel'] >= 20][:12]
+    picked = [dict(x, low_confidence=False) for x in docs if x['S_sel'] >= 20][:cap]
     if len(picked) < 5:
         picked += [dict(x, low_confidence=True) for x in docs if x['S_sel'] < 20][:5 - len(picked)]
     return picked
@@ -412,12 +414,21 @@ def analyze(event, docs, classify, sessions_d0_open, dart_units=(), market_units
     for u in dart_units:                                 # 필수 공시: 1·2차를 거치지 않고 등급값을 가중치로 쓴다
         raw.append({**u, 'bundle_id': f"dart:{u['rcept_no']}", 'r_cert': 1.0, 'certainty': '확정', 'w_doc': u['grade'],
                     'a_u': 1.0, 'g_u': 1.0, 'ambiguous': False, 'run_types': [u['type']] * RUNS})
-    units = merge(raw)
-    for i, u in enumerate(market_units):                 # 시장 규칙: 병합하지 않고 0.6 고정
-        units.append({**u, 'unit_id': f'k{i + 1}', 'r_cert': 1.0, 'certainty': '확정', 'unverified': False,
-                      'ambiguous': False, 'run_types': [u['type']] * RUNS, 'members': []})
+    def build(raw):
+        units = merge(raw)
+        for i, u in enumerate(market_units):             # 시장 규칙: 병합하지 않고 0.6 고정
+            units.append({**u, 'unit_id': f'k{i + 1}', 'r_cert': 1.0, 'certainty': '확정', 'unverified': False,
+                          'ambiguous': False, 'run_types': [u['type']] * RUNS, 'members': []})
+        return units
+    units = build(raw)
     main, flags = judge(units)
     flags['low_confidence'] = any(d['low_confidence'] for d in docs)
+    # 기사 하나 빼기: 선정 기사를 한 건씩 빼고 다시 판정해 판정 묶음이 바뀌는 기사 수를 센다(추가 LLM 호출 없음).
+    # 2026-11-11 선택 민감도 측정에서 fragile(단위 하나 빼기)이 흔들리는 판정 5건 중 2건만 잡아서 넣었다.
+    flips = [d['bundle_id'] for d in docs
+             if decide(build([u for u in raw if u['bundle_id'] != d['bundle_id']]))['verdict'] != main['verdict']]
+    flags['doc_fragile'] = bool(flips)
+    flags['doc_flips'] = len(flips)
     table = defaultdict(lambda: {'n': 0, 'W': 0.0})
     for u in units:
         table[f"{u['type']}/{u['direction']}"]['n'] += 1

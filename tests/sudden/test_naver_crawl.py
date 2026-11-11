@@ -184,3 +184,28 @@ def test_search_title_drops_new_window_label():
     html = ('<div><a data-heatmap-target=".tit" href="https://publisher.test/1">미코, CB 전환청구권 행사'
             '<span class="blind">새 창 열림</span></a></div>')
     assert n.parse_search(html)[0][0]['title'] == '미코, CB 전환청구권 행사'
+
+
+def test_fetch_external_title_match_robots_and_failure_do_not_block(tmp_path, monkeypatch):
+    db = n.connect(tmp_path / 'c.sqlite3')
+    monkeypatch.setattr(n, 'title_names', lambda code, q: {'현진소재'})
+    page = ('<html><head><meta property="og:title" content="현진소재 뉴스">'
+            '<meta property="article:published_time" content="2026-11-09T10:00:00+09:00"></head>'
+            '<body><div itemprop="articleBody">' + '본문 ' * 40 + '</div></body></html>')
+
+    class Fake:
+        def get(self, url):
+            if 'robots' in url:
+                raise PermissionError('robots.txt가 막음')
+            if 'down' in url:
+                raise requests.ConnectionError('x')
+            return page, 'raw.txt'
+    args = SimpleNamespace(skip_automated=False)
+    row = {'stock_code': '053660'}
+    for url, title in [('https://a.kr/ok', '현진소재 뉴스'), ('https://a.kr/robots', '현진소재 뉴스'),
+                       ('https://a.kr/down', '현진소재 뉴스'), ('https://a.kr/other', '다른 회사')]:
+        n.fetch_external(db, Fake(), {'original_url': url, 'title': title, 'naver_url': None}, row, '현진소재', args)
+    got = dict(db.execute('SELECT url, status FROM articles'))
+    assert got == {'https://a.kr/ok': 'complete', 'https://a.kr/robots': 'excluded_robots', 'https://a.kr/down': 'external_failed'}
+    ok = json.loads(db.execute("SELECT payload FROM articles WHERE url='https://a.kr/ok'").fetchone()[0])
+    assert ok['source'] == 'external' and ok['publisher'] == 'a.kr' and ok['published_at'].startswith('2026-11-09T10:00')

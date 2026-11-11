@@ -76,7 +76,8 @@ def case_out(r, event):
             'scores': {'support': {**zero, **{k: round(v, 4) for k, v in (r.get('support') or {}).items()}},
                        'refute': {**zero, **{k: round(v, 4) for k, v in (r.get('refute') or {}).items()}}},
             'flags': {'fragile': bool(flags.get('fragile')), 'unverified_basis': bool(flags.get('unverified_basis')),
-                      'mixed': list(flags.get('mixed') or []), 'low_confidence': bool(flags.get('low_confidence'))},
+                      'mixed': list(flags.get('mixed') or []), 'low_confidence': bool(flags.get('low_confidence')),
+                      **({'doc_fragile': bool(flags['doc_fragile'])} if 'doc_fragile' in flags else {})},
             'inputs': {'news_docs': int(inputs.get('news_docs') or 0), 'dart_units': as_int(inputs.get('dart')),
                        'market_units': as_int(inputs.get('market_rules'))},
             'evidence': [unit_out(u) for u in r.get('units') or []]}
@@ -106,7 +107,7 @@ def sell_schedule(contract, verdicts=('가치훼손',), skip_fragile=False):
     """백테스트용: 종목마다 조건에 맞는 첫 급락일 → {stock_code: drop_date}. 매도일(다음 거래일)은 백테스트가 정한다."""
     out = {}
     for c in sorted(contract['cases'], key=lambda c: c['drop_date']):
-        if c['verdict'] in verdicts and not (skip_fragile and c['flags']['fragile']):
+        if c['verdict'] in verdicts and not (skip_fragile and (c['flags']['fragile'] or c['flags'].get('doc_fragile'))):
             out.setdefault(c['stock_code'], c['drop_date'])
     return out
 

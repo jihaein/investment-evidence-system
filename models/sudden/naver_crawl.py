@@ -2,6 +2,7 @@
 
 검색 HTML/JSON과 기사 HTML을 cache/naver에 보관하고 SQLite로 진행 상태를 기록한다.
 외부 언론사 링크는 검색 기록에 남기되 본문은 네이버에 수록된 기사만 수집한다.
+--external이면 제목에 회사 이름이 있는 외부 링크도 본문을 받는다(external_article.py).
 --stock all(또는 쉼표 목록)이면 여러 종목을 우선순위·날짜순으로 섞어서 수집한다.
 검색어는 기본으로 따옴표로 감싸 정확히 일치하는 기사만 찾는다(--no-quote로 이전 방식).
 """
@@ -383,13 +384,15 @@ def export_stock(directory, stock, searches, articles, events, selected_keys):
     relevant = [s for s in searches if s['stock_code'] == stock and (selected_keys is None or
                 selected_keys.get(json.dumps([s['stock_code'], s['date'], s['query']], ensure_ascii=False))
                 == s.get('search_query', s['query']))]
-    urls = {r['naver_url'] for s in relevant for r in s.get('results', []) if r['naver_url']}
+    from external_article import result_urls
+    by_url = {a.get('url'): a for a in articles}
+    urls = result_urls([r for s in relevant for r in s.get('results', [])], by_url)
     for article in articles:
         if article.get('url') not in urls or article.get('status') != 'complete':
             continue
         for e in events:
             if not article.get('published_at'):
-                dates = [s['date'] for s in relevant if any(r['naver_url'] == article['url'] for r in s.get('results', []))]
+                dates = [s['date'] for s in relevant if any(article['url'] in (r['naver_url'], r['original_url']) for r in s.get('results', []))]
                 if not any(e['news_window_start'][:10] <= d <= e['news_window_end'][:10] for d in dates):
                     continue
             status = event_status(article, e)
@@ -408,6 +411,31 @@ def export_stock(directory, stock, searches, articles, events, selected_keys):
     return summary
 
 
+def fetch_external(db, ext_fetch, result, row, query, args):
+    """외부 링크 본문. 제목에 회사 이름이 있는 것만 받는다. 한 언론사의 실패가 네이버 수집을 멈추지 않는다."""
+    from external_article import parse_external
+    url = result['original_url']
+    old = db.execute('SELECT status FROM articles WHERE url=?', (url,)).fetchone()
+    if old and old[0] in ('complete', 'excluded_robots', 'excluded_automated', 'external_failed'):
+        return
+    if not result['title'] or not any(n in result['title'] for n in title_names(row['stock_code'], query)):
+        return
+    if args.skip_automated:
+        from news_review import automated_title
+        if automated_title(result['title']):
+            return
+    article = {'url': url, 'collected_at': now()}
+    try:
+        html, raw = ext_fetch.get(url)
+        article.update(parse_external(html, url), raw_file=raw, status='complete')
+    except PermissionError as exc:
+        article.update(status='excluded_robots', error=str(exc))
+    except (requests.RequestException, ParseError, ValueError) as exc:
+        article.update(status='external_failed', error=f'{type(exc).__name__}: {exc}'[:300])
+    save(db, 'articles', url, article['status'], article)
+    print(f"  [외부] {urlparse(url).hostname}: {article['status']}", flush=True)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--stock', default='053660', help="종목코드, 쉼표 목록, 또는 all")
@@ -419,6 +447,8 @@ def main(argv=None):
     ap.add_argument('--title-match', action='store_true',
                     help='검색 결과 제목에 회사 이름이 없으면 본문을 받지 않고 링크만 기록 (내용 분석은 제목에 이름이 있는 기사만 쓴다)')
     ap.add_argument('--baseline-max-pages', type=int, help='기준 기간(우선순위 2·3) 검색의 페이지 상한. 상한 도달은 capped로 기록')
+    ap.add_argument('--external', action='store_true',
+                    help='제목에 회사 이름이 있는 외부 언론사 링크도 본문을 받음 (호스트마다 --delay 간격, robots.txt 확인)')
     ap.add_argument('--delay', type=float, default=3)
     ap.add_argument('--skip-automated', action='store_true', help='명확한 자동 시세 제목은 링크만 기록하고 본문 접속을 생략')
     ap.add_argument('--plan', type=Path, default=OUT / 'crawl_plan.csv')
@@ -437,6 +467,10 @@ def main(argv=None):
     args.out.mkdir(parents=True, exist_ok=True)
     db = connect(args.out / 'crawl.sqlite3')
     fetch = Fetcher(args.out, args.delay)
+    ext_fetch = None
+    if args.external:
+        from external_article import ExternalFetcher
+        ext_fetch = ExternalFetcher(args.out, args.delay)
     selected_keys = {json.dumps([r['stock_code'], r['date'], q], ensure_ascii=False): search_query(q, not args.no_quote)
                      for r, q in selected}
     for row, query in selected:
@@ -468,6 +502,8 @@ def main(argv=None):
         for result in data['results']:
             url = result['naver_url']
             if not url:
+                if ext_fetch:
+                    fetch_external(db, ext_fetch, result, row, query, args)
                 continue
             old_article = db.execute('SELECT status FROM articles WHERE url=?', (url,)).fetchone()
             if old_article and (old_article[0] == 'complete' or (args.skip_automated and old_article[0] == 'excluded_automated')

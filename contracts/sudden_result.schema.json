@@ -64,7 +64,8 @@
             "fragile": { "type": "boolean" },
             "unverified_basis": { "type": "boolean" },
             "mixed": { "type": "array", "items": { "type": "string" } },
-            "low_confidence": { "type": "boolean" }
+            "low_confidence": { "type": "boolean" },
+            "doc_fragile": { "type": "boolean", "description": "선정 기사 하나를 빼면 판정 묶음이 바뀜. 2026-11-11 이후 판정에만 있다" }
           }
         },
         "inputs": {

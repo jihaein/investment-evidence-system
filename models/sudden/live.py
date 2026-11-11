@@ -4,7 +4,7 @@
   1. krx_prices   KRX 전종목 시세·지수 (D-550일 ~ D, 하루치 캐시는 다시 받지 않음)
   2. events --v31 그날 급락 사건 (시장모형 z ≤ -1.96, 보통주, 관리종목 제외) → 시가총액 1,000억 이상만 남김
   3. 이름 보정   잘린 KRX 약칭 → DART 공식 이름 (sample_select --fix-names)
-  4. crawl_plan + naver_crawl  사건 창·기준 기간 뉴스 (2023~2025 표본과 같은 축소 설정)
+  4. crawl_plan + naver_crawl  사건 창·기준 기간 뉴스 (2023~2025 표본과 같은 축소 설정 + 외부 언론사 본문 --external)
   5. np_batch     2차 N·P
   6. dart         필수 공시 단위 + 실적 공시 F1
   7. ach          3차 판정 (gpt-5-mini, --market-only-holds --min-support-ratio 0.25)
@@ -80,7 +80,7 @@ def commands(date, p):
         'names': [['sample_select.py', '--fix-names']],
         'crawl': [['crawl_plan.py', '--max-priority', '3', '--baseline-every', '7'],
                   ['naver_crawl.py', '--stock', 'all', '--start', p['news_start'], '--end', date, '--max-priority', '3',
-                   '--max-pages', '10', '--baseline-max-pages', '3', '--capped-ok', '--title-match', '--skip-automated',
+                   '--max-pages', '10', '--baseline-max-pages', '3', '--capped-ok', '--title-match', '--skip-automated', '--external',
                    '--out', rel(NEWS_CACHE)]],
         'np': [['np_batch.py', '--cache', rel(NEWS_CACHE)]],
         'dart': [['dart.py']],

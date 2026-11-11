@@ -36,11 +36,12 @@ def load_rows(cache):
             names[r['stock_code']].append(r['company_name'])
     db = sqlite3.connect(f'file:{Path(cache) / "crawl.sqlite3"}?mode=ro', uri=True)
     try:
+        from external_article import result_urls
+        articles = {a['url']: a for a in (json.loads(p) for (p,) in db.execute('SELECT payload FROM articles'))}
         urls = defaultdict(set)
         for (p,) in db.execute('SELECT payload FROM searches'):
             s = json.loads(p)
-            urls[s['stock_code']].update(r['naver_url'] for r in s.get('results', []) if r['naver_url'])
-        articles = {a['url']: a for a in (json.loads(p) for (p,) in db.execute('SELECT payload FROM articles'))}
+            urls[s['stock_code']].update(result_urls(s.get('results', []), articles))
     finally:
         db.close()
     rows = {}
