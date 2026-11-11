@@ -18,6 +18,7 @@ OUT = HERE / 'cache/krx'
 COLUMNS = ['BAS_DD', 'ISU_CD', 'ISU_NM', 'MKT_NM', 'SECT_TP_NM', 'TDD_CLSPRC', 'CMPPREVDD_PRC', 'FLUC_RT',
            'TDD_OPNPRC', 'TDD_HGPRC', 'TDD_LWPRC', 'ACC_TRDVOL', 'ACC_TRDVAL', 'MKTCAP', 'LIST_SHRS']
 INDEX = {'KOSPI': '1001', 'KOSDAQ': '2001'}
+RECENT_DAYS = 3
 
 
 def load_env():
@@ -45,8 +46,10 @@ def fetch_day(day, fetcher=None):
         df['BAS_DD'] = f'{day:%Y%m%d}'
         frames.append(df[COLUMNS])
     out = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame(columns=COLUMNS)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    out.to_csv(path, index=False, encoding='utf-8-sig')
+    # 최근 며칠의 빈 표는 휴장일이 아니라 아직 확정 전일 수 있어 저장하지 않는다(매일 실행에서 빈 캐시가 굳는 것을 막음)
+    if len(out) or day < pd.Timestamp.now(tz='Asia/Seoul').tz_localize(None).normalize() - pd.Timedelta(days=RECENT_DAYS):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        out.to_csv(path, index=False, encoding='utf-8-sig')
     return out
 
 

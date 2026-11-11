@@ -939,6 +939,19 @@ main의 엔진 `backtest/engine.py`의 `run_strategy`를 그대로 쓴다. 19종
 .\.venv\Scripts\python.exe models/sudden/live.py --date 2026-11-09 --from-step ach    # 중간 단계부터 다시
 ```
 
+**매일 실행 (2026-11-11부터)**: Windows 작업 스케줄러 `\investment-evidence\sudden-live-daily`가 평일 18:30에
+`models/sudden/run_live_daily.cmd`(= `live.py --date today --log --skip-done`)를 부른다. 로그인해 있고 PC가 켜져 있을 때만 돈다.
+- 결과 확인: `cache/live/<날짜>/run_status.json`의 `result`(done·no_events·market_closed·failed·running), `verdicts`, `error`.
+  출력 전체는 `cache/live/logs/<날짜>.log`, 계약 파일은 `contracts/sudden_result_live_<날짜>.json`.
+- 주말은 바로 끝내고, 휴장일은 시세에 그날이 없으면 prices 단계 뒤에 끝낸다. 오늘 날짜는 16시 전에는 돌지 않는다(장중 시세가 캐시에 남지 않게).
+  `krx_prices`는 최근 3일의 빈 시세를 캐시하지 않는다(확정 전일 수 있음).
+- `cache/live/live.lock`으로 겹쳐 돌지 않는다(12시간 지난 자물쇠는 치움). `--skip-done`이라 끝난 날은 다시 돌지 않고, failed는 다시 부르면 처음부터 돈다.
+  실패한 날을 이어서 돌리려면 `live.py --date <날짜> --from-step <단계>`.
+- 끝나면 다른 운영 날짜의 550일 시세 파일(약 150MB씩)을 지운다. 하루치 캐시가 있어 그날을 다시 돌리면 금방 다시 만든다.
+- 비용: 11-09 기준 하루 약 1.5시간, OpenAI nano 약 1,400회 + mini 약 400회. 사건 수에 비례한다.
+- 한계: 18:30에 PC가 꺼져 있다가 다음 날 켜지면 날짜가 바뀌어 전날은 돌지 않는다. `run_live_daily.cmd 2026-11-10`처럼 날짜를 주고 직접 돌린다.
+- 끄기: `Disable-ScheduledTask -TaskPath '\investment-evidence\' -TaskName sudden-live-daily` (지우기는 `Unregister-ScheduledTask`).
+
 | 단계 | 스크립트 | 비고 |
 |---|---|---|
 | prices | `krx_prices.py` | D-550일 ~ D, 하루치는 `cache/krx/daily/`에 캐시 |
