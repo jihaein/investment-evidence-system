@@ -59,6 +59,6 @@ D1·D2에 넣은 OpenAI 키는 Browser 설정의 "Retain parameters in local sto
 
 ## 한계
 
-- 카드 641개가 모두 검토 전 초안(draft)이다.
+- g1.1 카드 641개는 팀 결정(2026-11-11)으로 모두 `approved`다. 새로 넣는 카드는 `draft`로 시작해 검토 뒤 `approved`로 바꾼다.
 - `CALL (변수) { ... }` 문법 때문에 Neo4j 5.23 이상이 필요하다. `docker-compose.yml`은 5.26을 쓴다.
 - 다른 Neo4j가 이미 7474·7687 포트를 쓰고 있으면 이 compose는 뜨지 않는다.

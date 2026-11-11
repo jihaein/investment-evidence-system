@@ -1,5 +1,7 @@
 > 이 폴더는 FDS 공통 인과그래프 패키지(graph_version g1.1)의 `graph.json`과 `edge_cards/`를 그대로 옮긴 것이다. 아래는 원본 패키지의 설명서이며, 여기 나오는 `FDS_value_causal_graph.html`, `build_html.py`, `viewer.html`, `verify_v4.py`는 이 저장소에 넣지 않았다. Neo4j 적재는 `backend/graph/`를 본다.
 
+> **검토 상태 변경 (2026-11-11):** 아래 원본 설명서는 "모든 카드는 draft"라고 적고 있지만, 팀 결정으로 g1.1의 카드 641개를 모두 `approved`로 바꿨다. 바꾼 칸은 각 카드의 `review_status` 하나뿐이다.
+
 # FDS 공통 인과그래프 — 설계서 v4 구조 복원
 
 기준: 사용자가 제공한 `FDS_rebuttal_model_design_v4_supplemented(1).md`의 3.2~3.6절. 이번 작업 범위는 S1 공통 그래프, S2 화살표 카드, 그리고 이 두 자료를 보여주는 HTML이다. 기업 논증·투자자 논증·태깅 엔진을 추가로 구현하지 않았다.

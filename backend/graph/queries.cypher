@@ -1,7 +1,7 @@
 // FDS 인과그래프 예시 쿼리
 // Neo4j Browser에서는 아래 :param 줄을 먼저 한 번 실행한다 (세션 동안 유지됨).
 // 값을 바꾸려면 :param 을 고쳐서 다시 실행한다.
-// 지금 카드는 모두 draft다. 설계서대로 approved만 쓰려면 approved_only: true.
+// g1.1 카드 641개는 팀 결정(2026-11-11)으로 모두 approved다. approved_only: true면 승인된 카드만 쓴다.
 :param {approved_only: false, q: '자기자본비용', start: 'beta', claim_start: 'revenue', eid: 'beta->cost_of_equity', v: 'risk_free_rate'};
 
 // 1. 개요: 레이어별 노드 수

@@ -205,8 +205,6 @@ DIRECTION_TEXT = {
 
 
 def match_text(phrase, m):
-    if phrase.strip() == m["label"]:
-        return f"'{phrase}'"
     note = "" if m["score"] >= CLEAR_MATCH else "(유사도가 낮아 틀릴 수 있음)"
     return f"'{phrase}' = {m['label']}{note}"
 
