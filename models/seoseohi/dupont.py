@@ -322,6 +322,178 @@ def dupont_compare(ttm, assets, ksic, stocks, stock_code, buy_date, now_date) ->
             "delisted_in_window": flag["delisted_in_window"]}
 
 
+# ============================================================
+#  스냅샷(점별) 모드 — DuPont, 미래정보 차단(look-ahead bias) 방지
+# ------------------------------------------------------------
+#  [왜] 기존 방식은 거래일마다 한 줄인 큰 ttm_final.csv 에서 trade_date 로 '그날 이전'을
+#  골랐다. 그 파일에 몇 달 뒤 반영된 정정 TTM 이 섞이면 과거 평가에 미래 숫자가 샐 수 있다.
+#
+#  [해법] 데이터팀이 기준일(21개)마다 '그날까지 공시된 분기 재무만' 담은 DuPont 스냅샷을
+#  따로 만들어 줬다. 스냅샷 11 파일에는 PM(영업이익률)·ATO(총자산회전율)와 그 원재료
+#  (TTM 매출·영업이익·당분기말/전년동기말 자산)가 이미 계산돼 있고, 11B 파일이 각 분기의
+#  공시일(disclosed_date)을 준다. 평가일마다 기준일 ≤ 평가일 인 최신 스냅샷을 골라 그
+#  폴더만으로 PM·ATO 변화를 구하므로, 자산 파일(03)이 따로 필요 없고 미래 유입도 없다.
+#
+#  스냅샷 폴더 구조:
+#    <BACKTEST_DATA_DIR>/추가자료/기준일별_원본/DuPont/snapshots/<기준일>/
+#        11_재무_DuPont_TTM.csv      (stock_code, fs_div, bsns_year, quarter, rcept_no,
+#                                     ifrs_Revenue_ttm, dart_OperatingIncomeLoss_ttm,
+#                                     ifrs_Assets_t, ifrs_Assets_t_4q, PM_pct, ATO)
+#        11B_DuPont_날짜연결.csv     (같은 키 + disclosed_date, available_from, period_end)
+#    업종분류(KSIC)는 기준일과 무관하므로 v3 루트의 12_기업개황_KSIC.csv 를 한 번만 읽는다.
+# ============================================================
+
+from pathlib import Path
+
+DUPONT_SNAPSHOT_REL = Path("추가자료") / "기준일별_원본" / "DuPont" / "snapshots"
+DP_NUMERIC = ["ifrs_Revenue_ttm", "dart_OperatingIncomeLoss_ttm",
+              "ifrs_Assets_t", "ifrs_Assets_t_4q", "PM_pct", "ATO"]
+DP_MERGE_KEYS = ["stock_code", "fs_div", "bsns_year", "quarter", "rcept_no"]
+
+
+def _dp_snapshot_root(base_dir):
+    return Path(base_dir) / DUPONT_SNAPSHOT_REL
+
+
+def dp_list_snapshot_dates(base_dir):
+    """기준일 폴더 이름들(오름차순)."""
+    return sorted(p.name for p in _dp_snapshot_root(base_dir).iterdir() if p.is_dir())
+
+
+def dp_resolve_snapshot_dir(base_dir, as_of_date):
+    """as_of_date 이하의 기준일 중 가장 최근 DuPont 스냅샷 폴더. 없으면 None."""
+    as_of = pd.Timestamp(as_of_date)
+    chosen = None
+    for name in dp_list_snapshot_dates(base_dir):
+        if pd.Timestamp(name) <= as_of:
+            chosen = name
+        else:
+            break
+    return (_dp_snapshot_root(base_dir) / chosen) if chosen else None
+
+
+def load_ksic_from_base(base_dir):
+    """v3 루트의 12_기업개황_KSIC.csv → (stock_code, ksic_mid_2digit). 2줄 헤더."""
+    path = Path(base_dir) / "12_기업개황_KSIC.csv"
+    df = pd.read_csv(path, header=0, skiprows=[1], dtype=str, encoding="utf-8-sig")
+    df["stock_code"] = df["stock_code"].str.zfill(6)
+    return df[["stock_code", "ksic_mid_2digit"]]
+
+
+# 같은 스냅샷을 여러 종목·여러 쌍이 다시 쓰므로 한 번 만든 표는 캐시한다 (기준일 21개뿐)
+_DP_TABLE_CACHE = {}
+
+
+def build_dupont_table_from_snapshot(snapshot_dir, ksic):
+    """스냅샷 폴더 하나로 (종목×분기) PM·ATO 표를 만든다. 11 + 11B(공시일) + KSIC 를 붙인다."""
+    key = str(snapshot_dir)
+    if key in _DP_TABLE_CACHE:
+        return _DP_TABLE_CACHE[key]
+
+    d = Path(snapshot_dir)
+    ttm = pd.read_csv(d / "11_재무_DuPont_TTM.csv", header=0, skiprows=[1], dtype=str, encoding="utf-8-sig")
+    dates = pd.read_csv(d / "11B_DuPont_날짜연결.csv", header=0, skiprows=[1], dtype=str, encoding="utf-8-sig")
+    ttm["stock_code"] = ttm["stock_code"].str.zfill(6)
+    dates["stock_code"] = dates["stock_code"].str.zfill(6)
+    for c in DP_NUMERIC:
+        ttm[c] = pd.to_numeric(ttm[c], errors="coerce")
+
+    m = ttm.merge(dates[DP_MERGE_KEYS + ["disclosed_date", "available_from", "period_end"]],
+                  on=DP_MERGE_KEYS, how="left")
+    m["disclosed_date"] = pd.to_datetime(m["disclosed_date"], errors="coerce")
+    m = m.merge(ksic, on="stock_code", how="left")
+
+    _DP_TABLE_CACHE[key] = m
+    return m
+
+
+def clear_dupont_snapshot_cache():
+    _DP_TABLE_CACHE.clear()
+
+
+# 스냅샷 안에서 그날(asof_date)까지 공시된 최신 분기 한 줄. 없으면 None
+# (스냅샷 기준일 ≤ asof_date 이므로 보통 모든 행이 통과하지만, 안전하게 한 번 더 거른다)
+def dp_latest_asof(table, stock_code, asof_date):
+    asof = pd.Timestamp(asof_date)
+    rows = table[(table["stock_code"] == stock_code) & (table["disclosed_date"] <= asof)]
+    if rows.empty:
+        return None
+    return rows.loc[rows["disclosed_date"].idxmax()]
+
+
+# 스냅샷 안에서 '그날 기준 종목별 최신 분기'만 모아 업종(KSIC) 중위수를 낸다
+# 동종 peer 가 min_peers 미만이면 전체 표본으로 대체 (기존 industry_*_median_asof 규칙과 동일)
+def dp_industry_medians(table, asof_date, ksic_code, min_peers=3):
+    asof = pd.Timestamp(asof_date)
+    snap = table[table["disclosed_date"] <= asof]
+    if snap.empty:
+        return {"PM_median": None, "ATO_median": None,
+                "pm_fallback": True, "ato_fallback": True, "n_pm": 0, "n_ato": 0}
+    latest = snap.loc[snap.groupby("stock_code")["disclosed_date"].idxmax()]
+
+    def _median(col):
+        peers = latest[(latest["ksic_mid_2digit"] == ksic_code) & latest[col].notna()]
+        if len(peers) >= min_peers:
+            return peers[col].median(), len(peers), False
+        allv = latest[latest[col].notna()]
+        return allv[col].median(), len(peers), True
+
+    pm_med, n_pm, pm_fb = _median("PM_pct")
+    ato_med, n_ato, ato_fb = _median("ATO")
+    return {"PM_median": pm_med, "ATO_median": ato_med,
+            "pm_fallback": pm_fb, "ato_fallback": ato_fb, "n_pm": n_pm, "n_ato": n_ato}
+
+
+# 스냅샷 기반 매수일·평가일 DuPont 비교 (미래정보 차단판)
+#   - PM 는 업종 중위수를 뺀 '조정 PM'의 변화(%p)
+#   - ATO 는 업종 중위수로 나눈 '상대 ATO'의 변화(%)
+#   점수는 기존 score_dupont(두 변화량)을 그대로 쓴다
+def dupont_compare_pit(base_dir, ksic, stock_code, buy_date, now_date):
+    out = {"stock_code": stock_code, "buy_date": buy_date, "now_date": now_date,
+           "dPM_adj_pp": None, "dATO_rel_pct": None, "score": None, "note": None}
+
+    buy_dir = dp_resolve_snapshot_dir(base_dir, buy_date)
+    eval_dir = dp_resolve_snapshot_dir(base_dir, now_date)
+    if buy_dir is None or eval_dir is None:
+        out["note"] = "해당 날짜 이전 스냅샷이 없습니다."
+        return out
+
+    bt = build_dupont_table_from_snapshot(buy_dir, ksic)
+    et = build_dupont_table_from_snapshot(eval_dir, ksic)
+    b = dp_latest_asof(bt, stock_code, buy_date)
+    n = dp_latest_asof(et, stock_code, now_date)
+    code = ksic.set_index("stock_code")["ksic_mid_2digit"].get(stock_code)
+    if b is None or n is None or code is None:
+        out["note"] = "계산에 필요한 값이 결측입니다."
+        return out
+
+    mb = dp_industry_medians(bt, buy_date, code)
+    mn = dp_industry_medians(et, now_date, code)
+
+    # PM: 조정 PM = 회사 PM - 업종 중위수 PM, 그 변화(%p)
+    if pd.notna(b["PM_pct"]) and pd.notna(n["PM_pct"]) and \
+       pd.notna(mb["PM_median"]) and pd.notna(mn["PM_median"]):
+        PM_adj_buy = b["PM_pct"] - mb["PM_median"]
+        PM_adj_now = n["PM_pct"] - mn["PM_median"]
+        out["dPM_adj_pp"] = PM_adj_now - PM_adj_buy
+
+    # ATO: 상대 ATO = 회사 ATO / 업종 중위수 ATO, 그 변화(%)
+    if pd.notna(b["ATO"]) and pd.notna(n["ATO"]) and \
+       mb["ATO_median"] not in (None, 0) and mn["ATO_median"] not in (None, 0):
+        rel_buy = b["ATO"] / mb["ATO_median"]
+        rel_now = n["ATO"] / mn["ATO_median"]
+        if rel_buy != 0:
+            out["dATO_rel_pct"] = (rel_now / rel_buy - 1) * 100
+
+    out["score"] = score_dupont(out["dPM_adj_pp"], out["dATO_rel_pct"])
+    out["snapshot_buy"] = Path(buy_dir).name
+    out["snapshot_eval"] = Path(eval_dir).name
+    out["fs_div_flag"] = b["fs_div"] != n["fs_div"]
+    out["pm_basis_buy"] = f"n={mb['n_pm']}" + ("(전체대체)" if mb["pm_fallback"] else "")
+    out["pm_basis_now"] = f"n={mn['n_pm']}" + ("(전체대체)" if mn["pm_fallback"] else "")
+    return out
+
+
 if __name__ == "__main__":
     from dotenv import load_dotenv
     load_dotenv()

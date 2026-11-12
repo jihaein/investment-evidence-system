@@ -298,8 +298,175 @@ def ohlson_compare(table, stock_code, buy_date, now_date,
                          max_gap_days, ri_small, ri_large)
 
 
+# ============================================================
+#  스냅샷(점별) 모드 — Ohlson, 미래정보 차단(look-ahead bias) 방지
+# ------------------------------------------------------------
+#  [왜] 기존 방식은 build_ohlson_input.py 가 04(분기 재무)+05(일별 시총)를 미리 합쳐
+#  만든 큰 일별 입력표(ohlson_input_daily.csv)를 읽었다. 그 표가 몇 달 뒤의 정정을 반영하면
+#  과거 평가에 미래 숫자가 샐 수 있다.
+#
+#  [해법] 데이터팀이 기준일(21개)마다 '그날까지 공시된 분기 재무만' 담은 Ohlson 스냅샷
+#  (04_재무_Ohlson용.csv)을 따로 만들어 줬다. 평가일마다 기준일 ≤ 평가일 인 최신 스냅샷을
+#  골라, 그 폴더의 04 로 TTM·BV(전기)를 만들고(= build_ohlson_input 의 함수 재사용),
+#  시가총액만 일별 시장자료에서 그날 값을 가져와 두 시점(매수일·평가일)만 계산한다.
+#
+#  재무(TTM·BV)는 스냅샷에서 → 미래 정정 유입 불가.
+#  시총은 일별 시장자료에서 그날 값 → 실시간 관측값이라 정정 문제 없음, 정확도는 더 높음.
+#
+#  스냅샷/시장 파일:
+#    <BASE>/추가자료/기준일별_원본/Ohlson/snapshots/<기준일>/04_재무_Ohlson용.csv
+#    <BASE>/추가자료/시장자료/120종목_일별시가총액_2015-11-30_2020-12-31.csv  (stock_code, BAS_DD, MKTCAP)
+# ============================================================
+
+OHLSON_SNAPSHOT_REL = Path("추가자료") / "기준일별_원본" / "Ohlson" / "snapshots"
+PRICE_REL = Path("추가자료") / "시장자료" / "120종목_일별시가총액_2015-11-30_2020-12-31.csv"
+
+
+def _oh_snapshot_root(base_dir):
+    return Path(base_dir) / OHLSON_SNAPSHOT_REL
+
+
+def oh_list_snapshot_dates(base_dir):
+    """기준일 폴더 이름들(오름차순)."""
+    return sorted(p.name for p in _oh_snapshot_root(base_dir).iterdir() if p.is_dir())
+
+
+def oh_resolve_snapshot_dir(base_dir, as_of_date):
+    """as_of_date 이하의 기준일 중 가장 최근 Ohlson 스냅샷 폴더. 없으면 None."""
+    as_of = pd.Timestamp(as_of_date)
+    chosen = None
+    for name in oh_list_snapshot_dates(base_dir):
+        if pd.Timestamp(name) <= as_of:
+            chosen = name
+        else:
+            break
+    return (_oh_snapshot_root(base_dir) / chosen) if chosen else None
+
+
+# 스냅샷 04 → (종목×분기) TTM·BV(전기) 표. build_ohlson_input 의 로직을 그대로 재사용한다
+_OH_QT_CACHE = {}
+
+
+def build_ohlson_quarterly_from_snapshot(snapshot_dir):
+    key = str(snapshot_dir)
+    if key in _OH_QT_CACHE:
+        return _OH_QT_CACHE[key]
+    # 지연 임포트: 패키지/단독 실행 둘 다 지원
+    try:
+        from models.seoseohi.ohlson.build_ohlson_input import (
+            load_quarterly, add_ttm_and_bv_prev, BV_PREV_MODE, ALLOW_MIXED_BASIS_TTM)
+    except ImportError:
+        from build_ohlson_input import (
+            load_quarterly, add_ttm_and_bv_prev, BV_PREV_MODE, ALLOW_MIXED_BASIS_TTM)
+
+    q = load_quarterly(Path(snapshot_dir) / "04_재무_Ohlson용.csv")
+    q = add_ttm_and_bv_prev(q, BV_PREV_MODE, ALLOW_MIXED_BASIS_TTM)
+    _OH_QT_CACHE[key] = q
+    return q
+
+
+# 일별 시가총액 (BASE 당 한 번만 읽어 캐시)
+_OH_MKTCAP_CACHE = {}
+
+
+def load_mktcap(base_dir):
+    key = str(base_dir)
+    if key in _OH_MKTCAP_CACHE:
+        return _OH_MKTCAP_CACHE[key]
+    df = pd.read_csv(Path(base_dir) / PRICE_REL, header=0, dtype=str, encoding="utf-8-sig")
+    df["stock_code"] = df["stock_code"].str.zfill(6)
+    df["BAS_DD"] = pd.to_datetime(df["BAS_DD"], format="%Y%m%d", errors="coerce")
+    df["MKTCAP"] = pd.to_numeric(df["MKTCAP"], errors="coerce")
+    out = df[["stock_code", "BAS_DD", "MKTCAP"]].dropna(subset=["BAS_DD"])
+    _OH_MKTCAP_CACHE[key] = out
+    return out
+
+
+def mktcap_asof(mkt, stock_code, date, max_gap_days=7):
+    """그 날짜(휴장이면 직전 거래일)의 시가총액. 너무 오래됐으면 None."""
+    date = pd.Timestamp(date)
+    rows = mkt[(mkt["stock_code"] == stock_code) & (mkt["BAS_DD"] <= date)]
+    if rows.empty:
+        return None
+    row = rows.loc[rows["BAS_DD"].idxmax()]
+    if (date - row["BAS_DD"]).days > max_gap_days:
+        return None
+    return row["MKTCAP"]
+
+
+# 한 종목·한 날짜의 Ohlson 입력 한 줄 (재무는 스냅샷, 시총은 일별 시장자료)
+def _ohlson_point(snapshot_dir, mkt, stock_code, asof_date, max_gap_days=7):
+    q = build_ohlson_quarterly_from_snapshot(snapshot_dir)
+    rows = q[(q["stock_code"] == stock_code) & (q["available_from"] <= pd.Timestamp(asof_date))]
+    if rows.empty:
+        return None
+    # 스냅샷 안에서는 available_from 이 모두 기준일로 같으므로, 가장 최근 '회계분기'(seq)를 고른다
+    # (available_from <= asof 필터로 미래 유입은 이미 막혀 있다)
+    row = rows.loc[rows["seq"].idxmax()]                 # 그날까지 공시된 최신 분기
+    mc = mktcap_asof(mkt, stock_code, asof_date, max_gap_days)
+
+    bv_t = row["bv_t"]
+    bv_prev = row["bv_prev"]
+    impaired = (pd.notna(bv_t) and bv_t <= 0) or (pd.notna(bv_prev) and bv_prev <= 0)
+    strict = all(pd.notna(x) for x in [row["ni_ttm"], bv_t, bv_prev, mc])
+    return {
+        "stock_code": stock_code,
+        "trade_date": pd.Timestamp(asof_date),
+        "fs_div_used": row["fs_div"],
+        "ni_ttm_used": row["ni_ttm"],
+        "bv_t": bv_t,
+        "bv_prev": bv_prev,
+        "mktcap": mc,
+        "capital_impairment": "Y" if impaired else "",
+        "input_ready_strict": bool(strict),
+    }
+
+
+# 스냅샷 기반 매수일·평가일 Ohlson 비교 (미래정보 차단판)
+#   기존 add_ohlson_values → add_flags → add_omega_state → decide_interpretable → evaluate_pair
+#   를 두 줄짜리(매수/평가) 표에 그대로 적용한다. 점수 로직은 손대지 않는다.
+def ohlson_compare_pit(base_dir, stock_code, buy_date, now_date,
+                       r=0.05, vt=0, omega_high=0.5, hold_rules=None,
+                       max_gap_days=7, ri_small=0.02, ri_large=0.05):
+    out = {"stock_code": stock_code, "buy_date": buy_date, "eval_date": now_date, "score": None}
+    hold_rules = hold_rules or ["flag_not_strict", "flag_capital_impairment"]
+
+    if stock_code in EXCLUDE_STOCKS:
+        out["hold_reason"] = "excluded_stock"
+        return out
+
+    buy_dir = oh_resolve_snapshot_dir(base_dir, buy_date)
+    eval_dir = oh_resolve_snapshot_dir(base_dir, now_date)
+    if buy_dir is None or eval_dir is None:
+        out["hold_reason"] = "no_snapshot"
+        return out
+
+    mkt = load_mktcap(base_dir)
+    pb = _ohlson_point(buy_dir, mkt, stock_code, buy_date, max_gap_days)
+    pe = _ohlson_point(eval_dir, mkt, stock_code, now_date, max_gap_days)
+    if pb is None or pe is None:
+        hold = []
+        if pb is None:
+            hold.append("buy_no_data")
+        if pe is None:
+            hold.append("eval_no_data")
+        out["hold_reason"] = "|".join(hold)
+        return out
+
+    frame = pd.DataFrame([pb, pe])
+    frame = add_ohlson_values(frame, r=r, vt=vt)
+    frame = add_flags(frame, omega_max=1 + r)
+    frame = add_omega_state(frame, omega_high=omega_high)
+    frame = decide_interpretable(frame, hold_rules=hold_rules)
+
+    res = evaluate_pair(frame, stock_code, buy_date, now_date, max_gap_days, ri_small, ri_large)
+    res["snapshot_buy"] = Path(buy_dir).name
+    res["snapshot_eval"] = Path(eval_dir).name
+    return res
+
+
 """
-# 실행 
+# 실행
 
 if __name__ == "__main__":
     pd.set_option("display.float_format", "{:,.4f}".format)
