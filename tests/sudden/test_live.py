@@ -55,6 +55,38 @@ def test_run_order_env_and_stop_on_failure(tmp_path, monkeypatch):
     assert status['result'] == 'failed' and 'dart' in status['error'] and status['last_step'] == 'np'
 
 
+def test_crawl_retries_then_continues(tmp_path, monkeypatch):
+    calls, waits = [], []
+    monkeypatch.setattr(live, 'HERE', tmp_path)
+    monkeypatch.setattr(live, 'NEWS_CACHE', tmp_path / 'cache/naver_live')
+    fails = {'naver_crawl.py': 2}
+
+    def runner(cmd, cwd, env, **kw):
+        calls.append(cmd[1])
+        if fails.get(cmd[1], 0) > 0:
+            fails[cmd[1]] -= 1
+            return SimpleNamespace(returncode=1)
+        return SimpleNamespace(returncode=0)
+    live.run('2026-11-09', from_step='crawl', runner=runner, sleep=waits.append)
+    assert calls[:5] == ['crawl_plan.py', 'naver_crawl.py', 'naver_crawl.py', 'naver_crawl.py', 'np_batch.py']
+    assert waits == [live.CRAWL_WAIT, live.CRAWL_WAIT]
+
+
+def test_crawl_gives_up_after_tries(tmp_path, monkeypatch):
+    monkeypatch.setattr(live, 'HERE', tmp_path)
+    monkeypatch.setattr(live, 'NEWS_CACHE', tmp_path / 'cache/naver_live')
+    calls = []
+
+    def runner(cmd, cwd, env, **kw):
+        calls.append(cmd[1])
+        return SimpleNamespace(returncode=1 if cmd[1] == 'naver_crawl.py' else 0)
+    with pytest.raises(SystemExit, match='crawl'):
+        live.run('2026-11-09', from_step='crawl', runner=runner, sleep=lambda s: None)
+    assert calls.count('naver_crawl.py') == live.CRAWL_TRIES and 'np_batch.py' not in calls
+    status = json.loads((tmp_path / 'cache/live/20261109/run_status.json').read_text(encoding='utf-8'))
+    assert status['result'] == 'failed' and status['retries'] == {'crawl': live.CRAWL_TRIES - 1}
+
+
 def test_paths_price_window():
     p = live.paths('2026-11-09')
     assert p['tag'] == '20261109' and p['price_start'] == '2025-05-08' and p['news_start'] == '2026-04-23'

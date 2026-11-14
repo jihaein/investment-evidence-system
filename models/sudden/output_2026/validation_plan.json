@@ -1,0 +1,35 @@
+{
+ "name": "2026 new-period validation (rules frozen)",
+ "registered_at": "2026-11-11",
+ "registered_before": "sampling, news collection and any verdict for 2026 events",
+ "source_commit": "cd2be4f",
+ "why": "The 2025 validation sample was already used once. This is a fresh period the rules never saw.",
+ "events": {
+  "definition": "events.py --v31 (market model z <= -1.96, common stock, D-1 market cap >= 100 billion KRW, no administrative issues)",
+  "period": ["2026-01-01", "2026-07-31"],
+  "period_reason": "D+60 trading days must fall before the latest price date (2026-11-06)",
+  "sample": "sample_select.py --per-year 100 --seed 2026 (split=validate2026)"
+ },
+ "collection": "same as live.py: crawl_plan --max-priority 3 --baseline-every 7; naver_crawl --max-pages 10 --baseline-max-pages 3 --capped-ok --title-match --skip-automated --external",
+ "collection_note": "External press articles are included, as in live operation. The 2023-2025 samples did not include them.",
+ "judgment": {
+  "n_p": "np_batch.py (hybrid, gpt-5-nano)",
+  "ach": "ach.py --model gpt-5-mini --market-only-holds --min-support-ratio 0.25 (positive_weight 1.0, gap 0.5, positive_supports true)",
+  "dart": "dart.py (mandatory filings + earnings F1)",
+  "frozen": "No rule, prompt or parameter is changed after seeing any 2026 result. The run is done once."
+ },
+ "primary_test": {
+  "metric": "CAR(1,60), market model (backtest.py)",
+  "comparison": "mean CAR(1,60) of 비가치 minus 가치훼손",
+  "expected_sign": "positive (non-value drops recover more)",
+  "test": "date-clustered t and date-block permutation p (backtest.py), alpha 0.05 one-sided reported alongside two-sided"
+ },
+ "secondary": [
+  "CAR(1,20) same comparison",
+  "판단보류 CAR(1,60) vs judged events",
+  "doc_fragile share among judged verdicts",
+  "verdict counts and hold reasons"
+ ],
+ "not_possible_yet": "Post-drop fundamentals (4 quarters after) are not available for 2026 events.",
+ "stop_rules": "If collection is incomplete for an event (collection_incomplete), it is reported as held, not dropped."
+}

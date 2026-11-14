@@ -29,6 +29,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 import pandas as pd
@@ -42,6 +43,7 @@ PRICE_DAYS = 550             # 시장모형 120거래일 + K4 260거래일
 STEPS = ('prices', 'events', 'names', 'crawl', 'np', 'dart', 'ach', 'export')
 CLOSE_HOUR = 16              # 오늘 날짜는 이 시각(한국) 이후에만 돌린다
 STALE_HOURS = 12             # 이보다 오래된 자물쇠는 끝나지 못한 실행으로 본다
+CRAWL_TRIES, CRAWL_WAIT = 4, 300   # 네이버 일시 실패(request_failed·연결 끊김)는 멈추므로, 기다렸다가 캐시에서 이어서 다시 돈다
 
 
 def paths(date):
@@ -157,7 +159,7 @@ def write_status(p, **kw):
     path.write_text(json.dumps({**old, **kw}, ensure_ascii=False, indent=1), encoding='utf-8')
 
 
-def run(date, from_step='prices', max_events=None, runner=subprocess.run, stdout=None):
+def run(date, from_step='prices', max_events=None, runner=subprocess.run, stdout=None, sleep=time.sleep):
     p = paths(date)
     p['out'].mkdir(parents=True, exist_ok=True)
     env = env_for(p)
@@ -171,10 +173,18 @@ def run(date, from_step='prices', max_events=None, runner=subprocess.run, stdout
     try:
         for step in STEPS[STEPS.index(from_step):]:
             for cmd in commands(date, p)[step]:
-                print(f'[{step}] {" ".join(cmd)}', flush=True)
-                res = runner([PY, *cmd], cwd=HERE, env=env, stdout=stdout, stderr=stdout and subprocess.STDOUT)
-                if res.returncode != 0:
-                    raise SystemExit(f'{step} 단계 실패 (종료 코드 {res.returncode}): {" ".join(cmd)}')
+                tries = CRAWL_TRIES if cmd[0] == 'naver_crawl.py' else 1
+                for attempt in range(1, tries + 1):
+                    print(f'[{step}] {" ".join(cmd)}', flush=True)
+                    res = runner([PY, *cmd], cwd=HERE, env=env, stdout=stdout, stderr=stdout and subprocess.STDOUT)
+                    if res.returncode == 0:
+                        break
+                    if attempt < tries:
+                        print(f'[{step}] 실패(종료 코드 {res.returncode}). {CRAWL_WAIT}초 뒤 이어서 다시 ({attempt}/{tries})', flush=True)
+                        write_status(p, retries={step: attempt})
+                        sleep(CRAWL_WAIT)
+                else:
+                    raise SystemExit(f'{step} 단계 실패 (종료 코드 {res.returncode}, {tries}번 시도): {" ".join(cmd)}')
             write_status(p, last_step=step)
             if step == 'prices' and not traded(p, date):
                 print(f'{date}: 시세에 그날이 없다(휴장일). 여기서 끝낸다.', flush=True)

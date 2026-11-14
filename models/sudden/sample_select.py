@@ -15,7 +15,8 @@ import pandas as pd
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE / os.getenv('SUDDEN_OUTPUT', 'output')
-SPLITS = {'2023': 'tune', '2024': 'tune', '2025': 'validate'}
+SPLITS = {'2023': 'tune', '2024': 'tune', '2025': 'validate',
+          '2026': 'validate2026'}   # 규칙 동결 뒤 새 기간 검증 (output_2026/validation_plan.json, 2026-11-11 사전 등록)
 
 
 def select(events, per_year, seed):
