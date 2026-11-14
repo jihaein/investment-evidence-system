@@ -21,7 +21,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from models.seoseohi.pipeline import run_seoseohi_pit, load_ksic_from_base
+from models.seoseohi.pipeline import run_seoseohi_pit, load_ksic_from_base, integrate, integrate_sum
 from models.seoseohi.fscore import list_snapshot_dates
 from backtest.engine import run_strategy, INITIAL_CASH, CASH_DAILY_RATE
 from backtest.metrics import cumret, mdd, sortino, sharpe, cash_effect_summary
@@ -59,18 +59,23 @@ def is_falling(grid, stock, date, lookback=DEFAULT_GATE_LOOKBACK):
     return trailing < 0
 
 
-#  판정 캐시 (속도) — (base, 종목, 기준선, 평가일) 판정은 결정적이므로 한 번만 계산하고 재사용
-# 같은 종목이 여러 바스켓/여러 회차/2년·4년/sell_study 에서 반복 등장해도 계산은 1회뿐.
-_VERDICT_CACHE = {}
+#  점수 캐시 (속도) — (base, 종목, 기준선, 평가일) 세 모델 점수는 결정적이라 한 번만 계산.
+# 두 판정 방식(개수/합산)이 같은 캐시를 공유한다 (판정은 점수에서 그때그때 뽑는다).
+_VERDICT_CACHE = {}   # 이름은 유지하되 '판정 문자열'이 아니라 '세 모델 점수'를 저장
 
 
-def _verdict(base_dir, ksic, stock, baseline_date, eval_date):
+def _scores(base_dir, ksic, stock, baseline_date, eval_date):
     key = (str(base_dir), stock, str(baseline_date), str(eval_date))
     if key not in _VERDICT_CACHE:
         data = {"base_dir": str(base_dir), "ksic": ksic}
         _VERDICT_CACHE[key] = run_seoseohi_pit(
-            data, {"stock_code": stock, "buy_date": baseline_date}, eval_date)["verdict"]
+            data, {"stock_code": stock, "buy_date": baseline_date}, eval_date)["scores"]
     return _VERDICT_CACHE[key]
+
+
+def _verdict(base_dir, ksic, stock, baseline_date, eval_date, mode="count"):
+    scores = _scores(base_dir, ksic, stock, baseline_date, eval_date)
+    return integrate(scores) if mode == "count" else integrate_sum(scores)
 
 
 def clear_verdict_cache():
@@ -94,7 +99,8 @@ def stoploss_schedule(basket, stop_pct=DEFAULT_STOP_PCT, start=DEFAULT_ENTRY_DAT
 
 def seoseohi_schedule(base_dir, ksic, stocks, grid,
                       baseline_date=DEFAULT_BASELINE_DATE, trigger=DEFAULT_TRIGGER,
-                      end_date=None, price_gate=True, gate_lookback=DEFAULT_GATE_LOOKBACK):
+                      end_date=None, price_gate=True, gate_lookback=DEFAULT_GATE_LOOKBACK,
+                      mode="count"):
     """서서히: 기준선(baseline_date) 이후 매 기준일마다 재평가, 판정이 trigger 에 처음
     걸리는 기준일에 매도. 기준일은 휴장일일 수 있으므로 '그 날짜 이상인 첫 거래일'로 스냅한다.
     (판정은 baseline_date 재무 vs 평가일 재무를 비교한다 → run_seoseohi_pit 의 buy_date).
@@ -106,7 +112,7 @@ def seoseohi_schedule(base_dir, ksic, stocks, grid,
     schedule = {}
     for s in stocks:
         for d in eval_dates:
-            verdict = _verdict(base_dir, ksic, s, baseline_date, d)   # 캐시 사용(반복계산 제거)
+            verdict = _verdict(base_dir, ksic, s, baseline_date, d, mode)   # 캐시 사용(반복계산 제거)
             # 재무가 Yes 이고 (게이트가 꺼져있거나) 가격도 하락 중일 때만 매도
             if verdict in trigger and (not price_gate or is_falling(grid, s, d, gate_lookback)):
                 later = trading_days[trading_days >= pd.Timestamp(d)]
@@ -122,16 +128,20 @@ def seoseohi_schedule(base_dir, ksic, stocks, grid,
 def run_three_strategies(grid, basket_codes, base_dir, ksic,
                          entry_date=DEFAULT_ENTRY_DATE, baseline_date=DEFAULT_BASELINE_DATE,
                          stop_pct=DEFAULT_STOP_PCT, trigger=DEFAULT_TRIGGER, end_date=None,
-                         price_gate=True):
-    """한 바스켓(종목 목록)에 대해 세 전략의 자산가치 곡선 W_t(거래일별)를 돌려준다.
-    세 전략 모두 entry_date(2016-01-04)에 매수해 보유를 시작하고, 매도 규칙만 다르다."""
+                         price_gate=True, with_sum=False):
+    """한 바스켓(종목 목록)에 대해 전략별 자산가치 곡선 W_t(거래일별)를 돌려준다.
+    모두 entry_date(2016-01-04)에 매수해 보유를 시작하고, 매도 규칙만 다르다.
+    with_sum=True 면 합산 판정(서서히_합산) 전략을 하나 더 돌린다."""
     basket = grid[list(basket_codes)]
     schedules = {
         "무손절": {},
         "단순손절": stoploss_schedule(basket, stop_pct, start=entry_date, end_date=end_date),
         "서서히": seoseohi_schedule(base_dir, ksic, basket_codes, grid, baseline_date, trigger,
-                                 end_date, price_gate),
+                                 end_date, price_gate, mode="count"),
     }
+    if with_sum:
+        schedules["서서히_합산"] = seoseohi_schedule(base_dir, ksic, basket_codes, grid, baseline_date,
+                                                 trigger, end_date, price_gate, mode="sum")
     return {name: run_strategy(basket, sch, end_date=end_date) for name, sch in schedules.items()}, schedules
 
 
@@ -140,7 +150,7 @@ def run_three_strategies(grid, basket_codes, base_dir, ksic,
 def run_montecarlo(grid, base_dir, ksic=None, n_pick=20, n_runs=10, seed=0,
                    entry_date=DEFAULT_ENTRY_DATE, baseline_date=DEFAULT_BASELINE_DATE,
                    stop_pct=DEFAULT_STOP_PCT, trigger=DEFAULT_TRIGGER,
-                   years=None, price_gate=False):
+                   years=None, price_gate=False, with_sum=False):
     """120종목 중 n_pick 개를 무작위로 뽑아 n_runs 번 돌린다.
     한 회차 안에서는 세 전략이 '같은 바스켓'을 쓴다(전략 간 공정 비교).
     돌려주는 값: 회차별 최종수익률 표(long)와, 전략별 평균/승률 요약."""
@@ -159,7 +169,7 @@ def run_montecarlo(grid, base_dir, ksic=None, n_pick=20, n_runs=10, seed=0,
         basket = grid[list(basket_codes)]
         curves, scheds = run_three_strategies(grid, basket_codes, base_dir, ksic,
                                               entry_date, baseline_date, stop_pct, trigger,
-                                              end_date=end_date, price_gate=price_gate)
+                                              end_date=end_date, price_gate=price_gate, with_sum=with_sum)
         for name, W in curves.items():
             rec = {"run": run_id, "strategy": name,
                    "누적수익률": cumret(W), "MDD": mdd(W),
@@ -187,7 +197,7 @@ def run_montecarlo(grid, base_dir, ksic=None, n_pick=20, n_runs=10, seed=0,
         for name in pivot.columns:
             summary.loc[name, "win_vs_무손절"] = (pivot[name] > pivot["무손절"]).mean()
     # 전략 순서를 보기 좋게 고정
-    order = [s for s in ["무손절", "단순손절", "서서히"] if s in summary.index]
+    order = [s for s in ["무손절", "단순손절", "서서히", "서서히_합산"] if s in summary.index]
     return detail, summary.loc[order]
 
 
@@ -197,7 +207,7 @@ def run_montecarlo(grid, base_dir, ksic=None, n_pick=20, n_runs=10, seed=0,
 #   R_hold >> 0  → 판 뒤 급등 = '놓친 반등'(성급한 매도, 비싼 오판)
 def sell_study(grid, base_dir, ksic=None, n_pick=20, n_runs=10, seed=0, years=4,
                trigger=DEFAULT_TRIGGER, baseline_date=DEFAULT_BASELINE_DATE,
-               entry_date=DEFAULT_ENTRY_DATE, price_gate=False):
+               entry_date=DEFAULT_ENTRY_DATE, price_gate=False, mode="count"):
     if ksic is None:
         ksic = load_ksic_from_base(base_dir)
     end_date = None if years is None else pd.Timestamp(entry_date) + pd.DateOffset(years=years)
@@ -208,7 +218,7 @@ def sell_study(grid, base_dir, ksic=None, n_pick=20, n_runs=10, seed=0, years=4,
     for run_id in range(n_runs):
         basket_codes = list(rng.choice(all_codes, size=n_pick, replace=False))
         sched = seoseohi_schedule(base_dir, ksic, basket_codes, grid,
-                                  baseline_date, trigger, end_date, price_gate)
+                                  baseline_date, trigger, end_date, price_gate, mode=mode)
         for stock, sell_date in sched.items():
             future = grid.loc[sell_date:, stock]
             if end_date is not None:

@@ -95,6 +95,21 @@ def integrate(scores: dict) -> str:
     return "No"
 
 
+# 합산 판정 (PM 2026-11-13 추가): 세 모델 점수를 더해 SUM_THRESHOLD 이상이면 매도.
+# 개수 방식을 포함하는 상위 규칙 — 점수 단계(1점/3점 등)가 판정에 반영된다.
+SUM_THRESHOLD = 4
+
+def integrate_sum(scores: dict) -> str:
+    valid = {k: int(v) for k, v in scores.items() if not pd.isna(v)}
+    if len(valid) < MIN_VALID:
+        return "유보"
+    if sum(valid.values()) >= SUM_THRESHOLD:
+        return "Yes(훼손 우려)"
+    if any(v >= BAD_THRESHOLD[k] for k, v in valid.items()):
+        return "주의"
+    return "No"
+
+
 if __name__ == "__main__":
     data = load_data()
     # 현진소재 (3,2,2) → 세 모형 모두 악화 → Yes

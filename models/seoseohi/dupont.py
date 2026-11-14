@@ -444,6 +444,18 @@ def dp_industry_medians(table, asof_date, ksic_code, min_peers=3):
             "pm_fallback": pm_fb, "ato_fallback": ato_fb, "n_pm": n_pm, "n_ato": n_ato}
 
 
+# C 방식 (PM 2026-11-13): 기준선에서 자기 자신이 업종 중위수면(얇은 업종) 업종 조정 대신 자기 변화만 본다.
+# 업종 회사 수가 적으면 자기 자신이 중위수가 되어 조정값이 0으로 고정되고, 이후 중위수 자리가
+# 다른 회사로 바뀌기만 해도 악화로 잡히는 왜곡을 막는다. False 로 바꾸면 기존 동작.
+DUPONT_SELF_MEDIAN_OWN_CHANGE = True
+
+
+def _is_self_median(row, medians, col):
+    key = {"PM_pct": ("PM_median", "pm_fallback"), "ATO": ("ATO_median", "ato_fallback")}[col]
+    med, fb = medians[key[0]], medians[key[1]]
+    return (not fb) and med is not None and pd.notna(row[col]) and abs(float(row[col]) - float(med)) < 1e-9
+
+
 # 스냅샷 기반 매수일·평가일 DuPont 비교 (미래정보 차단판)
 #   - PM 는 업종 중위수를 뺀 '조정 PM'의 변화(%p)
 #   - ATO 는 업종 중위수로 나눈 '상대 ATO'의 변화(%)
@@ -470,16 +482,24 @@ def dupont_compare_pit(base_dir, ksic, stock_code, buy_date, now_date):
     mb = dp_industry_medians(bt, buy_date, code)
     mn = dp_industry_medians(et, now_date, code)
 
+    # C 방식: 기준선에서 자기 자신이 업종 중위수면 업종 조정 없이 자기 변화만 본다
+    pm_own = DUPONT_SELF_MEDIAN_OWN_CHANGE and _is_self_median(b, mb, "PM_pct")
+    ato_own = DUPONT_SELF_MEDIAN_OWN_CHANGE and _is_self_median(b, mb, "ATO")
+
     # PM: 조정 PM = 회사 PM - 업종 중위수 PM, 그 변화(%p)
-    if pd.notna(b["PM_pct"]) and pd.notna(n["PM_pct"]) and \
-       pd.notna(mb["PM_median"]) and pd.notna(mn["PM_median"]):
+    if pm_own and pd.notna(b["PM_pct"]) and pd.notna(n["PM_pct"]):
+        out["dPM_adj_pp"] = n["PM_pct"] - b["PM_pct"]
+    elif pd.notna(b["PM_pct"]) and pd.notna(n["PM_pct"]) and \
+         pd.notna(mb["PM_median"]) and pd.notna(mn["PM_median"]):
         PM_adj_buy = b["PM_pct"] - mb["PM_median"]
         PM_adj_now = n["PM_pct"] - mn["PM_median"]
         out["dPM_adj_pp"] = PM_adj_now - PM_adj_buy
 
     # ATO: 상대 ATO = 회사 ATO / 업종 중위수 ATO, 그 변화(%)
-    if pd.notna(b["ATO"]) and pd.notna(n["ATO"]) and \
-       mb["ATO_median"] not in (None, 0) and mn["ATO_median"] not in (None, 0):
+    if ato_own and pd.notna(b["ATO"]) and pd.notna(n["ATO"]) and b["ATO"] != 0:
+        out["dATO_rel_pct"] = (n["ATO"] / b["ATO"] - 1) * 100
+    elif pd.notna(b["ATO"]) and pd.notna(n["ATO"]) and \
+         mb["ATO_median"] not in (None, 0) and mn["ATO_median"] not in (None, 0):
         rel_buy = b["ATO"] / mb["ATO_median"]
         rel_now = n["ATO"] / mn["ATO_median"]
         if rel_buy != 0:
@@ -491,6 +511,7 @@ def dupont_compare_pit(base_dir, ksic, stock_code, buy_date, now_date):
     out["fs_div_flag"] = b["fs_div"] != n["fs_div"]
     out["pm_basis_buy"] = f"n={mb['n_pm']}" + ("(전체대체)" if mb["pm_fallback"] else "")
     out["pm_basis_now"] = f"n={mn['n_pm']}" + ("(전체대체)" if mn["pm_fallback"] else "")
+    out["peer_mode"] = ("PM자체" if pm_own else "PM업종") + "/" + ("ATO자체" if ato_own else "ATO업종")
     return out
 
 

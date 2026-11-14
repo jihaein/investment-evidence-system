@@ -59,6 +59,11 @@ EXCLUDE_STOCKS = ["064260"]  # 다날: 매출을 영업수익으로 표시해 �
 # ω 상태의 순서. 숫자가 클수록 좋은 상태 → 두 날짜의 숫자 차이로 방향을 판정
 STATE_RANK = {"lowest": 0, "low": 1, "high": 2}
 
+# 매수 시점 PBR<1(Prem<0) 종목: ω가 더 떨어질 수 없어 제외하고 RI만으로 점수 (PM 2026-11-13)
+OMEGA_DROP_IF_BUY_PREM_NEG = True                 # False로 바꾸면 기존 동작
+RI_ONLY_TOL = 0.04                                # RI만 볼 때 하락 기준 4%p
+RI_ONLY_SCORE = {"up": 0, "flat": 0, "down": 2}   # RI만 볼 때 점수
+
 # (RI 방향, ω 방향) → 점수
 # RI(실제 실적)를 주축, ω(주가에서 역산한 시장 기대)를 보조축으로 본다.
 #   - RI 상승 줄은 모두 0점: RI가 오르면 식 구조상 ω가 떨어지기 쉬워서, ω 하락만으로 악화로 보지 않음
@@ -269,6 +274,17 @@ def evaluate_pair(df, stock_code, buy_date, eval_date, max_gap_days, ri_small, r
     out["ri_dir"] = ri_dir
     out["omega_dir"] = omega_dir
     out["ri_change_size"] = change_size(delta_s, ri_small, ri_large)
+
+    # 매수 시점 PBR<1(Prem<0): ω는 더 떨어질 수 없어 제외하고 RI만으로 점수 (PM 2026-11-13)
+    if OMEGA_DROP_IF_BUY_PREM_NEG and buy["market_premium"] < 0:
+        ri_dir_only = direction(delta_s, RI_ONLY_TOL)
+        out["omega_dir"] = "excluded"
+        out["score_mode"] = "ri_only"
+        out["score"] = RI_ONLY_SCORE[ri_dir_only]
+        out["hold_reason"] = ""
+        return out
+
+    out["score_mode"] = "ri_omega"
     out["score"] = SCORE_TABLE[(ri_dir, omega_dir)]
     out["hold_reason"] = ""
     return out
