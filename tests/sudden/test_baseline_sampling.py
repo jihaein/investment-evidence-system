@@ -67,3 +67,16 @@ def test_fix_names_only_expands_truncated_abbreviations():
                           {'stock_code': '050540', 'company_name': '한국코퍼레이션', 'from': '2018-01-01', 'to': '2019-12-31'}])
     out = ss.fix_names(names, {'017800': '현대엘리베이터', '050540': '한국코퍼레이션'})
     assert list(out['company_name']) == ['현대엘리베이터', '엠피씨', '한국코퍼레이션']
+
+
+def test_rename_events_uses_fixed_name_of_that_date():
+    import sample_select as ss
+    names = pd.DataFrame([{'stock_code': '017800', 'company_name': '현대엘리베이터', 'from': '2023-01-01', 'to': '2025-12-31'},
+                          {'stock_code': '050540', 'company_name': '엠피씨', 'from': '2016-01-01', 'to': '2017-12-31'},
+                          {'stock_code': '050540', 'company_name': '한국코퍼레이션', 'from': '2018-01-01', 'to': '2019-12-31'}])
+    events = pd.DataFrame([{'drop_id': 'a', 'stock_code': '017800', 'D': '2024-03-04', 'company_name': '현대엘리베이'},
+                           {'drop_id': 'b', 'stock_code': '050540', 'D': '2017-05-02', 'company_name': '엠피씨'},
+                           {'drop_id': 'c', 'stock_code': '999999', 'D': '2017-05-02', 'company_name': '없는종목'}])
+    out = ss.rename_events(events, names)
+    assert list(out['company_name']) == ['현대엘리베이터', '엠피씨', '없는종목']        # 옛 이름(사명 변경 전)은 그대로
+    assert list(events['company_name'])[0] == '현대엘리베이'                          # 원본은 바꾸지 않음

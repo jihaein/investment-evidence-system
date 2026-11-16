@@ -42,6 +42,20 @@ def fix_names(names, official):
     return out.drop_duplicates(['stock_code', 'company_name', 'from', 'to']).reset_index(drop=True)
 
 
+def rename_events(events, names):
+    """사건표의 회사명(KRX 약칭)을 보정 이름표로 바꾼다. 판정(ach)·공시(dart)는 사건표의 이름을 대상 회사로 쓴다."""
+    out = events.copy()
+    by_code = {code: g for code, g in names.groupby('stock_code')}
+    for i, r in out.iterrows():
+        g = by_code.get(r['stock_code'])
+        if g is None:
+            continue
+        hit = g[(g['from'] <= r['D']) & (r['D'] <= g['to'])]
+        if len(hit) and hit.iloc[0]['company_name'] != r['company_name']:
+            out.at[i, 'company_name'] = hit.iloc[0]['company_name']
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--per-year', type=int, default=67)
@@ -60,6 +74,15 @@ def main(argv=None):
         changed = names.merge(fixed, on=['stock_code', 'from', 'to'], suffixes=('_krx', ''))
         changed = changed[changed['company_name_krx'] != changed['company_name']]
         print(f'이름 보정 {len(changed)}줄:', dict(zip(changed['company_name_krx'], changed['company_name'])) if len(changed) < 40 else '')
+        for name in ('drop_events.csv', 'drop_events_all.csv'):          # 사건표의 회사명도 같은 이름으로
+            p = OUT / name
+            if p.exists():
+                ev = pd.read_csv(p, dtype=str, keep_default_na=False, encoding='utf-8-sig')
+                new = rename_events(ev, fixed)
+                n = int((new['company_name'] != ev['company_name']).sum())
+                if n:
+                    new.to_csv(p, index=False, encoding='utf-8-sig')
+                print(f'{name}: 회사명 {n}건 보정')
         return 0
     all_events, all_sessions = OUT / 'drop_events_all.csv', OUT / 'drop_sessions_all.csv'
     if not all_events.exists():                              # 처음 한 번: events.py 결과를 전체 표로 보관
