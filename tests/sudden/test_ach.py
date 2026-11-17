@@ -167,3 +167,26 @@ def test_doc_fragile_drops_one_selected_doc_at_a_time():
     assert one['verdict'] == '가치훼손' and one['flags']['doc_fragile'] and one['flags']['doc_flips'] == 1
     two = ach.analyze(event, [doc(1), doc(2)], classify, open_time)
     assert two['verdict'] == '가치훼손' and not two['flags']['doc_fragile']
+
+
+def test_neutral_zero_drops_directionless_units_but_keeps_no_direction_types():
+    assert ach.relation('C2', '없음', 'H1') == '+'                         # 설계서 그대로: 부정 기준표
+    assert ach.relation('C2', '없음', 'H1', neutral_zero=True) == '0'
+    assert ach.relation('R2', '없음', 'H5', neutral_zero=True) == '+'       # 방향 개념이 없는 유형은 그대로
+    assert ach.relation('K1b', '없음', 'H3', neutral_zero=True) == '-'
+    units = [unit('C2', 1.0, direction='없음'), unit('S2', 0.3)]
+    assert ach.decide(units)['hypothesis'] in ('H1', 'H2')
+    assert ach.decide(units, params={'neutral_zero': True})['hypothesis'] == 'H4'
+
+
+def test_prompt_versions_keep_units_3_and_add_direction_and_bond_rules():
+    assert ach.PROMPT_VERSION == 'ach-units-3' and ach.SYSTEM == ach.PROMPTS['ach-units-3']
+    v3, v4 = ach.PROMPTS['ach-units-3'], ach.PROMPTS['ach-units-4']
+    assert '애매하면 없음' in v4 and '애매하면 없음' not in v3
+    assert '일반 회사채' in v4 and '일반 회사채' not in v3
+    assert v4.count('\n') == v3.count('\n') + 1
+    try:
+        ach.use_prompt('ach-units-4')
+        assert ach.SYSTEM == v4 and ach.PROMPT_VERSION == 'ach-units-4'
+    finally:
+        ach.use_prompt('ach-units-3')

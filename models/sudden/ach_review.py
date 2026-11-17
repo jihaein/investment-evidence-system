@@ -83,7 +83,35 @@ def reviewable_units(cases):
             out.append({'drop_id': c['drop_id'], 'company': c.get('company', c['company_name']), 'D': c['D'],
                         'unit_id': u['unit_id'], 'quote': u.get('quote', ''), 'event': u.get('event', ''),
                         'url': m.get('url', ''), 'title': titles.get(m.get('bundle_id'), ''), 'ai_type': u['type'],
-                        'ai_direction': u['direction'], 'run_types': u.get('run_types', [])})
+                        'ai_direction': u['direction'], 'run_types': u.get('run_types', []),
+                        'ver': c.get('prompt_version', '')})
+    return out
+
+
+def _answer(u, ver):
+    if u is None:
+        return {'ver': ver, 'missing': True}
+    return {'ver': ver, 'type': u['ai_type'], 'direction': u['ai_direction'], 'run_types': u['run_types']}
+
+
+def _match(u, pool, cut=0.6):
+    """같은 사건에서 인용이 가장 비슷한 단위(유사도 cut 이상). 없으면 None."""
+    same = [v for v in pool if v['drop_id'] == u['drop_id']]
+    best = max(same, key=lambda v: ach.sim(v['quote'], u['quote']), default=None)
+    return best if best is not None and ach.sim(best['quote'], u['quote']) >= cut else None
+
+
+def pair_units(units_a, units_b, n, seed, ver_a, ver_b):
+    """두 버전 비교용: 절반은 A 단위에서, 절반은 B 단위에서 유형별로 고르고(같은 문장은 한 번만),
+    문장마다 두 버전의 답을 [A, B] 순서로 붙인다. 한쪽에서 단위로 안 나왔으면 missing."""
+    picked_a = sample_units(units_a, n // 2, seed)
+    picked_b = [u for u in sample_units(units_b, n, seed + 1) if _match(u, picked_a) is None][:n - len(picked_a)]
+    out = []
+    for u in picked_a:
+        out.append({**u, 'ai': [_answer(u, ver_a), _answer(_match(u, units_b), ver_b)]})
+    for u in picked_b:
+        out.append({**u, 'ai': [_answer(_match(u, units_a), ver_a), _answer(u, ver_b)]})
+    random.Random(seed).shuffle(out)                     # 어느 버전에서 뽑았는지 순서로 드러나지 않게
     return out
 
 
@@ -103,11 +131,11 @@ def sample_units(units, n, seed):
     return picked
 
 
-def sample_cases(cases, n, seed):
-    """판정별로 고르게. 판단보류는 근거가 있었던 사건(사건 창 근거 없음 제외)만."""
+def balanced(cases, n, seed, exclude=()):
+    """판정별로 고르게 n건. 판단보류는 근거가 있었던 사건(사건 창 근거 없음 제외)만."""
     rng = random.Random(seed)
     groups = {v: [c for c in cases if c['verdict'] == v and (v != '판단보류' or c.get('reason') != 'no_evidence_in_window')
-                  and c.get('selected_docs')] for v in VERDICTS}
+                  and c.get('selected_docs') and c['drop_id'] not in exclude] for v in VERDICTS}
     for g in groups.values():
         rng.shuffle(g)
     picked = []
@@ -115,23 +143,44 @@ def sample_cases(cases, n, seed):
         for v in VERDICTS:
             if groups[v] and len(picked) < n:
                 picked.append(groups[v].pop())
+    return picked
+
+
+def _verdict(c):
+    return {'ver': c.get('prompt_version', ''), 'verdict': c['verdict'], 'hypothesis': c.get('hypothesis'),
+            'reason': c.get('reason'), 'flags': {k: v for k, v in (c.get('flags') or {}).items() if v},
+            'support': c.get('support'), 'refute': c.get('refute'),
+            'units': [{'type': u['type'], 'direction': u['direction'], 'event': u.get('event', ''), 'w': u.get('w')}
+                      for u in c.get('units', []) if u['type'] != 'X0']}
+
+
+def sample_cases(cases, n, seed, other=None):
+    """사례 n건. other(두 번째 버전의 {drop_id: 결과})가 있으면 두 버전의 판정을 [A, B] 순서로 붙인다."""
     return [{'drop_id': c['drop_id'], 'company': c.get('company', c['company_name']), 'D': c['D'], 'z': c.get('z'),
              'docs': [{'title': d.get('title', ''), 'url': d.get('url', ''), 'published_at': d.get('published_at', ''),
                        'S_sel': d.get('S_sel')} for d in c['selected_docs']],
-             'units': [{'type': u['type'], 'direction': u['direction'], 'event': u.get('event', ''), 'w': u.get('w')}
-                       for u in c.get('units', []) if u['type'] != 'X0'],
-             'support': c.get('support'), 'refute': c.get('refute'),
-             'ai_verdict': c['verdict'], 'ai_hypothesis': c.get('hypothesis'), 'ai_reason': c.get('reason'),
-             'ai_flags': {k: v for k, v in (c.get('flags') or {}).items() if v}} for c in picked]
+             'ai': [_verdict(c)] + ([_verdict(other[c['drop_id']])] if other and c['drop_id'] in other else [])}
+            for c in balanced(cases, n, seed)]
 
 
-def build(ach_dir, years, n_units, n_cases, seed, names_path=None):
+def build(ach_dir, years, n_units, n_cases, seed, names_path=None, ach2=None):
     names = load_names(names_path if names_path is not None else names_file_for(ach_dir))
     cases = load_cases(ach_dir, years, names)
-    return {'source': str(Path(ach_dir).as_posix()), 'years': sorted(years) if years else None, 'seed': seed,
-            'types': {k: list(v) for k, v in ach.TYPES.items()},
-            'units': sample_units(reviewable_units(cases), n_units, seed),
-            'cases': sample_cases(cases, n_cases, seed)}
+    source = str(Path(ach_dir).as_posix())
+    if ach2 is None:
+        units = [{**u, 'ai': [_answer(u, u['ver'])]} for u in sample_units(reviewable_units(cases), n_units, seed)]
+        case_rows = sample_cases(cases, n_cases, seed)
+    else:                                                # 두 버전 비교: 두 번째 폴더에 있는 사건만
+        other = {c['drop_id']: c for c in load_cases(ach2, years, names)}
+        cases = [c for c in cases if c['drop_id'] in other]
+        ua, ub = reviewable_units(cases), reviewable_units(list(other.values()))
+        ver_a = cases[0].get('prompt_version', 'A') if cases else 'A'
+        ver_b = next(iter(other.values())).get('prompt_version', 'B') if other else 'B'
+        units = pair_units(ua, ub, n_units, seed, ver_a, ver_b)
+        case_rows = sample_cases(cases, n_cases, seed, other)
+        source += '+' + str(Path(ach2).as_posix())
+    return {'source': source, 'years': sorted(years) if years else None, 'seed': seed,
+            'types': {k: list(v) for k, v in ach.TYPES.items()}, 'units': units, 'cases': case_rows}
 
 
 def write_html(data, path):
@@ -149,30 +198,50 @@ def _rate(xs):
     return round(sum(xs) / len(xs), 3) if xs else None
 
 
+def _version_stats(units, cases, p):
+    """p = '' (첫 번째 버전) 또는 '2'. 사람 답과의 일치율. 그 버전에서 단위로 안 나온 문장은 extracted에서 빠진다."""
+    about = [r for r in units if r.get('about_company') == '예']
+    got = [r for r in about if r.get(f'ai{p}_type')]
+    blind = [r for r in got if _set(r.get('first_types'))]
+    misses = Counter(f"{r[f'ai{p}_type']}→{'|'.join(sorted(_set(r['types'])))}" for r in got if r[f'ai{p}_type'] not in _set(r['types']))
+    blind_dir = [r for r in got if r.get('first_direction')]
+    vc = [r for r in cases if r.get(f'ai{p}_verdict')]
+    return {
+        'version': next((r[f'ai{p}_ver'] for r in units + cases if r.get(f'ai{p}_ver')), ''),
+        'units_extracted': f'{len(got)}/{len(about)}',
+        'type_agree': _rate(r[f'ai{p}_type'] in _set(r['types']) for r in got),               # AI 유형이 사람이 고른 유형 중 하나
+        'type_agree_blind': _rate(r[f'ai{p}_type'] in _set(r['first_types']) for r in blind),  # 공개 전 첫 답 기준
+        'direction_agree': _rate(r.get('direction') == r[f'ai{p}_direction'] for r in got),
+        'direction_agree_blind': _rate(r['first_direction'] == r[f'ai{p}_direction'] for r in blind_dir),
+        'type_misses_ai_to_human': [f'{k} {n}' for k, n in misses.most_common(10)],
+        'verdict_agree': _rate(r['verdict'] == r[f'ai{p}_verdict'] for r in vc),
+        'verdict_agree_blind': _rate(r.get('first_verdict') == r[f'ai{p}_verdict'] for r in vc if r.get('first_verdict')),
+        'hypothesis_agree': _rate(r[f'ai{p}_hypothesis'] in _set(r.get('hypotheses')) for r in vc
+                                  if r[f'ai{p}_verdict'] != '판단보류' and _set(r.get('hypotheses'))),
+        'verdict_pairs_ai_to_human': dict(Counter(f"{r[f'ai{p}_verdict']}→{r['verdict']}" for r in vc)),
+    }
+
+
 def compare(rows):
     units = [r for r in rows if r['kind'] == 'unit' and _set(r.get('types'))]
     cases = [r for r in rows if r['kind'] == 'case' and r.get('verdict')]
     about = [r for r in units if r.get('about_company') == '예']
-    blind = [r for r in about if _set(r.get('first_types'))]
-    misses = Counter(f"{r['ai_type']}→{'|'.join(sorted(_set(r['types'])))}" for r in about if r['ai_type'] not in _set(r['types']))
-    return {
-        'units_reviewed': len(units),
-        'not_about_company': sum(r.get('about_company') == '아니오' for r in units),
-        'unsure_about_company': sum(r.get('about_company') == '모름' for r in units),
-        'type_agree': _rate(r['ai_type'] in _set(r['types']) for r in about),           # AI 유형이 사람이 고른 유형 중 하나
-        'type_agree_blind': _rate(r['ai_type'] in _set(r['first_types']) for r in blind),  # 공개 전 첫 답 기준
-        'multi_type_share': _rate(len(_set(r['types'])) > 1 for r in about),
-        'direction_agree': _rate(r.get('direction') == r['ai_direction'] for r in about),
-        'changed_after_reveal': sum(r.get('changed_after_reveal') == 'Y' for r in units + cases),
-        'type_misses_ai_to_human': [f'{k} {n}' for k, n in misses.most_common(10)],
-        'cases_reviewed': len(cases),
-        'verdict_agree': _rate(r['verdict'] == r['ai_verdict'] for r in cases),
-        'verdict_agree_blind': _rate(r.get('first_verdict') == r['ai_verdict'] for r in cases if r.get('first_verdict')),
-        'hypothesis_agree': _rate(r['ai_hypothesis'] in _set(r.get('hypotheses')) for r in cases
-                                  if r['ai_verdict'] != '판단보류' and _set(r.get('hypotheses'))),
-        'verdict_pairs_ai_to_human': dict(Counter(f"{r['ai_verdict']}→{r['verdict']}" for r in cases)),
-        'limits': ['검수자 1명', '표본은 유형·판정별로 고르게 뽑아 전체 비율과 다름(일치율을 전체 정확도로 읽지 않는다)',
-                   '공개 뒤 고친 답은 AI 답을 본 영향이 있을 수 있어 _blind 값을 같이 본다']}
+    res = {'units_reviewed': len(units),
+           'not_about_company': sum(r.get('about_company') == '아니오' for r in units),
+           'unsure_about_company': sum(r.get('about_company') == '모름' for r in units),
+           'multi_type_share': _rate(len(_set(r['types'])) > 1 for r in about),
+           'changed_after_reveal': sum(r.get('changed_after_reveal') == 'Y' for r in units + cases),
+           'cases_reviewed': len(cases),
+           'inconsistent_cases': sum(bool(_set(r.get('hypotheses'))) and (
+               (r['verdict'] == '가치훼손' and not _set(r['hypotheses']) & {'H1', 'H2'}) or
+               (r['verdict'] == '비가치' and not _set(r['hypotheses']) & {'H3', 'H4', 'H5'})) for r in cases)}
+    res.update(_version_stats(units, cases, ''))
+    if any(r.get('ai2_ver') for r in units + cases):
+        res['version2'] = _version_stats(units, cases, '2')
+    res['limits'] = ['검수자 1명', '표본은 유형·판정별로 고르게 뽑아 전체 비율과 다름(일치율을 전체 정확도로 읽지 않는다)',
+                     '공개 뒤 고친 답은 AI 답을 본 영향이 있을 수 있어 _blind 값을 같이 본다',
+                     '두 버전 비교의 공개 뒤 답은 두 버전 답을 모두 본 뒤라 버전 간 비교는 _blind로 한다']
+    return res
 
 
 def main(argv=None):
@@ -185,7 +254,19 @@ def main(argv=None):
     ap.add_argument('--names', type=Path, help='회사명 표 (기본: 표본 폴더의 stock_names.csv)')
     ap.add_argument('--out', type=Path, help='기본: cache/review/<ach 상위 폴더 이름>/')
     ap.add_argument('--compare', type=Path, help='검수 화면에서 내려받은 CSV')
+    ap.add_argument('--ach2', type=Path, help='두 번째 버전 결과 폴더(예: 지시문 4판). 이 폴더에 있는 사건만 쓴다')
+    ap.add_argument('--pick-events', type=int, help='새 검수용 사건 n건을 판정별로 고르게 골라 events.txt로 쓴다')
+    ap.add_argument('--exclude-review', type=Path, action='append', default=[], help='이미 검수한 결과 CSV (그 사건은 뺀다)')
     args = ap.parse_args(argv)
+    if args.pick_events:
+        done = {r['drop_id'] for p in args.exclude_review for r in csv.DictReader(p.open(encoding='utf-8-sig'))}
+        years = set(args.years.split(',')) if args.years else None
+        picked = balanced(load_cases(args.ach, years), args.pick_events, args.seed, done)
+        out = args.out or OUT_ROOT / args.ach.parent.name
+        out.mkdir(parents=True, exist_ok=True)
+        (out / 'events.txt').write_text('\n'.join(sorted(c['drop_id'] for c in picked)) + '\n', encoding='utf-8', newline='\n')
+        print(f"{out / 'events.txt'}: {len(picked)}건 (이미 검수한 {len(done)}건 제외)", dict(Counter(c['verdict'] for c in picked)))
+        return 0
     if args.compare:
         rows = list(csv.DictReader(args.compare.open(encoding='utf-8-sig')))
         res = compare(rows)
@@ -196,12 +277,14 @@ def main(argv=None):
     if not args.ach:
         ap.error('--ach 또는 --compare가 필요하다')
     years = set(args.years.split(',')) if args.years else None
-    data = build(args.ach, years, args.units, args.cases, args.seed, args.names)
+    data = build(args.ach, years, args.units, args.cases, args.seed, args.names, args.ach2)
     out = args.out or OUT_ROOT / args.ach.parent.name
     write_html(data, out / 'ach_review.html')
     print(f"검수 화면: {out / 'ach_review.html'}  (단위 {len(data['units'])}개, 사례 {len(data['cases'])}건)")
     print('유형별 단위:', dict(Counter(u['ai_type'] for u in data['units'])))
-    print('판정별 사례:', dict(Counter(c['ai_verdict'] for c in data['cases'])))
+    print('판정별 사례:', dict(Counter(c['ai'][0]['verdict'] for c in data['cases'])))
+    if args.ach2:
+        print('단위 버전별 추출:', {i: sum(not u['ai'][i].get('missing') for u in data['units']) for i in (0, 1)})
     return 0
 
 
@@ -227,7 +310,8 @@ aside{position:sticky;top:70px;align-self:start;max-height:calc(100vh - 90px);ov
 .list button{display:flex;width:100%;gap:8px;align-items:center;border:0;background:none;text-align:left;padding:8px 12px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--soft)}
 .list button:hover{background:var(--soft)}.list button[aria-current=true]{background:var(--accs)}
 .dot{flex:none;width:10px;height:10px;border-radius:50%;border:2px solid var(--line)}
-.dot.done{background:var(--ok);border-color:var(--ok)}.dot.diff{background:var(--bad);border-color:var(--bad)}.dot.part{border-color:var(--warn)}
+.dot.done{background:var(--ok);border-color:var(--ok)}.dot.diff{background:var(--bad);border-color:var(--bad)}.dot.part{border-color:var(--warn)}.dot.mix{background:var(--warn);border-color:var(--warn)}
+.vline{padding:4px 0}.vline+.vline{border-top:1px dashed var(--line)}
 .list .lt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.list .ln{color:var(--muted);font-size:12px;flex:none}
 main{min-width:0}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px 26px;margin-bottom:16px}
@@ -267,6 +351,7 @@ table{border-collapse:collapse;width:100%;font-size:14.5px}th,td{text-align:left
 <div class="card help" id="help"><h3 style="margin-top:0">검수 방법</h3>
 <p><b>단위</b>: 인용 문장과 원문을 보고 ① 대상 회사 이야기인지 ② 유형(해당하는 것 모두) ③ 방향을 고른다. 그다음 <b>AI 답 보기</b>를 누른다.</p>
 <p><b>사례</b>: 선정 기사 제목을 보고(필요하면 원문을 열어) 판정과 가설(해당하는 것 모두)을 고른 뒤 <b>모델 판정 보기</b>를 누른다.</p>
+<p>AI 답이 두 줄이면 분류 지시문 두 판(3판·4판)의 답이다. 어느 판이 더 맞는지 보려는 검수라, 공개 전에 직접 고른 답이 가장 중요하다.</p>
 <p>공개 뒤에도 답을 고칠 수 있다. 공개 전 첫 답은 따로 기록돼, AI 답을 보기 전의 판단을 잃지 않는다.
 답은 이 브라우저에 자동 저장된다. 다른 컴퓨터·브라우저로 옮길 때는 CSV를 내려받아 <b>불러오기</b>로 다시 읽는다.</p>
 <p class="hint">단축키: ← → 이전·다음 (글 입력 중에는 꺼짐)</p></div>
@@ -275,7 +360,8 @@ table{border-collapse:collapse;width:100%;font-size:14.5px}th,td{text-align:left
 const D=__DATA__;
 const KEY='ach_review:'+D.source+':'+D.seed;
 const FAM=[['F','회사 펀더멘털'],['C','자본·재무·지배구조'],['M','시장·업종'],['S','수급'],['R','의견·해명'],['X','정보 없음']];
-const HYP=[['H1','실적 훼손'],['H2','희석'],['H3','심리'],['H4','수급'],['H5','소문']];
+const HYP=[['H1','실적 훼손','가치훼손'],['H2','희석','가치훼손'],['H3','심리','비가치'],['H4','수급','비가치'],['H5','소문','비가치']];
+const verName=v=>({'ach-units-3':'지시문 3판','ach-units-4':'지시문 4판'}[v]||v||'AI');
 let S={unit:{},case:{},mode:'unit',iu:0,ic:0};
 try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)S=Object.assign(S,s)}catch(e){}
 // 이전 화면 형식(유형 하나, 가설 문자열)을 새 형식으로
@@ -289,18 +375,19 @@ function toast(t){const n=document.createElement('div');n.className='toast';n.te
 function rec(kind,i){return S[kind][i]=S[kind][i]||{}}
 function unitDone(a){return a&&a.about_company&&a.types&&a.types.length&&a.direction}
 function caseDone(a){return a&&a.verdict&&a.hypotheses}
-function unitMatch(u,a){return a.types.includes(u.ai_type)&&a.direction===u.ai_direction}
+function ansMatch(x,a){return !x.missing&&(a.types||[]).includes(x.type)&&a.direction===x.direction}
 function markChange(a){if(a.revealed)a.changed_after_reveal=true}
+function grade(m,n){return n&&m===n?'done':m?'mix':'diff'}
 function status(kind,i){
   const a=S[kind][i];if(!a)return '';
-  if(kind==='unit'){if(!a.revealed)return unitDone(a)?'part':'';return unitMatch(D.units[i],a)?'done':'diff'}
-  if(!a.revealed)return caseDone(a)?'part':'';return a.verdict===D.cases[i].ai_verdict?'done':'diff';
+  if(kind==='unit'){if(!a.revealed)return unitDone(a)?'part':'';const got=D.units[i].ai.filter(x=>!x.missing);return grade(got.filter(x=>ansMatch(x,a)).length,got.length)}
+  if(!a.revealed)return caseDone(a)?'part':'';const v=D.cases[i].ai;return grade(v.filter(x=>x.verdict===a.verdict).length,v.length);
 }
 function renderList(){
   const kind=S.mode,items=kind==='unit'?D.units:D.cases,cur=kind==='unit'?S.iu:S.ic;
   $('#tab-unit').setAttribute('aria-selected',kind==='unit');$('#tab-case').setAttribute('aria-selected',kind==='case');
   $('#list').innerHTML=items.map((x,i)=>'<button data-i="'+i+'" aria-current="'+(i===cur)+'"><span class="dot '+status(kind,i)+'"></span><span class="lt">'+
-    (i+1)+'. '+esc(x.company)+'</span><span class="ln">'+esc(kind==='unit'?x.ai_type_hidden||'':x.D)+'</span></button>').join('');
+    (i+1)+'. '+esc(x.company)+'</span><span class="ln">'+esc(x.D)+'</span></button>').join('');
   $('#list').querySelectorAll('button').forEach(b=>b.onclick=()=>{if(kind==='unit')S.iu=+b.dataset.i;else S.ic=+b.dataset.i;save();render()});
   const du=Object.values(S.unit).filter(a=>a.revealed).length,dc=Object.values(S.case).filter(a=>a.revealed).length,tot=D.units.length+D.cases.length;
   $('#prog').textContent='단위 '+du+'/'+D.units.length+' · 사례 '+dc+'/'+D.cases.length;$('#pbar').style.width=((du+dc)/tot*100)+'%';
@@ -308,7 +395,7 @@ function renderList(){
 function chips(name,opts,val){return '<div class="chips" data-name="'+name+'">'+opts.map(o=>'<button type="button" class="chip" aria-pressed="'+(val===o)+'" data-v="'+esc(o)+'">'+esc(o)+'</button>').join('')+'</div>'}
 function typeGrid(sel,ai){
   return '<div class="groups">'+FAM.map(([f,fn])=>'<div class="grp"><h4>'+f+' · '+fn+'</h4>'+Object.entries(D.types).filter(([k])=>k[0]===f).map(([k,[n,ex]])=>
-    '<label class="opt'+(sel.includes(k)?' on':'')+(ai===k?' ai':'')+'"><input type="checkbox" data-t="'+k+'"'+(sel.includes(k)?' checked':'')+'><span><b>'+k+'</b> '+esc(n)+'<span class="ex">'+esc(ex)+'</span></span></label>').join('')+'</div>').join('')+'</div>';
+    '<label class="opt'+(sel.includes(k)?' on':'')+(ai&&ai.includes(k)?' ai':'')+'"><input type="checkbox" data-t="'+k+'"'+(sel.includes(k)?' checked':'')+'><span><b>'+k+'</b> '+esc(n)+'<span class="ex">'+esc(ex)+'</span></span></label>').join('')+'</div>').join('')+'</div>';
 }
 function foot(kind,i,n,label){
   const a=S[kind][i]||{};
@@ -324,12 +411,14 @@ function unitView(){
   let h='<div class="card"><div class="crumb"><b>'+esc(u.company)+'</b>급락일 '+esc(u.D)+' · 단위 '+(i+1)+' / '+D.units.length+'</div>'+
    '<div class="quote">'+esc(u.quote)+'</div><div class="src">기사: '+esc(u.title||'(제목 없음)')+' · <a href="'+esc(u.url)+'" target="_blank" rel="noopener">원문 열기 ↗</a></div>'+
    '<div class="q"><h3>① 대상 회사('+esc(u.company)+')에 관한 문장인가?</h3>'+chips('about',['예','아니오','모름'],a.about_company)+'</div>'+
-   '<div class="q"><h3>② 유형 <small>해당하는 것을 모두 고른다</small></h3>'+typeGrid(sel,a.revealed?u.ai_type:null)+'</div>'+
+   '<div class="q"><h3>② 유형 <small>해당하는 것을 모두 고른다</small></h3>'+typeGrid(sel,a.revealed?u.ai.filter(x=>!x.missing).map(x=>x.type):null)+'</div>'+
    '<div class="q"><h3>③ 방향 <small>대상 회사에 나쁜 소식이면 부정</small></h3>'+chips('dir',['부정','긍정','없음'],a.direction)+'</div>'+
    '<div class="q"><h3>메모</h3><textarea id="nt" rows="2" placeholder="애매했던 점, 다른 유형이라고 본 이유 등">'+esc(a.note||'')+'</textarea></div>';
-  if(a.revealed){const m=unitMatch(u,a);
-    h+='<div class="reveal '+(m?'same':'diffr')+'"><b class="tag">AI</b> <b>'+u.ai_type+' '+esc(D.types[u.ai_type]?D.types[u.ai_type][0]:'')+'</b> / <b>'+u.ai_direction+'</b> — '+(m?'당신의 답과 맞음':'당신의 답과 다름')+
-      '<br><span class="hint">3번 분류: '+esc((u.run_types||[]).join(', '))+' · 사건 이름: '+esc(u.event)+' · 유형표에서 AI 답은 초록 점선</span>'+
+  if(a.revealed){const st=status('unit',i);
+    h+='<div class="reveal '+(st==='done'?'same':st==='diff'?'diffr':'pending')+'">'+u.ai.map(x=>'<div class="vline"><b class="tag">'+esc(verName(x.ver))+'</b> '+
+      (x.missing?'<span class="hint">이 문장을 단위로 내지 않았다</span>':'<b>'+x.type+' '+esc(D.types[x.type]?D.types[x.type][0]:'')+'</b> / <b>'+x.direction+'</b> — '+
+       (ansMatch(x,a)?'당신의 답과 맞음':'당신의 답과 다름')+' <span class="hint">(3번 분류: '+esc((x.run_types||[]).join(', '))+')</span>')+'</div>').join('')+
+      '<span class="hint">사건 이름: '+esc(u.event)+' · 유형표에서 AI 답은 초록 점선</span>'+
       (a.first_types&&!same(a.first_types,sel)||a.first_direction&&a.first_direction!==a.direction?'<div class="note">공개 전 첫 답: '+esc((a.first_types||[]).join(', '))+' / '+esc(a.first_direction||'')+' (수정됨)</div>':'')+'</div>';}
   h+=foot('unit',i,D.units.length,'AI 답 보기')+'</div>';
   $('#panel').innerHTML=h;
@@ -347,16 +436,20 @@ function caseView(){
    '<div class="q"><h3>선정 기사 <small>판정에 쓴 기사들. 제목을 클릭하면 원문이 열린다</small></h3><table><tr><th style="width:130px">입력 시각</th><th>제목</th><th style="width:60px">점수</th></tr>'+
    c.docs.map(d=>'<tr><td>'+esc((d.published_at||'').slice(0,16).replace('T',' '))+'</td><td><a href="'+esc(d.url)+'" target="_blank" rel="noopener">'+esc(d.title)+'</a></td><td>'+esc(d.S_sel)+'</td></tr>').join('')+'</table></div>'+
    '<div class="q"><h3>① 당신의 판정</h3>'+chips('verdict',['가치훼손','비가치','판단보류'],a.verdict)+'</div>'+
-   '<div class="q"><h3>② 급락을 설명하는 가설 <small>해당하는 것을 모두. 판단보류면 비워도 된다</small></h3><div class="chips">'+
-    HYP.map(([k,n])=>'<button type="button" class="chip hy" aria-pressed="'+hy.includes(k)+'" data-v="'+k+'">'+k+' '+n+'</button>').join('')+'</div></div>'+
+   '<div class="q"><h3>② 급락의 실제 원인으로 보는 가설 <small>해당하는 것을 모두. 판단보류면 비워도 된다</small></h3>'+
+   '<p class="hint" style="margin:0 0 8px">H1·H2를 고르면 가치훼손 쪽, H3~H5를 고르면 비가치 쪽이다. 판정과 같은 쪽 가설을 고른다.</p><div class="chips">'+
+    HYP.map(([k,n,g])=>'<button type="button" class="chip hy" aria-pressed="'+hy.includes(k)+'" data-v="'+k+'">'+k+' '+n+' <small>· '+g+'</small></button>').join('')+'</div>'+
+   (a.verdict&&hy.length&&((a.verdict==='가치훼손'&&!hy.some(k=>k==='H1'||k==='H2'))||(a.verdict==='비가치'&&!hy.some(k=>['H3','H4','H5'].includes(k))))?
+    '<div class="note">판정('+esc(a.verdict)+')과 가설의 방향이 맞지 않는다. 판정을 고치거나, 급락의 실제 원인으로 보는 가설만 남긴다.</div>':'')+'</div>'+
    '<div class="q"><h3>판단 근거 메모</h3><textarea id="nt" rows="3" placeholder="어느 기사가 결정적이었는지, 모델이 놓친 것 등">'+esc(a.note||'')+'</textarea></div>';
-  if(a.revealed){const m=a.verdict===c.ai_verdict,H=['H1','H2','H3','H4','H5'];
-    h+='<div class="reveal '+(m?'same':'diffr')+'"><b class="tag">모델</b> <b>'+c.ai_verdict+'</b> ('+esc(c.ai_hypothesis||'')+(c.ai_reason?', 이유: '+esc(c.ai_reason):'')+') — '+(m?'당신의 판정과 맞음':'당신의 판정과 다름')+
-      (Object.keys(c.ai_flags).length?'<br><span class="hint">표시: '+esc(Object.keys(c.ai_flags).join(', '))+'</span>':'')+
-      (a.first_verdict&&a.first_verdict!==a.verdict?'<div class="note">공개 전 첫 판정: '+esc(a.first_verdict)+' (수정됨)</div>':'')+
-      (c.support?'<table style="margin-top:10px"><tr><th></th>'+H.map(x=>'<th>'+x+'</th>').join('')+'</tr><tr><td>지지</td>'+H.map(x=>'<td>'+esc((c.support[x]||0).toFixed(2))+'</td>').join('')+'</tr><tr><td>반박</td>'+H.map(x=>'<td>'+esc((c.refute[x]||0).toFixed(2))+'</td>').join('')+'</tr></table>':'')+
-      '<details style="margin-top:10px"><summary>모델이 쓴 단위 '+c.units.length+'개</summary><table><tr><th>유형</th><th>방향</th><th>무게</th><th>사건</th></tr>'+
-      c.units.map(u=>'<tr><td>'+u.type+'</td><td>'+u.direction+'</td><td>'+esc(u.w)+'</td><td>'+esc(u.event)+'</td></tr>').join('')+'</table></details></div>';}
+  if(a.revealed){const st=status('case',i),H=['H1','H2','H3','H4','H5'];
+    h+='<div class="reveal '+(st==='done'?'same':st==='diff'?'diffr':'pending')+'">'+c.ai.map(x=>{const m=a.verdict===x.verdict;
+      return '<div class="vline"><b class="tag">'+esc(verName(x.ver))+'</b> <b>'+x.verdict+'</b> ('+esc(x.hypothesis||'')+(x.reason?', 이유: '+esc(x.reason):'')+') — '+(m?'당신의 판정과 맞음':'당신의 판정과 다름')+
+      (Object.keys(x.flags||{}).length?'<br><span class="hint">표시: '+esc(Object.keys(x.flags).join(', '))+'</span>':'')+
+      (x.support?'<table style="margin-top:8px"><tr><th></th>'+H.map(k=>'<th>'+k+'</th>').join('')+'</tr><tr><td>지지</td>'+H.map(k=>'<td>'+esc((x.support[k]||0).toFixed(2))+'</td>').join('')+'</tr><tr><td>반박</td>'+H.map(k=>'<td>'+esc((x.refute[k]||0).toFixed(2))+'</td>').join('')+'</tr></table>':'')+
+      '<details style="margin-top:6px"><summary>쓴 단위 '+x.units.length+'개</summary><table><tr><th>유형</th><th>방향</th><th>무게</th><th>사건</th></tr>'+
+      x.units.map(u=>'<tr><td>'+u.type+'</td><td>'+u.direction+'</td><td>'+esc(u.w)+'</td><td>'+esc(u.event)+'</td></tr>').join('')+'</table></details></div>'}).join('')+
+      (a.first_verdict&&a.first_verdict!==a.verdict?'<div class="note">공개 전 첫 판정: '+esc(a.first_verdict)+' (수정됨)</div>':'')+'</div>';}
   h+=foot('case',i,D.cases.length,'모델 판정 보기')+'</div>';
   $('#panel').innerHTML=h;
   $('#panel').querySelectorAll('.chips[data-name=verdict] .chip').forEach(b=>b.onclick=()=>{const r=rec('case',i);markChange(r);r.verdict=b.dataset.v;r.hypotheses=r.hypotheses||[];save();render()});
@@ -371,11 +464,14 @@ function render(){renderList();S.mode==='unit'?unitView():caseView()}
 $('#tab-unit').onclick=()=>{S.mode='unit';save();render()};$('#tab-case').onclick=()=>{S.mode='case';save();render()};
 $('#b-help').onclick=()=>$('#help').classList.toggle('on');
 document.addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if(e.key==='ArrowRight'&&$('#nx')&&!$('#nx').disabled)$('#nx').click();if(e.key==='ArrowLeft'&&$('#pv')&&!$('#pv').disabled)$('#pv').click()});
-const COLS=['kind','idx','drop_id','unit_id','company','about_company','types','direction','verdict','hypotheses','note','first_types','first_direction','first_verdict','first_hypotheses','revealed','changed_after_reveal','ai_type','ai_direction','ai_verdict','ai_hypothesis'];
+const COLS=['kind','idx','drop_id','unit_id','company','about_company','types','direction','verdict','hypotheses','note','first_types','first_direction','first_verdict','first_hypotheses','revealed','changed_after_reveal',
+  'ai_ver','ai_type','ai_direction','ai_verdict','ai_hypothesis','ai2_ver','ai2_type','ai2_direction','ai2_verdict','ai2_hypothesis'];
 $('#b-save').onclick=()=>{
   const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"',j=v=>(v||[]).join('|'),rows=[COLS.join(',')];
-  D.units.forEach((u,i)=>{const a=S.unit[i];if(!a)return;rows.push(['unit',i,u.drop_id,u.unit_id,u.company,a.about_company,j(a.types),a.direction,'','',a.note,j(a.first_types),a.first_direction,'','',a.revealed?'Y':'',a.changed_after_reveal?'Y':'',u.ai_type,u.ai_direction,'',''].map(q).join(','))});
-  D.cases.forEach((c,i)=>{const a=S.case[i];if(!a)return;rows.push(['case',i,c.drop_id,'',c.company,'','','',a.verdict,j(a.hypotheses),a.note,'','',a.first_verdict,j(a.first_hypotheses),a.revealed?'Y':'',a.changed_after_reveal?'Y':'','','',c.ai_verdict,c.ai_hypothesis].map(q).join(','))});
+  const ua=(u,k)=>{const x=u.ai[k];return x?[x.ver,x.missing?'':x.type,x.missing?'':x.direction,'','']:['','','','','']};
+  const ca=(c,k)=>{const x=c.ai[k];return x?[x.ver,'','',x.verdict,x.hypothesis]:['','','','','']};
+  D.units.forEach((u,i)=>{const a=S.unit[i];if(!a)return;rows.push(['unit',i,u.drop_id,u.unit_id,u.company,a.about_company,j(a.types),a.direction,'','',a.note,j(a.first_types),a.first_direction,'','',a.revealed?'Y':'',a.changed_after_reveal?'Y':'',...ua(u,0),...ua(u,1)].map(q).join(','))});
+  D.cases.forEach((c,i)=>{const a=S.case[i];if(!a)return;rows.push(['case',i,c.drop_id,'',c.company,'','','',a.verdict,j(a.hypotheses),a.note,'','',a.first_verdict,j(a.first_hypotheses),a.revealed?'Y':'',a.changed_after_reveal?'Y':'',...ca(c,0),...ca(c,1)].map(q).join(','))});
   const blob=new Blob(['﻿'+rows.join('\r\n')],{type:'text/csv'});const l=document.createElement('a');l.href=URL.createObjectURL(blob);l.download='ach_review_result.csv';document.body.appendChild(l);l.click();l.remove();toast('내려받았다: ach_review_result.csv');
 };
 function parseCSV(t){const rows=[];let r=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];

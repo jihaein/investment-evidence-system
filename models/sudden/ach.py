@@ -126,6 +126,38 @@ SYSTEM = """너는 한국 경제 기사를 정보 단위로 나누고 분류하�
 [유형표] 코드: 이름 - 예시
 """ + '\n'.join(f'- {k}: {n} - {e}. 예: "{EXAMPLES[k][0]}" / "{EXAMPLES[k][1]}"' for k, (n, e) in TYPES.items())
 
+
+def _replace_once(text, old, new):
+    assert text.count(old) == 1, old
+    return text.replace(old, new)
+
+
+# ach-units-4 (2026-11-17, 사람 검수 단위 30개 근거):
+#   - 검수자가 방향 없음으로 본 단위 7개에 LLM이 긍정·부정을 붙였다. units-3은 없음을 X0·R2에만 허용해 중립 사실에도 방향을 고르게 했다.
+#   - 일반 회사채 발행 단위 2개가 C1(지분 희석)이었다. 회사채는 주식 수를 늘리지 않는다.
+# 기본은 units-3 그대로다(동결 결과 재현). units-4는 --prompt로 켜고, 효과는 검수 답과의 일치율로 먼저 본다.
+SYSTEM_4 = _replace_once(SYSTEM, '- direction: 대상 회사에 나쁜 소식이면 부정, 좋은 소식이면 긍정. X0와 R2는 없음.\n'
+                                 '  긍정은 이 회사의 실적·계약·수요가 실제로 좋아졌거나 명시적으로 상향 전망된 경우만 쓴다.',
+                         '- direction: 대상 회사에 나쁜 소식이면 부정, 좋은 소식이면 긍정. 기사만으로 좋고 나쁨을 말할 수 없는 사실'
+                         '(단순 일정·계획, 중립적인 공시, 규모·현황 서술)은 없음. X0와 R2는 항상 없음.\n'
+                         '  긍정은 이 회사의 실적·계약·수요가 실제로 좋아졌거나 명시적으로 상향 전망된 경우만, 부정은 실제로 나빠졌거나 '
+                         '명시적으로 하향 전망된 경우만 쓴다. 애매하면 없음.')
+SYSTEM_4 = _replace_once(SYSTEM_4, '이미 발행된 CB·BW의 전환청구·상장, 보호예수 해제, 블록딜은 S2.',
+                         '이미 발행된 CB·BW의 전환청구·상장, 보호예수 해제, 블록딜은 S2.\n'
+                         '- 일반 회사채·기업어음·차입처럼 주식으로 바뀌지 않는 자금 조달은 C1이 아니다. 재무 상태(부채·유동성·신용등급)와 '
+                         '함께 다루면 C2이고, 발행 사실만 있으면 C2에 방향 없음.')
+SYSTEM_4 = _replace_once(SYSTEM_4, f"- C1: {TYPES['C1'][0]} - {TYPES['C1'][1]}.",
+                         f"- C1: {TYPES['C1'][0]} - {TYPES['C1'][1]}(일반 회사채·차입은 아님).")
+SYSTEM_4 = _replace_once(SYSTEM_4, f"- C2: {TYPES['C2'][0]} - {TYPES['C2'][1]}.",
+                         f"- C2: {TYPES['C2'][0]} - {TYPES['C2'][1]}, 회사채·차입.")
+PROMPTS = {'ach-units-3': SYSTEM, 'ach-units-4': SYSTEM_4}
+
+
+def use_prompt(version):
+    """분류 지시문 버전을 바꾼다. 캐시 폴더와 캐시 키가 버전별로 나뉜다."""
+    global SYSTEM, PROMPT_VERSION
+    SYSTEM, PROMPT_VERSION = PROMPTS[version], version
+
 SCHEMA = {'type': 'object', 'additionalProperties': False, 'required': ['units'], 'properties': {'units': {
     'type': 'array', 'items': {'type': 'object', 'additionalProperties': False,
                                'required': ['quote', 'type', 'direction', 'event'],
@@ -264,9 +296,13 @@ def majority(runs, text_with_title):
     return out, {'units_proposed': quote_total, 'units_quote_ok': sum(len(ok) for ok, _ in checked)}
 
 
-def relation(unit_type, direction, hypothesis, positive_supports=True):
+def relation(unit_type, direction, hypothesis, positive_supports=True, neutral_zero=False):
     """설계서 5.4: 긍정 방향이면 +와 -를 맞바꾼다. positive_supports=False면 좋은 소식은 반증(-)만 하고
-    지지(+)는 하지 않는다(예: 좋은 소식은 H1을 반증하지만 H3·H5의 지지 근거로 쓰지 않음). 2026-11-10 관계표 수정안."""
+    지지(+)는 하지 않는다(예: 좋은 소식은 H1을 반증하지만 H3·H5의 지지 근거로 쓰지 않음). 2026-11-10 관계표 수정안.
+    neutral_zero=True면 방향 없음 단위(방향이 있는 유형인데 좋고 나쁨이 없는 사실)는 어느 가설과도 관계없음(0).
+    False(설계서 그대로)면 방향 없음은 부정 기준표를 그대로 쓴다."""
+    if neutral_zero and direction == '없음' and unit_type not in NO_DIRECTION:
+        return '0'
     r = RELATION.get(unit_type, {}).get(hypothesis, '0')
     if direction == '긍정' and unit_type not in NO_DIRECTION:
         r = {'+': '-', '-': '+'}.get(r, r)
@@ -316,7 +352,8 @@ PARAMS = {'gap': 0.5,                 # 5.6절 동률 차이 기준
           'positive_weight': 1.0,     # 긍정 방향 단위(좋은 소식) 가중 배수. 1이면 설계서 그대로
           'market_only_holds': False,  # True면 시장 규칙(K) 단위만으로는 판정하지 않고 판단보류
           'positive_supports': True,   # False면 좋은 소식은 반증만 하고 지지하지 않음 (관계표 수정안)
-          'min_support_ratio': 0.0}    # 이긴 가설의 지지가 가장 큰 지지의 이 비율 미만이면 판단보류(weak_support). 0이면 설계서 그대로
+          'min_support_ratio': 0.0,    # 이긴 가설의 지지가 가장 큰 지지의 이 비율 미만이면 판단보류(weak_support). 0이면 설계서 그대로
+          'neutral_zero': False}       # True면 방향 없음 단위는 판정에 쓰지 않음(relation 참고). ach-units-4와 함께 쓴다
 
 
 def score(units, params=None):
@@ -325,7 +362,7 @@ def score(units, params=None):
     for u in units:
         w = u['w'] * (params['positive_weight'] if u['direction'] == '긍정' and u['type'] not in NO_DIRECTION else 1.0)
         for h in HYPOTHESES:
-            r = relation(u['type'], u['direction'], h, params['positive_supports'])
+            r = relation(u['type'], u['direction'], h, params['positive_supports'], params['neutral_zero'])
             if r == '+':
                 support[h] += w
             elif r == '-':
@@ -340,7 +377,8 @@ def decide(units, gap=None, params=None):
     support, refute = score(units, params)
     cands = [h for h in HYPOTHESES if support[h] > 0]
     base = {'support': support, 'refute': refute}
-    evidence = [u for u in units if any(relation(u['type'], u['direction'], h, params['positive_supports']) != '0' for h in HYPOTHESES)]
+    evidence = [u for u in units if any(relation(u['type'], u['direction'], h, params['positive_supports'], params['neutral_zero']) != '0'
+                                        for h in HYPOTHESES)]
     if params['market_only_holds'] and evidence and all(u.get('market_rule') or u['type'].startswith('K') for u in evidence):
         return {**base, 'hypothesis': 'H0', 'verdict': '판단보류', 'reason': 'market_rule_only', 'runner_up': None}
     if not cands:
@@ -367,8 +405,8 @@ def judge(units, gap=None, params=None):
     flags = {'fragile': False, 'unverified_basis': False, 'mixed': [], 'low_confidence': False}
     top = main['hypothesis']
     if top != 'H0':
-        ps = {**PARAMS, **(params or {})}['positive_supports']
-        contrib = [u for u in units if relation(u['type'], u['direction'], top, ps) == '+']
+        p = {**PARAMS, **(params or {})}
+        contrib = [u for u in units if relation(u['type'], u['direction'], top, p['positive_supports'], p['neutral_zero']) == '+']
         removable = [u for u in contrib if not u.get('mandatory')]   # 필수 공시는 빼지 않는다
         if removable:
             biggest = max(removable, key=lambda u: u['w'])
@@ -543,7 +581,12 @@ def main(argv=None):
     ap.add_argument('--min-support-ratio', type=float,
                     help='이긴 가설의 지지가 최대 지지의 이 비율 미만이면 판단보류 (기본 0 = 설계서, 채택값 0.25)')
     ap.add_argument('--no-dart', action='store_true', help='DART 공시 없이 실행')
+    ap.add_argument('--prompt', choices=sorted(PROMPTS), default='ach-units-3', help='분류 지시문 버전 (기본 units-3, 동결 결과와 같음)')
+    ap.add_argument('--neutral-zero', action='store_true', help='방향 없음 단위는 판정에 쓰지 않음 (ach-units-4와 함께)')
     args = ap.parse_args(argv)
+    use_prompt(args.prompt)
+    if args.neutral_zero:
+        PARAMS['neutral_zero'] = True
     lf.load_env()
     model = args.model or os.getenv('OPENAI_ACH_MODEL') or lf.DEFAULT_MODEL
     scores = args.scores or args.cache / 'scores_all_hybrid/pooled'
