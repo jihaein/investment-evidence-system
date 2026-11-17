@@ -39,3 +39,29 @@ def test_avoided_return_after_sell_and_delisting():
     by = {r['stock_code']: r for r in rows}
     assert by['A']['after_return'] == pytest.approx(0.5 * 1.2 - 1)    # 매도 다음 날부터
     assert by['B']['delisted_later'] and by['B']['after_return'] == -1.0   # 상장폐지, 회수율 0
+
+
+def test_legacy_basket_skips_korean_header_row(tmp_path):
+    f = tmp_path / '05_주가_일별_2015-2019.csv'
+    f.write_text('BAS_DD,ISU_CD,FLUC_RT,TDD_CLSPRC\n기준일,종목코드,등락률,종가\n'
+                 '20160104,53660,-1.5,100\n20160104,010170,2.0,50\n20160105,53660,0.5,101\n', encoding='utf-8-sig')
+    b = jb.load_legacy_basket(f)
+    assert list(b.columns) == ['010170', '053660'] and len(b) == 2
+    assert b.loc[pd.Timestamp('2016-01-04'), '053660'] == -1.5
+
+
+def test_basket_uses_team_engine_format_when_data_dir_given(tmp_path):
+    d = tmp_path / '추가자료' / '시장자료'
+    d.mkdir(parents=True)
+    (d / 'grid.csv').write_text('BAS_DD,stock_code,FLUC_RT\n20200102,5930,1.0\n20200103,5930,-2.0\n', encoding='utf-8-sig')
+    eng = jb.load_engine()
+    b = jb.load_basket(eng, tmp_path)
+    assert list(b.columns) == ['005930'] and b.iloc[1, 0] == -2.0
+
+
+def test_team_metrics_rf0_match_backtest_metrics_definition():
+    w = pd.Series([100, 102, 99, 103], index=DATES, dtype=float)
+    m = jb.metrics(w, 0.0)
+    r = w.pct_change().dropna()
+    assert m['sharpe_rf0'] == pytest.approx(r.mean() / r.std() * np.sqrt(252), abs=1e-3)
+    assert m['sharpe_rf0'] == m['sharpe']                   # 무위험 0이면 두 정의가 같다

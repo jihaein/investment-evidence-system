@@ -18,15 +18,18 @@ joint_backtest.py
   - 대조군: 비가치 판정에 매도, 판정과 상관없이 첫 급락에 매도. 급락 판정이 정보가 있다면 가치훼손 매도가 대조군보다 나아야 함
 
 [지표]
-급락, 연 수익률, 연 변동성, 샤프·소르티노(무위험 = 엔진 현금 이자), 최대낙폭(MDD).
+누적수익률, 연 수익률, 연 변동성, 샤프·소르티노(무위험 = 엔진 현금 이자), 최대낙폭(MDD).
+팀 지표(backtest/metrics.py)와 같은 정의의 샤프·소르티노(무위험 0)도 함께 낸다(sharpe_rf0, sortino_rf0).
 매도마다 "피한 수익률" = 매도 다음 날부터 끝까지 그 종목의 누적 수익률 (음수면 매도가 도움이 됐다)
 
 [주가]
-엔진은 DAILY_PRICE_DATA_DIR의 05_주가_일별_2015-2019.csv를 읽는다.
-설정이 없으면 data/ohlson을 쓴다(같은 파일)
+기본은 팀 19종목 표(DAILY_PRICE_DATA_DIR 또는 data/ohlson의 05_주가_일별_2015-2019.csv)를 이 파일에서 읽는다.
+main의 엔진(2026-11-17)은 BACKTEST_DATA_DIR(120종목, 2016~2020·2020~2026) 형식만 읽으므로,
+그 데이터로 돌릴 때는 --data-dir로 폴더를 준다. 급락 판정·임계 경보는 아직 19종목에만 있어 다른 종목은 신호가 없다.
 
     python models/sudden/joint_backtest.py                  # → models/sudden/cache/joint_backtest/
     python models/sudden/joint_backtest.py --k 0.5 --h 5
+    python models/sudden/joint_backtest.py --data-dir <BACKTEST_DATA_DIR>
 """
 import argparse
 import importlib.util
@@ -48,11 +51,28 @@ OUT = HERE / 'cache/joint_backtest'
 
 def load_engine():
     """models/sudden/backtest.py와 이름이 겹쳐 파일 경로로 불러온다."""
-    os.environ.setdefault('DAILY_PRICE_DATA_DIR', str(ROOT / 'data/ohlson'))
     spec = importlib.util.spec_from_file_location('team_engine', ROOT / 'backtest/engine.py')
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
+
+
+def load_legacy_basket(path=None):
+    """팀 19종목 2015~2019 일별 등락률(%) 표 (날짜 × 종목코드).
+    2026-11-17 main의 엔진은 BACKTEST_DATA_DIR(120종목) 형식만 읽는다. 급락 판정은 아직 이 19종목에만 있어서
+    예전 엔진의 읽기 방식(둘째 줄 한글 머리글 건너뜀, ISU_CD, FLUC_RT)을 여기에 그대로 둔다."""
+    path = Path(path or Path(os.getenv('DAILY_PRICE_DATA_DIR', ROOT / 'data/ohlson')) / '05_주가_일별_2015-2019.csv')
+    data = pd.read_csv(path, header=0, skiprows=[1], dtype=str, encoding='utf-8-sig', usecols=['BAS_DD', 'ISU_CD', 'FLUC_RT'])
+    data['FLUC_RT'] = pd.to_numeric(data['FLUC_RT'], errors='coerce')
+    data['BAS_DD'] = pd.to_datetime(data['BAS_DD'], errors='coerce')
+    data['ISU_CD'] = data['ISU_CD'].str.zfill(6)
+    return data.pivot(index='BAS_DD', columns='ISU_CD', values='FLUC_RT')
+
+
+def load_basket(eng, data_dir=None):
+    """data_dir(팀 BACKTEST_DATA_DIR 형식: <dir>/추가자료/시장자료/*.csv)가 있으면 main 엔진으로 읽고,
+    없으면 19종목 표를 읽는다."""
+    return eng.load_daily_price(str(data_dir)) if data_dir else load_legacy_basket()
 
 
 def next_trading_day(dates, day):
@@ -88,7 +108,10 @@ def metrics(w, rf_daily):
     years = len(r) / 252
     down = ex[ex < 0]
     peak = w.cummax()
-    return {'final_W': round(float(w.iloc[-1])), 'cum_return': round(float(w.iloc[-1] / w.iloc[0] - 1), 4),
+    raw_down = np.sqrt((r.clip(upper=0) ** 2).mean())    # 팀 metrics.py 정의(무위험 0)
+    team = {'sharpe_rf0': round(float(r.mean() / r.std() * np.sqrt(252)), 3) if r.std() else None,
+            'sortino_rf0': round(float(r.mean() / raw_down * np.sqrt(252)), 3) if raw_down else None}
+    return {**team, 'final_W': round(float(w.iloc[-1])), 'cum_return': round(float(w.iloc[-1] / w.iloc[0] - 1), 4),
             'cagr': round(float((w.iloc[-1] / w.iloc[0]) ** (1 / years) - 1), 4),
             'ann_vol': round(float(r.std() * np.sqrt(252)), 4),
             'sharpe': round(float(ex.mean() / ex.std() * np.sqrt(252)), 3) if ex.std() else None,
@@ -144,9 +167,9 @@ def placebo(eng, basket, schedule, draws=200, seed=0):
     return out
 
 
-def run(k=ev.T.DEFAULT_K, h=ev.T.DEFAULT_H, contract_path=ROOT / 'contracts/sudden_result.json', draws=200):
+def run(k=ev.T.DEFAULT_K, h=ev.T.DEFAULT_H, contract_path=ROOT / 'contracts/sudden_result.json', draws=200, data_dir=None):
     eng = load_engine()
-    basket = eng.load_daily_price()
+    basket = load_basket(eng, data_dir)
     dates = basket.index[basket.index >= START]
     codes = list(basket.columns)
     contract = json.loads(Path(contract_path).read_text(encoding='utf-8'))
@@ -189,8 +212,9 @@ def main(argv=None):
     ap.add_argument('--h', type=float, default=ev.T.DEFAULT_H)
     ap.add_argument('--out', type=Path, default=OUT)
     ap.add_argument('--draws', type=int, default=200, help='무작위 기준선 반복 수 (0이면 생략)')
+    ap.add_argument('--data-dir', type=Path, help='팀 BACKTEST_DATA_DIR 형식 폴더 (없으면 19종목 표)')
     args = ap.parse_args(argv)
-    res, curves = run(args.k, args.h, draws=args.draws)
+    res, curves = run(args.k, args.h, draws=args.draws, data_dir=args.data_dir)
     args.out.mkdir(parents=True, exist_ok=True)
     tag = f'k{args.k:g}_h{args.h:g}'
     (args.out / f'joint_backtest_{tag}.json').write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding='utf-8')
