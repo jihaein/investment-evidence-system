@@ -142,7 +142,7 @@ def run_three_strategies(grid, basket_codes, base_dir, ksic,
     if with_sum:
         schedules["서서히_합산"] = seoseohi_schedule(base_dir, ksic, basket_codes, grid, baseline_date,
                                                  trigger, end_date, price_gate, mode="sum")
-    return {name: run_strategy(basket, sch, end_date=end_date) for name, sch in schedules.items()}, schedules
+    return {name: run_strategy(basket, sch, end_date=end_date, start_date=entry_date) for name, sch in schedules.items()}, schedules
 
 
 #  20종목 × 10회 무작위 바스켓 

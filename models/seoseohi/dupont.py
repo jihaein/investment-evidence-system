@@ -351,13 +351,29 @@ DP_NUMERIC = ["ifrs_Revenue_ttm", "dart_OperatingIncomeLoss_ttm",
 DP_MERGE_KEYS = ["stock_code", "fs_div", "bsns_year", "quarter", "rcept_no"]
 
 
+_DP_NEW_SNAP_ROOT = Path("추가자료") / "기준일별_원본"   # 신버전: {기준일}/DuPont
+
+
 def _dp_snapshot_root(base_dir):
     return Path(base_dir) / DUPONT_SNAPSHOT_REL
 
 
+def _dp_is_old(base_dir):
+    return (Path(base_dir) / DUPONT_SNAPSHOT_REL).is_dir()
+
+
 def dp_list_snapshot_dates(base_dir):
-    """기준일 폴더 이름들(오름차순)."""
-    return sorted(p.name for p in _dp_snapshot_root(base_dir).iterdir() if p.is_dir())
+    """기준일 폴더 이름들(오름차순). 두 레이아웃 모두 지원."""
+    if _dp_is_old(base_dir):
+        return sorted(p.name for p in _dp_snapshot_root(base_dir).iterdir() if p.is_dir())
+    root = Path(base_dir) / _DP_NEW_SNAP_ROOT
+    return sorted(p.name for p in root.iterdir() if p.is_dir() and (p / "DuPont").is_dir())
+
+
+def _dp_dir_for(base_dir, name):
+    if _dp_is_old(base_dir):
+        return _dp_snapshot_root(base_dir) / name
+    return Path(base_dir) / _DP_NEW_SNAP_ROOT / name / "DuPont"
 
 
 def dp_resolve_snapshot_dir(base_dir, as_of_date):
@@ -369,7 +385,7 @@ def dp_resolve_snapshot_dir(base_dir, as_of_date):
             chosen = name
         else:
             break
-    return (_dp_snapshot_root(base_dir) / chosen) if chosen else None
+    return _dp_dir_for(base_dir, chosen) if chosen else None
 
 
 def load_ksic_from_base(base_dir):

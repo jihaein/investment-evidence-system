@@ -338,13 +338,29 @@ OHLSON_SNAPSHOT_REL = Path("추가자료") / "기준일별_원본" / "Ohlson" / 
 PRICE_REL = Path("추가자료") / "시장자료" / "120종목_일별시가총액_2015-11-30_2020-12-31.csv"
 
 
+_OH_NEW_SNAP_ROOT = Path("추가자료") / "기준일별_원본"   # 신버전: {기준일}/Ohlson
+
+
 def _oh_snapshot_root(base_dir):
     return Path(base_dir) / OHLSON_SNAPSHOT_REL
 
 
+def _oh_is_old(base_dir):
+    return (Path(base_dir) / OHLSON_SNAPSHOT_REL).is_dir()
+
+
 def oh_list_snapshot_dates(base_dir):
-    """기준일 폴더 이름들(오름차순)."""
-    return sorted(p.name for p in _oh_snapshot_root(base_dir).iterdir() if p.is_dir())
+    """기준일 폴더 이름들(오름차순). 두 레이아웃 모두 지원."""
+    if _oh_is_old(base_dir):
+        return sorted(p.name for p in _oh_snapshot_root(base_dir).iterdir() if p.is_dir())
+    root = Path(base_dir) / _OH_NEW_SNAP_ROOT
+    return sorted(p.name for p in root.iterdir() if p.is_dir() and (p / "Ohlson").is_dir())
+
+
+def _oh_dir_for(base_dir, name):
+    if _oh_is_old(base_dir):
+        return _oh_snapshot_root(base_dir) / name
+    return Path(base_dir) / _OH_NEW_SNAP_ROOT / name / "Ohlson"
 
 
 def oh_resolve_snapshot_dir(base_dir, as_of_date):
@@ -356,7 +372,7 @@ def oh_resolve_snapshot_dir(base_dir, as_of_date):
             chosen = name
         else:
             break
-    return (_oh_snapshot_root(base_dir) / chosen) if chosen else None
+    return _oh_dir_for(base_dir, chosen) if chosen else None
 
 
 # 스냅샷 04 → (종목×분기) TTM·BV(전기) 표. build_ohlson_input 의 로직을 그대로 재사용한다
@@ -389,7 +405,9 @@ def load_mktcap(base_dir):
     key = str(base_dir)
     if key in _OH_MKTCAP_CACHE:
         return _OH_MKTCAP_CACHE[key]
-    df = pd.read_csv(Path(base_dir) / PRICE_REL, header=0, dtype=str, encoding="utf-8-sig")
+    import glob as _glob
+    _mkt = sorted(_glob.glob(str(Path(base_dir) / "추가자료" / "시장자료" / "*.csv")))
+    df = pd.read_csv(_mkt[0], header=0, dtype=str, encoding="utf-8-sig")
     df["stock_code"] = df["stock_code"].str.zfill(6)
     df["BAS_DD"] = pd.to_datetime(df["BAS_DD"], format="%Y%m%d", errors="coerce")
     df["MKTCAP"] = pd.to_numeric(df["MKTCAP"], errors="coerce")

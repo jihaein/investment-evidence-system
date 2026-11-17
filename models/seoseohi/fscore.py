@@ -185,9 +185,12 @@ def apply_same_basis_prior(data, same_basis):
     out["prior_override_count"] = 0
 
     for row in same_basis.itertuples(index=False):
+        short = SAME_BASIS_COLUMNS.get(row.column)                # 신호에 전년값이 필요없는 계정(cfo 등)은 건너뜀
+        if short is None:
+            continue
         years_back = row.score_year - row.value_fiscal_year       # 1이면 전년, 2면 전전년
         suffix = "_prev" if years_back == 1 else "_prev2"
-        target = SAME_BASIS_COLUMNS[row.column] + suffix          # 예: assets → assets_prev
+        target = short + suffix                                   # 예: assets → assets_prev
 
         mask = (
             (out["stock_code"] == row.stock_code)
@@ -524,29 +527,42 @@ def fscore_compare(table, stock_code, buy_date, now_date):
 #        추가자료/FScore_동일기준_비교기간보완.csv
 # ============================================================
 
-SNAPSHOT_REL = Path("추가자료") / "기준일별_원본" / "FScore" / "snapshots"
+SNAPSHOT_REL = Path("추가자료") / "기준일별_원본" / "FScore" / "snapshots"   # 구버전 레이아웃
+_NEW_SNAP_ROOT = Path("추가자료") / "기준일별_원본"                          # 신버전: {기준일}/FScore
 
 
 def _snapshot_root(base_dir):
     return Path(base_dir) / SNAPSHOT_REL
 
 
+def _fs_is_old(base_dir):
+    return (Path(base_dir) / SNAPSHOT_REL).is_dir()
+
+
 def list_snapshot_dates(base_dir):
-    """기준일 폴더 이름들(오름차순). 예: ['2015-12-01', '2016-04-01', ...]"""
-    root = _snapshot_root(base_dir)
-    return sorted(p.name for p in root.iterdir() if p.is_dir())
+    """기준일 폴더 이름들(오름차순). 두 레이아웃(구: Model/snapshots/날짜, 신: 날짜/Model) 모두 지원."""
+    if _fs_is_old(base_dir):
+        return sorted(p.name for p in _snapshot_root(base_dir).iterdir() if p.is_dir())
+    root = Path(base_dir) / _NEW_SNAP_ROOT
+    return sorted(p.name for p in root.iterdir() if p.is_dir() and (p / "FScore").is_dir())
+
+
+def _fs_dir_for(base_dir, name):
+    if _fs_is_old(base_dir):
+        return _snapshot_root(base_dir) / name
+    return Path(base_dir) / _NEW_SNAP_ROOT / name / "FScore"
 
 
 def resolve_snapshot_dir(base_dir, as_of_date):
-    """as_of_date 이하의 기준일 중 가장 최근 스냅샷 폴더 경로. 없으면 None (그날엔 아직 데이터 없음)."""
+    """as_of_date 이하의 기준일 중 가장 최근 스냅샷 폴더 경로. 없으면 None."""
     as_of = pd.Timestamp(as_of_date)
     chosen = None
-    for name in list_snapshot_dates(base_dir):     # 오름차순이므로
+    for name in list_snapshot_dates(base_dir):     # 오름차순
         if pd.Timestamp(name) <= as_of:
-            chosen = name                          # 조건을 만족하는 한 계속 갱신 → 마지막이 가장 최근
+            chosen = name
         else:
-            break                                  # 기준일이 평가일을 넘으면 더 볼 필요 없음
-    return (_snapshot_root(base_dir) / chosen) if chosen else None
+            break
+    return _fs_dir_for(base_dir, chosen) if chosen else None
 
 
 def _snapshot_files(snapshot_dir):

@@ -7,10 +7,11 @@ COST_RATE = 0.001  # 0.1% transaction fee
 CASH_DAILY_RATE = 0.000034
 
 
-def load_daily_price() -> pd.DataFrame:
-    """Daily % return grid (date × stock_code) for the 120-stock backtest.
+def load_daily_price(base_dir=None) -> pd.DataFrame:
+    """Daily % return grid (date × stock_code) for the backtest.
 
-    Source: BACKTEST_DATA_DIR/추가자료/시장자료/120종목_일별시가총액_2015-11-30_2020-12-31.csv
+    base_dir 를 주면 그 폴더의 추가자료/시장자료/*.csv 를 읽는다(파일명 자동 탐색).
+    안 주면 BACKTEST_DATA_DIR 환경변수를 쓴다. 2016-2020 / 2020-2026 둘 다 지원.
 
     등락률(FLUC_RT) 컬럼이 있으면 그것을 그대로 쓴다. FLUC_RT 는 거래소 공식 일간수익률로,
     감자·액면분할·유상증자 같은 기업행위를 이미 반영한다(= 미조정 종가로 계산할 때 생기는
@@ -19,12 +20,14 @@ def load_daily_price() -> pd.DataFrame:
     (구버전 호환) FLUC_RT 가 없으면 미조정 종가(TDD_CLSPRC)의 pct_change 로 대체 계산하되,
     이 경우 기업행위가 가짜 수익률로 잡힐 수 있다.
     """
+    import glob
     load_dotenv()
-    base = os.getenv("BACKTEST_DATA_DIR")
-    file_path = os.path.join(
-        base, "추가자료", "시장자료",
-        "120종목_일별시가총액_2015-11-30_2020-12-31.csv",
-    )
+    base = base_dir or os.getenv("BACKTEST_DATA_DIR")
+    market_dir = os.path.join(base, "추가자료", "시장자료")
+    csvs = sorted(glob.glob(os.path.join(market_dir, "*.csv")))
+    if not csvs:
+        raise FileNotFoundError(f"시장자료 CSV 없음: {market_dir}")
+    file_path = csvs[0]
 
     data = pd.read_csv(file_path, header=0, dtype=str, encoding="utf-8-sig")
     data["stock_code"] = data["stock_code"].str.zfill(6)
@@ -41,7 +44,7 @@ def load_daily_price() -> pd.DataFrame:
 
 
 # step 6: putting everything together in a function
-def run_strategy(basket, sell_schedule, recovery_rate=1.0, reinvest=False, end_date=None):
+def run_strategy(basket, sell_schedule, recovery_rate=1.0, reinvest=False, end_date=None, start_date="2016-01-04"):
 
     # 1. day-0 setup   ← compute n, investable, per_stock, holdings, cash
     n = len(basket.columns)  # number of stock codes listed
@@ -59,11 +62,10 @@ def run_strategy(basket, sell_schedule, recovery_rate=1.0, reinvest=False, end_d
     # 보유가치
     holdings = pd.Series(data=per_stock, index=basket.columns)
 
-    # get the days to walk
-    start = "2016-01-04"
+    # get the days to walk (start_date = 진입일; 데이터가 더 늦게 시작하면 그 첫 거래일부터)
     if end_date is None:
         end_date = basket.index[-1]
-    dates = basket.index[(basket.index >= start) & (basket.index <= end_date)]  # start from the first trading day of 2016
+    dates = basket.index[(basket.index >= pd.Timestamp(start_date)) & (basket.index <= pd.Timestamp(end_date))]
 
     # detecting delistings
     window_end = dates[-1]
