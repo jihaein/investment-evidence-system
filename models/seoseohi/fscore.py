@@ -50,13 +50,14 @@ DELISTED = {"052270": "2017-04-12"}        # 상장폐지 종목과 폐지일 (�
 #      근거: 본 데이터 181개 조합에서 1년 보유 표준편차 2.49, 가운데 50%가 -2~+2.
 #      19종목 x 5년으로 정한 초기 가설값이라 백테스팅 데이터로 다시 확인한다
 RISK_SCALE_CONFIRMED = True    # 1차 기준은 정민 결정 ④의 전제로 사용됨. 정균 확인 전이면 False로
+# 이전: [(5, 2), (3, 1), (-9, 0)] — PM 2026-11-13 완화
 RISK_SCALE = [
-    (5, 2),      # 5점 이상 하락 (매우 큰 하락)
-    (3, 1),      # 3~4점 하락 (평소 범위를 벗어난 하락)
-    (-9, 0),     # 그 외 (2점 이하 하락, 상승 포함)
+    (4, 2),      # 4점 이상 하락 (매우 큰 하락)
+    (2, 1),      # 2~3점 하락 (평소 범위를 벗어난 하락)
+    (-9, 0),     # 그 외 (1점 이하 하락, 상승 포함)
 ]
 # 2차: 평가일 F-Score가 이 값 이하이면 위험점수 +1 (재무적으로 약한 집단. Piotroski 2000)
-LEVEL_ADD_MAX_SCORE = 1
+LEVEL_ADD_MAX_SCORE = 2    # 이전: 1 — PM 2026-11-13 완화
 LEVEL_ADD_POINTS = 1
 HOLD_IF_SAME_REPORT = True     # 매수일·평가일이 같은 보고서면 위험점수 유보
 
@@ -184,9 +185,12 @@ def apply_same_basis_prior(data, same_basis):
     out["prior_override_count"] = 0
 
     for row in same_basis.itertuples(index=False):
+        short = SAME_BASIS_COLUMNS.get(row.column)                # 신호에 전년값이 필요없는 계정(cfo 등)은 건너뜀
+        if short is None:
+            continue
         years_back = row.score_year - row.value_fiscal_year       # 1이면 전년, 2면 전전년
         suffix = "_prev" if years_back == 1 else "_prev2"
-        target = SAME_BASIS_COLUMNS[row.column] + suffix          # 예: assets → assets_prev
+        target = short + suffix                                   # 예: assets → assets_prev
 
         mask = (
             (out["stock_code"] == row.stock_code)
@@ -403,29 +407,9 @@ def level_add_points(f_score_eval):
     return LEVEL_ADD_POINTS if f_score_eval <= LEVEL_ADD_MAX_SCORE else 0
 
 
-# 종목 하나의 매수일과 평가일(현재 날짜)을 비교한다. 문제가 있으면 사유를 남기고 그 자리에서 끝낸다
-def evaluate_pair(df, stock_code, buy_date, eval_date):
-    out = {"stock_code": stock_code, "buy_date": buy_date, "eval_date": eval_date,
-           "f_score_drop": None, "risk_drop": None, "risk_level_add": None, "risk_score": None}
-    hold = []
-
-    # 1) 상장폐지 이후 날짜는 분석 대상 아님
-    if stock_code in DELISTED:
-        delist_date = pd.Timestamp(DELISTED[stock_code])
-        if pd.Timestamp(buy_date) > delist_date or pd.Timestamp(eval_date) > delist_date:
-            hold.append("after_delisting")
-
-    # 2) 두 날짜의 F-Score 찾기
-    buy = find_fscore_as_of(df, stock_code, buy_date)
-    now = find_fscore_as_of(df, stock_code, eval_date)
-    if buy is None:
-        hold.append("buy_no_data")
-    if now is None:
-        hold.append("eval_no_data")
-    if hold:
-        out["hold_reason"] = "|".join(hold)
-        return out
-
+# 두 보고서(매수일·평가일)로 하락폭과 위험점수를 채운다. 단일표/스냅샷 모드가 공유한다
+# buy, now 는 find_fscore_as_of 가 돌려준 한 줄(Series). 둘 다 None 이 아니어야 한다
+def _fill_scores(out, buy, now):
     # 3) 근거 보고서와 점수 기록 (f_score_buy = 매수일 점수, f_score_eval = 평가일 점수)
     out["fiscal_year_buy"] = buy["fiscal_year"]
     out["fiscal_year_eval"] = now["fiscal_year"]
@@ -449,6 +433,32 @@ def evaluate_pair(df, stock_code, buy_date, eval_date):
     out["risk_level_add"] = level_add_points(out["f_score_eval"])
     out["risk_score"] = out["risk_drop"] + out["risk_level_add"]
     return out
+
+
+# 종목 하나의 매수일과 평가일(현재 날짜)을 비교한다. 문제가 있으면 사유를 남기고 그 자리에서 끝낸다
+def evaluate_pair(df, stock_code, buy_date, eval_date):
+    out = {"stock_code": stock_code, "buy_date": buy_date, "eval_date": eval_date,
+           "f_score_drop": None, "risk_drop": None, "risk_level_add": None, "risk_score": None}
+    hold = []
+
+    # 1) 상장폐지 이후 날짜는 분석 대상 아님
+    if stock_code in DELISTED:
+        delist_date = pd.Timestamp(DELISTED[stock_code])
+        if pd.Timestamp(buy_date) > delist_date or pd.Timestamp(eval_date) > delist_date:
+            hold.append("after_delisting")
+
+    # 2) 두 날짜의 F-Score 찾기
+    buy = find_fscore_as_of(df, stock_code, buy_date)
+    now = find_fscore_as_of(df, stock_code, eval_date)
+    if buy is None:
+        hold.append("buy_no_data")
+    if now is None:
+        hold.append("eval_no_data")
+    if hold:
+        out["hold_reason"] = "|".join(hold)
+        return out
+
+    return _fill_scores(out, buy, now)
 
 
 def evaluate_pairs(df, pairs):
@@ -495,6 +505,148 @@ def build_table():
 
 def fscore_compare(table, stock_code, buy_date, now_date):
     return evaluate_pair(table, stock_code, buy_date, now_date)
+
+
+# ============================================================
+#  스냅샷(점별) 모드 — 미래정보 차단(look-ahead bias) 방지
+# ------------------------------------------------------------
+#  [왜] 기존 build_table 은 한 개의 큰 파일에서 disclosed_date 로 '그날 이전' 보고서를
+#  고른다. 하지만 같은 파일 안에 몇 년 뒤 올라온 '정정(訂正)'이 섞여 있으면, 그 정정이
+#  먼 과거 연도에 붙으면서 당시엔 몰랐던 숫자를 평가에 쓰게 된다(미래정보 유입).
+#
+#  [해법] 데이터팀이 기준일(21개)마다 '그 날짜까지 공시된 원본만' 담은 스냅샷 폴더를
+#  따로 만들어 줬다. 평가일마다 기준일 ≤ 평가일 인 가장 최근 스냅샷을 골라, 그 폴더의
+#  파일로만 F-Score 를 만든다. 애초에 미래 보고서가 폴더에 없으므로 유입이 불가능하다.
+#
+#  스냅샷 폴더 구조:
+#    <BACKTEST_DATA_DIR>/추가자료/기준일별_원본/FScore/snapshots/<기준일>/
+#        02_재무_연간.csv
+#        09_증자감자현황.csv
+#        추가자료/30_총장기부채_합계확인상태.csv
+#        추가자료/F7_보통주유상증자_연도별판정.csv
+#        추가자료/FScore_동일기준_비교기간보완.csv
+# ============================================================
+
+SNAPSHOT_REL = Path("추가자료") / "기준일별_원본" / "FScore" / "snapshots"   # 구버전 레이아웃
+_NEW_SNAP_ROOT = Path("추가자료") / "기준일별_원본"                          # 신버전: {기준일}/FScore
+
+
+def _snapshot_root(base_dir):
+    return Path(base_dir) / SNAPSHOT_REL
+
+
+def _fs_is_old(base_dir):
+    return (Path(base_dir) / SNAPSHOT_REL).is_dir()
+
+
+def list_snapshot_dates(base_dir):
+    """기준일 폴더 이름들(오름차순). 두 레이아웃(구: Model/snapshots/날짜, 신: 날짜/Model) 모두 지원."""
+    if _fs_is_old(base_dir):
+        return sorted(p.name for p in _snapshot_root(base_dir).iterdir() if p.is_dir())
+    root = Path(base_dir) / _NEW_SNAP_ROOT
+    return sorted(p.name for p in root.iterdir() if p.is_dir() and (p / "FScore").is_dir())
+
+
+def _fs_dir_for(base_dir, name):
+    if _fs_is_old(base_dir):
+        return _snapshot_root(base_dir) / name
+    return Path(base_dir) / _NEW_SNAP_ROOT / name / "FScore"
+
+
+def resolve_snapshot_dir(base_dir, as_of_date):
+    """as_of_date 이하의 기준일 중 가장 최근 스냅샷 폴더 경로. 없으면 None."""
+    as_of = pd.Timestamp(as_of_date)
+    chosen = None
+    for name in list_snapshot_dates(base_dir):     # 오름차순
+        if pd.Timestamp(name) <= as_of:
+            chosen = name
+        else:
+            break
+    return _fs_dir_for(base_dir, chosen) if chosen else None
+
+
+def _snapshot_files(snapshot_dir):
+    d = Path(snapshot_dir)
+    extra = d / "추가자료"
+    return {
+        "annual": d / "02_재무_연간.csv",
+        "issues": d / "09_증자감자현황.csv",
+        "ltd":    extra / "30_총장기부채_합계확인상태.csv",
+        "f7":     extra / "F7_보통주유상증자_연도별판정.csv",
+        "same":   extra / "FScore_동일기준_비교기간보완.csv",
+    }
+
+
+# 같은 스냅샷을 여러 종목·여러 쌍이 다시 쓰므로 한 번 만든 표는 캐시한다 (기준일 21개뿐)
+_SNAPSHOT_TABLE_CACHE = {}
+
+
+def build_table_from_snapshot(snapshot_dir):
+    """스냅샷 폴더 하나로 회사×연도 F-Score 표를 만든다. build_table 과 같은 단계, 경로만 다름."""
+    key = str(snapshot_dir)
+    if key in _SNAPSHOT_TABLE_CACHE:
+        return _SNAPSHOT_TABLE_CACHE[key]
+
+    f = _snapshot_files(snapshot_dir)
+    annual = load_annual(f["annual"])
+    ltd = load_ltd(f["ltd"])
+    data = combine(annual, ltd)
+    data = attach_f7(data, load_f7(f["f7"]))
+    data = add_prior_years(data)
+    data = apply_same_basis_prior(data, load_same_basis(f["same"]))
+    data = add_signals(data)
+    data = data[data["fiscal_year"] >= FIRST_SCORE_YEAR].copy()
+    data = add_fscore(data)
+
+    _SNAPSHOT_TABLE_CACHE[key] = data
+    return data
+
+
+def clear_snapshot_cache():
+    _SNAPSHOT_TABLE_CACHE.clear()
+
+
+# 스냅샷 기반 매수일·평가일 비교 (미래정보 차단판)
+#   - 매수일 점수: 매수일 스냅샷에서 매수일까지 공시된 최신 보고서
+#   - 평가일 점수: 평가일 스냅샷에서 평가일까지 공시된 최신 보고서
+#   두 날짜가 서로 다른 스냅샷(=다른 시점의 지식)을 쓰는 것이 핵심이다.
+def fscore_compare_pit(base_dir, stock_code, buy_date, now_date):
+    out = {"stock_code": stock_code, "buy_date": buy_date, "eval_date": now_date,
+           "f_score_drop": None, "risk_drop": None, "risk_level_add": None, "risk_score": None}
+    hold = []
+
+    # 1) 상장폐지 이후 날짜는 분석 대상 아님 (DELISTED 에 등록된 종목만)
+    if stock_code in DELISTED:
+        delist_date = pd.Timestamp(DELISTED[stock_code])
+        if pd.Timestamp(buy_date) > delist_date or pd.Timestamp(now_date) > delist_date:
+            hold.append("after_delisting")
+
+    # 2) 각 날짜에 맞는 스냅샷 고르기
+    buy_dir = resolve_snapshot_dir(base_dir, buy_date)
+    eval_dir = resolve_snapshot_dir(base_dir, now_date)
+    if buy_dir is None:
+        hold.append("buy_no_snapshot")
+    if eval_dir is None:
+        hold.append("eval_no_snapshot")
+    if hold:
+        out["hold_reason"] = "|".join(hold)
+        return out
+
+    # 3) 각 스냅샷에서 그날까지의 최신 보고서 점수 찾기
+    buy = find_fscore_as_of(build_table_from_snapshot(buy_dir), stock_code, buy_date)
+    now = find_fscore_as_of(build_table_from_snapshot(eval_dir), stock_code, now_date)
+    if buy is None:
+        hold.append("buy_no_data")
+    if now is None:
+        hold.append("eval_no_data")
+    if hold:
+        out["hold_reason"] = "|".join(hold)
+        return out
+
+    # 4) 공통 채점 로직 (단일표 모드와 동일)
+    out["snapshot_buy"] = Path(buy_dir).name
+    out["snapshot_eval"] = Path(eval_dir).name
+    return _fill_scores(out, buy, now)
 
 
 if __name__ == "__main__":
