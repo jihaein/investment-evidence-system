@@ -1,75 +1,85 @@
 # 서서히 데이터 파이프라인 (data_pipeline/)
 
-리테일 투자자용 재무 훼손 탐지 모델 '서서히'의 데이터 계층.
 원천 데이터를 PostgreSQL(Supabase)로 적재하고, 모델 신호를 사전계산해 앱이 조회할 수 있게 한다.
 
 ---
 
-## 1. 아키텍처 한눈에
+## 1. 아키텍처
 
 ```
-  원천 데이터 (CSV, 스냅샷)            Supabase                      앱 / API
-  ┌───────────────────┐        ┌────────────────────────┐
-  │ 가격 CSV          │──적재─▶│ PostgreSQL              │
-  │ 기업개황(KSIC)    │        │  · stocks  (종목 마스터)│◀─ FastAPI (backend/api.py)
-  │ 기준일별 스냅샷   │─(모델)▶│  · prices  (일별 시세)  │      /signal 조회
-  │ (DuPont/Ohlson/F) │        │  · signals (서서히 판정)│
-  └───────────────────┘        │ Storage (원천 원본 아카이브)
-                               └────────────────────────┘
+데이터팀 전처리 데이터          data_pipeline            Supabase                앱/API
+(RAWDATA_DIR)      ──▶   load/compute 스크립트  ──▶  PostgreSQL + Storage  ──▶  backend/api.py
 ```
 
-**핵심 설계 원칙**: *쿼리하는 데이터*는 테이블(Postgres), *모델 입력용 원본 파일*은 Storage.
-원천 스냅샷은 앱이 직접 조회하지 않고, 모델이 읽어 `signals`(출력)만 테이블에 넣는다.
+- **쿼리용 정형데이터**(가격·종목·신호) → Postgres 테이블
+- **모델 입력 원본 파일** → Supabase Storage (+ 로컬 `RAWDATA_DIR`)
+- 데이터팀이 전처리(DART/KRX pull → TTM·PIT 스냅샷·FLUC_RT) 후 전달 → 이 파이프라인이 적재.
 
 ---
 
-## 2. 테이블 스키마
+## 2. 스크립트
 
-| 테이블 | 내용 | 주요 컬럼 | 행 수 |
-|---|---|---|---|
-| `stocks` | 종목 마스터 | stock_code(PK), stock_name, market, ksic_code, corp_code | 120 |
-| `prices` | 일별 시세 | (stock_code, bas_dd) PK, mktcap, close_prc, quality_status | 182,823 |
-| `signals` | 서서히 판정(사전계산) | (stock_code, baseline_date, eval_date) PK, dupont/ohlson/fscore, sum_total, verdict_count, verdict_sum | 45,360 |
-
-`signals`는 **모든 (종목 × 매수기준선 스냅샷 × 평가 스냅샷)** 조합을 담는다.
-→ 유저가 아무 날짜에 사도, 가장 가까운 스냅샷으로 '스냅'해서 즉시 조회 가능 (출시용 설계).
-
----
-
-## 3. 스크립트
-
-| 스크립트 | 하는 일 | 실행 |
+| 스크립트 | 역할 | 방식 |
 |---|---|---|
-| `load_prices.py` | 가격 CSV → `prices` + `stocks`(기본정보) | `.venv/bin/python data_pipeline/load_prices.py` |
-| `load_stocks.py` | 기업개황(KSIC) CSV로 `stocks` 보강(upsert) | `.venv/bin/python data_pipeline/load_stocks.py` |
-| `compute_signals.py` | 3개 모델 돌려 `signals` 사전계산·적재 | `.venv/bin/python data_pipeline/compute_signals.py` |
-| `archive_snapshots.py` | 원천 스냅샷 트리를 zip 1개로 묶음(→ Storage 업로드용) | `.venv/bin/python data_pipeline/archive_snapshots.py` |
-| `supabase_setup.sql` | RLS 읽기 정책 + 인덱스 (Supabase SQL Editor 에서 실행) | 대시보드 SQL Editor |
-
-**최초 적재 순서**: `load_prices` → `load_stocks` → `compute_signals`.
-(가격이 stocks 를 만들고, KSIC 가 보강하고, 신호는 stocks 를 참조하므로.)
+| `run_pipeline.py` | **갱신 오케스트레이터** (아래 스텝을 순서대로 실행) | — |
+| `load_prices.py` | 가격 CSV → `prices` · `stocks` | upsert |
+| `load_stocks.py` | 기업개황(KSIC) → `stocks` 보강 | upsert |
+| `compute_signals.py` | 3개 모델 실행 → `signals` 사전계산 | upsert |
+| `archive_snapshots.py` | 원본 스냅샷 → zip (Storage 업로드용) | — |
+| `supabase_setup.sql` | RLS 읽기 정책 + 인덱스 | — |
 
 ---
 
-## 4. 중요한 설계 결정
+## 3. 테이블
 
-- **PIT(기준일별 스냅샷)** — 미래정보 참조(look-ahead) 방지. 각 기준일은 "그 시점에 공시된 재무"만 본다.
-- **생존편향 통제** — 120종목 중 21개가 기간 중 상장폐지/거래정지(데이터에 실재). 엔진이 회수율로 청산 반영.
-- **테이블 vs Storage** — 쿼리용 정형데이터만 테이블, 원천 파일 트리(463개, 207MB)는 Storage 아카이브.
-- **upsert vs truncate** — `load_stocks`는 upsert(있으면 갱신). `load_prices`·`compute_signals`는 아직 truncate+재적재(아래 '남은 일' 참고).
+| 테이블 | 내용 | 행 수 |
+|---|---|---|
+| `stocks` | 종목 마스터 (이름·시장·KSIC·DART `corp_code`) | 120 |
+| `prices` | 일별 시세 | 182,823 |
+| `signals` | 서서히 판정 (종목 × 매수기준선 × 평가일 전조합) | 45,360 |
 
 ---
 
-## 5. 남은 일 (DB 셋업 완성용)
+## 4. 갱신 워크플로우 — ★ 새 데이터를 받았을 때
 
-1. **Storage 아카이브** — `archive_snapshots.py` 로 zip 만들고 Supabase Storage 버킷에 업로드 → 코드의 Google Drive 경로 의존 제거. (데이터 207MB → 무료 Storage 1GB 안에 들어감)
-2. **증분 업데이트(upsert)** — `load_prices`·`compute_signals`를 truncate 대신 upsert 로. (MORNING_BRIEF.md 에 적용 코드 있음. ⚠️ load_prices 가 stocks 의 KSIC 보강을 덮어쓰지 않도록 주의.)
-3. **RLS·인덱스** — `supabase_setup.sql` 실행 (앱이 Supabase 직접 조회 시 필요).
+데이터팀이 전처리한 데이터를 전달하면:
+
+1. 받은 데이터를 **`RAWDATA_DIR`** 에 넣는다(기존 것 교체). 위치는 `.env` 의 `RAWDATA_DIR`.
+2. 한 번에 갱신:
+   ```bash
+   # 전체 (새 재무가 들어왔을 때): 가격 → 종목 → 신호
+   .venv/bin/python data_pipeline/run_pipeline.py
+
+   # 가격만 (매일): 빠름(~1분)
+   .venv/bin/python data_pipeline/run_pipeline.py --prices
+   ```
+   upsert 라 재실행해도 안전(중복/삭제 없음). 한 단계라도 실패하면 자동 중단.
+
+### 권장 주기
+| 데이터 | 주기 | 이유 |
+|---|---|---|
+| 가격(prices) | **매일** (`--prices`) | 시가총액·PBR·포트폴리오 현재가 (Ohlson 일부가 당일 시총 사용) |
+| 신호(signals) | **새 재무 공시 때만** (전체 실행, ~15분) | 판정은 분기 재무가 바뀔 때만 움직임 — 매일 돌릴 필요 없음 |
+
+### 자동 스케줄 (예시)
+상시 켜진 **서버**에서 cron 으로. (노트북은 꺼지면 안 돌아가므로 비권장)
+```cron
+# 평일 저녁 7시(장마감 후) 가격 갱신
+0 19 * * 1-5  cd ~/Developer/investment-evidence-system && .venv/bin/python data_pipeline/run_pipeline.py --prices
+```
+신호 재계산은 데이터팀의 '새 재무 전달' 이벤트에 맞춰 수동/트리거 실행.
+
+---
+
+## 5. 설계 결정
+
+- **PIT 스냅샷** — 미래참조(look-ahead) 방지.  **생존편향 통제** — 상장폐지 종목 포함(엔진이 청산 반영).
+- **테이블 vs Storage** — 쿼리용은 테이블, 원본 파일 트리는 Storage.
+- **upsert** — 전 스크립트가 '있으면 갱신/없으면 추가'. truncate 안 함(실패해도 기존 보존, KSIC 보강 보호).
 
 ---
 
 ## 6. 환경
-
-- `.env` 에 `SUPABASE_DB_URL` (Session pooler, `postgresql+psycopg://...`), 드라이버는 `psycopg[binary]`.
-- venv: `~/Developer/investment-evidence-system/.venv` (Python 3.12).
-- `.env` 는 절대 커밋 금지 (gitignore 되어 있음).
+- venv Python 3.12, `psycopg[binary]` + `sqlalchemy`
+- `.env`: `SUPABASE_DB_URL`(`postgresql+psycopg://`), `RAWDATA_DIR`(로컬 원본 폴더)
+- `.env`·원본데이터·캐시는 커밋 안 함(.gitignore).

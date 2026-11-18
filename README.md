@@ -1,75 +1,69 @@
-# 서서히 데이터 파이프라인 (data_pipeline/)
+# investment-evidence-system
 
-리테일 투자자용 재무 훼손 탐지 모델 '서서히'의 데이터 계층.
-원천 데이터를 PostgreSQL(Supabase)로 적재하고, 모델 신호를 사전계산해 앱이 조회할 수 있게 한다.
+보유 종목의 가치 훼손 위험을 근거로 점검하는 시스템의 모델 쪽 저장소. 지금 구현된 것은 **서서히 모델**(F-Score, Ohlson, DuPont)이다. 급락 모델과 반박 모델은 아직 없다.
 
----
 
-## 1. 아키텍처 한눈에
+## 구조
 
+| 위치 | 역할 |
+|---|---|
+| `models/seoseohi/fscore.py` | F-Score 계산과 매수일·평가일 위험점수(0~3) |
+| `models/seoseohi/ohlson/ohlson.py` | Ohlson RI·ω 비교와 위험점수(0~2) |
+| `models/seoseohi/dupont.py`, `pipeline.py` | DuPont PM·ATO 비교와 위험점수(0~3) |
+| `models/seoseohi/run_models.py` | 세 모델을 같은 표준 표로 돌리는 연결 파일 (`run_fscore`, `run_ohlson`, `run_dupont`, `run_all`)과 임계 모델 경보 `run_gate` |
+| `models/seoseohi/threshold.py` | 임계 모델: 매수일 이후 주가가 꾸준히 나빠지는지 보는 경보기(켜짐/꺼짐, 점수 아님) |
+| `models/seoseohi/link_fundamentals.py` | 가격 경보 뒤에 F-Score·Ohlson 악화가 확인되는지 보는 평가 |
+| `models/seoseohi/export_contract.py` | 표준 표를 대시보드가 읽는 계약 JSON으로 내보냄 |
+| `contracts/risk_result.schema.json` | 계약 JSON 스키마 |
+| `tests/seoseohi/test_run_models.py` | 기대값, 유보, 계약 스키마 점검 |
+| `data/` | 입력 CSV |
+
+`models/seoseohi/output/`의 `ohlson_daily.csv`, `ohlson_eval.csv`는 옛 산출물일 수 있다. 현재 코드의 출력 위치는 `models/seoseohi/ohlson/output/`다.
+
+## 준비
+
+Python 3.12, `pandas`, `numpy`. DuPont은 `python-dotenv`도 필요하다. 테스트는 `pytest`, 계약 검증은 `jsonschema`.
+
+```bash
+pip install pandas numpy python-dotenv pytest jsonschema
 ```
-  원천 데이터 (CSV, 스냅샷)            Supabase                      앱 / API
-  ┌───────────────────┐        ┌────────────────────────┐
-  │ 가격 CSV          │──적재─▶│ PostgreSQL              │
-  │ 기업개황(KSIC)    │        │  · stocks  (종목 마스터)│◀─ FastAPI (backend/api.py)
-  │ 기준일별 스냅샷   │─(모델)▶│  · prices  (일별 시세)  │      /signal 조회
-  │ (DuPont/Ohlson/F) │        │  · signals (서서히 판정)│
-  └───────────────────┘        │ Storage (원천 원본 아카이브)
-                               └────────────────────────┘
+
+입력 자료:
+- F-Score, Ohlson은 저장소 `data/fscore`, `data/ohlson` 아래 CSV를 읽는다.
+- DuPont은 환경변수 두 개로 경로를 받는다(`.env`에 써도 된다). 코드에 경로를 박지 않는다.
+  - `SEOSEOHI_TTM_DIR`: `ttm_final.csv`가 있는 폴더
+  - `SEOSEOHI_FINAL_DATA_DIR`: `12_기업개황_KSIC.csv`, `01_종목목록.csv`, `03_재무_분기_2015-2019.csv`가 있는 폴더
+
+## 쓰는 법
+
+```python
+import sys; sys.path.insert(0, "models/seoseohi")
+from run_models import run_all
+pairs = [("010170", "2016-06-30", "2019-06-28")]      # (종목, 매수일, 평가일)
+run_all(pairs)                                          # F-Score, Ohlson
+run_all(pairs, include_dupont=True)                     # DuPont 환경변수 필요
+
+from run_models import run_gate
+run_gate(pairs)                                         # 임계 모델 경보. 점수가 아니라 켜짐/꺼짐이라 run_all에는 포함되지 않는다
 ```
 
-**핵심 설계 원칙**: *쿼리하는 데이터*는 테이블(Postgres), *모델 입력용 원본 파일*은 Storage.
-원천 스냅샷은 앱이 직접 조회하지 않고, 모델이 읽어 `signals`(출력)만 테이블에 넣는다.
+점검과 계약 생성:
 
----
+```bash
+pytest tests/seoseohi/test_run_models.py
+python models/seoseohi/export_contract.py               # contracts/risk_result.json 생성
+python models/seoseohi/export_contract.py --buy 2016-06-30 --eval 2019-12-30 --stocks 053660
+```
 
-## 2. 테이블 스키마
+`export_contract.py`는 DuPont 환경변수가 없으면 DuPont을 계산하지 않고 `data_path_not_configured`로 남긴다. 생성된 `contracts/risk_result.json`은 Git에 올리지 않는다.
 
-| 테이블 | 내용 | 주요 컬럼 | 행 수 |
-|---|---|---|---|
-| `stocks` | 종목 마스터 | stock_code(PK), stock_name, market, ksic_code, corp_code | 120 |
-| `prices` | 일별 시세 | (stock_code, bas_dd) PK, mktcap, close_prc, quality_status | 182,823 |
-| `signals` | 서서히 판정(사전계산) | (stock_code, baseline_date, eval_date) PK, dupont/ohlson/fscore, sum_total, verdict_count, verdict_sum | 45,360 |
+대시보드는 이 파일을 읽기만 한다. 대시보드 쪽에서는 환경변수 `SEOSEOHI_RESULT_JSON` 또는 `start.ps1 -ModelResultJson`에 파일 경로를 준다.
 
-`signals`는 **모든 (종목 × 매수기준선 스냅샷 × 평가 스냅샷)** 조합을 담는다.
-→ 유저가 아무 날짜에 사도, 가장 가까운 스냅샷으로 '스냅'해서 즉시 조회 가능 (출시용 설계).
+## 알려진 한계
 
----
-
-## 3. 스크립트
-
-| 스크립트 | 하는 일 | 실행 |
-|---|---|---|
-| `load_prices.py` | 가격 CSV → `prices` + `stocks`(기본정보) | `.venv/bin/python data_pipeline/load_prices.py` |
-| `load_stocks.py` | 기업개황(KSIC) CSV로 `stocks` 보강(upsert) | `.venv/bin/python data_pipeline/load_stocks.py` |
-| `compute_signals.py` | 3개 모델 돌려 `signals` 사전계산·적재 | `.venv/bin/python data_pipeline/compute_signals.py` |
-| `archive_snapshots.py` | 원천 스냅샷 트리를 zip 1개로 묶음(→ Storage 업로드용) | `.venv/bin/python data_pipeline/archive_snapshots.py` |
-| `supabase_setup.sql` | RLS 읽기 정책 + 인덱스 (Supabase SQL Editor 에서 실행) | 대시보드 SQL Editor |
-
-**최초 적재 순서**: `load_prices` → `load_stocks` → `compute_signals`.
-(가격이 stocks 를 만들고, KSIC 가 보강하고, 신호는 stocks 를 참조하므로.)
-
----
-
-## 4. 중요한 설계 결정
-
-- **PIT(기준일별 스냅샷)** — 미래정보 참조(look-ahead) 방지. 각 기준일은 "그 시점에 공시된 재무"만 본다.
-- **생존편향 통제** — 120종목 중 21개가 기간 중 상장폐지/거래정지(데이터에 실재). 엔진이 회수율로 청산 반영.
-- **테이블 vs Storage** — 쿼리용 정형데이터만 테이블, 원천 파일 트리(463개, 207MB)는 Storage 아카이브.
-- **upsert vs truncate** — `load_stocks`는 upsert(있으면 갱신). `load_prices`·`compute_signals`는 아직 truncate+재적재(아래 '남은 일' 참고).
-
----
-
-## 5. 남은 일 (DB 셋업 완성용)
-
-1. **Storage 아카이브** — `archive_snapshots.py` 로 zip 만들고 Supabase Storage 버킷에 업로드 → 코드의 Google Drive 경로 의존 제거. (데이터 207MB → 무료 Storage 1GB 안에 들어감)
-2. **증분 업데이트(upsert)** — `load_prices`·`compute_signals`를 truncate 대신 upsert 로. (MORNING_BRIEF.md 에 적용 코드 있음. ⚠️ load_prices 가 stocks 의 KSIC 보강을 덮어쓰지 않도록 주의.)
-3. **RLS·인덱스** — `supabase_setup.sql` 실행 (앱이 Supabase 직접 조회 시 필요).
-
----
-
-## 6. 환경
-
-- `.env` 에 `SUPABASE_DB_URL` (Session pooler, `postgresql+psycopg://...`), 드라이버는 `psycopg[binary]`.
-- venv: `~/Developer/investment-evidence-system/.venv` (Python 3.12).
-- `.env` 는 절대 커밋 금지 (gitignore 되어 있음).
+- 임계 모델(`run_gate`)은 점수가 아니라 경보다. 합산하지 않으며, 본 데이터(19종목 × 5년)에서 경보는 이후의 큰 하락이나 F-Score·Ohlson 악화를 예고하지 않았다(`link_fundamentals.py`). "가격이 이미 약해졌다"는 상태 알림으로만 읽는다. 경보가 며칠만 켜졌다 꺼지므로 `alarm_on`(평가일 상태)보다 `alarm_in_hold`(보유 중 발생 여부)로 읽는 편이 안전하다.
+- 점수 눈금이 모델마다 다르다(0~3, 0~2, 0~3). 이 계약은 합산하지 않으며 통합 판정은 D10 전까지 보류다.
+- DuPont의 ATO는 평균 총자산 기준이고, 업종 중위수에 대상 기업이 포함된다(D08, D09).
+- 한쪽 지표만으로 낸 DuPont 점수는 `partial=True`로 표시된다.
+- Drive `서서히모델_v0`와 입력·정의·점수표가 달라 값이 일치하지 않는다. 자세한 비교는 대시보드 저장소 `docs/INTEGRATION_DESIGN.md` 7절.
+- 팀에 확인할 질문은 대시보드 저장소 `docs/TEAM_QUESTIONS.md`.
