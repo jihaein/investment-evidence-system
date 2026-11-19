@@ -23,12 +23,11 @@ RAWDATA_DIR = os.environ["RAWDATA_DIR"]          # 로컬 원본 폴더 (구글�
 _market = sorted(glob.glob(os.path.join(RAWDATA_DIR, "추가자료", "시장자료", "*.csv")))
 if not _market:
     raise FileNotFoundError(f"가격 CSV 없음: {os.path.join(RAWDATA_DIR, '추가자료', '시장자료')}")
-CSV_PATH = _market[0]
 
 
-def read_prices(csv_path):
+def read_prices(csv_paths):
     """CSV를 읽어 (stocks, prices) 두 DataFrame으로 정리한다."""
-    df = pd.read_csv(csv_path, dtype=str, encoding="utf-8-sig")
+    df = pd.concat([pd.read_csv(f, dtype=str, encoding="utf-8-sig") for f in csv_paths], ignore_index=True)
     df["stock_code"]  = df["stock_code"].str.zfill(6)
     df["bas_dd"]      = pd.to_datetime(df["BAS_DD"], format="%Y%m%d").dt.date
     df["MKTCAP"]      = pd.to_numeric(df["MKTCAP"], errors="coerce").astype("Int64")
@@ -41,7 +40,8 @@ def read_prices(csv_path):
     prices = (df.rename(columns={"MKT_NM": "market", "MKTCAP": "mktcap",
                                  "LIST_SHRS": "list_shrs", "TDD_CLSPRC": "close_prc"})
                 [["stock_code", "bas_dd", "market", "mktcap", "list_shrs",
-                  "close_prc", "quality_status"]])
+                  "close_prc", "quality_status"]]
+                  .drop_duplicates("stock_code", "bas_dd", keep="last"))
     return stocks, prices
 
 
@@ -75,10 +75,10 @@ def load(stocks, prices, db_url):
 
 
 def main():
-    stocks, prices = read_prices(CSV_PATH)
+    stocks, prices = read_prices(_market)
     ns, npx = load(stocks, prices, DB_URL)
     print(f"✓ 적재(upsert) 완료 — stocks: {ns}종목 | prices: {npx:,}행")
-    print(f"  (원본: {CSV_PATH})")
+    print(f"  (원본: {len(_market)}개 파일 - {', '.join(os.path.basename(f) for f in _market)})")
 
 
 if __name__ == "__main__":
