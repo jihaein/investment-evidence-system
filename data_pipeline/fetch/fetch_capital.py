@@ -8,10 +8,10 @@ import os, csv, json, time, argparse, requests
 from pathlib import Path
 from dotenv import load_dotenv
 
-ROOT = "/Users/jihaein/Developer/investment-evidence-system"
+ROOT = str(Path(__file__).resolve().parents[2])
 load_dotenv(f"{ROOT}/.env")
 KEY = os.environ["OPENDART_API_KEY"]
-MASTER = f"{ROOT}/data/rawdata/12_기업개황_KSIC.csv"
+MASTER = Path(os.environ["RAWDATA_DIR"]) / "12_기업개황_KSIC.csv"
 OUTDIR = Path(os.environ["RAWDATA_DIR"]) / "_raw_pull" / "dart" / "irdsSttus"
 URL = "https://opendart.fss.or.kr/api/irdsSttus.json"
 REPRTS = ["11013", "11012", "11014", "11011"]

@@ -9,9 +9,10 @@ build_metadata.py — preprocess_metadata.json 생성 (데이터팀 preprocess()
 출력:  _raw_pull/preprocess_metadata.json
 """
 import os, json, glob, csv, calendar
+from pathlib import Path
 from dotenv import load_dotenv
 
-ROOT = "/Users/jihaein/Developer/investment-evidence-system"
+ROOT = str(Path(__file__).resolve().parents[1])
 load_dotenv(f"{ROOT}/.env")
 RD  = os.environ["RAWDATA_DIR"]
 RAW = os.path.join(RD, "_raw_pull")
@@ -46,6 +47,11 @@ def main():
             rc, dt = it.get("rcept_no"), it.get("rcept_dt")
             if rc and dt and len(dt) == 8:
                 dates.setdefault(rc, f"{dt[:4]}-{dt[4:6]}-{dt[6:]}")
+    for p in sorted(glob.glob(f"{RAW}/dart/receipts/*.json")):
+        with open(p, encoding="utf-8") as handle:
+            it = json.load(handle)
+        rc, dt = it["rcept_no"], it["rcept_dt"]
+        dates[rc] = f"{dt[:4]}-{dt[4:6]}-{dt[6:]}"
     for fn in ["04_재무_Ohlson용_2019-2026.csv", "11B_DuPont_날짜연결_2019-2026.csv",
                "02_재무_연간_2017-2026.csv"]:                # ② 기존 CSV 보완
         p = f"{RD}/{fn}"
@@ -63,6 +69,9 @@ def main():
         if len(parts) != 4:
             continue
         corp, year, reprt, fs = parts
+        with open(path, encoding="utf-8") as handle:
+            if json.load(handle).get("status") != "000":
+                continue
         g = groups.setdefault((corp, year, reprt), {"rcept": None, "cfs": False, "ofs": False})
         g["cfs" if fs == "CFS" else "ofs"] = True
         if g["rcept"] is None:
@@ -87,7 +96,10 @@ def main():
         e = {"corp_code": corp, "bsns_year": int(year), "reprt_code": reprt,
              "fiscal_year": fy, "disclosed_date": dd, "period_end": pe, "required": True}
         if g["ofs"] and not g["cfs"]:
-            e["cfs_absent_verified"] = True   # CFS 013(연결 부재)로 OFS만 수집된 경우
+            cfs = os.path.join(FIN, f"{corp}_{year}_{reprt}_CFS.json")
+            if os.path.exists(cfs):
+                with open(cfs, encoding="utf-8") as handle:
+                    e["cfs_absent_verified"] = json.load(handle).get("status") == "013"
         filings[rc] = e
 
     # 5) trading_days = 시세 BAS_DD

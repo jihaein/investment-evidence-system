@@ -32,11 +32,11 @@ def test_pack_matches_schema_and_is_strict_json(daehan):
 
 def test_fscore_evidence_matches_model_output(daehan):
     fs = by_model(daehan)["fscore"]
-    assert fs["status"] == "scored" and fs["risk_score"] == 1 and fs["risk_max"] == 3
+    assert fs["status"] == "scored" and fs["risk_score"] == 2 and fs["risk_max"] == 3
     v = fs["evidence"][0]["values"]
     assert (v["f_score_buy"], v["f_score_eval"], v["fiscal_year_buy"], v["fiscal_year_eval"]) == (7, 3, 2015, 2018)
     assert "7점" in fs["evidence"][0]["statement"] and "3점" in fs["evidence"][0]["statement"]
-    assert "위험점수 1점" in fs["evidence"][1]["statement"]
+    assert "위험점수 2점" in fs["evidence"][1]["statement"]
 
 
 def test_gate_is_not_a_score_and_reports_the_alarm(daehan):
@@ -107,3 +107,30 @@ def test_dupont_scored_block_states_flags():
     assert [e["id"] for e in block["evidence"]] == ["DP-1", "DP-2", "DP-3"]
     assert "-14.4%p" in texts[0] and "비교할 수 없다" in texts[1]
     assert "partial" in texts[2] and "전체 표본" in texts[2] and "연결↔별도" in texts[2]
+
+
+def test_published_pack_uses_the_served_release():
+    reasons = {"status": "held", "hold_reason": "eval_no_data", "detail": {}}
+    signal = {
+        "stock_code": "010170", "stock_name": "대한광통신",
+        "buy_date": "2026-09-02", "baseline_date": "2026-09-01", "eval_date": "2026-11-20",
+        "rule_version": "seoseohi-sum-v1", "status": "available", "release_id": 12, "verdict": "Yes(훼손 우려)",
+        "fscore": 2, "ohlson_score": None, "dupont_score": 2,
+        "evidence": {
+            "fscore": {"status": "scored", "detail": {
+                "f_score_buy": 7, "f_score_eval": 3, "fiscal_year_buy": 2024, "fiscal_year_eval": 2025,
+                "f_score_drop": 4, "risk_drop": 2, "risk_level_add": 0,
+                "rcept_no_eval": "20260320000001",
+            }},
+            "ohlson": reasons,
+            "dupont": {"status": "partial", "detail": {"dPM_adj_pp": -6.0, "partial": True}},
+        },
+    }
+    pack = bp.build_published_pack(signal, "영업이익률이 좋아질 것")
+    bp.validate_pack(pack)
+    assert pack["integrated"]["meaning"] == signal["verdict"]
+    models = by_model(pack)
+    assert models["fscore"]["evidence"][0]["source"]["release_id"] == 12
+    assert models["fscore"]["evidence"][0]["source"]["rcept_no_eval"] == "20260320000001"
+    assert models["ohlson"]["status"] == "held"
+    assert models["dupont"]["risk_score"] == 2

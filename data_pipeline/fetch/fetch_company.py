@@ -3,11 +3,11 @@ import os, csv, json, time, requests
 from pathlib import Path
 from dotenv import load_dotenv
 
-ROOT = "/Users/jihaein/Developer/investment-evidence-system"
+ROOT = str(Path(__file__).resolve().parents[2])
 load_dotenv(f"{ROOT}/.env")
 KEY = os.environ["OPENDART_API_KEY"]
-MASTER = f"{ROOT}/data/rawdata/12_기업개황_KSIC.csv"
-OUTDIR = Path(ROOT) / "data/rawdata/_raw_pull/dart/company"
+MASTER = Path(os.environ["RAWDATA_DIR"]) / "12_기업개황_KSIC.csv"
+OUTDIR = Path(os.environ["RAWDATA_DIR"]) / "_raw_pull/dart/company"
 URL = "https://opendart.fss.or.kr/api/company.json"
 
 def load_corps():

@@ -402,30 +402,34 @@ _OH_MKTCAP_CACHE = {}
 
 
 def load_mktcap(base_dir):
-    key = str(base_dir)
-    if key in _OH_MKTCAP_CACHE:
-        return _OH_MKTCAP_CACHE[key]
-    import glob as _glob
-    _mkt = sorted(_glob.glob(str(Path(base_dir) / "추가자료" / "시장자료" / "*.csv")))
-    df = pd.read_csv(_mkt[0], header=0, dtype=str, encoding="utf-8-sig")
-    df["stock_code"] = df["stock_code"].str.zfill(6)
-    df["BAS_DD"] = pd.to_datetime(df["BAS_DD"], format="%Y%m%d", errors="coerce")
-    df["MKTCAP"] = pd.to_numeric(df["MKTCAP"], errors="coerce")
-    out = df[["stock_code", "BAS_DD", "MKTCAP"]].dropna(subset=["BAS_DD"])
-    _OH_MKTCAP_CACHE[key] = out
-    return out
+    from data_pipeline.market_data import market_files
+
+    paths = market_files(base_dir)
+    if not paths:
+        raise FileNotFoundError("No market price CSVs")
+    key = (str(base_dir), tuple((str(p), p.stat().st_mtime_ns, p.stat().st_size) for p in paths))
+    if key not in _OH_MKTCAP_CACHE:
+        columns = ["stock_code", "BAS_DD", "MKTCAP"]
+        df = pd.concat([pd.read_csv(p, dtype=str, encoding="utf-8-sig", usecols=columns)
+                        for p in paths], ignore_index=True)
+        df["stock_code"] = df["stock_code"].str.zfill(6)
+        df["BAS_DD"] = pd.to_datetime(df["BAS_DD"], format="%Y%m%d", errors="coerce")
+        df["MKTCAP"] = pd.to_numeric(df["MKTCAP"], errors="coerce")
+        _OH_MKTCAP_CACHE[key] = df.dropna(subset=["BAS_DD"]).drop_duplicates(
+            ["stock_code", "BAS_DD"], keep="last")
+    return _OH_MKTCAP_CACHE[key]
 
 
-def mktcap_asof(mkt, stock_code, date, max_gap_days=7):
+def mktcap_asof(mkt, stock_code, date, max_gap_days=7, *, with_date=False):
     """그 날짜(휴장이면 직전 거래일)의 시가총액. 너무 오래됐으면 None."""
     date = pd.Timestamp(date)
     rows = mkt[(mkt["stock_code"] == stock_code) & (mkt["BAS_DD"] <= date)]
     if rows.empty:
-        return None
+        return (None, None) if with_date else None
     row = rows.loc[rows["BAS_DD"].idxmax()]
     if (date - row["BAS_DD"]).days > max_gap_days:
-        return None
-    return row["MKTCAP"]
+        return (None, None) if with_date else None
+    return (row["MKTCAP"], row["BAS_DD"]) if with_date else row["MKTCAP"]
 
 
 # 한 종목·한 날짜의 Ohlson 입력 한 줄 (재무는 스냅샷, 시총은 일별 시장자료)
@@ -437,7 +441,7 @@ def _ohlson_point(snapshot_dir, mkt, stock_code, asof_date, max_gap_days=7):
     # 스냅샷 안에서는 available_from 이 모두 기준일로 같으므로, 가장 최근 '회계분기'(seq)를 고른다
     # (available_from <= asof 필터로 미래 유입은 이미 막혀 있다)
     row = rows.loc[rows["seq"].idxmax()]                 # 그날까지 공시된 최신 분기
-    mc = mktcap_asof(mkt, stock_code, asof_date, max_gap_days)
+    mc, mkt_date = mktcap_asof(mkt, stock_code, asof_date, max_gap_days, with_date=True)
 
     bv_t = row["bv_t"]
     bv_prev = row["bv_prev"]
@@ -451,6 +455,8 @@ def _ohlson_point(snapshot_dir, mkt, stock_code, asof_date, max_gap_days=7):
         "bv_t": bv_t,
         "bv_prev": bv_prev,
         "mktcap": mc,
+        "market_date": mkt_date,
+        "rcept_no": row["rcept_no"],
         "capital_impairment": "Y" if impaired else "",
         "input_ready_strict": bool(strict),
     }
@@ -461,7 +467,7 @@ def _ohlson_point(snapshot_dir, mkt, stock_code, asof_date, max_gap_days=7):
 #   를 두 줄짜리(매수/평가) 표에 그대로 적용한다. 점수 로직은 손대지 않는다.
 def ohlson_compare_pit(base_dir, stock_code, buy_date, now_date,
                        r=0.05, vt=0, omega_high=0.5, hold_rules=None,
-                       max_gap_days=7, ri_small=0.02, ri_large=0.05):
+                       max_gap_days=7, ri_small=0.02, ri_large=0.05, *, market=None):
     out = {"stock_code": stock_code, "buy_date": buy_date, "eval_date": now_date, "score": None}
     hold_rules = hold_rules or ["flag_not_strict", "flag_capital_impairment"]
 
@@ -475,7 +481,7 @@ def ohlson_compare_pit(base_dir, stock_code, buy_date, now_date,
         out["hold_reason"] = "no_snapshot"
         return out
 
-    mkt = load_mktcap(base_dir)
+    mkt = load_mktcap(base_dir) if market is None else market
     pb = _ohlson_point(buy_dir, mkt, stock_code, buy_date, max_gap_days)
     pe = _ohlson_point(eval_dir, mkt, stock_code, now_date, max_gap_days)
     if pb is None or pe is None:
@@ -494,8 +500,12 @@ def ohlson_compare_pit(base_dir, stock_code, buy_date, now_date,
     frame = decide_interpretable(frame, hold_rules=hold_rules)
 
     res = evaluate_pair(frame, stock_code, buy_date, now_date, max_gap_days, ri_small, ri_large)
-    res["snapshot_buy"] = Path(buy_dir).name
-    res["snapshot_eval"] = Path(eval_dir).name
+    res["market_date_buy"] = pb["market_date"]
+    res["market_date_eval"] = pe["market_date"]
+    res["rcept_no_buy"] = pb["rcept_no"]
+    res["rcept_no_eval"] = pe["rcept_no"]
+    res["snapshot_buy"] = buy_dir.parent.name if buy_dir.name == "Ohlson" else buy_dir.name
+    res["snapshot_eval"] = eval_dir.parent.name if eval_dir.name == "Ohlson" else eval_dir.name
     return res
 
 

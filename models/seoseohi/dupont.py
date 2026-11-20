@@ -1,9 +1,10 @@
 import os
 from dotenv import load_dotenv
 import pandas as pd
-import sys
-sys.path.insert(0, "/Users/jihaein/Desktop/fds_main/investment-evidence-system")
-from models.seoseohi.config import DUPONT_PM_ADJ_CUTS, DUPONT_ATO_REL_CUTS
+if __package__:
+    from .config import DUPONT_PM_ADJ_CUTS, DUPONT_ATO_REL_CUTS
+else:
+    from config import DUPONT_PM_ADJ_CUTS, DUPONT_ATO_REL_CUTS
 
 
 def load_ttm() -> pd.DataFrame: 
@@ -434,7 +435,7 @@ def dp_latest_asof(table, stock_code, asof_date):
     rows = table[(table["stock_code"] == stock_code) & (table["disclosed_date"] <= asof)]
     if rows.empty:
         return None
-    return rows.loc[rows["disclosed_date"].idxmax()]
+    return rows.sort_values(["bsns_year", "quarter", "disclosed_date"]).iloc[-1]
 
 
 # 스냅샷 안에서 '그날 기준 종목별 최신 분기'만 모아 업종(KSIC) 중위수를 낸다
@@ -445,7 +446,8 @@ def dp_industry_medians(table, asof_date, ksic_code, min_peers=3):
     if snap.empty:
         return {"PM_median": None, "ATO_median": None,
                 "pm_fallback": True, "ato_fallback": True, "n_pm": 0, "n_ato": 0}
-    latest = snap.loc[snap.groupby("stock_code")["disclosed_date"].idxmax()]
+    latest = (snap.sort_values(["bsns_year", "quarter", "disclosed_date"])
+              .drop_duplicates("stock_code", keep="last"))
 
     def _median(col):
         peers = latest[(latest["ksic_mid_2digit"] == ksic_code) & latest[col].notna()]
@@ -476,7 +478,7 @@ def _is_self_median(row, medians, col):
 #   - PM 는 업종 중위수를 뺀 '조정 PM'의 변화(%p)
 #   - ATO 는 업종 중위수로 나눈 '상대 ATO'의 변화(%)
 #   점수는 기존 score_dupont(두 변화량)을 그대로 쓴다
-def dupont_compare_pit(base_dir, ksic, stock_code, buy_date, now_date):
+def dupont_compare_pit(base_dir, ksic, stock_code, buy_date, now_date, *, median_cache=None):
     out = {"stock_code": stock_code, "buy_date": buy_date, "now_date": now_date,
            "dPM_adj_pp": None, "dATO_rel_pct": None, "score": None, "note": None}
 
@@ -495,8 +497,15 @@ def dupont_compare_pit(base_dir, ksic, stock_code, buy_date, now_date):
         out["note"] = "계산에 필요한 값이 결측입니다."
         return out
 
-    mb = dp_industry_medians(bt, buy_date, code)
-    mn = dp_industry_medians(et, now_date, code)
+    if median_cache is None:
+        median_cache = {}
+    buy_key = (buy_dir, buy_date, code)
+    eval_key = (eval_dir, now_date, code)
+    if buy_key not in median_cache:
+        median_cache[buy_key] = dp_industry_medians(bt, buy_date, code)
+    if eval_key not in median_cache:
+        median_cache[eval_key] = dp_industry_medians(et, now_date, code)
+    mb, mn = median_cache[buy_key], median_cache[eval_key]
 
     # C 방식: 기준선에서 자기 자신이 업종 중위수면 업종 조정 없이 자기 변화만 본다
     pm_own = DUPONT_SELF_MEDIAN_OWN_CHANGE and _is_self_median(b, mb, "PM_pct")
@@ -522,8 +531,12 @@ def dupont_compare_pit(base_dir, ksic, stock_code, buy_date, now_date):
             out["dATO_rel_pct"] = (rel_now / rel_buy - 1) * 100
 
     out["score"] = score_dupont(out["dPM_adj_pp"], out["dATO_rel_pct"])
-    out["snapshot_buy"] = Path(buy_dir).name
-    out["snapshot_eval"] = Path(eval_dir).name
+    out["partial"] = out["score"] is not None and (
+        pd.isna(out["dPM_adj_pp"]) or pd.isna(out["dATO_rel_pct"]))
+    out["rcept_no_buy"] = b["rcept_no"]
+    out["rcept_no_eval"] = n["rcept_no"]
+    out["snapshot_buy"] = buy_dir.parent.name if buy_dir.name == "DuPont" else buy_dir.name
+    out["snapshot_eval"] = eval_dir.parent.name if eval_dir.name == "DuPont" else eval_dir.name
     out["fs_div_flag"] = b["fs_div"] != n["fs_div"]
     out["pm_basis_buy"] = f"n={mb['n_pm']}" + ("(전체대체)" if mb["pm_fallback"] else "")
     out["pm_basis_now"] = f"n={mn['n_pm']}" + ("(전체대체)" if mn["pm_fallback"] else "")

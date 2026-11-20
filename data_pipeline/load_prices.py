@@ -1,78 +1,65 @@
-"""
-일별 시세 CSV를 stocks/prices 테이블에 upsert한다.
-입력: RAWDATA_DIR/추가자료/시장자료/*.csv (폴더 안 CSV 전체)
-실행: .venv/bin/python data_pipeline/load_prices.py
-"""
+"""Read market CSVs and publish prices to PostgreSQL."""
 import os
-import glob
+import sys
+from pathlib import Path
+from uuid import uuid4
+
 import pandas as pd
-from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
+from sqlalchemy import create_engine, text
 
-load_dotenv("/Users/jihaein/Developer/investment-evidence-system/.env")
-DB_URL = os.environ["SUPABASE_DB_URL"]
-RAWDATA_DIR = os.environ["RAWDATA_DIR"]
+ROOT = Path(__file__).resolve().parents[1]
+if not __package__:
+    sys.path.insert(0, str(ROOT))
 
-# 시장자료 폴더의 CSV 전체
-_market = sorted(glob.glob(os.path.join(RAWDATA_DIR, "추가자료", "시장자료", "*.csv")))
-if not _market:
-    raise FileNotFoundError(f"가격 CSV 없음: {os.path.join(RAWDATA_DIR, '추가자료', '시장자료')}")
+from data_pipeline.market_data import market_files
 
 
 def read_prices(csv_paths):
-    """CSV를 읽어 (stocks, prices) 두 DataFrame으로 정리한다."""
-    df = pd.concat([pd.read_csv(f, dtype=str, encoding="utf-8-sig") for f in csv_paths], ignore_index=True)
-    df["stock_code"]  = df["stock_code"].str.zfill(6)
-    df["bas_dd"]      = pd.to_datetime(df["BAS_DD"], format="%Y%m%d").dt.date
-    df["MKTCAP"]      = pd.to_numeric(df["MKTCAP"], errors="coerce").astype("Int64")
-    df["LIST_SHRS"]   = pd.to_numeric(df["LIST_SHRS"], errors="coerce").astype("Int64")
-    df["TDD_CLSPRC"]  = pd.to_numeric(df["TDD_CLSPRC"], errors="coerce")
-
-    stocks = (df[["stock_code", "stock_name_2014", "MKT_NM"]]
-              .drop_duplicates("stock_code")
+    """Return the latest stocks and one price row per stock and session."""
+    if not csv_paths:
+        raise ValueError("No market CSVs")
+    df = pd.concat([pd.read_csv(path, dtype=str, encoding="utf-8-sig") for path in csv_paths], ignore_index=True)
+    if df.empty or not df["stock_code"].str.fullmatch(r"[0-9]{1,6}").fillna(False).all():
+        raise ValueError("Missing or invalid stock codes in market data")
+    df["stock_code"] = df["stock_code"].str.zfill(6)
+    df["bas_dd"] = pd.to_datetime(df["BAS_DD"], format="%Y%m%d").dt.date
+    if df["bas_dd"].isna().any():
+        raise ValueError("Missing market session")
+    df["MKTCAP"] = pd.to_numeric(df["MKTCAP"], errors="coerce").astype("Int64")
+    df["LIST_SHRS"] = pd.to_numeric(df["LIST_SHRS"], errors="coerce").astype("Int64")
+    df["TDD_CLSPRC"] = pd.to_numeric(df["TDD_CLSPRC"], errors="coerce")
+    stocks = (df.sort_values("bas_dd", kind="stable")[["stock_code", "stock_name_2014", "MKT_NM"]]
+              .drop_duplicates("stock_code", keep="last")
               .rename(columns={"stock_name_2014": "stock_name", "MKT_NM": "market"}))
     prices = (df.rename(columns={"MKT_NM": "market", "MKTCAP": "mktcap",
                                  "LIST_SHRS": "list_shrs", "TDD_CLSPRC": "close_prc"})
-                [["stock_code", "bas_dd", "market", "mktcap", "list_shrs",
-                  "close_prc", "quality_status"]]
-                  .drop_duplicates("stock_code", "bas_dd", keep="last"))
+                [["stock_code", "bas_dd", "market", "mktcap", "list_shrs", "close_prc", "quality_status"]]
+                  .drop_duplicates(["stock_code", "bas_dd"], keep="last"))
     return stocks, prices
 
 
+def records(frame):
+    return frame.astype(object).where(pd.notna(frame), None).to_dict("records")
+
+
 def load(stocks, prices, db_url):
-    """upsert 적재 (스테이징 테이블 → INSERT ... ON CONFLICT)."""
+    from data_pipeline.publication import publish
+
     engine = create_engine(db_url)
-    with engine.begin() as con:
-        # stocks: 없는 종목만 기본정보 추가, 기존 행(KSIC·DART 보강)은 보존
-        stocks.to_sql("_stg_stocks", con, if_exists="replace", index=False)
-        con.execute(text("""
-            insert into stocks (stock_code, stock_name, market)
-            select stock_code, stock_name, market from _stg_stocks
-            on conflict (stock_code) do nothing
-        """))
-        con.execute(text("drop table _stg_stocks"))
-        # prices: (종목,날짜) 같으면 갱신, 없으면 추가
-        prices.to_sql("_stg_prices", con, if_exists="replace", index=False,
-                      method="multi", chunksize=1000)
-        con.execute(text("""
-            insert into prices (stock_code, bas_dd, market, mktcap, list_shrs, close_prc, quality_status)
-            select stock_code, bas_dd, market, mktcap, list_shrs, close_prc, quality_status from _stg_prices
-            on conflict (stock_code, bas_dd) do update set
-                market=excluded.market, mktcap=excluded.mktcap, list_shrs=excluded.list_shrs,
-                close_prc=excluded.close_prc, quality_status=excluded.quality_status
-        """))
-        con.execute(text("drop table _stg_prices"))
-    with engine.connect() as con:
-        ns  = con.execute(text("select count(*) from stocks")).scalar()
-        npx = con.execute(text("select count(*) from prices")).scalar()
-    return ns, npx
+    with engine.begin() as connection:
+        publish(connection, f"price-import:{uuid4()}", records(prices), [], stocks=records(stocks))
+        return tuple(connection.execute(text(
+            "SELECT (SELECT count(*) FROM stocks), (SELECT count(*) FROM prices)"
+        )).one())
 
 
 def main():
-    stocks, prices = read_prices(_market)
-    ns, npx = load(stocks, prices, DB_URL)
-    print(f"적재 완료: stocks {ns}종목 | prices: {npx:,}행")
-    print(f"  (원본: {len(_market)}개 파일 - {', '.join(os.path.basename(f) for f in _market)})")
+    load_dotenv(ROOT / ".env")
+    paths = market_files(os.environ["RAWDATA_DIR"])
+    stocks, prices = read_prices(paths)
+    ns, npx = load(stocks, prices, os.environ["SUPABASE_DB_URL"])
+    print(f"Loaded {ns:,} stocks and {npx:,} prices from {len(paths)} files")
 
 
 if __name__ == "__main__":

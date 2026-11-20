@@ -1,6 +1,6 @@
 # investment-evidence-system
 
-보유 종목의 가치 훼손 위험을 근거로 점검하는 시스템의 모델 쪽 저장소. 지금 구현된 것은 **서서히 모델**(F-Score, Ohlson, DuPont)이다. 급락 모델과 반박 모델은 아직 없다.
+보유 종목의 가치 훼손 위험을 점검하는 모델과 백엔드. 서서히(F-Score, Ohlson, DuPont) 신호 조회와 갱신은 [운영 안내](docs/operations.md)를 참고한다. 급락과 LLM 분석은 각각 실험·CLI 경로를 사용한다. 아래 예제는 기존 연구 데이터의 모델 실행 방법이다.
 
 
 ## 구조

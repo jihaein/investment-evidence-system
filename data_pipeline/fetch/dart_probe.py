@@ -1,8 +1,9 @@
 # DART 전체재무제표 1건만 받아 응답 '모양'을 확인하는 연습용 스크립트
 import os, sys, requests
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv("/Users/jihaein/Developer/investment-evidence-system/.env")
+load_dotenv(Path(__file__).resolve().parents[2] / ".env")
 KEY = os.environ["OPENDART_API_KEY"]
 
 corp_code  = sys.argv[1] if len(sys.argv) > 1 else "00526696"  # 웨이브일렉트로닉스
