@@ -3,7 +3,10 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'models/sudden'))
+import pytest
+
 import news_review as r
+news_review = r
 
 EVENT = {'stock_code': '053660', 'n_base_start': '2018-06-17T15:30:00+09:00',
          'p_base_start': '2018-09-15T15:30:00+09:00', 'base_end': '2018-12-14T15:30:00+09:00',
@@ -103,3 +106,20 @@ def test_changed_amount_is_not_merged_even_with_identical_surrounding_text():
     body = '현진소재는 운영자금 조달을 위해 {}억원 규모 전환사채를 발행한다고 공시했다. 회사는 사업을 안정적으로 추진하고 지속적인 성장을 위해 자금을 조달한다.'
     assert len(r.cluster([article(body=body.format(43)), article(url='b', body=body.format(50))])) == 2
     assert r.quantities('43억원 2만주') == r.quantities('4,300,000,000원 20,000주')
+
+
+@pytest.mark.parametrize('name,text,want', [
+    ('태웅', '태웅로직스, 3분기 영업익 증가', False), ('태웅', '태웅, 풍력 단조품 수주', True), ('태웅', '태웅은 이날', True),
+    ('HLB', 'HLB글로벌 유상증자', False), ('HLB', 'HLB제약 임상', False), ('HLB', 'HLB, 리보세라닙 FDA', True),
+    ('HLB', 'HLB의 간암 신약', True), ('영풍', '영풍제지 주가 급등', False), ('영풍', '영풍 석포제련소 조업정지', True),
+    ('LF', 'SLF 출시', False), ('LF', 'LF푸드 실적', False), ('LF', 'LF가 인수', True), ('보령', '보령바이오파마 매각', False),
+    ('현대건설', '현대건설주 강세', True), ('기업은행', 'IBK기업은행 대출', True), ('태웅', '태웅로직스와 태웅이 함께', True),
+    ('한국항공우주', '한국항공우주산업, 미래비행체 공개', True), ('한국항공우주', '한국항공우주산업은 이날', True)])
+def test_name_in_rejects_longer_company_names(name, text, want):
+    assert news_review.name_in(name, text) is want
+
+
+def test_classify_does_not_count_other_company_title():
+    art = {'title': '태웅로직스, 물류 계약 체결', 'body': '태웅로직스는 오늘 공시했다.'}
+    out = news_review.classify(art, '044490', ['태웅'])
+    assert out['relevance'] == 'unrelated' and not out['candidate_for_content_analysis']

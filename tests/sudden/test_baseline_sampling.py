@@ -80,3 +80,14 @@ def test_rename_events_uses_fixed_name_of_that_date():
     out = ss.rename_events(events, names)
     assert list(out['company_name']) == ['현대엘리베이터', '엠피씨', '없는종목']        # 옛 이름(사명 변경 전)은 그대로
     assert list(events['company_name'])[0] == '현대엘리베이'                          # 원본은 바꾸지 않음
+
+
+def test_select_codes_keeps_all_events_of_listed_stocks():
+    import sample_select as ss
+    ev = pd.DataFrame([{'drop_id': 'a', 'stock_code': '005930', 'D': '2021-03-02', 'mktcap_ok': True, 'news_window_start': 'x'},
+                       {'drop_id': 'b', 'stock_code': '005930', 'D': '2021-05-03', 'mktcap_ok': 'False', 'news_window_start': 'x'},
+                       {'drop_id': 'c', 'stock_code': '000660', 'D': '2021-03-02', 'mktcap_ok': 'True', 'news_window_start': 'x'},
+                       {'drop_id': 'd', 'stock_code': '005930', 'D': '2019-12-30', 'mktcap_ok': 'True', 'news_window_start': 'x'},
+                       {'drop_id': 'e', 'stock_code': '005930', 'D': '2022-01-04', 'mktcap_ok': 'True', 'news_window_start': None}])
+    out = ss.select_codes(ev, {'005930'}, '2020-01-01', '2026-12-31')
+    assert list(out['drop_id']) == ['a'] and list(out['split']) == ['team120']

@@ -82,16 +82,22 @@ def keep_live_events(out, day, max_events=None):
     return {'all_events': int((events['D'] == day).sum()), 'kept': len(ok)}
 
 
-def commands(date, p):
+def commands(date, p, news_source='crawl'):
+    """news_source='api'면 검색은 NAVER API HUB(news_api.py)로 받아 수집 DB에 옮기고, 본문만 naver_crawl.py --no-search로 받는다
+    (docs/sudden_live_api.md). 'crawl'은 지금까지처럼 검색 결과 페이지를 날짜별로 받는다."""
     rel = lambda path: str(Path(path).relative_to(HERE))
+    body = ['naver_crawl.py', '--stock', 'all', '--start', p['news_start'], '--end', date, '--max-priority', '3',
+            '--max-pages', '10', '--baseline-max-pages', '3', '--capped-ok', '--title-match', '--skip-automated', '--external',
+            '--out', rel(NEWS_CACHE)]
+    plan = ['crawl_plan.py', '--max-priority', '3', '--baseline-every', '7']
+    crawl_steps = ([plan, body] if news_source == 'crawl' else
+                   [plan, ['news_api.py', 'run', '--cache', rel(NEWS_CACHE), '--start', p['news_start'], '--end', date],
+                    body + ['--no-search']])
     return {
         'prices': [['krx_prices.py', '--start', p['price_start'], '--end', date]],
         'events': [['events.py', '--v31', '--start', date, '--end', date]],
         'names': [['sample_select.py', '--fix-names']],
-        'crawl': [['crawl_plan.py', '--max-priority', '3', '--baseline-every', '7'],
-                  ['naver_crawl.py', '--stock', 'all', '--start', p['news_start'], '--end', date, '--max-priority', '3',
-                   '--max-pages', '10', '--baseline-max-pages', '3', '--capped-ok', '--title-match', '--skip-automated', '--external',
-                   '--out', rel(NEWS_CACHE)]],
+        'crawl': crawl_steps,
         'np': [['np_batch.py', '--cache', rel(NEWS_CACHE)]],
         'dart': [['dart.py']],
         'ach': [['ach.py', '--cache', rel(NEWS_CACHE), '--model', 'gpt-5-mini', '--market-only-holds', '--min-support-ratio', '0.25', '--out', rel(p['ach'])]],
@@ -159,7 +165,7 @@ def write_status(p, **kw):
     path.write_text(json.dumps({**old, **kw}, ensure_ascii=False, indent=1), encoding='utf-8')
 
 
-def run(date, from_step='prices', max_events=None, runner=subprocess.run, stdout=None, sleep=time.sleep):
+def run(date, from_step='prices', max_events=None, runner=subprocess.run, stdout=None, sleep=time.sleep, news_source='crawl'):
     p = paths(date)
     p['out'].mkdir(parents=True, exist_ok=True)
     env = env_for(p)
@@ -169,10 +175,10 @@ def run(date, from_step='prices', max_events=None, runner=subprocess.run, stdout
         write_status(p, date=date, result='market_closed', finished=f'{now_kst():%Y-%m-%dT%H:%M:%S}')
         return [{'step': 'calendar', 'result': 'market_closed'}]
     write_status(p, date=date, result='running', started=f'{now_kst():%Y-%m-%dT%H:%M:%S}', from_step=from_step,
-                 finished=None, error=None)
+                 finished=None, error=None, news_source=news_source)
     try:
         for step in STEPS[STEPS.index(from_step):]:
-            for cmd in commands(date, p)[step]:
+            for cmd in commands(date, p, news_source)[step]:
                 tries = CRAWL_TRIES if cmd[0] == 'naver_crawl.py' else 1
                 for attempt in range(1, tries + 1):
                     print(f'[{step}] {" ".join(cmd)}', flush=True)
@@ -216,6 +222,8 @@ def main(argv=None):
     ap.add_argument('--max-events', type=int, help='시가총액 큰 순으로 이만큼만 (시험용)')
     ap.add_argument('--log', action='store_true', help='출력을 cache/live/logs/<날짜>.log에 쓴다 (예약 실행용)')
     ap.add_argument('--skip-done', action='store_true', help='그날 run_status가 done·no_events·market_closed면 다시 돌리지 않는다')
+    ap.add_argument('--news-source', choices=('crawl', 'api'), default='crawl',
+                    help='api = NAVER API HUB로 검색(본문만 기사 페이지). 병행 검증(docs/sudden_live_api.md 10절) 뒤 기본으로 바꾼다')
     args = ap.parse_args(argv)
     date = resolve_date(args.date)
     p = paths(date)
@@ -232,7 +240,7 @@ def main(argv=None):
         print(f'=== {now_kst():%Y-%m-%d %H:%M:%S} live.py --date {date}', flush=True)
     try:
         with Lock(HERE / 'cache/live/live.lock'):
-            print(json.dumps(run(date, args.from_step, args.max_events, stdout=log_file), ensure_ascii=False), flush=True)
+            print(json.dumps(run(date, args.from_step, args.max_events, stdout=log_file, news_source=args.news_source), ensure_ascii=False), flush=True)
     finally:
         if log_file:
             sys.stdout, sys.stderr = sys.__stdout__, sys.__stderr__

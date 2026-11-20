@@ -36,10 +36,39 @@ def clean_body(body):
     return re.sub(r'\s+', ' ', text).strip()
 
 
+# 회사명 뒤에 붙어도 같은 회사를 가리키는 말(조사·'주' 등). 그 밖의 글자가 붙으면 다른 회사로 본다
+# (2026-11-17 사람 검수: 태웅 → 태웅로직스, HLB → HLB글로벌·HLB제약, 영풍 → 영풍제지 기사가 근거로 섞였다).
+# '산업'은 약칭 뒤 공식 이름(한국항공우주 → 한국항공우주산업)이라 같은 회사로 본다.
+NAME_TAIL = re.compile(r'(?:산업)?(?:으로|에서|에게|께서|이라|이란|이다|이며|과의|와의|주식|은|는|이|가|을|를|의|에|와|과|도|로|만|측|주|株|社|사는|사의|사가|사도)?'
+                       r'(?![가-힣A-Za-z0-9])')
+
+
+def name_in(name, text, strict=True):
+    """text 안에 name이 '그 회사'로 나오면 True. strict면 이름 바로 뒤에 다른 글자(한글·영문·숫자)가 붙은 경우
+    (예: 태웅로직스, HLB글로벌)는 다른 회사로 보고, 조사·'주'처럼 같은 회사를 가리키는 말만 허용한다.
+    이름 앞에 영문·숫자가 붙은 경우(예: SLF의 LF)도 뺀다."""
+    if not name:
+        return False
+    if not strict:
+        return name in text
+    latin_head = bool(re.match(r'[A-Za-z0-9]', name))
+    for m in re.finditer(re.escape(name), text):
+        before = text[m.start() - 1] if m.start() else ''
+        after = text[m.end():]
+        if latin_head and before and re.match(r'[A-Za-z0-9]', before):   # SLF의 LF (IBK기업은행의 기업은행은 같은 회사라 허용)
+            continue
+        if not after or not re.match(r'[가-힣A-Za-z0-9]', after[0]) or NAME_TAIL.match(after):
+            return True
+    return False
+
+
+STRICT_NAMES = True                                     # False면 예전처럼 부분 문자열로 찾는다(재현용)
+
+
 def classify(article, stock_code, names):
     title, body = article.get('title', ''), article.get('body', '')
-    title_names = [name for name in names if name and name in title]
-    body_names = [name for name in names if name and name in body]
+    title_names = [name for name in names if name_in(name, title, STRICT_NAMES)]
+    body_names = [name for name in names if name_in(name, body, STRICT_NAMES)]
     code = bool(re.search(r'(?<!\d)' + re.escape(stock_code) + r'(?!\d)', title + ' ' + body))
     if title_names:
         relevance = 'company_focus'

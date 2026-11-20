@@ -19,6 +19,7 @@ import json
 import os
 import re
 from collections import Counter
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
 import evaluate_holdout as holdout
@@ -104,6 +105,14 @@ def plausible_year(value, text, article):
     return m[1] in text or int(m[1]) in (published, published + 1)
 
 
+def plain_number(value):
+    """amount_krw는 원 단위 숫자만 받는다(지시문 규칙). 그 밖의 답은 금액 비교에서 Decimal 오류를 낸다."""
+    try:
+        return Decimal(value).is_finite()
+    except InvalidOperation:
+        return False
+
+
 def to_rule_shape(answer, article):
     """규칙 추출과 같은 모양으로 바꾸고, 근거 문구가 기사에 없는 사실은 버린다."""
     text = article.get('title', '') + '\n' + article.get('body', '')
@@ -117,6 +126,9 @@ def to_rule_shape(answer, article):
             other.append(f['other_kind'] or '기타')
             continue
         fields = {k: v.strip() for k, v in f['fields'].items() if v and v.strip().lower() not in ('', 'null', 'none')}
+        if 'amount_krw' in fields and not plain_number(fields['amount_krw']):   # '?', '160억', 범위·식은 숫자로 해석하지 않고 결측으로 둔다
+            fields.pop('amount_krw')
+            dropped_fields.append('amount_krw')
         for k in ('contract_start', 'contract_end'):
             if k in fields and not plausible_year(fields[k], text, article):
                 fields.pop(k)
@@ -144,7 +156,7 @@ def to_rule_shape(answer, article):
 
 class Extractor:
     def __init__(self, model, cache_dir, client=None):
-        self.model, self.dir = model, Path(cache_dir) / 'llm_facts' / f'{model}_{PROMPT_VERSION}'
+        self.model, self.dir = model, Path(os.getenv('SUDDEN_LLM_CACHE_DIR') or cache_dir) / 'llm_facts' / f'{model}_{PROMPT_VERSION}'
         self.dir.mkdir(parents=True, exist_ok=True)
         self.client, self.tokens, self.calls = client, Counter(), 0
 

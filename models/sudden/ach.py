@@ -235,7 +235,8 @@ def selection(groups, rows_by_url, sessions, cap=12):
 class Classifier:
     def __init__(self, model, cache_dir, client=None):
         self.model, self.client = model, client
-        self.dir = Path(cache_dir) / 'ach_llm' / f'{model}_{PROMPT_VERSION}'
+        # SUDDEN_LLM_CACHE_DIR: LLM 답 저장 위치를 다른 수집 폴더와 같이 쓴다(API 병행 검증에서 같은 기사를 다시 묻지 않게)
+        self.dir = Path(os.getenv('SUDDEN_LLM_CACHE_DIR') or cache_dir) / 'ach_llm' / f'{model}_{PROMPT_VERSION}'
         self.dir.mkdir(parents=True, exist_ok=True)
         self.tokens, self.calls = Counter(), 0
 

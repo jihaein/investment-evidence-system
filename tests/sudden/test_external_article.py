@@ -59,3 +59,11 @@ def test_result_urls_only_adds_completed_external():
 def test_empty_known_region_falls_back():
     html = page(body_attr='itemprop="articleBody"', body='', extra=f'<div class="x"><p>{BODY}</p></div>')
     assert ea.parse_external(html, 'https://a.kr/x')['body'].startswith('가나다라')
+
+
+def test_class_attribute_without_value_does_not_crash():
+    import external_article as ea
+    html = ('<html><head><title>테스트 기사</title></head><body><div class>광고</div><div id="article_body"><p>'
+            + '본문 문장입니다. ' * 40 + '</p></div></body></html>')
+    out = ea.parse_external(html, 'https://example.com/news/1')
+    assert '본문 문장입니다' in out['body']

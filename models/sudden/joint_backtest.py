@@ -91,8 +91,8 @@ def to_schedule(signal_days, dates):
     return out
 
 
-def gradual_signals(codes, k, h):
-    table = ev.T.run_threshold([(c, START, END) for c in codes], k=k, h=h)
+def gradual_signals(codes, k, h, start=START, end=END):
+    table = ev.T.run_threshold([(c, start, end) for c in codes], k=k, h=h)
     return {r.stock_code: r.first_alarm_date for r in table.itertuples() if pd.notna(r.first_alarm_date)}
 
 
@@ -134,7 +134,7 @@ def avoided(basket, schedule, recovery_rate):
     return rows
 
 
-def placebo(eng, basket, schedule, draws=200, seed=0):
+def placebo(eng, basket, schedule, draws=200, seed=0, start=START, end=None):
     """우연 기준선. 이 표본은 19종목이 대체로 하락해 아무 때나 팔아도 좋아 보이므로 무작위와 비교한다.
     - random_stocks: 같은 매도일들을 무작위 종목에 배정 (종목 고르기 능력)
     - random_dates : 같은 종목을 무작위 거래일에 매도 (매도 시점 능력)
@@ -142,11 +142,12 @@ def placebo(eng, basket, schedule, draws=200, seed=0):
     if not schedule:
         return None
     rng = np.random.default_rng(seed)
-    dates = basket.index[basket.index >= START]
+    end = end or basket.index[-1]
+    dates = basket.index[(basket.index >= start) & (basket.index <= end)]
     last = {c: basket[c].last_valid_index() for c in basket.columns}
     # 엔진은 상장폐지 뒤 날짜에 팔면 현금이 NaN이 된다. 상장폐지 종목은 그 전 날짜만 쓰고, 넘는 매도는 뺀다(이미 정리됨)
     alive = lambda sched: {c: d for c, d in sched.items() if d <= last[c]}
-    real = float(eng.run_strategy(basket, schedule).iloc[-1])
+    real = float(eng.run_strategy(basket, schedule, start_date=start, end_date=end).iloc[-1])
     out = {}
     for kind in ('random_stocks', 'random_dates'):
         finals = []
@@ -159,7 +160,7 @@ def placebo(eng, basket, schedule, draws=200, seed=0):
                 for c in schedule:
                     ok = dates[dates <= last[c]]
                     sched[c] = ok[rng.integers(len(ok))]
-            finals.append(float(eng.run_strategy(basket, sched).iloc[-1]))
+            finals.append(float(eng.run_strategy(basket, sched, start_date=start, end_date=end).iloc[-1]))
         finals = np.array(finals)
         assert not np.isnan(finals).any(), 'placebo run produced NaN'
         out[kind] = {'percentile': round(float((finals < real).mean()), 3),
@@ -167,15 +168,23 @@ def placebo(eng, basket, schedule, draws=200, seed=0):
     return out
 
 
-def run(k=ev.T.DEFAULT_K, h=ev.T.DEFAULT_H, contract_path=ROOT / 'contracts/sudden_result.json', draws=200, data_dir=None):
+def run(k=ev.T.DEFAULT_K, h=ev.T.DEFAULT_H, contract_path=ROOT / 'contracts/sudden_result.json', draws=200, data_dir=None,
+        start=START, end=None, threshold_prices=None):
+    """data_dir·threshold_prices를 주면 다른 종목·기간(예: 팀 120종목 2020~2026)으로 돌린다.
+    threshold_prices: 임계 모델이 읽을 KRX 형식 시세(등락률·거래량 포함). 판정 파일이 없으면 급락 신호 없이 돈다."""
     eng = load_engine()
     basket = load_basket(eng, data_dir)
-    dates = basket.index[basket.index >= START]
+    end = end or (END if data_dir is None else str(basket.index[-1].date()))
+    dates = basket.index[(basket.index >= start) & (basket.index <= end)]
     codes = list(basket.columns)
-    contract = json.loads(Path(contract_path).read_text(encoding='utf-8'))
+    if threshold_prices:
+        ev.T.use_prices(threshold_prices, codes=codes)
+    path = Path(contract_path)
+    contract = (json.loads(path.read_text(encoding='utf-8')) if path.exists()
+                else {'cases': [], 'rule_version': None, 'sample': 'missing', 'params': None})
     first = lambda verdicts, fragile=False: esc.sell_schedule(contract, verdicts, skip_fragile=fragile)
     signals = {
-        'gradual': gradual_signals(codes, k, h),
+        'gradual': gradual_signals(codes, k, h, start, end),
         'sudden_value_impair': first(('가치훼손',)),
         'sudden_value_impair_robust': first(('가치훼손',), True),
         'control_sudden_non_value': first(('비가치',)),
@@ -187,7 +196,7 @@ def run(k=ev.T.DEFAULT_K, h=ev.T.DEFAULT_H, contract_path=ROOT / 'contracts/sudd
     result, curves, sells = {}, {}, {}
     for rr in (1.0, 0.0):
         for name, sched in strategies.items():
-            w = eng.run_strategy(basket, sched, recovery_rate=rr)
+            w = eng.run_strategy(basket, sched, recovery_rate=rr, start_date=start, end_date=end)
             key = name if rr == 1.0 else f'{name}@recovery0'
             result[key] = {**metrics(w, eng.CASH_DAILY_RATE), 'n_sold': len(sched)}
             if rr == 1.0:
@@ -200,8 +209,9 @@ def run(k=ev.T.DEFAULT_K, h=ev.T.DEFAULT_H, contract_path=ROOT / 'contracts/sudd
                                         'sold_after_return_median': round(float(np.median(vals)), 4),
                                         'share_sells_helped': round(float(np.mean([v < 0 for v in vals])), 3)})
                 if draws:
-                    result[key]['placebo'] = placebo(eng, basket, sched, draws)
-    return {'k': k, 'h': h, 'start': START, 'end': str(dates[-1].date()), 'stocks': len(codes),
+                    result[key]['placebo'] = placebo(eng, basket, sched, draws, start=start, end=end)
+    return {'k': k, 'h': h, 'start': start, 'end': str(dates[-1].date()), 'stocks': len(codes),
+            'threshold_prices': str(threshold_prices) if threshold_prices else None,
             'contract': {'rule_version': contract['rule_version'], 'sample': contract['sample'], 'params': contract['params']},
             'strategies': result, 'sells': sells}, pd.DataFrame(curves)
 
@@ -213,8 +223,13 @@ def main(argv=None):
     ap.add_argument('--out', type=Path, default=OUT)
     ap.add_argument('--draws', type=int, default=200, help='무작위 기준선 반복 수 (0이면 생략)')
     ap.add_argument('--data-dir', type=Path, help='팀 BACKTEST_DATA_DIR 형식 폴더 (없으면 19종목 표)')
+    ap.add_argument('--start', default=START, help='진입일 (기본 2016-01-04)')
+    ap.add_argument('--end', help='끝 (기본: 19종목은 2019-12-30, --data-dir은 데이터 끝)')
+    ap.add_argument('--threshold-prices', type=Path, help='임계 모델이 읽을 KRX 형식 시세 (예: cache/krx/prices_20181201_20261116.csv)')
+    ap.add_argument('--contract', type=Path, default=ROOT / 'contracts/sudden_result.json', help='급락 판정 파일 (없으면 급락 신호 없음)')
     args = ap.parse_args(argv)
-    res, curves = run(args.k, args.h, draws=args.draws, data_dir=args.data_dir)
+    res, curves = run(args.k, args.h, args.contract, draws=args.draws, data_dir=args.data_dir, start=args.start,
+                      end=args.end, threshold_prices=args.threshold_prices)
     args.out.mkdir(parents=True, exist_ok=True)
     tag = f'k{args.k:g}_h{args.h:g}'
     (args.out / f'joint_backtest_{tag}.json').write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding='utf-8')

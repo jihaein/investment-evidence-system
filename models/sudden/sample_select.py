@@ -30,6 +30,15 @@ def select(events, per_year, seed):
     return out
 
 
+def select_codes(events, codes, start, end, split='team120'):
+    """팀 백테스트 종목(codes)의 사건 전부(무작위 추출 없음). 시가총액 1,000억 이상·뉴스 창이 있는 사건만."""
+    ok = events[events['mktcap_ok'].astype(str).str.lower().eq('true') & events['stock_code'].isin(codes)
+                & events['D'].between(start, end) & events['news_window_start'].notna()].copy()
+    out = ok.sort_values(['D', 'stock_code']).reset_index(drop=True)
+    out['split'] = split
+    return out
+
+
 def fix_names(names, official):
     """KRX 약칭이 DART 공식 이름의 앞부분이면(잘린 이름, 예: 현대엘리베이 → 현대엘리베이터) 공식 이름으로 바꾼다.
     공식 이름과 다른 진짜 옛 이름(사명 변경)은 그대로 둔다."""
@@ -61,6 +70,9 @@ def main(argv=None):
     ap.add_argument('--per-year', type=int, default=67)
     ap.add_argument('--seed', type=int, default=2026)
     ap.add_argument('--fix-names', action='store_true', help='잘린 KRX 약칭을 DART 공식 이름으로 바꾼다(원본은 stock_names_krx.csv)')
+    ap.add_argument('--codes', type=Path, help='종목코드 목록(한 줄에 하나). 주면 무작위 추출 대신 이 종목의 사건을 모두 고른다')
+    ap.add_argument('--start', default='2020-01-01')
+    ap.add_argument('--end', default='2026-12-31')
     args = ap.parse_args(argv)
     if args.fix_names:
         import dart
@@ -90,7 +102,12 @@ def main(argv=None):
         (OUT / 'drop_sessions.csv').rename(all_sessions)
     events = pd.read_csv(all_events, dtype={'stock_code': str}, encoding='utf-8-sig')
     sessions = pd.read_csv(all_sessions, encoding='utf-8-sig')
-    picked = select(events, args.per_year, args.seed)
+    if args.codes:
+        codes = {c.strip().zfill(6) for c in args.codes.read_text(encoding='utf-8').split() if c.strip()}
+        picked = select_codes(events, codes, args.start, args.end)
+        print(f'지정 종목 {len(codes)}개 중 사건이 있는 종목 {picked["stock_code"].nunique()}개')
+    else:
+        picked = select(events, args.per_year, args.seed)
     picked.to_csv(OUT / 'drop_events.csv', index=False, encoding='utf-8-sig')
     sessions[sessions['drop_id'].isin(picked['drop_id'])].to_csv(OUT / 'drop_sessions.csv', index=False, encoding='utf-8-sig')
     print(f"전체 사건 {len(events)}건 → 시가총액 1,000억 이상 {int(events['mktcap_ok'].astype(str).str.lower().eq('true').sum())}건 "

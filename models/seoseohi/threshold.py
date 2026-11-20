@@ -23,7 +23,8 @@ threshold.py - 임계모델 1차 구현
 - 조건 3(하루 폭락 거르기)은 쓰지 않고 기록만 남김(급락 모델과 겹침은 orchestra에서 정리)
 
 [how to use]
-from threshold import run_threshold
+from threshold import run_threshold, use_prices
+use_prices("models/sudden/cache/krx/prices_20181201_20261116.csv", codes=team_codes)   # 120종목 등 다른 주가 (생략하면 19종목)
 table = run_threshold([("010170", "2016-06-30", "2019-06-28)]), k=0.5, h=5)
 table = run_threshold(pairs, k=0.5, h=5, baseline="fixed") #기준 고정 방식으로 비교
 
@@ -42,6 +43,8 @@ import pandas as pd
 HERE = Path(__file__).resolve().parent                        # models/seoseohi
 PROJECT_ROOT = HERE.parents[1]
 PRICE_PATH = PROJECT_ROOT / "data" / "ohlson" / "05_주가_일별_2015-2019.csv"
+# 주가 원천. 기본은 19종목 05번 파일. use_prices()로 바꾼다(예: 120종목 백테스트용 KRX 전종목 시세 + 종목 목록).
+_SOURCE = {"path": PRICE_PATH, "codes": None}
 OUTPUT_DIR = HERE / "output"
 
 K_LIST = [0.1, 0.25, 0.5]               # 백테스트에서 비교할 k
@@ -74,19 +77,48 @@ def to_number(series):
     return pd.to_numeric(series.astype(str).str.replace(",", "").str.strip(), errors="coerce")
 
 
-def load_prices(path=PRICE_PATH):
+def use_prices(path=None, codes=None):
+    """주가 원천을 바꾼다(None이면 기본 19종목 파일). codes를 주면 그 종목만 읽는다(전종목 파일에서 일부만 쓸 때).
+    두 형식을 읽는다:
+      - KRX 형식(05번 파일, models/sudden/krx_prices.py 결과): ISU_CD·FLUC_RT·ACC_TRDVOL이 있다 → 지금과 같은 계산
+      - 팀 120종목 시장자료 형식(stock_code·TDD_CLSPRC만): 등락률·거래량이 없어 종가 변화율을 쓰고 거래정지일을 구분하지 못한다.
+        종가가 수정되지 않아 액면분할·감자일이 가짜 급등락으로 잡힐 수 있으므로 KRX 형식을 권한다."""
+    _SOURCE.update(path=Path(path) if path else PRICE_PATH, codes=frozenset(str(c).zfill(6) for c in codes) if codes else None)
+    _prepared.cache_clear()
+
+
+def load_prices(path=None, codes=None):
+    path = path or _SOURCE["path"]
+    codes = codes if codes is not None else _SOURCE["codes"]
     raw = pd.read_csv(path, dtype=str, encoding="utf-8-sig")
     raw.columns = [c.strip() for c in raw.columns]
-    raw = raw[raw["BAS_DD"].str.fullmatch(r"\d{8}", na=False)]      
+    raw = raw[raw["BAS_DD"].astype(str).str.fullmatch(r"\d{8}", na=False)]
+    if "ISU_CD" in raw.columns:
+        if codes:
+            raw = raw[raw["ISU_CD"].str.strip().str.zfill(6).isin(codes)]
+        prices = pd.DataFrame({
+            "stock_code": raw["ISU_CD"].str.strip(),
+            "company_name": raw["ISU_NM"].str.strip(),
+            "trade_date": pd.to_datetime(raw["BAS_DD"], format="%Y%m%d"),
+            "close": to_number(raw["TDD_CLSPRC"]),
+            "ret_krx": to_number(raw["FLUC_RT"]) / 100,                  # 등락률(%) → 비율
+            "volume": to_number(raw["ACC_TRDVOL"]),
+        })
+        return prices.sort_values(["stock_code", "trade_date"]).reset_index(drop=True)
+    # 팀 120종목 시장자료 형식: 등락률·거래량 없음
+    raw = raw.assign(stock_code=raw["stock_code"].str.strip().str.zfill(6))
+    if codes:
+        raw = raw[raw["stock_code"].isin(codes)]
+    name_col = next((c for c in raw.columns if c.startswith("stock_name")), None)
     prices = pd.DataFrame({
-        "stock_code": raw["ISU_CD"].str.strip(),
-        "company_name": raw["ISU_NM"].str.strip(),
+        "stock_code": raw["stock_code"],
+        "company_name": raw[name_col].str.strip() if name_col else raw["stock_code"],
         "trade_date": pd.to_datetime(raw["BAS_DD"], format="%Y%m%d"),
         "close": to_number(raw["TDD_CLSPRC"]),
-        "ret_krx": to_number(raw["FLUC_RT"]) / 100,                  # 등락률(%) → 비율
-        "volume": to_number(raw["ACC_TRDVOL"]),
-    })
-    return prices.sort_values(["stock_code", "trade_date"]).reset_index(drop=True)
+    }).sort_values(["stock_code", "trade_date"]).reset_index(drop=True)
+    prices["ret_krx"] = prices.groupby("stock_code")["close"].pct_change(fill_method=None)
+    prices["volume"] = 1.0                                           # 거래량 없음: 거래정지일을 구분하지 못한다
+    return prices
 
 
 

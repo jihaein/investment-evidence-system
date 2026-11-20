@@ -82,3 +82,11 @@ def test_hybrid_uses_llm_only_when_rule_does_not_know_the_action():
 def test_fact_without_target_is_dropped_like_rules():
     out = lf.to_rule_shape({'has_fact': True, 'facts': [fact(target=None)]}, ARTICLE)
     assert out['primary'] is None and out['reason'] == 'llm_target_not_identified' and out['dropped_no_target'] == 1
+
+
+def test_non_numeric_amount_is_dropped_as_missing():
+    for bad in ('?', '-', '160억', '5000억~6000억', '2000000000+6000000000', '20,000,000,000', 'NaN'):
+        out = lf.to_rule_shape({'has_fact': True, 'facts': [fact(fields={k: None for k in lf.FIELDS} | {'amount_krw': bad})]}, ARTICLE)
+        assert 'amount_krw' not in out['primary']['fields'] and out['dropped_implausible_fields'] == ['amount_krw']
+    out = lf.to_rule_shape({'has_fact': True, 'facts': [fact(fields={k: None for k in lf.FIELDS} | {'amount_krw': '6100000000.5'})]}, ARTICLE)
+    assert out['primary']['fields']['amount_krw'] == '6100000000.5'

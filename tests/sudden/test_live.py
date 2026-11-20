@@ -163,3 +163,11 @@ def test_krx_does_not_cache_recent_empty_day(tmp_path, monkeypatch):
     old = today - pd.Timedelta(days=30)
     krx_prices.fetch_day(old, empty)
     assert (tmp_path / 'daily' / f'{old:%Y%m%d}.csv').exists()                # 지난 휴장일은 캐시
+
+
+def test_api_news_source_uses_news_api_then_bodies_only():
+    p = live.paths('2026-11-18')
+    crawl_cmds = live.commands('2026-11-18', p, 'api')['crawl']
+    assert [c[0] for c in crawl_cmds] == ['crawl_plan.py', 'news_api.py', 'naver_crawl.py']
+    assert crawl_cmds[1][1] == 'run' and '--no-search' in crawl_cmds[2]
+    assert [c[0] for c in live.commands('2026-11-18', p)['crawl']] == ['crawl_plan.py', 'naver_crawl.py']   # 기본은 그대로

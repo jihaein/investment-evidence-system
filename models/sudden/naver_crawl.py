@@ -108,7 +108,7 @@ def canonical(url):
 
 def title_link(node):
     return node.tag == 'a' and (node.attrs.get('data-heatmap-target') == '.tit'
-                               or 'news_tit' in node.attrs.get('class', '').split())
+                               or 'news_tit' in (node.attrs.get('class') or '').split())
 
 
 def parse_search(html):
@@ -152,7 +152,7 @@ def parse_search(html):
             break
     if not next_url:
         for n in tree.root.nodes():
-            if n.tag == 'a' and 'btn_next' in n.attrs.get('class', '').split() and n.attrs.get('aria-disabled') != 'true':
+            if n.tag == 'a' and 'btn_next' in (n.attrs.get('class') or '').split() and n.attrs.get('aria-disabled') != 'true':
                 from urllib.parse import urljoin
                 next_url = urljoin('https://search.naver.com/search.naver', n.attrs.get('href', ''))
                 break
@@ -179,7 +179,7 @@ def parse_article(html, url):
     published = next((n.attrs['data-date-time'] for n in nodes if n.attrs.get('data-date-time')), None)
     modified = next((n.attrs['data-modify-date-time'] for n in nodes if n.attrs.get('data-modify-date-time')), None)
     publisher = meta.get('og:article:author')
-    logo = next((n for n in nodes if 'media_end_head_top_logo' in n.attrs.get('class', '').split()), None)
+    logo = next((n for n in nodes if 'media_end_head_top_logo' in (n.attrs.get('class') or '').split()), None)
     if logo:
         publisher = next((n.attrs.get('alt') for n in logo.nodes() if n.tag == 'img' and n.attrs.get('alt')), publisher)
     return {'url': canonical(url), 'title': title, 'publisher': publisher,
@@ -430,7 +430,7 @@ def fetch_external(db, ext_fetch, result, row, query, args):
         article.update(parse_external(html, url), raw_file=raw, status='complete')
     except PermissionError as exc:
         article.update(status='excluded_robots', error=str(exc))
-    except (requests.RequestException, ParseError, ValueError) as exc:
+    except (requests.RequestException, ParseError, ValueError, AttributeError, TypeError) as exc:   # 외부 사이트 HTML이 이상해도 수집 전체를 멈추지 않는다
         article.update(status='external_failed', error=f'{type(exc).__name__}: {exc}'[:300])
     save(db, 'articles', url, article['status'], article)
     print(f"  [외부] {urlparse(url).hostname}: {article['status']}", flush=True)
@@ -456,6 +456,9 @@ def main(argv=None):
     ap.add_argument('--no-quote', action='store_true', help='검색어를 따옴표 없이 보냄 (2026-11-04 파일럿·홀드아웃 방식)')
     ap.add_argument('--min-free-gb', type=float, default=5, help='남은 디스크가 이보다 적으면 멈춤 (응답 원문을 모두 저장한다)')
     ap.add_argument('--out', type=Path, default=HERE / 'cache/naver')
+    ap.add_argument('--no-search', action='store_true',
+                    help='검색 페이지에 접속하지 않는다. DB에 이미 있는 검색 기록(예: news_api.py가 API로 채운 것)의 기사 본문만 받는다. '
+                         '기록이 없는 날은 건너뛰고(판정 단계에서 수집 미완료로 보류), 종료 코드는 0')
     args = ap.parse_args(argv)
     if args.delay < 1 or args.max_pages < 1 or args.start > args.end:
         ap.error('delay >= 1, max-pages >= 1, start <= end 필요')
@@ -485,8 +488,11 @@ def main(argv=None):
         data = {'stock_code': row['stock_code'], 'date': row['date'], 'query': query, 'search_query': sent,
                 'priority': int(row['priority']), 'drop_ids': row['drop_ids'], 'collected_at': now()}
         # 같은 검색어라도 따옴표 여부가 다르면 결과가 달라서 재사용하지 않는다 (예전 기록은 search_query가 없다 = 따옴표 없음)
-        if old and old[0] in ('complete', 'empty', 'capped') and json.loads(old[1]).get('search_query', query) == sent:
+        if old and old[0] in ('complete', 'empty', 'capped') and (args.no_search or json.loads(old[1]).get('search_query', query) == sent):
             data = json.loads(old[1])
+        elif args.no_search:
+            print(f"[검색 기록 없음] {row['date']} {row['stock_code']} {query}", flush=True)
+            continue
         else:
             try:
                 baseline = int(row['priority']) > 1 and args.baseline_max_pages
@@ -546,6 +552,8 @@ def main(argv=None):
     done = all(all(s in ok_search for s in m['search_statuses'])
                and set(m['article_statuses']) <= ok_article and not m['pending_articles']
                for m in summaries.values())
+    if args.no_search:
+        return 0
     return 0 if done and len(selected_keys) == sum(sum(m['search_statuses'].values()) for m in summaries.values()) else 1
 
 

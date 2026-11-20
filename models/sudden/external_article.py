@@ -87,7 +87,8 @@ def _body_node(nodes):
             return n
     for name in BODY_IDS:
         for n in nodes:
-            if n.attrs.get('id') == name or name in n.attrs.get('class', '').split():
+            cls = n.attrs.get('class')
+            if n.attrs.get('id') == name or (isinstance(cls, str) and name in cls.split()):
                 if len(tidy(n.text())) >= MIN_KNOWN:
                     return n
     best, size = None, 0                               # <p> 글이 가장 많은 영역

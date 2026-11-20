@@ -49,7 +49,7 @@ def report_for(e, by_stock, searches, articles, names):
     return rep, reviewed
 
 
-def run(cache, split=None, drop_ids=None, out_dir=OUT):
+def run(cache, split=None, drop_ids=None, out_dir=OUT, out_name='scores_all_hybrid'):
     cache = Path(cache)
     lf.load_env()
     hybrid = lf.Hybrid(lf.Extractor(lf.DEFAULT_MODEL, cache))
@@ -68,7 +68,7 @@ def run(cache, split=None, drop_ids=None, out_dir=OUT):
     t = time.time()
     pool = p_pool.build_pool(p_pool.load_rows(cache))
     cfgs = {k: json.loads((HERE / f).read_text(encoding='utf-8')) for k, f in (('own', 'np_config.json'), ('pooled', 'np_config_pooled.json'))}
-    out = cache / 'scores_all_hybrid'
+    out = cache / out_name
     summary = []
     for i, e in enumerate(events):
         if not e.get('base_end'):
@@ -94,8 +94,9 @@ def main(argv=None):
     ap.add_argument('--cache', type=Path, default=HERE / 'cache/naver_full')
     ap.add_argument('--split')
     ap.add_argument('--drop-id', action='append')
+    ap.add_argument('--out-name', default='scores_all_hybrid', help='결과 폴더 이름 (<cache>/<이름>). 규칙을 바꿔 비교할 때 다른 이름을 준다')
     args = ap.parse_args(argv)
-    print(json.dumps(run(args.cache, args.split, set(args.drop_id or [])), ensure_ascii=False))
+    print(json.dumps(run(args.cache, args.split, set(args.drop_id or []), out_name=args.out_name), ensure_ascii=False))
     return 0
 
 
