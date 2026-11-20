@@ -2,6 +2,7 @@
 
 설계서 v3.1(2026-11-06)을 출발점으로 삼되, 데이터로 확인하면서 고친다. 이 문서는 **설계서와 달라진 점과 그 이유**를 적는다.
 숫자와 실행 명령은 `models/sudden/README.md`에 있다. 마지막 수정: 2026-11-10.
+성능 요약과 세 모델 통합 안내는 [`sudden_model_overview.md`](sudden_model_overview.md)에 있다.
 
 ## 흐름
 
