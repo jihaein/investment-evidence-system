@@ -1,17 +1,7 @@
 """
-api_v2.py — 서서히 신호 조회 API (확장본)
-실행: .venv/bin/python -m uvicorn backend.api_v2:app --reload
+서서히 신호 조회 API.
+실행: .venv/bin/python -m uvicorn backend.api:app --reload
 문서: http://localhost:8000/docs
-
-⚠️ 밤새 Claude 가 만든 확장본. 샌드박스에서 Supabase 접속이 막혀서(네트워크 차단)
-   실제로 돌려보진 못했어 → 아침에 서버 띄우고 /docs 에서 각 엔드포인트 한 번씩 눌러 확인해줘.
-   기존 backend/api.py 는 그대로 두었으니, 이게 잘 되면 그때 api.py 를 이걸로 교체하면 돼.
-
-추가된 것:
-  · 응답에 종목명(stock_name) + 상장폐지 여부(delisted) + 마지막 거래일(last_traded)
-  · /stocks            — 전체 종목 목록
-  · /stock/{code}/history — 한 종목의 판정 추이(차트용)
-  · POST /portfolio    — 보유 종목 여러 개 한 번에 평가 ('내 포트폴리오' 화면용)
 """
 import os
 from typing import Optional
@@ -29,7 +19,7 @@ app = FastAPI(title="서서히 Signal API", version="0.2")
 def _latest_signal(con, stock_code: str, buy_date: str, as_of: Optional[str] = None):
     """buy_date → 직전 스냅샷을 '기준선'으로, as_of(없으면 최신) → 직전 스냅샷을 '평가일'로
     스냅해서 가장 최근 신호 1건을 돌려준다.
-    delisted: 그 평가일이 종목의 마지막 거래일보다 뒤면 True(이미 상장폐지된 유령 신호)."""
+    delisted: 그 평가일이 종목의 마지막 거래일보다 뒤면 True(상장폐지 이후 평가일)."""
     sql = text("""
         select g.stock_code, s.stock_name,
                g.baseline_date, g.eval_date,
