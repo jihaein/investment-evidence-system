@@ -1,0 +1,145 @@
+{
+ "ifrs_Revenue": [
+  "매출액",
+  "매출",
+  "수익(매출액)",
+  "재화의판매로인한수익(매출액)",
+  "매출액및용역수익",
+  "영업수익"
+ ],
+ "ifrs_CostOfSales": [
+  "매출원가"
+ ],
+ "ifrs_GrossProfit": [
+  "매출총이익",
+  "매출총이익(손실)",
+  "매출총손익",
+  "매출총손실"
+ ],
+ "dart_OperatingIncomeLoss": [
+  "영업이익",
+  "영업이익(손실)",
+  "영업손실",
+  "영업손익"
+ ],
+ "ifrs_ProfitLoss": [
+  "당기순이익",
+  "당기순이익(손실)",
+  "당기순손실",
+  "분기순이익",
+  "분기순이익(손실)",
+  "반기순이익",
+  "반기순이익(손실)",
+  "반기순손실",
+  "분기순손실",
+  "분기연결순이익",
+  "연결당기순이익",
+  "연결당기순이익(손실)",
+  "분기순손익",
+  "반기순손익"
+ ],
+ "ifrs_CashFlowsFromUsedInOperatingActivities": [
+  "영업활동현금흐름",
+  "영업활동으로인한현금흐름",
+  "영업활동으로부터의현금흐름",
+  "영업활동으로인한순현금흐름",
+  "영업활동으로부터의순현금흐름",
+  "영업활동순현금흐름"
+ ],
+ "ifrs_Assets": [
+  "자산총계",
+  "총자산"
+ ],
+ "ifrs_Liabilities": [
+  "부채총계",
+  "총부채"
+ ],
+ "ifrs_Equity": [
+  "자본총계",
+  "총자본"
+ ],
+ "ifrs_CurrentAssets": [
+  "유동자산"
+ ],
+ "ifrs_CurrentLiabilities": [
+  "유동부채"
+ ],
+ "ifrs_CashAndCashEquivalents": [
+  "현금및현금성자산"
+ ],
+ "dart_LongTermBorrowingsGross": [
+  "장기차입금"
+ ],
+ "debt_bonds": [
+  "사채",
+  "장기사채"
+ ],
+ "debt_current_borrowings": [
+  "유동성장기차입금",
+  "장기차입금의유동성대체",
+  "장기차입금의유동성대체분"
+ ],
+ "debt_current_bonds": [
+  "유동성사채",
+  "사채의유동성대체",
+  "사채의유동성대체분"
+ ],
+ "debt_convertible": [
+  "전환사채"
+ ],
+ "debt_current_convertible": [
+  "유동성전환사채"
+ ],
+ "debt_warrant": [
+  "신주인수권부사채"
+ ],
+ "debt_current_warrant": [
+  "유동성신주인수권부사채"
+ ],
+ "debt_exchangeable": [
+  "교환사채"
+ ],
+ "debt_current_exchangeable": [
+  "유동성교환사채"
+ ],
+ "ifrs_EquityAttributableToOwnersOfParent": [
+  "지배기업의소유주에게귀속되는자본",
+  "지배기업소유주지분",
+  "지배기업소유주에게귀속되는자본",
+  "지배기업의소유주지분",
+  "지배기업의소유지분",
+  "지배기업의소유주에게귀속되는지분",
+  "지배주주지분",
+  "지배기업의소유주에게귀속되는자본합계",
+  "지배기업소유주지분합계",
+  "지배기업의소유주에게귀속되는지분합계",
+  "지배회사의소유주에게귀속되는자본",
+  "지배기업의소유주에귀속되는자본"
+ ],
+ "ifrs_NoncontrollingInterests": [
+  "비지배지분"
+ ],
+ "ifrs_ProfitLossAttributableToOwnersOfParent": [
+  "지배기업의소유주에게귀속되는당기순이익(손실)",
+  "지배기업소유주에게귀속되는당기순이익(손실)",
+  "지배기업의소유주에게귀속되는당기순이익",
+  "지배기업의소유주에게귀속되는분기순이익(손실)",
+  "지배기업의소유주에게귀속되는반기순이익(손실)",
+  "지배주주순이익",
+  "지배주주순이익(손실)"
+ ],
+ "ifrs_ProfitLossAttributableToNoncontrollingInterests": [
+  "비지배지분에귀속되는당기순이익(손실)",
+  "비지배지분에귀속되는분기순이익(손실)",
+  "비지배지분에귀속되는반기순이익(손실)"
+ ],
+ "dart_TotalSellingGeneralAdministrativeExpenses": [
+  "판매비와관리비",
+  "판매비와일반관리비",
+  "판매비및관리비",
+  "판매비와관리비합계"
+ ],
+ "ifrs_IssuedCapital": [
+  "자본금"
+ ]
+}

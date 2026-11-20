@@ -1,0 +1,888 @@
+{
+  "02_재무_연간_2017-2026.csv": {
+    "columns": [
+      {
+        "name": "stock_code",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_length": 6
+            }
+          }
+        ]
+      },
+      {
+        "name": "corp_code",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "stock_name_2014",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "fs_div",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_values": [
+                "CFS",
+                "OFS"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "fiscal_year",
+        "data_type": "INTEGER",
+        "checks": []
+      },
+      {
+        "name": "bsns_year",
+        "data_type": "INTEGER",
+        "checks": []
+      },
+      {
+        "name": "amount_column",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "rcept_no",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_length": 14
+            }
+          }
+        ]
+      },
+      {
+        "name": "disclosed_date",
+        "data_type": "DATE",
+        "checks": []
+      },
+      {
+        "name": "ifrs_Revenue",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_CostOfSales",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_GrossProfit",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "dart_OperatingIncomeLoss",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_ProfitLoss",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_CashFlowsFromUsedInOperatingActivities",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_Assets",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_CurrentAssets",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_CurrentLiabilities",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_Equity",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_Liabilities",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "dart_LongTermBorrowingsGross",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_CashAndCashEquivalents",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "SUM",
+        "data_type": "BIGINT",
+        "checks": []
+      }
+    ],
+    "labels": [
+      "종목코드",
+      "DART 고유번호",
+      "종목명(2014년 기준)",
+      "재무제표 구분",
+      "회계연도(값이 해당하는 연도)",
+      "출처 보고서의 사업연도",
+      "출처 금액 칸(당기/전기/전전기)",
+      "접수번호",
+      "실제 공시일",
+      "매출액",
+      "매출원가",
+      "매출총이익",
+      "영업이익",
+      "당기순이익",
+      "영업활동현금흐름",
+      "자산총계",
+      "유동자산",
+      "유동부채",
+      "자본총계",
+      "부채총계",
+      "장기차입금",
+      "현금및현금성자산",
+      "FScore 장기부채 합계: 유동성 장기차입금·유동성 사채·비유동 장기차입금·비유동 사채의 검증된 합계(원)"
+    ],
+    "checks": [
+      {
+        "duplicate": {
+          "columns": [
+            "stock_code",
+            "fs_div",
+            "fiscal_year",
+            "bsns_year",
+            "amount_column",
+            "rcept_no"
+          ]
+        }
+      }
+    ]
+  },
+  "04_재무_Ohlson용_2019-2026.csv": {
+    "columns": [
+      {
+        "name": "stock_code",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_length": 6
+            }
+          }
+        ]
+      },
+      {
+        "name": "corp_code",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "stock_name_2014",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "fs_div",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_values": [
+                "CFS",
+                "OFS"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "bsns_year",
+        "data_type": "INTEGER",
+        "checks": []
+      },
+      {
+        "name": "quarter",
+        "data_type": "INTEGER",
+        "checks": []
+      },
+      {
+        "name": "reprt_code",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "report_period",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "rcept_no",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_length": 14
+            }
+          }
+        ]
+      },
+      {
+        "name": "disclosed_date",
+        "data_type": "DATE",
+        "checks": []
+      },
+      {
+        "name": "available_from",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "period_end",
+        "data_type": "DATE",
+        "checks": []
+      },
+      {
+        "name": "BAS_DD",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "MKTCAP",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_EquityAttributableToOwnersOfParent_thstrm_amount",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_EquityAttributableToOwnersOfParent_prior_fy_end",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_ProfitLossAttributableToOwnersOfParent_quarter_amount",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "reported_total_equity_thstrm_amount",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "reported_profitloss_quarter_amount",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "owner_value_source",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "prior_basis_note",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "ttm_status",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "quarter_amount_method",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "q3_ytd_rcept_no",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "quarter_amount_formula",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "basis_fallback_reason",
+        "data_type": "VARCHAR",
+        "checks": []
+      }
+    ],
+    "labels": [
+      "종목코드",
+      "DART 고유번호",
+      "종목명(2014년 기준)",
+      "재무제표 구분",
+      "사업연도",
+      "분기(1~4)",
+      "보고서 코드",
+      "보고서 이름",
+      "접수번호",
+      "실제 공시일",
+      "이용 가능일(공시 다음 거래일)",
+      "결산기준일(당분기말)",
+      "공시일 당일 또는 다음 거래일",
+      "공시일 기준 시가총액(원)",
+      "지배주주자본 당기말(원)",
+      "지배주주자본 직전 사업연도말(원)",
+      "지배주주순이익 분기 단독(원)",
+      "보고서 자본총계 당기말(원)",
+      "보고서 당기순이익 분기 단독(원)",
+      "지배주주 값 출처(연결 계정/별도 대체)",
+      "전기 값 기준 설명",
+      "입력 상태",
+      "분기 단독값 산출 방법",
+      "3분기 누적값 출처 접수번호",
+      "분기 단독값 산식 설명",
+      "별도 기준 전환 사유"
+    ],
+    "checks": [
+      {
+        "duplicate": {
+          "columns": [
+            "rcept_no"
+          ]
+        }
+      }
+    ]
+  },
+  "09_증자감자현황_2019-2026.csv": {
+    "columns": [
+      {
+        "name": "rcept_no",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_length": 14
+            }
+          }
+        ]
+      },
+      {
+        "name": "corp_code",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "corp_name",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "stock_code",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_length": 6
+            }
+          }
+        ]
+      },
+      {
+        "name": "bsns_year",
+        "data_type": "INTEGER",
+        "checks": []
+      },
+      {
+        "name": "reprt_code",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "stlm_dt",
+        "data_type": "DATE",
+        "checks": []
+      },
+      {
+        "name": "isu_dcrs_de",
+        "data_type": "DATE",
+        "checks": []
+      },
+      {
+        "name": "isu_dcrs_stle",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "isu_dcrs_stock_knd",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "isu_dcrs_qy",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "isu_dcrs_mstvdv_fval_amount",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "isu_dcrs_mstvdv_amount",
+        "data_type": "DOUBLE",
+        "checks": []
+      }
+    ],
+    "labels": [
+      "출처 정기보고서 접수번호",
+      "DART 고유번호",
+      "회사명",
+      "종목코드",
+      "출처 사업연도",
+      "보고서 코드",
+      "결산기준일",
+      "주식 발행(감소) 일자",
+      "발행(감소) 형태",
+      "주식 종류",
+      "발행(감소) 수량(주)",
+      "주당 액면가액(원)",
+      "주당 발행가액(원)"
+    ],
+    "checks": []
+  },
+  "11_재무_DuPont_TTM_2019-2026.csv": {
+    "columns": [
+      {
+        "name": "stock_code",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_length": 6
+            }
+          }
+        ]
+      },
+      {
+        "name": "corp_code",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "stock_name_2014",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "fs_div",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_values": [
+                "CFS",
+                "OFS"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "bsns_year",
+        "data_type": "INTEGER",
+        "checks": []
+      },
+      {
+        "name": "quarter",
+        "data_type": "INTEGER",
+        "checks": []
+      },
+      {
+        "name": "ifrs_Revenue_q",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "dart_OperatingIncomeLoss_q",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_Revenue_ttm",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "dart_OperatingIncomeLoss_ttm",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_Assets_t",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ifrs_Assets_t_4q",
+        "data_type": "BIGINT",
+        "checks": []
+      },
+      {
+        "name": "ttm_quarters",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "rcept_no",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_length": 14
+            }
+          }
+        ]
+      },
+      {
+        "name": "PM_pct",
+        "data_type": "DOUBLE",
+        "checks": []
+      },
+      {
+        "name": "ATO",
+        "data_type": "DOUBLE",
+        "checks": []
+      }
+    ],
+    "labels": [
+      "종목코드",
+      "DART 고유번호",
+      "종목명(2014년 기준)",
+      "재무제표 구분",
+      "사업연도",
+      "분기(1~4)",
+      "분기 단독 매출액(원)",
+      "분기 단독 영업이익(원)",
+      "최근 12개월 매출액(원)",
+      "최근 12개월 영업이익(원)",
+      "당분기말 자산총계(원)",
+      "전년 동기말 자산총계(원)",
+      "TTM에 쓴 4개 분기",
+      "당분기 출처 접수번호",
+      "영업이익률(%)",
+      "총자산회전율(회)"
+    ],
+    "checks": [
+      {
+        "duplicate": {
+          "columns": [
+            "rcept_no"
+          ]
+        }
+      }
+    ]
+  },
+  "11B_DuPont_날짜연결_2019-2026.csv": {
+    "columns": [
+      {
+        "name": "stock_code",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_length": 6
+            }
+          }
+        ]
+      },
+      {
+        "name": "corp_code",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "stock_name_2014",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "fs_div",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_values": [
+                "CFS",
+                "OFS"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "bsns_year",
+        "data_type": "INTEGER",
+        "checks": []
+      },
+      {
+        "name": "quarter",
+        "data_type": "INTEGER",
+        "checks": []
+      },
+      {
+        "name": "rcept_no",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_length": 14
+            }
+          }
+        ]
+      },
+      {
+        "name": "disclosed_date",
+        "data_type": "DATE",
+        "checks": []
+      },
+      {
+        "name": "available_from",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "period_end",
+        "data_type": "DATE",
+        "checks": []
+      },
+      {
+        "name": "period_end_4q",
+        "data_type": "DATE",
+        "checks": []
+      },
+      {
+        "name": "ttm_quarters",
+        "data_type": "VARCHAR",
+        "checks": []
+      }
+    ],
+    "labels": [
+      "종목코드",
+      "DART 고유번호",
+      "종목명(2014년 기준)",
+      "재무제표 구분",
+      "사업연도",
+      "분기(1~4)",
+      "당분기 출처 접수번호",
+      "실제 공시일",
+      "이용 가능일(공시 다음 거래일)",
+      "결산기준일(당분기말)",
+      "전년 동기말(결산기준일)",
+      "TTM에 쓴 4개 분기"
+    ],
+    "checks": [
+      {
+        "duplicate": {
+          "columns": [
+            "rcept_no"
+          ]
+        }
+      }
+    ]
+  },
+  "12_기업개황_KSIC.csv": {
+    "columns": [
+      {
+        "name": "corp_code",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_length": 8
+            }
+          }
+        ]
+      },
+      {
+        "name": "corp_name",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "stock_code",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_length": 6
+            }
+          }
+        ]
+      },
+      {
+        "name": "induty_code",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "ksic_mid_2digit",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "corp_name_eng",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "stock_name",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "corp_cls",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_values": [
+                "E",
+                "K",
+                "Y"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "jurir_no",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "bizr_no",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "est_dt",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "acc_mt",
+        "data_type": "VARCHAR",
+        "checks": []
+      },
+      {
+        "name": "in_sample",
+        "data_type": "VARCHAR",
+        "checks": [
+          {
+            "missing": null
+          },
+          {
+            "invalid": {
+              "valid_values": [
+                "Y",
+                "N"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "labels": [
+      "DART 고유번호",
+      "회사명",
+      "종목코드",
+      "업종코드(KSIC)",
+      "KSIC 중분류 코드(앞 2자리)",
+      "영문 회사명",
+      "종목명(현재)",
+      "법인구분(K 코스닥, E 기타)",
+      "법인등록번호",
+      "사업자등록번호",
+      "설립일",
+      "결산월",
+      "샘플 11종목 포함 여부(Y/N)"
+    ],
+    "checks": [
+      {
+        "duplicate": {
+          "columns": [
+            "corp_code"
+          ]
+        }
+      }
+    ]
+  }
+}

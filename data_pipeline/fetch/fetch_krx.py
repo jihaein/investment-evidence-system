@@ -1,18 +1,14 @@
 """
-KRX 일별 시세(코스닥) 수집기 → load_prices 가 읽는 시장자료 CSV 로 저장.
-pykrx(데이터팀 패치판, KRX 로그인) 사용 — KRX_ID/KRX_PW 는 .env.
-실행:
-  .venv/bin/python data_pipeline/fetch/fetch_krx.py                       # 최근 거래일 1일
-  .venv/bin/python data_pipeline/fetch/fetch_krx.py --date 20261117
-  .venv/bin/python data_pipeline/fetch/fetch_krx.py --from 20261101 --to 20261117
-출력: RAWDATA_DIR/추가자료/시장자료/krx_market.csv
+KRX 일별 시세(종가·시가총액·상장주식수)를 받아 시장자료 CSV로 저장한다.
+pykrx 로그인 버전을 쓰며 KRX_ID/KRX_PW 는 .env 에서 읽는다.
+실행: .venv/bin/python data_pipeline/fetch/fetch_krx.py [--date YYYYMMDD | --from YYYYMMDD --to YYYYMMDD]
 """
 import os, csv, argparse
 from pathlib import Path
 from dotenv import load_dotenv
 
 ROOT = "/Users/jihaein/Developer/investment-evidence-system"
-load_dotenv(f"{ROOT}/.env")                 # ← pykrx import 전에 (KRX 로그인)
+load_dotenv(f"{ROOT}/.env")                 # pykrx 임포트 전에 읽어야 로그인됨
 import pandas as pd
 from pykrx import stock
 
@@ -64,7 +60,7 @@ def main():
     cols = ["stock_code", "stock_name_2014", "MKT_NM", "BAS_DD",
             "MKTCAP", "LIST_SHRS", "TDD_CLSPRC", "quality_status"]
     pd.DataFrame(rows)[cols].to_csv(OUT, index=False, encoding="utf-8-sig")
-    print(f"\n✓ {len(rows)}행 저장 → {OUT}")
+    print(f"\n{len(rows)}행 저장: {OUT}")
 
 if __name__ == "__main__":
     main()

@@ -1,10 +1,7 @@
 """
-compute_signals.py — 서서히 모델을 돌려 signals 테이블을 채운다(upsert).
-각 종목에 대해 baseline(매수기준선) 대비 각 평가일의 3모형 점수/판정을 계산해 적재.
-※ 모델의 '입력'(스냅샷 파일)이 아니라 '출력'(판정)만 DB에 넣는다.
-실행:  .venv/bin/python data_pipeline/compute_signals.py
-
-upsert 라 truncate 를 안 함 → 계산이 중간에 실패해도 기존 signals 가 날아가지 않는다.
+종목별 (매수기준일 × 평가일) 조합의 서서히 점수와 판정을 계산해 signals 테이블에 upsert한다.
+입력: RAWDATA_DIR 의 기준일별 스냅샷
+실행: .venv/bin/python data_pipeline/compute_signals.py
 """
 import os, sys
 import pandas as pd
@@ -17,11 +14,7 @@ from models.seoseohi.fscore import list_snapshot_dates
 
 load_dotenv("/Users/jihaein/Developer/investment-evidence-system/.env")
 DB_URL = os.environ["SUPABASE_DB_URL"]
-BASE26 = (
-    "/Users/jihaein/Library/CloudStorage/GoogleDrive-j.in26mcgill@gmail.com/"
-    ".shortcut-targets-by-id/1RS50TgL31WxhExC3ZVXca6bMTj-c9yCU/skku_fds_main/"
-    "데이터/서서히 모델 백테스트/개발자전달_본데이터_120종목_백테스트_2020-2026"
-)
+RAWDATA_DIR = os.environ["RAWDATA_DIR"]
 
 
 def compute(base_dir, stock_codes):
@@ -57,9 +50,9 @@ def main():
     codes = pd.read_sql("select stock_code from stocks order by stock_code",
                         engine)["stock_code"].tolist()
     print(f"종목 {len(codes)}개 — 전체 (매수기준선 × 평가일) 매트릭스 계산 시작")
-    df = compute(BASE26, codes)
-    df.to_pickle("data_pipeline/_signals_cache.pkl")        # 재계산 방지 보험
-    # upsert (스테이징 → INSERT ON CONFLICT). truncate 안 함 → 실패해도 기존 보존
+    df = compute(RAWDATA_DIR, codes)
+    df.to_pickle("data_pipeline/_signals_cache.pkl")        # 재계산 대비 캐시
+    # 스테이징 테이블에 올린 뒤 upsert
     with engine.begin() as con:
         df.to_sql("_stg_signals", con, if_exists="replace", index=False,
                   method="multi", chunksize=1000)
@@ -77,7 +70,7 @@ def main():
     with engine.connect() as con:
         n     = con.execute(text("select count(*) from signals")).scalar()
         sells = con.execute(text("select count(*) from signals where verdict_sum='Yes(훼손 우려)'")).scalar()
-    print(f"✓ signals 적재(upsert) 완료 — {n:,}행 | 합산 매도신호(Yes): {sells}건")
+    print(f"signals 적재 완료: {n:,}행, 합산 매도신호 {sells}건")
 
 
 if __name__ == "__main__":

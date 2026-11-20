@@ -1,12 +1,8 @@
 """
-check_data.py — 적재 후 데이터 건전성 점검. '오래된/깨진 데이터'를 앱에 내보내기 전에 잡는다.
-실행:  .venv/bin/python data_pipeline/check_data.py
-      (run_pipeline.py 가 마지막 단계로 자동 호출)
-
-판정:
-  · 구조 문제(행 수 붕괴, 데이터 없음) → 치명적 → 종료코드 1 (스케줄러가 '실패'로 인지)
-  · 신선도 문제(가격이 오래됨) → 경고만 (라이브 피드 연결 전이면 정상)
-      → 라이브 피드 붙인 뒤엔 FAIL_ON_STALE=1 로 바꿔 '오래되면 실패'로 격상 권장.
+적재 후 데이터 점검.
+행 수가 기준보다 적으면 실패(종료코드 1), 시세가 오래됐으면 경고만 한다.
+FAIL_ON_STALE=1 이면 오래된 시세도 실패로 처리한다.
+실행: .venv/bin/python data_pipeline/check_data.py
 """
 import os
 from datetime import date
@@ -16,12 +12,12 @@ from dotenv import load_dotenv
 load_dotenv("/Users/jihaein/Developer/investment-evidence-system/.env")
 engine = create_engine(os.environ["SUPABASE_DB_URL"])
 
-# 기준값 (현재 데이터 기준 — 데이터가 늘면 올려라)
+# 최소 기준값
 MIN_STOCKS  = 100
 MIN_PRICES  = 150_000
 MIN_SIGNALS = 30_000
 MAX_PRICE_STALE_DAYS = 10            # 최신 가격일이 이보다 오래되면 '오래됨'
-FAIL_ON_STALE = os.getenv("FAIL_ON_STALE") == "1"   # 라이브 피드 연결 후 1 로
+FAIL_ON_STALE = os.getenv("FAIL_ON_STALE") == "1"
 
 
 def main():
@@ -50,13 +46,13 @@ def main():
             msg = f"가격이 오래됨: 최신 {last_price} ({stale}일 전) — 갱신 안 됐을 수 있음"
             (fatal if FAIL_ON_STALE else warn).append(msg)
 
-    for w in warn:  print("  ⚠️ ", w)
-    for f in fatal: print("  ✗ ", f)
+    for w in warn:  print("  [경고]", w)
+    for f in fatal: print("  [실패]", f)
 
     if fatal:
-        print("\n✗ 건전성 점검 실패 — 앱에 내보내기 전에 확인 필요")
+        print("\n점검 실패")
         raise SystemExit(1)
-    print("\n✓ 데이터 건전성 OK" + ("  (경고 있음)" if warn else ""))
+    print("\n점검 통과" + ("  (경고 있음)" if warn else ""))
 
 
 if __name__ == "__main__":

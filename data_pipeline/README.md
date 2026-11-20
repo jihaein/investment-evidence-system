@@ -8,7 +8,7 @@
 
 ```
 데이터팀 전처리 데이터          data_pipeline            Supabase                앱/API
-(RAWDATA_DIR)      ──▶   load/compute 스크립트  ──▶  PostgreSQL + Storage  ──▶  backend/api.py
+(RAWDATA_DIR)      →   load/compute 스크립트  →  PostgreSQL + Storage  →  backend/api.py
 ```
 
 - **쿼리용 정형데이터**(가격·종목·신호) → Postgres 테이블
@@ -40,7 +40,7 @@
 
 ---
 
-## 4. 갱신 워크플로우 — ★ 새 데이터를 받았을 때
+## 4. 갱신 워크플로우 (새 데이터를 받았을 때)
 
 데이터팀이 전처리한 데이터를 전달하면:
 

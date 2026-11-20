@@ -1,7 +1,6 @@
 """
-load_stocks.py — 기업개황(KSIC) CSV로 stocks 테이블을 보강(upsert).
-prices 가 stocks 를 FK로 참조하므로, truncate 대신 upsert('있으면 갱신, 없으면 추가').
-실행:  .venv/bin/python data_pipeline/load_stocks.py
+기업개황(12_기업개황_KSIC.csv)의 업종코드와 DART 고유번호를 stocks 테이블에 upsert한다.
+실행: .venv/bin/python data_pipeline/load_stocks.py
 """
 import os
 import pandas as pd
@@ -10,12 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv("/Users/jihaein/Developer/investment-evidence-system/.env")
 DB_URL = os.environ["SUPABASE_DB_URL"]
-KSIC_CSV = (
-    "/Users/jihaein/Library/CloudStorage/GoogleDrive-j.in26mcgill@gmail.com/"
-    ".shortcut-targets-by-id/1RS50TgL31WxhExC3ZVXca6bMTj-c9yCU/skku_fds_main/"
-    "데이터/서서히 모델 백테스트/개발자전달_본데이터_120종목_백테스트_2020-2026/"
-    "12_기업개황_KSIC.csv"
-)
+KSIC_CSV = os.path.join(os.environ["RAWDATA_DIR"], "12_기업개황_KSIC.csv")
 
 
 def read_stocks(csv_path):
@@ -52,7 +46,7 @@ def upsert_stocks(stocks, db_url):
 def main():
     stocks = read_stocks(KSIC_CSV)
     n = upsert_stocks(stocks, DB_URL)
-    print(f"✓ stocks 보강 완료 — ksic_code 채워진 종목: {n}개")
+    print(f"stocks 보강 완료: ksic_code 채워진 종목: {n}개")
 
 
 if __name__ == "__main__":

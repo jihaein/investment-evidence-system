@@ -1,10 +1,7 @@
 """
-DART 전체재무제표(fnlttSinglAcntAll) 원본 수집기.
-120종목 × 연도 × 보고서 × (연결/별도) 를 돌며 응답 JSON '원본'을 그대로 저장.
-전처리(TTM·PIT·컨트랙트 CSV)는 데이터팀 몫 — 여기선 '원본'만 모은다.
-실행:
-  .venv/bin/python data_pipeline/fetch/fetch_financials.py --limit 2 --years 2024   # 연습
-  .venv/bin/python data_pipeline/fetch/fetch_financials.py --years 2019-2026        # 전체
+DART 전체 재무제표(fnlttSinglAcntAll) 원본 수집.
+120종목 × 연도 × 보고서 × 연결/별도 응답을 JSON 그대로 저장한다. 이미 받은 파일은 건너뛴다.
+실행: .venv/bin/python data_pipeline/fetch/fetch_financials.py --years 2019-2026
 """
 import os, csv, json, time, argparse
 import requests

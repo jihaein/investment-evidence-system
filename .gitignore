@@ -246,3 +246,15 @@ contracts/risk_result.json
 
 # pandas 계산 캐시 (재계산 방지용, 커밋 불필요)
 *.pkl
+
+# 분석 실행 결과 (스크립트 실행 시 재생성)
+models/seoseohi/output/
+models/seoseohi/ohlson/output/
+
+# 사용하지 않는 데이터
+data/seoseohi_main/
+data/ohlson/ohlson_input_final.csv
+
+# DB 설정 스크립트는 저장소에 포함
+!data_pipeline/supabase_setup.sql
+data/releases/
