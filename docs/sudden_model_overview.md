@@ -204,7 +204,7 @@ git에 있는 것은 코드·문서·결과 형식(`contracts/sudden_result.sche
 
 | 필요한 것 | 지금 위치 | 서버에서 할 일 |
 |---|---|---|
-| 뉴스 DB·기사 본문·LLM 답 캐시 | `models/sudden/cache/naver_live/` (`crawl.sqlite3` 약 26MB + 본문 `.txt` 파일 다수) | 복사해 가거나 새로 쌓는다. 평소 기사(N의 앞 180일 기준)와 P의 여러 종목 기준 분포가 여기서 나오므로, 빈 캐시로 시작하면 처음 몇 주는 기준이 얇다 |
+| 뉴스 DB·기사 본문·LLM 답 캐시 | `models/sudden/cache/naver_live/` (2026-11-22 기준 약 1.5GB. 그중 1.4GB는 크롤러가 저장한 원본 HTML 페이지 7,729개라 옮길 필요 없음. 나머지 약 115MB: 기사 목록 DB `crawl.sqlite3` 26MB, 본문 추출 `articles.jsonl` 15MB, N·P 점수 66MB, LLM 답 캐시 약 7MB) | 원본 HTML을 뺀 나머지를 복사해 가거나 새로 쌓는다. 평소 기사(N의 앞 180일 기준)와 P의 여러 종목 기준 분포가 여기서 나오므로, 빈 캐시로 시작하면 처음 몇 주는 기준이 얇다 |
 | API 병행 캐시 | `models/sudden/cache/naver_live_api/` | API로 전환하면 이것이 운영 캐시가 된다 |
 | KRX 시세 | `models/sudden/cache/krx/` | 복사 불필요. 매 실행이 D-550일을 받고 지난 파일은 지운다 |
 | 실행 상태·로그 | `models/sudden/cache/live/` | 복사 불필요(사후 성적표 `forward_ledger.py`를 이어 가려면 실시간 판정 파일과 함께 복사) |
