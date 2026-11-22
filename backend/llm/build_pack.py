@@ -295,6 +295,36 @@ def build_pack(stock_code, buy_date, eval_date, opinion_text=None, include_dupon
     }
 
 
+def live_signal(stock_code, buy_date, as_of=None):
+    """Read the published signal straight from the serving database (same query as GET /signal).
+
+    Uses SUPABASE_DB_URL from .env, so no local model input folders (e.g. Google Drive) are needed.
+    """
+    import os
+    from datetime import date
+
+    from dotenv import load_dotenv
+    from fastapi.encoders import jsonable_encoder
+    from sqlalchemy import create_engine
+
+    sys.path.insert(0, str(ROOT))
+    from backend.api import Holding, read_signals
+
+    load_dotenv(ROOT / ".env")
+    engine = create_engine(os.environ["SUPABASE_DB_URL"], hide_parameters=True)
+    holding = Holding(stock_code=stock_code, buy_date=date.fromisoformat(str(buy_date)))
+    with engine.connect() as connection:
+        row, = read_signals(connection, [holding], date.fromisoformat(str(as_of)) if as_of else None)
+    if "error" in row:
+        raise ValueError(f"No published signal for {stock_code} bought {buy_date}")
+    return jsonable_encoder(row)
+
+
+def build_live_pack(stock_code, buy_date, as_of=None, opinion_text=None):
+    """Default path: explain the published signal from the database."""
+    return build_published_pack(live_signal(stock_code, buy_date, as_of), opinion_text)
+
+
 def build_published_pack(signal, opinion_text=None):
     """Use the same versioned score and source evidence served by /portfolio."""
     if not signal.get("rule_version") or signal.get("release_id") is None or not signal.get("evidence"):
@@ -361,7 +391,10 @@ if __name__ == "__main__":
     ap.add_argument("--opinion", help="투자자 의견 글")
     ap.add_argument("--opinion-file", help="투자자 의견 글이 담긴 파일 (UTF-8)")
     ap.add_argument("--published-signal", type=Path, help="Saved versioned JSON from /signal; use its scores")
-    ap.add_argument("--no-dupont", action="store_true", help="DuPont을 계산하지 않음")
+    ap.add_argument("--no-dupont", action="store_true", help="(--legacy) DuPont을 계산하지 않음")
+    ap.add_argument("--legacy", action="store_true",
+                    help="옛 연구 경로: 2015-2019 로컬/Google Drive 입력으로 다시 계산 (SEOSEOHI_TTM_DIR 등 필요). "
+                         "기본값은 DB에 발행된 신호를 읽는다 (eval_date = 조회 기준일, 생략 가능)")
     ap.add_argument("--out", help="저장할 JSON 경로 (없으면 화면에만 출력)")
     args = ap.parse_args()
 
@@ -373,10 +406,14 @@ if __name__ == "__main__":
             ap.error("--published-signal already specifies the holding and models")
         signal = json.loads(args.published_signal.read_text(encoding="utf-8"))
         pack = build_published_pack(signal, opinion)
-    else:
+    elif args.legacy:
         if not (args.stock_code and args.buy_date and args.eval_date):
-            ap.error("Pass stock_code, buy_date and eval_date, or --published-signal")
+            ap.error("--legacy needs stock_code, buy_date and eval_date")
         pack = build_pack(args.stock_code, args.buy_date, args.eval_date, opinion, include_dupont=not args.no_dupont)
+    else:
+        if not (args.stock_code and args.buy_date):
+            ap.error("Pass stock_code and buy_date (eval_date optional), --published-signal, or --legacy")
+        pack = build_live_pack(args.stock_code, args.buy_date, args.eval_date, opinion)
     validate_pack(pack)
     text = json.dumps(pack, ensure_ascii=False, indent=2, allow_nan=False)
     if args.out:

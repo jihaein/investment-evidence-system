@@ -8,7 +8,7 @@ import os, sys
 import pandas as pd
 from dotenv import load_dotenv
 
-ROOT = "/Users/jihaein/Developer/investment-evidence-system"
+ROOT = str(__import__("pathlib").Path(__file__).resolve().parents[1])  # repo root, any computer
 sys.path.insert(0, ROOT)
 load_dotenv(f"{ROOT}/.env")
 from models.seoseohi.dupont import (

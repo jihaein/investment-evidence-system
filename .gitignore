@@ -263,3 +263,7 @@ data/releases/
 
 # local DB backups
 ops/live/db_backup_*/
+ops/live/logs/
+ops/live/.run.lock/
+ops/cloud/.hashcache.json
+ops/cloud/.hashcache.tmp

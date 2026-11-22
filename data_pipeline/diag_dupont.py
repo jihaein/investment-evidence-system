@@ -4,7 +4,7 @@ diag_dupont.py — 불일치 사례에서 스냅샷 vs 플랫이 '어떤 행/중
 """
 import os, sys
 import pandas as pd
-ROOT = "/Users/jihaein/Developer/investment-evidence-system"
+ROOT = str(__import__("pathlib").Path(__file__).resolve().parents[1])  # repo root, any computer
 sys.path.insert(0, ROOT)
 from dotenv import load_dotenv
 load_dotenv(f"{ROOT}/.env")
