@@ -1,11 +1,11 @@
 """
-parity_dupont_v5.py — DuPont 플랫 vs 스냅샷. 시점 컷 = disclosed_date(스냅샷 구성 규칙과 동일).
+parity_dupont.py — DuPont 플랫 vs 스냅샷. 시점 컷 = disclosed_date(스냅샷 구성 규칙과 동일).
 넓은 매수일 범위로 돌리고, 남는 불일치의 '매수일 분포'를 본다.
-실행: .venv/bin/python data_pipeline/parity_dupont_v5.py
+실행: .venv/bin/python data_pipeline/tools/parity_dupont.py
 """
 import os, sys
 import pandas as pd
-ROOT = str(__import__("pathlib").Path(__file__).resolve().parents[1])  # repo root, any computer
+ROOT = str(__import__("pathlib").Path(__file__).resolve().parents[2])  # repo root, any computer
 sys.path.insert(0, ROOT)
 from dotenv import load_dotenv
 load_dotenv(f"{ROOT}/.env")

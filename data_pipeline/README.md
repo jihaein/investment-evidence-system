@@ -1,11 +1,35 @@
-# 서서히 데이터 파이프라인
+# data_pipeline
 
-운영 설치와 스케줄, 검증, 복구는 [운영 안내](../docs/operations.md)를 참고한다.
+운영 설치·스케줄·복구는 [운영 안내](../docs/operations.md).
 
-- `run_pipeline.py`는 기존 데이터팀 납품본을 가져온다. `--prices`는 디스크에 있는 시세를 적재한다.
-- `live_refresh.py market`은 거래일별 시세를 수집하고 서서히 모형을 평가한다. 시세와 판정을 같은 트랜잭션으로 발행한다.
-- `fetch/fetch_disclosures.py --poll --download`는 최근 DART 접수번호와 보고서 원문을 보존한다.
-- `preprocess_adapter.py --out <경로>`는 새 6개 CSV 릴리스와 검토 목록을 만든다. 모델 입력에는 별도로 검증한 PIT 스냅샷이 필요하다.
-- `python -m data_pipeline.scheduled_refresh`는 KRX 시세와 DART 정기공시를 주기적으로 갱신한다. DART 접수번호를 검증한 뒤 PIT 스냅샷을 만들고, 발행이 완료된 신호를 API에 반영한다.
-- `live_refresh.py financial-inbox <경로>`는 별도로 검토한 예외 스냅샷을 발행한다.
-- `migrations/001_serving.sql`은 신규 PostgreSQL 설치에 필요한 테이블과 버전 기록을 만든다. `supabase_setup.sql`은 기존 읽기 정책을 유지할 경우 사용하는 선택 설정이다.
+```
+data_pipeline/
+├── scheduled_refresh.py   매일 갱신 진입점: KRX 시세 + DART 공시 (ops/live/run_daily.sh가 실행)
+├── live_refresh.py        세션별 시세 발행, 검토된 재무 스냅샷 발행, 롤백 (수동 명령도 여기)
+├── dart_conversion.py     DART 접수번호 → 모델 입력 PIT 스냅샷
+├── compute_signals.py     서서히 신호 계산
+├── publication.py         DB 발행·롤백 (refresh_runs)
+├── market_data.py         거래일 달력, 시세 파일 순서
+├── load_prices.py         시세 CSV 읽기 (매일 갱신이 사용) + 과거 시세 일괄 적재
+├── fetch/                 매일 갱신이 쓰는 수집기: fetch_krx.py, fetch_disclosures.py
+├── migrations/            001_serving.sql (DB 스키마), supabase_read_policies.sql (선택: 읽기 정책)
+├── seed/                  최초 1회 적재·재구축용 (매일 갱신에는 쓰이지 않음)
+│   ├── run_pipeline.py        데이터팀 납품본 적재: validate → prices → stocks → signals → check
+│   ├── validate_contract.py   6개 CSV 계약 검사
+│   ├── load_stocks.py         종목 마스터 적재
+│   ├── check_data.py          적재 후 점검
+│   ├── build_metadata.py      preprocess_metadata.json 생성 (dart_conversion이 읽음)
+│   ├── preprocess_adapter.py  6개 CSV 릴리스 생성 (검토용)
+│   └── fetch_company.py, fetch_financials.py, fetch_capital.py   과거 DART 원본 일괄 수집
+└── tools/
+    └── parity_dupont.py   DuPont 스냅샷 방식 vs 플랫 CSV 방식 점수 대조
+```
+
+자주 쓰는 명령 (저장소 맨 위에서):
+
+```bash
+python -m data_pipeline.scheduled_refresh --once                 # 지금 한 번 갱신
+python -m data_pipeline.live_refresh market --session 2026-11-20 # 특정 세션만 다시 발행
+python -m data_pipeline.live_refresh rollback <RELEASE_ID>       # 최근 발행 되돌리기
+python -m data_pipeline.seed.run_pipeline                        # 새 DB에 과거 데이터 적재
+```

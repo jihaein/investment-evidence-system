@@ -6,6 +6,8 @@
     python ops/cloud/sync.py pull --overwrite  # also replace local files that differ from the cloud
     python ops/cloud/sync.py pull --dest /tmp/restore   # restore everything into an empty folder (test)
     python ops/cloud/sync.py push --only rawdata dart_snapshots
+    python ops/cloud/sync.py prune             # show what no current dataset uses (dry run)
+    python ops/cloud/sync.py prune --yes       # delete it permanently
 
 Storage layout (private bucket, default "ies-data"):
     blobs/<aa>/<sha256>.gz[.pN]       file contents, gzip, content-addressed (identical files stored once;
@@ -14,7 +16,7 @@ Storage layout (private bucket, default "ies-data"):
     manifests/history/<dataset>/<UTC time>.json.gz   every pushed version of the file list
     index/blobs.json.gz               hashes already uploaded -> number of parts
 
-Needs SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env. Nothing is ever deleted, locally or remotely.
+Needs SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env. push/pull never delete anything; only `prune --yes` deletes, and only in the cloud.
 Folders are listed in ops/cloud/datasets.json.
 """
 import argparse
@@ -98,6 +100,28 @@ class Store:
         if response.status_code in (400, 404) and "not" in response.text.lower() and "found" in response.text.lower():
             return None
         raise RuntimeError(f"Download {key} failed: HTTP {response.status_code} {response.text[:200]}")
+
+    def list_prefix(self, prefix):
+        """Yield (name, size) for objects directly under prefix (one folder level)."""
+        offset = 0
+        while True:
+            response = self.request("POST", f"/object/list/{self.bucket}",
+                                    json={"prefix": prefix, "limit": 1000, "offset": offset})
+            if response.status_code != 200:
+                raise RuntimeError(f"List {prefix} failed: HTTP {response.status_code} {response.text[:200]}")
+            items = response.json()
+            for item in items:
+                if item.get("id"):                       # folders have no id
+                    yield item["name"], (item.get("metadata") or {}).get("size", 0)
+            if len(items) < 1000:
+                return
+            offset += 1000
+
+    def delete(self, keys):
+        for i in range(0, len(keys), 500):
+            response = self.request("DELETE", f"/object/{self.bucket}", json={"prefixes": keys[i:i + 500]})
+            if response.status_code != 200:
+                raise RuntimeError(f"Delete failed: HTTP {response.status_code} {response.text[:200]}")
 
     def get_json(self, key):
         data = self.get(key)
@@ -205,6 +229,8 @@ def push(store, datasets, cache):
     total_new = 0
     try:
         for dataset in datasets:
+            if dataset.get("archived"):
+                continue                      # cloud-only: the local copy was removed on purpose
             files, manifest = local_manifest(dataset, cache)
             if not files:
                 print(f"- {dataset['name']}: no files at {dataset['root']} (skipped)")
@@ -251,9 +277,11 @@ def push(store, datasets, cache):
     print(f"Push complete: {total_new:,} new blobs.")
 
 
-def pull(store, datasets, cache, dest=None, overwrite=False):
+def pull(store, datasets, cache, dest=None, overwrite=False, only=None):
     failures = 0
     for dataset in datasets:
+        if dataset.get("archived") and dataset["name"] not in (only or ()):
+            continue                          # restore archived data only when asked by name
         remote = store.get_json(f"manifests/{dataset['name']}.json.gz")
         if not remote:
             print(f"- {dataset['name']}: nothing in the cloud yet")
@@ -300,8 +328,57 @@ def pull(store, datasets, cache, dest=None, overwrite=False):
         raise SystemExit(f"{failures} file(s) failed to restore")
 
 
+def prune(store, yes=False):
+    """Remove from the cloud anything no current dataset uses.
+
+    Datasets no longer listed in datasets.json are retired (their file list moves to
+    manifests/retired/), then every blob that no current or past upload of a listed dataset
+    (archived ones included) refers to is deleted. Retired datasets can no longer be restored.
+    """
+    config = {item["name"] for item in json.loads((HERE / "datasets.json").read_text(encoding="utf-8"))}
+    current = {name[:-len(".json.gz")] for name, _ in store.list_prefix("manifests/") if name.endswith(".json.gz")}
+    retire = sorted(current - config)
+    keep = set()
+    for name in sorted(current & config):
+        lists = [f"manifests/{name}.json.gz"] + [f"manifests/history/{name}/{item}"
+                                                for item, _ in store.list_prefix(f"manifests/history/{name}/")]
+        for key in lists:                     # every past upload of a kept dataset stays restorable
+            for entry in (store.get_json(key) or {}).get("files", {}).values():
+                keep.update(blob_keys(entry["sha256"], entry.get("parts") or 1))
+    blobs = {}
+    for shard in range(256):
+        prefix = f"blobs/{shard:02x}/"
+        for name, size in store.list_prefix(prefix):
+            blobs[prefix + name] = size
+    unused = sorted(key for key in blobs if key not in keep)
+    freed = sum(blobs[key] for key in unused)
+    total = sum(blobs.values())
+    print(f"Datasets to retire: {retire or 'none'}")
+    print(f"Stored blobs: {len(blobs):,} ({total / 1e6:,.0f} MB). Unused: {len(unused):,} ({freed / 1e6:,.0f} MB). "
+          f"After cleanup: {(total - freed) / 1e6:,.0f} MB")
+    if not yes:
+        print("Dry run: nothing deleted. Re-run with --yes to delete permanently.")
+        return
+    for name in retire:
+        payload = store.get_json(f"manifests/{name}.json.gz")
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        store.put_json(f"manifests/retired/{name}/{stamp}.json.gz", payload)
+        store.delete([f"manifests/{name}.json.gz"])
+        print(f"Retired dataset {name}")
+    store.delete(unused)
+    index = store.get_json("index/blobs.json.gz") or {}
+    gone = {key.split("/")[2].split(".gz")[0] for key in unused}
+    store.put_json("index/blobs.json.gz", {sha: parts for sha, parts in index.items() if sha not in gone})
+    print(f"Deleted {len(unused):,} unused blobs ({freed / 1e6:,.0f} MB).")
+
+
 def status(store, datasets, cache):
     for dataset in datasets:
+        if dataset.get("archived"):
+            remote = (store.get_json(f"manifests/{dataset['name']}.json.gz") or {}).get("files", {})
+            print(f"{dataset['name']:<18} ARCHIVED cloud only, {len(remote):,} files "
+                  f"(restore: sync.py pull --only {dataset['name']} --dest <folder>)")
+            continue
         _, manifest = local_manifest(dataset, cache)
         remote = (store.get_json(f"manifests/{dataset['name']}.json.gz") or {}).get("files", {})
         new = sum(1 for r in manifest if r not in remote)
@@ -317,8 +394,9 @@ def status(store, datasets, cache):
 def main():
     load_dotenv(ROOT / ".env")
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("command", choices=("status", "push", "pull"))
+    parser.add_argument("command", choices=("status", "push", "pull", "prune"))
     parser.add_argument("--only", nargs="+", help="dataset names from ops/cloud/datasets.json")
+    parser.add_argument("--yes", action="store_true", help="prune: actually delete (default is a dry run)")
     parser.add_argument("--dest", help="pull: restore under this folder instead of the configured paths")
     parser.add_argument("--overwrite", action="store_true",
                         help="pull: also replace local files that differ from the cloud (default: only fill in missing files)")
@@ -331,10 +409,12 @@ def main():
     store.ensure_bucket()
     datasets = load_datasets(args.only)
     cache = HashCache()
-    if args.command == "push":
+    if args.command == "prune":
+        prune(store, args.yes)
+    elif args.command == "push":
         push(store, datasets, cache)
     elif args.command == "pull":
-        pull(store, datasets, cache, args.dest, args.overwrite)
+        pull(store, datasets, cache, args.dest, args.overwrite, args.only)
     else:
         status(store, datasets, cache)
 

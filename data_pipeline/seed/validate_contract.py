@@ -6,8 +6,8 @@ load 전에 돌려, 규격 위반이면 '시끄럽게' 실패시킨다(나쁜 �
 행 수(row_count must_be): 고정 본데이터 기준이라 라이브 데이터에선 달라짐 → 참고(info)만.
 
 정본 규격 = data/rawdata/데이터컨트랙트_본데이터.yaml (이 파일이 기준. 여기 코드는 그걸 읽어 검사만 함)
-실행:  .venv/bin/python data_pipeline/validate_contract.py          # 대상 = RAWDATA_DIR
-       .venv/bin/python data_pipeline/validate_contract.py --dir <폴더>
+실행:  .venv/bin/python data_pipeline/seed/validate_contract.py          # 대상 = RAWDATA_DIR
+       .venv/bin/python data_pipeline/seed/validate_contract.py --dir <폴더>
 필요:  .venv/bin/python -m pip install pyyaml
 """
 import os
@@ -17,7 +17,7 @@ import pandas as pd
 from pathlib import Path
 from dotenv import load_dotenv
 
-ROOT = str(Path(__file__).resolve().parents[1])
+ROOT = str(Path(__file__).resolve().parents[2])
 load_dotenv(f"{ROOT}/.env")
 try:
     import yaml

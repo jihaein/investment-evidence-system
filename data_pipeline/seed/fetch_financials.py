@@ -1,7 +1,7 @@
 """
 DART 전체 재무제표(fnlttSinglAcntAll) 원본 수집.
 120종목 × 연도 × 보고서 × 연결/별도 응답을 JSON 그대로 저장한다. 이미 받은 파일은 건너뛴다.
-실행: .venv/bin/python data_pipeline/fetch/fetch_financials.py --years 2019-2026
+실행: .venv/bin/python data_pipeline/seed/fetch_financials.py --years 2019-2026
 """
 import os, csv, json, time, argparse
 import requests

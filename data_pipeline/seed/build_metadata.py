@@ -5,14 +5,14 @@ build_metadata.py — preprocess_metadata.json 생성 (데이터팀 preprocess()
 
 공시일 우선순위: ① 공시검색(list.json, 최신·전체) ② 기존 계약 CSV(과거분 보완)
 기말일: 기존 CSV 값 우선, 없으면 보고서코드+결산월로 계산.
-실행:  .venv/bin/python data_pipeline/build_metadata.py
+실행:  .venv/bin/python data_pipeline/seed/build_metadata.py
 출력:  _raw_pull/preprocess_metadata.json
 """
 import os, json, glob, csv, calendar
 from pathlib import Path
 from dotenv import load_dotenv
 
-ROOT = str(Path(__file__).resolve().parents[1])
+ROOT = str(Path(__file__).resolve().parents[2])
 load_dotenv(f"{ROOT}/.env")
 RD  = os.environ["RAWDATA_DIR"]
 RAW = os.path.join(RD, "_raw_pull")

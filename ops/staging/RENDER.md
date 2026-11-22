@@ -16,7 +16,7 @@ the database region before selecting a location in the dashboard.
    `/var/data/rawdata` with the preserved historical model inputs. Put the verified KRX calendar at
    `/var/data/krx_sessions.csv` and expected universe at `/var/data/stock_coverage.csv`. Add that
    same calendar as `krx_sessions.csv` in the API's Render Secret Files.
-3. In the worker shell, use `SUPABASE_DB_URL="$STAGING_DB_URL" python -m data_pipeline.load_stocks`
+3. In the worker shell, use `SUPABASE_DB_URL="$STAGING_DB_URL" python -m data_pipeline.seed.load_stocks`
    to seed the master and `SUPABASE_DB_URL="$STAGING_DB_URL" python -m data_pipeline.load_prices`
    to seed historical prices. Set the start dates to the selected staging window. Exclude replay
    price batches and receipt files for the sessions chosen as live acceptance cases.

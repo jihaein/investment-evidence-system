@@ -5,18 +5,18 @@ import sys
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 ALL_STEPS = [
-    ("계약 검증(validate)", "data_pipeline/validate_contract.py"),
+    ("계약 검증(validate)", "data_pipeline/seed/validate_contract.py"),
     ("가격 적재(prices)",   "data_pipeline/load_prices.py"),
-    ("종목 보강(stocks)",   "data_pipeline/load_stocks.py"),
+    ("종목 보강(stocks)",   "data_pipeline/seed/load_stocks.py"),
     ("신호 계산(signals)",  "data_pipeline/compute_signals.py"),
-    ("건전성 점검(check)",  "data_pipeline/check_data.py"),
+    ("건전성 점검(check)",  "data_pipeline/seed/check_data.py"),
 ]
 PRICES_ONLY = [
     ("가격 적재(prices)",  "data_pipeline/load_prices.py"),
-    ("건전성 점검(check)",  "data_pipeline/check_data.py"),
+    ("건전성 점검(check)",  "data_pipeline/seed/check_data.py"),
 ]
 
 
