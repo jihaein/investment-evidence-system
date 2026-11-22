@@ -335,7 +335,9 @@ if __name__ == "__main__":
     ap.add_argument("--opinion")
     ap.add_argument("--opinion-file")
     ap.add_argument("--pack", help="저장해 둔 근거 묶음 JSON을 쓴다")
-    ap.add_argument("--no-dupont", action="store_true")
+    ap.add_argument("--no-dupont", action="store_true", help="(--legacy only)")
+    ap.add_argument("--legacy", action="store_true",
+                    help="옛 연구 경로(2015-2019 로컬/Google Drive 입력). 기본값은 DB에 발행된 신호")
     ap.add_argument("--model", help="OpenAI 모델 이름 (없으면 .env의 OPENAI_MODEL, 그것도 없으면 " + DEFAULT_MODEL + ")")
     ap.add_argument("--dry-run", action="store_true", help="API를 부르지 않고 보낼 내용만 보여 준다")
     ap.add_argument("--cases", action="store_true", help="cases/analysis_cases.json의 시험 사례를 모두 돌려 채점한다")
@@ -347,10 +349,15 @@ if __name__ == "__main__":
     if args.pack:
         pack = json.loads(Path(args.pack).read_text(encoding="utf-8"))
     else:
-        if not (args.stock_code and args.buy_date and args.eval_date):
-            ap.error("stock_code buy_date eval_date 가 필요합니다 (또는 --pack, --cases)")
         opinion = Path(args.opinion_file).read_text(encoding="utf-8") if args.opinion_file else args.opinion
-        pack = bp.build_pack(args.stock_code, args.buy_date, args.eval_date, opinion, include_dupont=not args.no_dupont)
+        if args.legacy:
+            if not (args.stock_code and args.buy_date and args.eval_date):
+                ap.error("--legacy: stock_code buy_date eval_date 가 필요합니다")
+            pack = bp.build_pack(args.stock_code, args.buy_date, args.eval_date, opinion, include_dupont=not args.no_dupont)
+        else:
+            if not (args.stock_code and args.buy_date):
+                ap.error("stock_code buy_date 가 필요합니다 (eval_date는 조회 기준일, 생략 가능. 또는 --pack, --cases, --legacy)")
+            pack = bp.build_live_pack(args.stock_code, args.buy_date, args.eval_date, opinion)
 
     if args.dry_run:
         messages = build_messages(pack)

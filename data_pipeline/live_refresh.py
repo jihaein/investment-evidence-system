@@ -39,12 +39,31 @@ def expected_codes(session, master):
     return expected
 
 
+def locate_snapshot(recorded):
+    """Find a published snapshot on this computer.
+
+    refresh_runs stores the absolute path from the machine that published it. On another
+    machine (or after a restore from cloud storage) the same folder name lives under
+    DART_SNAPSHOT_DIR.
+    """
+    path = Path(recorded)
+    if path.is_dir():
+        return str(path)
+    folder = os.getenv("DART_SNAPSHOT_DIR")
+    if folder and (Path(folder) / path.name).is_dir():
+        return str((Path(folder) / path.name).resolve())
+    raise FileNotFoundError(
+        f"Published snapshot {path.name} is not on this computer. "
+        "Restore it with: python ops/cloud/sync.py pull --only dart_snapshots")
+
+
 def financial_catalog(connection):
-    return dict(connection.execute(text("""
+    rows = connection.execute(text("""
         SELECT financial_as_of, snapshot_path
         FROM refresh_runs WHERE reverted_at IS NULL AND snapshot_path IS NOT NULL
         ORDER BY id
-    """)).all())
+    """)).all()
+    return {day: locate_snapshot(path) for day, path in rows}
 
 
 @contextmanager

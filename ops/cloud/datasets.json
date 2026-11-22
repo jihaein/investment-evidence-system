@@ -1,0 +1,74 @@
+[
+  {
+    "name": "rawdata",
+    "env": "RAWDATA_DIR",
+    "default": "data/rawdata",
+    "about": "Model inputs, point-in-time snapshot tree, KRX prices, raw DART/KRX pulls"
+  },
+  {
+    "name": "dart_snapshots",
+    "env": "DART_SNAPSHOT_DIR",
+    "about": "Snapshots built by the live DART job (referenced by refresh_runs.snapshot_path)"
+  },
+  {
+    "name": "backtest_v3",
+    "env": "BACKTEST_DATA_DIR",
+    "about": "2015-2019 backtest delivery on the Desktop (models fall back to it when no base dir is given)"
+  },
+  {
+    "name": "releases",
+    "path": "data/releases",
+    "about": "Preprocessor releases v1-v3"
+  },
+  {
+    "name": "repo_data",
+    "path": "data",
+    "exclude": [
+      "rawdata/*",
+      "releases/*"
+    ],
+    "about": "fscore, ohlson, seoseohi_main, llm inputs (incl. git-ignored files)"
+  },
+  {
+    "name": "pipeline_archive",
+    "path": "data_pipeline/_archive",
+    "about": "Original data-team zip delivery"
+  },
+  {
+    "name": "pipeline_cache",
+    "path": "data_pipeline",
+    "include": [
+      "_signals_cache.pkl"
+    ]
+  },
+  {
+    "name": "model_outputs",
+    "path": "models",
+    "include": [
+      "*/output/*",
+      "sudden/cache/*"
+    ],
+    "about": "Model output CSVs and the 급락 news crawl cache"
+  },
+  {
+    "name": "ops_live",
+    "path": "ops/live",
+    "include": [
+      "logs/*",
+      "db_backup_*/*",
+      "krx_sessions.csv",
+      "stock_coverage.csv"
+    ],
+    "about": "Run logs, DB backups, trading calendar, coverage"
+  },
+  {
+    "name": "gdrive_data",
+    "env": "GDRIVE_DATA_DIR",
+    "exclude": [
+      "*.gsheet",
+      "*.gdoc",
+      "*.gslides"
+    ],
+    "about": "Shared Google Drive skku_fds_main/데이터 (older DuPont inputs, KRX, OpenDART, FDS 12 items, DB dumps). Native Google Sheets (.gsheet) are only links: export them as CSV to include them."
+  }
+]

@@ -166,7 +166,7 @@ def test_cases_only_point_at_real_evidence(case):
 
 def test_dry_run_needs_no_key():
     out = subprocess.run([sys.executable, str(ROOT / "backend" / "llm" / "analyze.py"), "010170", "2016-06-30",
-                          "2019-06-28", "--opinion", "재무가 탄탄하다", "--no-dupont", "--dry-run"],
+                          "2019-06-28", "--opinion", "재무가 탄탄하다", "--legacy", "--no-dupont", "--dry-run"],
                          capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT,
                          env={**os.environ, "PYTHONIOENCODING": "utf-8"})   # 윈도우 콘솔 인코딩과 무관하게 읽는다
     assert out.returncode == 0, out.stderr

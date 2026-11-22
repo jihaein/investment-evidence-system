@@ -5,7 +5,7 @@ parity_dupont_v5.py — DuPont 플랫 vs 스냅샷. 시점 컷 = disclosed_date(
 """
 import os, sys
 import pandas as pd
-ROOT = "/Users/jihaein/Developer/investment-evidence-system"
+ROOT = str(__import__("pathlib").Path(__file__).resolve().parents[1])  # repo root, any computer
 sys.path.insert(0, ROOT)
 from dotenv import load_dotenv
 load_dotenv(f"{ROOT}/.env")

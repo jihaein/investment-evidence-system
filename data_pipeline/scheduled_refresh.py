@@ -68,10 +68,62 @@ def convert_receipts(engine, base, out, sessions, as_of, start, *, key=None):
             pending.update(errors)
             if destination:
                 refresh_financials(engine, base, destination, sessions, allow_same_session=True)
+                processed.update(entry["rcept_no"] for entry in entries if entry["rcept_no"] not in errors)
                 dates[effective] = destination
         store_json(out / "pending.json", pending)
+        triage = triage_pending(base, inbox, pending, processed, as_of)
+        store_json(out / "pending_triage.json", triage)
+        action = {receipt: item for receipt, item in triage.items() if item["status"] == "needs_review"}
+        waiting = sum(item["status"] == "retrying" for item in triage.values())
+        ignored = len(triage) - len(action) - waiting
         if pending:
-            raise RuntimeError(f"{len(pending)} DART receipt(s) need retry or review; see {out / 'pending.json'}")
+            print(f"DART pending: {len(action)} need review, {waiting} retrying (DART statement not yet published), "
+                  f"{ignored} not needed (superseded or company not covered); see {out / 'pending_triage.json'}",
+                  flush=True)
+        if action:
+            raise RuntimeError(f"{len(action)} DART receipt(s) need review; see {out / 'pending_triage.json'}")
+
+
+RETRY_DAYS = 10   # OpenDART's statement endpoint often lags new filings by a few days
+
+
+def triage_pending(base, inbox, pending, processed, as_of):
+    """Classify held receipts so only ones that need a person raise an alert.
+
+    superseded   - the same company has a later filing that was published (e.g. an amendment
+                   or the next period), so this version is no longer used for evaluation
+    not_covered  - the company is outside the active price coverage (delisted or moved)
+    retrying     - filed recently; retried automatically on every run
+    needs_review - none of the above
+    """
+    import csv as _csv
+
+    coverage = os.getenv("MARKET_COVERAGE_CSV")
+    active = None
+    if coverage:
+        with open(coverage, encoding="utf-8-sig") as handle:
+            active = {row["stock_code"] for row in _csv.DictReader(handle)
+                      if not row["active_until"] or as_of < date.fromisoformat(row["active_until"])}
+    receipts = [json_file(path) for path in inbox.glob("*.json")]
+    result = {}
+    for receipt, reason in pending.items():
+        entry = json_file(inbox / f"{receipt}.json")
+        later = [item["rcept_no"] for item in receipts
+                 if item["corp_code"] == entry["corp_code"] and item["rcept_no"] > receipt
+                 and item["rcept_no"] in processed]
+        filed = date.fromisoformat(entry["rcept_dt"])
+        if later:
+            status = "superseded"
+        elif active is not None and entry.get("stock_code") not in active:
+            status = "not_covered"
+        elif (as_of - filed).days <= RETRY_DAYS:
+            status = "retrying"
+        else:
+            status = "needs_review"
+        result[receipt] = {"status": status, "reason": reason, "stock_code": entry.get("stock_code"),
+                           "corp_name": entry.get("corp_name"), "report_nm": entry.get("report_nm"),
+                           "filed": entry["rcept_dt"], "superseded_by": later[:3]}
+    return result
 
 
 def poll_dart(base, out, key, start, end):
