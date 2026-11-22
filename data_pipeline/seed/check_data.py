@@ -2,7 +2,7 @@
 적재 후 데이터 점검.
 행 수가 기준보다 적으면 실패(종료코드 1), 시세가 오래됐으면 경고만 한다.
 FAIL_ON_STALE=1 이면 오래된 시세도 실패로 처리한다.
-실행: .venv/bin/python data_pipeline/check_data.py
+실행: .venv/bin/python data_pipeline/seed/check_data.py
 """
 import os
 from datetime import date
@@ -10,7 +10,7 @@ from sqlalchemy import create_engine, text
 from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv(Path(__file__).resolve().parents[1] / ".env")
+load_dotenv(Path(__file__).resolve().parents[2] / ".env")
 engine = create_engine(os.environ["SUPABASE_DB_URL"])
 
 # 최소 기준값

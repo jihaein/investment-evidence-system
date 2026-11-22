@@ -229,6 +229,8 @@ def push(store, datasets, cache):
     total_new = 0
     try:
         for dataset in datasets:
+            if dataset.get("archived"):
+                continue                      # cloud-only: the local copy was removed on purpose
             files, manifest = local_manifest(dataset, cache)
             if not files:
                 print(f"- {dataset['name']}: no files at {dataset['root']} (skipped)")
@@ -275,9 +277,11 @@ def push(store, datasets, cache):
     print(f"Push complete: {total_new:,} new blobs.")
 
 
-def pull(store, datasets, cache, dest=None, overwrite=False):
+def pull(store, datasets, cache, dest=None, overwrite=False, only=None):
     failures = 0
     for dataset in datasets:
+        if dataset.get("archived") and dataset["name"] not in (only or ()):
+            continue                          # restore archived data only when asked by name
         remote = store.get_json(f"manifests/{dataset['name']}.json.gz")
         if not remote:
             print(f"- {dataset['name']}: nothing in the cloud yet")
@@ -328,16 +332,19 @@ def prune(store, yes=False):
     """Remove from the cloud anything no current dataset uses.
 
     Datasets no longer listed in datasets.json are retired (their file list moves to
-    manifests/retired/), then every blob not referenced by a current file list is deleted.
-    Older history file lists that pointed at deleted blobs can no longer be restored.
+    manifests/retired/), then every blob that no current or past upload of a listed dataset
+    (archived ones included) refers to is deleted. Retired datasets can no longer be restored.
     """
     config = {item["name"] for item in json.loads((HERE / "datasets.json").read_text(encoding="utf-8"))}
     current = {name[:-len(".json.gz")] for name, _ in store.list_prefix("manifests/") if name.endswith(".json.gz")}
     retire = sorted(current - config)
     keep = set()
     for name in sorted(current & config):
-        for entry in (store.get_json(f"manifests/{name}.json.gz") or {}).get("files", {}).values():
-            keep.update(blob_keys(entry["sha256"], entry.get("parts") or 1))
+        lists = [f"manifests/{name}.json.gz"] + [f"manifests/history/{name}/{item}"
+                                                for item, _ in store.list_prefix(f"manifests/history/{name}/")]
+        for key in lists:                     # every past upload of a kept dataset stays restorable
+            for entry in (store.get_json(key) or {}).get("files", {}).values():
+                keep.update(blob_keys(entry["sha256"], entry.get("parts") or 1))
     blobs = {}
     for shard in range(256):
         prefix = f"blobs/{shard:02x}/"
@@ -367,6 +374,11 @@ def prune(store, yes=False):
 
 def status(store, datasets, cache):
     for dataset in datasets:
+        if dataset.get("archived"):
+            remote = (store.get_json(f"manifests/{dataset['name']}.json.gz") or {}).get("files", {})
+            print(f"{dataset['name']:<18} ARCHIVED cloud only, {len(remote):,} files "
+                  f"(restore: sync.py pull --only {dataset['name']} --dest <folder>)")
+            continue
         _, manifest = local_manifest(dataset, cache)
         remote = (store.get_json(f"manifests/{dataset['name']}.json.gz") or {}).get("files", {})
         new = sum(1 for r in manifest if r not in remote)
@@ -402,7 +414,7 @@ def main():
     elif args.command == "push":
         push(store, datasets, cache)
     elif args.command == "pull":
-        pull(store, datasets, cache, args.dest, args.overwrite)
+        pull(store, datasets, cache, args.dest, args.overwrite, args.only)
     else:
         status(store, datasets, cache)
 

@@ -18,7 +18,8 @@
   {
     "name": "releases",
     "path": "data/releases",
-    "about": "Preprocessor releases v1-v3"
+    "about": "Preprocessor releases v1-v3 [archived 2026-11-23: removed locally, kept in cloud]",
+    "archived": true
   },
   {
     "name": "repo_data",
@@ -27,14 +28,16 @@
       "rawdata/*",
       "releases/*"
     ],
-    "about": "fscore, ohlson, seoseohi_main, llm inputs (incl. git-ignored files)"
+    "about": "fscore, ohlson, seoseohi_main, llm inputs (incl. git-ignored files) (data/seoseohi_main removed 2026-11-23; still in this dataset's upload history)"
   },
   {
     "name": "pipeline_cache",
     "path": "data_pipeline",
     "include": [
       "_signals_cache.pkl"
-    ]
+    ],
+    "archived": true,
+    "about": " [archived 2026-11-23: removed locally, kept in cloud]"
   },
   {
     "name": "model_outputs",

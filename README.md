@@ -1,69 +1,79 @@
 # investment-evidence-system
 
-보유 종목의 가치 훼손 위험을 점검하는 모델과 백엔드. 서서히(F-Score, Ohlson, DuPont) 신호 조회와 갱신은 [운영 안내](docs/operations.md)를 참고한다. 급락과 LLM 분석은 각각 실험·CLI 경로를 사용한다. 아래 예제는 기존 연구 데이터의 모델 실행 방법이다.
-
+보유 종목의 가치 훼손 위험을 점검한다. 서서히 모델(F-Score, Ohlson, DuPont)이 매일 KRX 시세와 DART 공시로 다시 평가되고, 결과는 Supabase에 발행되어 API와 LLM 설명이 읽는다. 모든 데이터는 Supabase(DB + Storage)에 있고, 이 컴퓨터의 데이터 폴더는 작업용 사본이다.
 
 ## 구조
 
 | 위치 | 역할 |
 |---|---|
-| `models/seoseohi/fscore.py` | F-Score 계산과 매수일·평가일 위험점수(0~3) |
-| `models/seoseohi/ohlson/ohlson.py` | Ohlson RI·ω 비교와 위험점수(0~2) |
-| `models/seoseohi/dupont.py`, `pipeline.py` | DuPont PM·ATO 비교와 위험점수(0~3) |
-| `models/seoseohi/run_models.py` | 세 모델을 같은 표준 표로 돌리는 연결 파일 (`run_fscore`, `run_ohlson`, `run_dupont`, `run_all`)과 임계 모델 경보 `run_gate` |
-| `models/seoseohi/threshold.py` | 임계 모델: 매수일 이후 주가가 꾸준히 나빠지는지 보는 경보기(켜짐/꺼짐, 점수 아님) |
-| `models/seoseohi/link_fundamentals.py` | 가격 경보 뒤에 F-Score·Ohlson 악화가 확인되는지 보는 평가 |
-| `models/seoseohi/export_contract.py` | 표준 표를 대시보드가 읽는 계약 JSON으로 내보냄 |
-| `contracts/risk_result.schema.json` | 계약 JSON 스키마 |
-| `tests/seoseohi/test_run_models.py` | 기대값, 유보, 계약 스키마 점검 |
-| `data/` | 입력 CSV |
+| `data_pipeline/` | 매일 갱신(`scheduled_refresh.py`)과 그 부품(수집 `fetch/`, DART 변환, 신호 계산, 발행·롤백), DB 스키마(`migrations/`), 최초 적재 `seed/`, 분석 도구 `tools/`. [README](data_pipeline/README.md) |
+| `models/seoseohi/` | 서서히 모델: `fscore.py`, `ohlson/ohlson.py`, `dupont.py`, 통합 판정 `pipeline.py`, 임계(가격 경보) `threshold.py`, 연구용 연결 `run_models.py` |
+| `models/sudden/` | 급락 모델 연구(사건 탐지, 네이버 뉴스 수집, N/P 지표). 운영 판정 없음. [README](models/sudden/README.md) |
+| `backend/api.py` | 읽기 전용 API (`/signal`, `/portfolio`, `/ready` …) |
+| `backend/llm/` | 투자자 의견을 발행된 신호로 검증하는 LLM 분석. [README](backend/llm/README.md) |
+| `seoseohi_preprocess/` | 데이터팀 전처리 엔진. DART 변환이 재사용한다 |
+| `backtest/` | 백테스트 엔진·지표·몬테카를로, 실험 노트북 |
+| `ops/live/` | 이 Mac의 매일 실행(launchd), 상태 점검, DB 마이그레이션, 거래일 달력·종목 범위 |
+| `ops/cloud/` | Supabase Storage 동기화(`sync.py`)와 복원 검증(`restore_test.py`) |
+| `ops/staging/` | Render 스테이징 배포 설정 |
+| `contracts/` | 연구용 결과 계약 JSON 스키마 |
+| `data/` | 저장소에 포함된 소형 연구 입력(`fscore`, `ohlson`, `llm`). `data/rawdata`는 Git 밖, 클라우드에서 복원 |
+| `tests/` | `pytest` |
 
-`models/seoseohi/output/`의 `ohlson_daily.csv`, `ohlson_eval.csv`는 옛 산출물일 수 있다. 현재 코드의 출력 위치는 `models/seoseohi/ohlson/output/`다.
-
-## 준비
-
-Python 3.12, `pandas`, `numpy`. DuPont은 `python-dotenv`도 필요하다. 테스트는 `pytest`, 계약 검증은 `jsonschema`.
+## 처음 설정 (새 컴퓨터)
 
 ```bash
-pip install pandas numpy python-dotenv pytest jsonschema
+python3.12 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt -r requirements-dev.txt
+cp .env.example .env            # 값 채우기: Supabase DB/Storage, OpenDART, KRX
+python ops/cloud/sync.py pull   # 모든 데이터 폴더를 클라우드에서 복원
+python ops/cloud/sync.py status # 전부 IN SYNC 인지 확인
+pytest
 ```
 
-입력 자료:
-- F-Score, Ohlson은 저장소 `data/fscore`, `data/ohlson` 아래 CSV를 읽는다.
-- DuPont은 환경변수 두 개로 경로를 받는다(`.env`에 써도 된다). 코드에 경로를 박지 않는다.
-  - `SEOSEOHI_TTM_DIR`: `ttm_final.csv`가 있는 폴더
-  - `SEOSEOHI_FINAL_DATA_DIR`: `12_기업개황_KSIC.csv`, `01_종목목록.csv`, `03_재무_분기_2015-2019.csv`가 있는 폴더
+## 매일 운영
 
-## 쓰는 법
+- 평일 08:30, 19:30, 22:30에 `ops/live/run_daily.sh`가 실행된다: 클라우드에서 빠진 파일 복원 → KRX·DART 갱신과 발행 → 클라우드 업로드. 실패·지연만 macOS 알림이 온다.
+- 설치: `cp ops/live/com.jihaein.ies-refresh.plist ~/Library/LaunchAgents/ && launchctl load ~/Library/LaunchAgents/com.jihaein.ies-refresh.plist`
+- 점검: `python ops/live/check_status.py`, `python ops/live/verify_signals.py`, 로그 `ops/live/logs/`
+- 보류된 공시: DART 스냅샷 폴더의 `pending_triage.json` (`needs_review`만 사람이 볼 것)
+- 거래일 달력 `ops/live/krx_sessions.csv`는 **2026-12-30까지**다. 연말 전에 2027년 거래일을 추가한다.
+- 자세한 설치·복구·롤백: [운영 안내](docs/operations.md)
+
+## 데이터 위치
+
+| 데이터 | 위치 |
+|---|---|
+| 시세, 신호, 발행 기록, LLM 분기표 | Supabase DB |
+| `data/rawdata`, DART 스냅샷, 백테스트·Google Drive 원자료, 로그 | Supabase Storage `ies-data` (`ops/cloud/datasets.json`) |
+| 비밀값 | `.env` (Git 제외, 비밀번호 관리자에 따로 보관) |
+
+`sync.py push`·`pull`은 아무것도 지우지 않는다. `pull`은 기본적으로 없는 파일만 채운다(`--overwrite`로 교체). 클라우드 정리는 `sync.py prune`(미리보기) → `prune --yes`.
+
+## LLM 분석
+
+```bash
+python backend/llm/analyze.py 095270 2025-12-01 --opinion "영업이익률이 좋아질 것"   # DB에 발행된 신호 기준
+python backend/llm/analyze.py 010170 2016-06-30 2019-06-28 --legacy --opinion "..."   # 2015-2019 연구 데이터
+```
+
+## 연구용 모델 실행 (2015-2019)
 
 ```python
 import sys; sys.path.insert(0, "models/seoseohi")
-from run_models import run_all
+from run_models import run_all, run_gate
 pairs = [("010170", "2016-06-30", "2019-06-28")]      # (종목, 매수일, 평가일)
-run_all(pairs)                                          # F-Score, Ohlson
-run_all(pairs, include_dupont=True)                     # DuPont 환경변수 필요
-
-from run_models import run_gate
-run_gate(pairs)                                         # 임계 모델 경보. 점수가 아니라 켜짐/꺼짐이라 run_all에는 포함되지 않는다
+run_all(pairs)                                          # F-Score, Ohlson (data/fscore, data/ohlson)
+run_all(pairs, include_dupont=True)                     # DuPont: SEOSEOHI_TTM_DIR, SEOSEOHI_FINAL_DATA_DIR 필요
+run_gate(pairs)                                         # 가격 경보(켜짐/꺼짐), 점수 아님
 ```
 
-점검과 계약 생성:
-
-```bash
-pytest tests/seoseohi/test_run_models.py
-python models/seoseohi/export_contract.py               # contracts/risk_result.json 생성
-python models/seoseohi/export_contract.py --buy 2016-06-30 --eval 2019-12-30 --stocks 053660
-```
-
-`export_contract.py`는 DuPont 환경변수가 없으면 DuPont을 계산하지 않고 `data_path_not_configured`로 남긴다. 생성된 `contracts/risk_result.json`은 Git에 올리지 않는다.
-
-대시보드는 이 파일을 읽기만 한다. 대시보드 쪽에서는 환경변수 `SEOSEOHI_RESULT_JSON` 또는 `start.ps1 -ModelResultJson`에 파일 경로를 준다.
+`python models/seoseohi/export_contract.py`는 연구용 계약 JSON(`contracts/risk_result.json`, Git 제외)을 만든다.
 
 ## 알려진 한계
 
-- 임계 모델(`run_gate`)은 점수가 아니라 경보다. 합산하지 않으며, 본 데이터(19종목 × 5년)에서 경보는 이후의 큰 하락이나 F-Score·Ohlson 악화를 예고하지 않았다(`link_fundamentals.py`). "가격이 이미 약해졌다"는 상태 알림으로만 읽는다. 경보가 며칠만 켜졌다 꺼지므로 `alarm_on`(평가일 상태)보다 `alarm_in_hold`(보유 중 발생 여부)로 읽는 편이 안전하다.
-- 점수 눈금이 모델마다 다르다(0~3, 0~2, 0~3). 이 계약은 합산하지 않으며 통합 판정은 D10 전까지 보류다.
-- DuPont의 ATO는 평균 총자산 기준이고, 업종 중위수에 대상 기업이 포함된다(D08, D09).
-- 한쪽 지표만으로 낸 DuPont 점수는 `partial=True`로 표시된다.
-- Drive `서서히모델_v0`와 입력·정의·점수표가 달라 값이 일치하지 않는다. 자세한 비교는 대시보드 저장소 `docs/INTEGRATION_DESIGN.md` 7절.
-- 팀에 확인할 질문은 대시보드 저장소 `docs/TEAM_QUESTIONS.md`.
+- 운영 판정은 합산 규칙 `seoseohi-sum-v1`(합계 4 이상이면 `Yes(훼손 우려)`)이다. 모델 담당자 승인과 DuPont 기준값 대조가 남아 있다.
+- F-Score는 연간 보고서 기준이라, 매수일과 평가일이 같은 사업보고서를 쓰면 유보된다.
+- 새 사업보고서의 총장기부채는 DART 전산값이며, 주석과 대조하지 않는다(F-Score 레버리지 항목).
+- 임계 모델은 경보일 뿐 합산하지 않는다. `alarm_in_hold`(보유 중 발생 여부)로 읽는다.
+- 급락 모델과 브로커 화면 OCR은 아직 운영 경로에 없다.

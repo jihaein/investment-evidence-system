@@ -1,11 +1,28 @@
 # 서서히 backend handoff
 
+## Current setup (2026-11)
+
+- **Scheduler:** the worker runs on the owner's Mac through launchd (`ops/live/com.jihaein.ies-refresh.plist`),
+  weekdays 08:30, 19:30 and 22:30 KST. Each run is `ops/live/run_daily.sh`: restore missing files from cloud
+  storage, run one `scheduled_refresh --once` tick, upload results, and raise a macOS notification on failure
+  or when the latest session is not published.
+- **Serving database:** Supabase project `investment-evidence-project`, migrated with `001_serving.sql`
+  (`ops/live/migrate.py` checks keys and RLS and backs up before applying).
+- **Files:** every data folder is mirrored to the private Supabase Storage bucket `ies-data` by
+  `ops/cloud/sync.py` (folders listed in `ops/cloud/datasets.json`). `ops/cloud/restore_test.py` restores
+  into an empty folder and re-computes the published signals to prove the copy is complete.
+- **Inputs to maintain:** `ops/live/krx_sessions.csv` (extend before 2026-12-30) and
+  `ops/live/stock_coverage.csv` (end a stock's interval when it is delisted or suspended).
+- **Held filings:** `pending_triage.json` in `DART_SNAPSHOT_DIR`. Only `needs_review` items alert.
+
+The sections below describe the general (hosted) deployment.
+
 ## Stage the service
 
 - Use Python 3.12 and install `requirements.txt` for the API and worker. Install `requirements-dev.txt` for tests.
 - Create an empty staging PostgreSQL database and apply `data_pipeline/migrations/001_serving.sql` as the database owner. For an existing database, verify the column types and unique keys and take a backup before applying the same migration.
 - Use `.env.example` to set the worker, API and input configuration. Give the API role `SELECT` on `stocks`, `prices` and `signals`, and column-level `SELECT` on `refresh_runs(price_session, financial_as_of, reverted_at)`. Create `FOR SELECT TO <reader> USING (true)` RLS policies for this role on the four tables. Give the worker write access to the serving tables and its release log. Use `API_READ_TOKEN` for private access and set request limits at the ingress. Confirm direct Supabase access matches the intended audience.
-- Stage the historical handoff in `RAWDATA_DIR`. It needs the two-header security master, market CSVs and the point-in-time snapshot tree used by the existing models. Run `python -m data_pipeline.run_pipeline` to seed the historical data. `--prices` imports files already on disk.
+- Stage the historical handoff in `RAWDATA_DIR`. It needs the two-header security master, market CSVs and the point-in-time snapshot tree used by the existing models. Run `python -m data_pipeline.seed.run_pipeline` to seed the historical data. `--prices` imports files already on disk.
 - Provide an exchange calendar CSV with a `session` column containing actual KRX session dates, including upcoming sessions. Provide a coverage CSV with `stock_code,active_from,active_until` columns. Active intervals include the start and exclude the end. Use approved listing and suspension data to maintain expected coverage. The optional delisting file has `stock_code,delisted_on` columns and is loaded by the stock-master import.
 - Run `python -m uvicorn backend.api:app --host 0.0.0.0` for staging. `GET /` indicates liveness, `GET /ready` reports serving readiness and missed market sessions, and `POST /portfolio` returns a result in input order with evaluation dates, versions, hold reasons and price and filing freshness.
 

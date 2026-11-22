@@ -2,7 +2,7 @@
 fetch_capital.py — DART 증자(감자)현황(irdsSttus) 원본 수집기. 계약서 09 재료.
 120종목 × 연도 × 보고서. ★ API 응답에 stock_code 가 없으므로 corp_code→stock_code 를
 각 항목에 주입해 저장한다(데이터팀 모듈이 stock_code 로 마스터와 대조하기 때문).
-실행: .venv/bin/python data_pipeline/fetch/fetch_capital.py --years 2019-2026
+실행: .venv/bin/python data_pipeline/seed/fetch_capital.py --years 2019-2026
 """
 import os, csv, json, time, argparse, requests
 from pathlib import Path
