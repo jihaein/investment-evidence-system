@@ -193,7 +193,7 @@ p는 한쪽(전략이 낫다는 쪽) 부트스트랩 근사, 구간은 95%.
   단계: `prices → events → names → crawl → np → dart → ach → export`. 한 날짜를 처음부터 끝까지 돌린다.
 - **상태 확인**: `models/sudden/cache/live/<날짜>/run_status.json`의 `result`(`done` / `no_events` / `market_closed` / `failed` / `running`), `verdicts`, `error`. 로그는 `cache/live/logs/<날짜>.log`.
 - **걸리는 시간·비용**: 하루 약 1.5시간, OpenAI 호출 nano 약 1,400회 + mini 약 400회 (사건 수에 비례).
-- **필요한 키** (`.env`, 값은 사람이 넣는다): `OPENAI_API_KEY`, `OPENDART_API_KEY`, `NAVER_API_HUB_CLIENT_ID`, `NAVER_API_HUB_CLIENT_SECRET`. KRX 시세는 pykrx.
+- **필요한 키** (`.env`, 값은 사람이 넣는다): `OPENAI_API_KEY`, `OPENDART_API_KEY`, `NAVER_API_HUB_CLIENT_ID`, `NAVER_API_HUB_CLIENT_SECRET`, `KRX_ID`, `KRX_PW`(KRX 시세, pykrx). 서버에서는 KRX Open API 인증키로 바꾼다(5.1).
 - **사후 성적표**: `models/sudden/forward_ledger.py`가 실시간 판정 파일을 모아 사건별 5·20·60·120·250거래일 뒤 수익률과 시장 지수(KOSPI·KOSDAQ) 대비 초과수익을 붙인다(`cache/live/forward_ledger.csv`, `forward_summary.json`). 만기 전 칸은 비우고, 설정 고정(2026-11-20) 뒤 사건은 `after_freeze`로 따로 집계한다. live.py와 스케줄러는 건드리지 않으므로 아무 때나 다시 돌리면 된다. 실패한 날(`run_days.failed`)도 함께 적어 빈 날을 숨기지 않는다. 2026-11-21 기준 78건, 5일 만기 36건, 고정 뒤 사건은 아직 없다.
 - **뉴스 수집 전환 중**: 지금은 네이버 검색 결과 페이지를 긁는다(차단·구조 변경 위험). 공식 NAVER API HUB로 바꾸는 코드(`news_api.py`, `live.py --news-source api`)가 있고, 병행 검증(`live_api_shadow.py`) 결과를 12월 초에 보고 전환한다. 설계: [`sudden_live_api.md`](sudden_live_api.md).
 
@@ -206,13 +206,20 @@ git에 있는 것은 코드·문서·결과 형식(`contracts/sudden_result.sche
 |---|---|---|
 | 뉴스 DB·기사 본문·LLM 답 캐시 | `models/sudden/cache/naver_live/` (2026-11-22 기준 약 1.5GB. 그중 1.4GB는 크롤러가 저장한 원본 HTML 페이지 7,729개라 옮길 필요 없음. 나머지 약 115MB: 기사 목록 DB `crawl.sqlite3` 26MB, 본문 추출 `articles.jsonl` 15MB, N·P 점수 66MB, LLM 답 캐시 약 7MB) | 원본 HTML을 뺀 나머지를 복사해 가거나 새로 쌓는다. 평소 기사(N의 앞 180일 기준)와 P의 여러 종목 기준 분포가 여기서 나오므로, 빈 캐시로 시작하면 처음 몇 주는 기준이 얇다 |
 | API 병행 캐시 | `models/sudden/cache/naver_live_api/` | API로 전환하면 이것이 운영 캐시가 된다 |
-| KRX 시세 | `models/sudden/cache/krx/` | 복사 불필요. 매 실행이 D-550일을 받고 지난 파일은 지운다 |
+| KRX 시세 | `models/sudden/cache/krx/` (pykrx로 KRX 웹을 조회, `.env`의 `KRX_ID`·`KRX_PW`) | 복사 불필요. 매 실행이 D-550일을 받고 지난 파일은 지운다. 서버에서는 **KRX Open API로 바꾼다** (아래) |
 | 실행 상태·로그 | `models/sudden/cache/live/` | 복사 불필요(사후 성적표 `forward_ledger.py`를 이어 가려면 실시간 판정 파일과 함께 복사) |
 | 실시간 판정 파일 | `contracts/sudden_result_live_<날짜>.json` (git 제외) | 서버가 매일 새로 만든다. 지난 것은 사후 성적표용으로 복사 |
-| 키 | `.env`: `OPENAI_API_KEY`, `OPENDART_API_KEY`, `NAVER_API_HUB_CLIENT_ID`, `NAVER_API_HUB_CLIENT_SECRET` | 서버 비밀 저장소에 사람이 넣는다 |
+| 키 | `.env`: `OPENAI_API_KEY`, `OPENDART_API_KEY`, `NAVER_API_HUB_CLIENT_ID`, `NAVER_API_HUB_CLIENT_SECRET`, `KRX_ID`·`KRX_PW` (서버에서는 KRX Open API 인증키로 대체) | 서버 비밀 저장소에 사람이 넣는다 |
 | 예약 실행 | Windows 작업 스케줄러 `sudden-live-daily` (평일 18:30, `run_live_daily.cmd`) | 서버 스케줄러로 같은 명령 `python models/sudden/live.py --date today --log --skip-done`. 오늘 날짜는 16시 이후에만 돌고, 휴장일·사건 없음은 스스로 끝낸다 |
 
 - 뉴스 수집은 서버에서는 크롤링보다 **API 경로(`--news-source api`)로 시작하는 것을 권한다**. 크롤링은 서버 IP에서 차단될 위험이 크다. 2026-11-16~20 병행 검증에서 API의 사건 창 기사 재현율 1.0, 판정 일치 41/42였다(2주 검증은 12월 초에 끝난다).
+- **시세도 서버에서는 KRX Open API(`openapi.krx.co.kr`)로 받는다.**
+  - 지금은 pykrx가 KRX Data Marketplace 웹을 직접 조회한다. KRX 이용약관은 자동화 수단을 이용한 정보 수집을 금지한다. 하루치 실행은 요청이 적어 걸리지 않았지만, 2026-11-22 과거 시세를 한꺼번에 받으려다 이 PC의 IP가 1일 접속 제한을 받았다.
+  - 제한 안내문은 기간 데이터를 화면 다운로드, 데이터 상품 구입, KRX Open API 같은 공식 경로로 받으라고 한다. 서버 IP가 막히면 그날 판정 전체가 멈추므로, 서버에서는 처음부터 공식 경로로 간다.
+  - 할 일: KRX Open API 인증키를 신청하고(팀 계정, 사람이 직접), 유가증권·코스닥 일별매매정보와 KOSPI·KOSDAQ 지수 일별시세 서비스 이용을 신청한다. 그다음 `krx_prices.py`의 `fetch_day`·`fetch_index`를 Open API 호출로 바꾼다.
+  - 저장 형식(`BAS_DD`, `ISU_CD`, `FLUC_RT`, `MKTCAP` 등 열)은 그대로 두면 `events.py`·`live.py`는 고칠 필요가 없다.
+  - 제공 시작 연도와 하루 호출 한도는 신청할 때 확인한다. 아직 코드로 확인하지 않았다.
+  - 매 실행 D-550일을 다시 받지 말고, 받은 날짜는 캐시해 그날 하루치만 새로 받는다(지금 `cache/krx/daily/` 방식). 하루 호출 수가 몇 건으로 줄어든다.
 - 옮긴 뒤 이 PC의 예약 실행은 멈춰서 같은 날을 두 곳에서 판정하지 않게 한다.
 - 하루 실행 약 1~1.5시간, 중간 실패 시 `--from-step <단계>`로 이어서 돈다.
 
