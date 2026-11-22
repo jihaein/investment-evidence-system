@@ -30,11 +30,6 @@
     "about": "fscore, ohlson, seoseohi_main, llm inputs (incl. git-ignored files)"
   },
   {
-    "name": "pipeline_archive",
-    "path": "data_pipeline/_archive",
-    "about": "Original data-team zip delivery"
-  },
-  {
     "name": "pipeline_cache",
     "path": "data_pipeline",
     "include": [
