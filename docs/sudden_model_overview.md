@@ -164,7 +164,7 @@ p는 한쪽(전략이 낫다는 쪽) 부트스트랩 근사, 구간은 95%.
 | 파일 | 내용 |
 |---|---|
 | `contracts/sudden_result_live_<YYYYMMDD>.json` | 매일 운영 결과 (그날 급락 사건) |
-| `contracts/sudden_result_team120_2020_2026.json` | 파이널 시험 결과 (gitignore, 필요하면 다시 만든다) |
+| `contracts/sudden_result_team120_2020_2026.json` | 파이널 시험 결과 (git에 있음. 1,214건, 설정 고정 1회 결과) |
 
 사건(`cases[]`) 하나의 주요 필드:
 
@@ -196,6 +196,25 @@ p는 한쪽(전략이 낫다는 쪽) 부트스트랩 근사, 구간은 95%.
 - **필요한 키** (`.env`, 값은 사람이 넣는다): `OPENAI_API_KEY`, `OPENDART_API_KEY`, `NAVER_API_HUB_CLIENT_ID`, `NAVER_API_HUB_CLIENT_SECRET`. KRX 시세는 pykrx.
 - **사후 성적표**: `models/sudden/forward_ledger.py`가 실시간 판정 파일을 모아 사건별 5·20·60·120·250거래일 뒤 수익률과 시장 지수(KOSPI·KOSDAQ) 대비 초과수익을 붙인다(`cache/live/forward_ledger.csv`, `forward_summary.json`). 만기 전 칸은 비우고, 설정 고정(2026-11-20) 뒤 사건은 `after_freeze`로 따로 집계한다. live.py와 스케줄러는 건드리지 않으므로 아무 때나 다시 돌리면 된다. 실패한 날(`run_days.failed`)도 함께 적어 빈 날을 숨기지 않는다. 2026-11-21 기준 78건, 5일 만기 36건, 고정 뒤 사건은 아직 없다.
 - **뉴스 수집 전환 중**: 지금은 네이버 검색 결과 페이지를 긁는다(차단·구조 변경 위험). 공식 NAVER API HUB로 바꾸는 코드(`news_api.py`, `live.py --news-source api`)가 있고, 병행 검증(`live_api_shadow.py`) 결과를 12월 초에 보고 전환한다. 설계: [`sudden_live_api.md`](sudden_live_api.md).
+
+
+### 5.1 서버로 옮길 때 (지금은 이 PC에서만 돈다)
+
+git에 있는 것은 코드·문서·결과 형식(`contracts/sudden_result.schema.json`)·파이널 결과(`contracts/sudden_result_team120_2020_2026.json`)뿐이다. 실시간 판정에 필요한 나머지는 이 PC에만 있다.
+
+| 필요한 것 | 지금 위치 | 서버에서 할 일 |
+|---|---|---|
+| 뉴스 DB·기사 본문·LLM 답 캐시 | `models/sudden/cache/naver_live/` (`crawl.sqlite3` 약 26MB + 본문 `.txt` 파일 다수) | 복사해 가거나 새로 쌓는다. 평소 기사(N의 앞 180일 기준)와 P의 여러 종목 기준 분포가 여기서 나오므로, 빈 캐시로 시작하면 처음 몇 주는 기준이 얇다 |
+| API 병행 캐시 | `models/sudden/cache/naver_live_api/` | API로 전환하면 이것이 운영 캐시가 된다 |
+| KRX 시세 | `models/sudden/cache/krx/` | 복사 불필요. 매 실행이 D-550일을 받고 지난 파일은 지운다 |
+| 실행 상태·로그 | `models/sudden/cache/live/` | 복사 불필요(사후 성적표 `forward_ledger.py`를 이어 가려면 실시간 판정 파일과 함께 복사) |
+| 실시간 판정 파일 | `contracts/sudden_result_live_<날짜>.json` (git 제외) | 서버가 매일 새로 만든다. 지난 것은 사후 성적표용으로 복사 |
+| 키 | `.env`: `OPENAI_API_KEY`, `OPENDART_API_KEY`, `NAVER_API_HUB_CLIENT_ID`, `NAVER_API_HUB_CLIENT_SECRET` | 서버 비밀 저장소에 사람이 넣는다 |
+| 예약 실행 | Windows 작업 스케줄러 `sudden-live-daily` (평일 18:30, `run_live_daily.cmd`) | 서버 스케줄러로 같은 명령 `python models/sudden/live.py --date today --log --skip-done`. 오늘 날짜는 16시 이후에만 돌고, 휴장일·사건 없음은 스스로 끝낸다 |
+
+- 뉴스 수집은 서버에서는 크롤링보다 **API 경로(`--news-source api`)로 시작하는 것을 권한다**. 크롤링은 서버 IP에서 차단될 위험이 크다. 2026-11-16~20 병행 검증에서 API의 사건 창 기사 재현율 1.0, 판정 일치 41/42였다(2주 검증은 12월 초에 끝난다).
+- 옮긴 뒤 이 PC의 예약 실행은 멈춰서 같은 날을 두 곳에서 판정하지 않게 한다.
+- 하루 실행 약 1~1.5시간, 중간 실패 시 `--from-step <단계>`로 이어서 돈다.
 
 ---
 
