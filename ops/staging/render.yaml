@@ -1,0 +1,59 @@
+services:
+  - type: web
+    name: ies-staging-api
+    runtime: python
+    plan: free
+    region: singapore
+    autoDeployTrigger: "off"
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m uvicorn backend.api:app --host 0.0.0.0 --port "$PORT"
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.12
+      - key: API_DB_URL
+        sync: false
+      - key: API_READ_TOKEN
+        generateValue: true
+      - key: MARKET_CALENDAR_CSV
+        value: /etc/secrets/krx_sessions.csv
+      - key: MARKET_READY_AFTER_KST
+        value: "19:00"
+
+  - type: worker
+    name: ies-staging-worker
+    runtime: python
+    plan: 1c-2g
+    region: singapore
+    autoDeployTrigger: "off"
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -u ops/staging/start_render_worker.py
+    disk:
+      name: ies-staging-inputs
+      mountPath: /var/data
+      sizeGB: 5
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.12
+      - key: STAGING_DB_URL
+        sync: false
+      - key: OPENDART_API_KEY
+        sync: false
+      - key: KRX_ID
+        sync: false
+      - key: KRX_PW
+        sync: false
+      - key: MARKET_START_SESSION
+        sync: false
+      - key: DART_START_DATE
+        sync: false
+      - key: RAWDATA_DIR
+        value: /var/data/rawdata
+      - key: DART_SNAPSHOT_DIR
+        value: /var/data/dart_snapshots
+      - key: MARKET_CALENDAR_CSV
+        value: /var/data/krx_sessions.csv
+      - key: MARKET_COVERAGE_CSV
+        value: /var/data/stock_coverage.csv
+      - key: MARKET_READY_AFTER_KST
+        value: "19:00"

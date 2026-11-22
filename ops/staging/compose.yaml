@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: ies_staging
+      POSTGRES_USER: ies_stage
+      POSTGRES_PASSWORD: ${STAGING_POSTGRES_PASSWORD:?Set a staging-only password}
+    ports:
+      - "127.0.0.1:${STAGING_POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - staging_database:/var/lib/postgresql
+      - ../../data_pipeline/migrations/001_serving.sql:/docker-entrypoint-initdb.d/001_serving.sql:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "ies_stage", "-d", "ies_staging"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  staging_database:

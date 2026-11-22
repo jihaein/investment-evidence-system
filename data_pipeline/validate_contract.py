@@ -14,16 +14,17 @@ import os
 import sys
 import argparse
 import pandas as pd
+from pathlib import Path
 from dotenv import load_dotenv
 
-ROOT = "/Users/jihaein/Developer/investment-evidence-system"
+ROOT = str(Path(__file__).resolve().parents[1])
 load_dotenv(f"{ROOT}/.env")
 try:
     import yaml
 except ImportError:
     sys.exit("PyYAML 필요 →  .venv/bin/python -m pip install pyyaml")
 
-CONTRACT = f"{ROOT}/data/rawdata/데이터컨트랙트_본데이터.yaml"
+CONTRACT_NAME = "데이터컨트랙트_본데이터.yaml"
 
 
 def load_specs(path):
@@ -86,10 +87,12 @@ def check_file(path, spec):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dir", default=f"{ROOT}/data/rawdata", help="검사할 CSV 폴더(preprocess 산출물)")
+    ap.add_argument("--dir", type=Path, default=Path(os.getenv("RAWDATA_DIR", f"{ROOT}/data/rawdata")),
+                    help="검사할 CSV 폴더(preprocess 산출물)")
+    ap.add_argument("--contract", type=Path, help="기존 데이터팀 YAML 계약 경로")
     args = ap.parse_args()
 
-    specs = load_specs(CONTRACT)
+    specs = load_specs(args.contract or args.dir / CONTRACT_NAME)
     print(f"계약 파일 {len(specs)}개 검사 — 대상 폴더: {args.dir}\n")
     total_err = 0
     for spec in specs:

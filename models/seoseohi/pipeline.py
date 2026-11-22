@@ -60,9 +60,9 @@ def run_seoseohi_pit(data, portfolio, now_date) -> dict:
     ksic = data["ksic"]
     s, buy = portfolio["stock_code"], portfolio["buy_date"]
 
-    dupont = dupont_compare_pit(base, ksic, s, buy, now_date)
+    dupont = dupont_compare_pit(base, ksic, s, buy, now_date, median_cache=data.get("median_cache"))
     fscore = fscore_compare_pit(base, s, buy, now_date)
-    ohlson = ohlson_compare_pit(base, s, buy, now_date)
+    ohlson = ohlson_compare_pit(base, s, buy, now_date, market=data.get("market"))
     scores = {"dupont": dupont.get("score"),
               "fscore": fscore.get("risk_score"),
               "ohlson": ohlson.get("score")}

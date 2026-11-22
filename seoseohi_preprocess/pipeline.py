@@ -127,8 +127,9 @@ def ratio(a, b, multiplier=1):
 
 
 class Engine:
-    def __init__(self, root, strict=False):
+    def __init__(self, root, strict=False, *, metadata=None, dependency_as_of=None):
         self.strict = strict
+        self.dependency_as_of = dependency_as_of
         self.root = Path(root)
         self.raw = self.root / '_raw_pull'
         self.out = {k: [] for k in FILES}
@@ -146,7 +147,8 @@ class Engine:
             stocks.add(stock)
         if not self.master:
             raise PreprocessError('EMPTY_MASTER')
-        self.metadata = self.load_optional(self.raw / 'preprocess_metadata.json', {})
+        self.metadata = (self.load_optional(self.raw / 'preprocess_metadata.json', {})
+                         if metadata is None else metadata)
         self.filings = self.metadata.get('filings', {})
         for rec, row in self.filings.items():
             code(rec, 14)
@@ -272,7 +274,7 @@ class Engine:
                              'rec': rec, 'date': iso(meta['disclosed_date']),
                              'end': iso(meta['period_end']), 'accounts': accounts})
 
-    def finish_load(self):
+    def finish_load(self, *, read_market=True):
         if not self.reports:
             raise PreprocessError('NO_FINANCIAL_INPUT' + (': all companies quarantined ' + json.dumps(
                 self.quarantined, ensure_ascii=False)[:500] if self.quarantined else ''))
@@ -300,8 +302,11 @@ class Engine:
         if not self.reports:
             raise PreprocessError('NO_FINANCIAL_INPUT: all companies quarantined ' + json.dumps(self.quarantined, ensure_ascii=False)[:500])
         # Current and historical market rows must agree; never last-file-wins.
+        if not read_market:
+            return
         market_dir = self.root / '추가자료/시장자료'
         paths = list(market_dir.glob('120종목_일별시가총액_*.csv'))
+        paths.extend(market_dir.glob('krx_session_*.csv'))
         if (market_dir / 'krx_market.csv').exists():
             paths.append(market_dir / 'krx_market.csv')
         for p in sorted(paths):
@@ -402,7 +407,8 @@ class Engine:
 
     def prior(self, r, fy, q, basis=None):
         options = [x for x in self.reports if x['corp'] == r['corp'] and x['basis'] == (basis or r['basis'])
-                   and x['fy'] == fy and x['q'] == q and x['date'] <= r['date']]
+                   and x['fy'] == fy and x['q'] == q
+                   and x['date'] <= (self.dependency_as_of or r['date'])]
         return max(options, key=lambda x: (x['date'], x['rec'])) if options else None
 
     def get(self, r, metric, slot='thstrm_amount'):

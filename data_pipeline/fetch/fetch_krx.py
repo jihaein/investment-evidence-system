@@ -1,66 +1,80 @@
-"""
-KRX 일별 시세(종가·시가총액·상장주식수)를 받아 시장자료 CSV로 저장한다.
-pykrx 로그인 버전을 쓰며 KRX_ID/KRX_PW 는 .env 에서 읽는다.
-실행: .venv/bin/python data_pipeline/fetch/fetch_krx.py [--date YYYYMMDD | --from YYYYMMDD --to YYYYMMDD]
-"""
-import os, csv, argparse
+"""Fetch KRX end-of-day data for the configured stock universe."""
+import argparse
+import os
+import tempfile
+from datetime import date
 from pathlib import Path
+
+import pandas as pd
 from dotenv import load_dotenv
 
-ROOT = "/Users/jihaein/Developer/investment-evidence-system"
-load_dotenv(f"{ROOT}/.env")                 # pykrx 임포트 전에 읽어야 로그인됨
-import pandas as pd
-from pykrx import stock
-
-RAWDATA_DIR = os.environ["RAWDATA_DIR"]
-MASTER = f"{ROOT}/data/rawdata/12_기업개황_KSIC.csv"
-OUT = Path(RAWDATA_DIR) / "추가자료" / "시장자료" / "krx_market.csv"
+ROOT = Path(__file__).resolve().parents[2]
+MASTER = "12_기업개황_KSIC.csv"
+MARKET_DIR = Path("추가자료") / "시장자료"
 CLS_TO_MKT = {"K": "코스닥", "Y": "유가증권", "E": "코넥스"}
+COLUMNS = ["stock_code", "stock_name_2014", "MKT_NM", "BAS_DD", "MKTCAP",
+           "LIST_SHRS", "TDD_CLSPRC", "quality_status"]
 
-def load_master():
-    with open(MASTER, encoding="utf-8-sig") as fh:
-        rows = list(csv.reader(fh))[2:]        # 헤더 2줄 건너뜀
-    # stock_code → (stock_name, market).  열: code=2, name=6, corp_cls=7
-    return {r[2]: (r[6], CLS_TO_MKT.get(r[7], "코스닥")) for r in rows}
 
-def pull_day(date, master):
-    df = stock.get_market_cap_by_ticker(date, market="ALL")
-    if df.empty or (df[["종가", "시가총액"]] == 0).all(axis=None):
-        return []                              # 휴장일
-    out = []
-    for ticker, row in df.iterrows():
-        if ticker not in master:               # 우리 120종목만
-            continue
-        name, mkt = master[ticker]
-        out.append({"stock_code": ticker, "stock_name_2014": name, "MKT_NM": mkt,
-                    "BAS_DD": date, "MKTCAP": int(row["시가총액"]),
-                    "LIST_SHRS": int(row["상장주식수"]), "TDD_CLSPRC": int(row["종가"]),
-                    "quality_status": "OK"})
-    return out
+def load_master(base):
+    df = pd.read_csv(Path(base) / MASTER, dtype=str, skiprows=[1], encoding="utf-8-sig")
+    return {r.stock_code: (r.stock_name, CLS_TO_MKT.get(r.corp_cls, r.corp_cls))
+            for r in df.itertuples(index=False)}
+
+
+def pull_day(session, master):
+    # KRX credentials must exist before the first import of pykrx.
+    from pykrx import stock
+
+    tag = session.strftime("%Y%m%d")
+    df = stock.get_market_cap_by_ticker(tag, market="ALL")
+    rows = []
+    for code, row in df.iterrows():
+        if code in master:
+            name, market = master[code]
+            rows.append(dict(zip(COLUMNS, (code, name, market, tag, row["시가총액"],
+                                            row["상장주식수"], row["종가"], "OK"))))
+    return rows
+
+
+def save_market(rows, target):
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(dir=target.parent, delete=False) as handle:
+        partial = Path(handle.name)
+    try:
+        pd.DataFrame(rows, columns=COLUMNS).to_csv(partial, index=False, encoding="utf-8-sig")
+        partial.replace(target)
+    finally:
+        partial.unlink(missing_ok=True)
+
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--date"); ap.add_argument("--from", dest="frm"); ap.add_argument("--to")
-    a = ap.parse_args()
-    master = load_master()
-    if a.frm and a.to:
-        dates = [d.strftime("%Y%m%d") for d in pd.bdate_range(a.frm, a.to)]
-    elif a.date:
-        dates = [a.date]
+    load_dotenv(ROOT / ".env")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--date", type=lambda value: date.fromisoformat(value))
+    parser.add_argument("--from", dest="start")
+    parser.add_argument("--to", dest="end")
+    args = parser.parse_args()
+    if bool(args.start) != bool(args.end) or (args.date and args.start):
+        parser.error("Pass --date or both --from and --to")
+    from pykrx import stock
+
+    base = Path(os.environ["RAWDATA_DIR"])
+    master = load_master(base)
+    if args.start:
+        dates = pd.bdate_range(args.start, args.end).date
     else:
-        dates = [stock.get_nearest_business_day_in_a_week()]   # 최근 거래일
+        dates = [args.date or date.fromisoformat(stock.get_nearest_business_day_in_a_week())]
+    found = 0
+    for day in dates:
+        rows = pull_day(day, master)
+        if rows:
+            save_market(rows, base / MARKET_DIR / f"krx_session_{day}.csv")
+            found += 1
+    if not found:
+        raise SystemExit("No market data returned. Check the trading calendar and provider.")
+    print(f"Archived {found} session(s)")
 
-    rows = []
-    for d in dates:
-        day = pull_day(d, master); print(f"  {d}: {len(day)}종목"); rows += day
-    if not rows:
-        print("받은 데이터 없음(휴장일?) — 파일 안 씀"); return
-
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    cols = ["stock_code", "stock_name_2014", "MKT_NM", "BAS_DD",
-            "MKTCAP", "LIST_SHRS", "TDD_CLSPRC", "quality_status"]
-    pd.DataFrame(rows)[cols].to_csv(OUT, index=False, encoding="utf-8-sig")
-    print(f"\n{len(rows)}행 저장: {OUT}")
 
 if __name__ == "__main__":
     main()

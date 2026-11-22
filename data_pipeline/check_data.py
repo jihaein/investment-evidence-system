@@ -7,9 +7,10 @@ FAIL_ON_STALE=1 이면 오래된 시세도 실패로 처리한다.
 import os
 from datetime import date
 from sqlalchemy import create_engine, text
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv("/Users/jihaein/Developer/investment-evidence-system/.env")
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 engine = create_engine(os.environ["SUPABASE_DB_URL"])
 
 # 최소 기준값
