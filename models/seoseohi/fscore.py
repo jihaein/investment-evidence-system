@@ -382,12 +382,13 @@ def compare_f7(data, own_years):
 # 6. 매수일·평가일 비교
 
 # 그날까지 공시된 사업보고서 중 가장 최근 것의 F-Score (미래 정보 차단)
-def find_fscore_as_of(df, stock_code, date):
+def find_fscore_as_of(df, stock_code, date, *, latest_fiscal=False):
     date = pd.Timestamp(date)
     rows = df[(df["stock_code"] == stock_code) & (df["disclosed_date"] <= date)]
     if rows.empty:
         return None
-    return rows.sort_values("disclosed_date").iloc[-1]
+    by = ["fiscal_year", "disclosed_date"] if latest_fiscal else ["disclosed_date"]
+    return rows.sort_values(by).iloc[-1]
 
 
 # 1차: 하락폭을 0~2점으로 바꾼다 (RISK_SCALE 표 기준). 하락폭이 없으면 점수도 없다
@@ -409,7 +410,7 @@ def level_add_points(f_score_eval):
 
 # 두 보고서(매수일·평가일)로 하락폭과 위험점수를 채운다. 단일표/스냅샷 모드가 공유한다
 # buy, now 는 find_fscore_as_of 가 돌려준 한 줄(Series). 둘 다 None 이 아니어야 한다
-def _fill_scores(out, buy, now):
+def _fill_scores(out, buy, now, *, compare_revisions=False):
     # 3) 근거 보고서와 점수 기록 (f_score_buy = 매수일 점수, f_score_eval = 평가일 점수)
     out["fiscal_year_buy"] = buy["fiscal_year"]
     out["fiscal_year_eval"] = now["fiscal_year"]
@@ -417,7 +418,8 @@ def _fill_scores(out, buy, now):
     out["f_score_eval"] = now["f_score"]
     out["rcept_no_buy"] = buy["rcept_no"]
     out["rcept_no_eval"] = now["rcept_no"]
-    out["same_report"] = buy["fiscal_year"] == now["fiscal_year"]   # 같은 보고서면 하락폭은 항상 0
+    report_key = "rcept_no" if compare_revisions else "fiscal_year"
+    out["same_report"] = buy[report_key] == now[report_key]
 
     # 4) 비교: 하락폭 = 매수일 점수 - 평가일 점수 (양수 = 하락 = 위험 증가)
     out["f_score_drop"] = buy["f_score"] - now["f_score"]
@@ -633,8 +635,8 @@ def fscore_compare_pit(base_dir, stock_code, buy_date, now_date):
         return out
 
     # 3) 각 스냅샷에서 그날까지의 최신 보고서 점수 찾기
-    buy = find_fscore_as_of(build_table_from_snapshot(buy_dir), stock_code, buy_date)
-    now = find_fscore_as_of(build_table_from_snapshot(eval_dir), stock_code, now_date)
+    buy = find_fscore_as_of(build_table_from_snapshot(buy_dir), stock_code, buy_date, latest_fiscal=True)
+    now = find_fscore_as_of(build_table_from_snapshot(eval_dir), stock_code, now_date, latest_fiscal=True)
     if buy is None:
         hold.append("buy_no_data")
     if now is None:
@@ -644,9 +646,9 @@ def fscore_compare_pit(base_dir, stock_code, buy_date, now_date):
         return out
 
     # 4) 공통 채점 로직 (단일표 모드와 동일)
-    out["snapshot_buy"] = Path(buy_dir).name
-    out["snapshot_eval"] = Path(eval_dir).name
-    return _fill_scores(out, buy, now)
+    out["snapshot_buy"] = buy_dir.parent.name if buy_dir.name == "FScore" else buy_dir.name
+    out["snapshot_eval"] = eval_dir.parent.name if eval_dir.name == "FScore" else eval_dir.name
+    return _fill_scores(out, buy, now, compare_revisions=True)
 
 
 if __name__ == "__main__":

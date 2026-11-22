@@ -220,6 +220,7 @@ __marimo__/
 .streamlit/secrets.toml
 
 .env.*
+!.env.example
 
 !.env.example
 
@@ -257,4 +258,8 @@ data/ohlson/ohlson_input_final.csv
 
 # DB 설정 스크립트는 저장소에 포함
 !data_pipeline/supabase_setup.sql
+!data_pipeline/migrations/*.sql
 data/releases/
+
+# local DB backups
+ops/live/db_backup_*/

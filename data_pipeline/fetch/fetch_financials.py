@@ -8,12 +8,12 @@ import requests
 from pathlib import Path
 from dotenv import load_dotenv
 
-ROOT = "/Users/jihaein/Developer/investment-evidence-system"
+ROOT = str(Path(__file__).resolve().parents[2])
 load_dotenv(f"{ROOT}/.env")
 KEY = os.environ["OPENDART_API_KEY"]
 
-MASTER  = f"{ROOT}/data/rawdata/12_기업개황_KSIC.csv"
-OUTDIR  = Path(ROOT) / "data/rawdata/_raw_pull/dart/fnlttSinglAcntAll"
+MASTER = Path(os.environ["RAWDATA_DIR"]) / "12_기업개황_KSIC.csv"
+OUTDIR  = Path(os.environ["RAWDATA_DIR"]) / "_raw_pull/dart/fnlttSinglAcntAll"
 URL     = "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json"
 REPRTS  = ["11013", "11012", "11014", "11011"]   # 1분기·반기·3분기·사업보고서
 FS_DIVS = ["CFS", "OFS"]
@@ -56,6 +56,8 @@ def main():
                     if st == "000":
                         f.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8"); got += 1
                     elif st == "013":
+                        if fs == "CFS":
+                            f.write_text(json.dumps(d), encoding="utf-8")
                         empty += 1                        # 그 조합은 보고서 없음(정상)
                     elif st == "020":
                         print("일일 사용한도 초과 — 중단"); 

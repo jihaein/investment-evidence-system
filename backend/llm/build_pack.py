@@ -9,7 +9,7 @@ LLM이 그대로 읽을 수 있는 JSON 하나로 묶음. 여기서는 LLM을 �
  - 근거마다 ID를 붙임 (FS-1, OH-1, DP-1, GT-1 ...). 분석 단계와 캐릭터는 말할 때 이 ID를 단다
  - 숫자 계산은 여기서 끝냄. LLM에게 계산을 맡기지 않는다
  - 유보는 0점이 아니라 "판단하지 않음"이다. 사유 코드와 한국어 뜻을 함께 넣음
- - 모델마다 설명서(model_cards.json: 눈금, 읽는 법, 한계)를 같이 넣는다. 팀이 코드 없이 고칠 수 있다
+ - 모델마다 설명서(cards.json: 눈금, 읽는 법, 한계)를 같이 넣는다. 팀이 코드 없이 고칠 수 있다
  - 투자자 의견(input 1)은 원문 그대로 두고 untrusted로 표시한다. 주장 추출은 분석 단계에서 한다
  - input 3(경제명제), input 4는 자리만 만들어 둔다 (null)
 
@@ -34,7 +34,7 @@ import export_contract as ec  # noqa: E402  (RULE_VERSION, OPEN_DECISIONS를 한
 import run_models as rm  # noqa: E402
 
 PACK_VERSION = "1"
-CARDS_PATH = HERE / "model_cards.json"
+CARDS_PATH = HERE / "cards.json"
 SCHEMA_PATH = HERE / "schemas" / "evidence_pack.schema.json"
 
 # LLM이 이 묶음을 읽을 때 지켜야 하는 규칙 (분석 단계·캐릭터 공통)
@@ -155,16 +155,20 @@ def ohlson_block(row, card):
     sb, se = clean(row["omega_state_buy"]), clean(row["omega_state_eval"])
     od, rd, size = clean(row["omega_dir"]), clean(row["ri_dir"]), clean(row["ri_change_size"])
     s_buy, s_eval, ds = clean(row["s_buy"]), clean(row["s_eval"]), clean(row["delta_s"])
-    b["evidence"].append(evidence(
-        "OH-1", f"ω 상태(시장 기대): 매수일 '{STATE_KO.get(sb, sb)}' → 평가일 '{STATE_KO.get(se, se)}' ({DIR_KO.get(od, od)}).",
-        {"omega_state_buy": sb, "omega_state_eval": se, "omega_dir": od}))
+    if od == "excluded":
+        b["evidence"].append(evidence("OH-1", "매수 시점 시장 프리미엄이 음수여서 RI만 채점했다."))
+    else:
+        b["evidence"].append(evidence(
+            "OH-1", f"ω 상태(시장 기대): 매수일 '{STATE_KO.get(sb, sb)}' → 평가일 '{STATE_KO.get(se, se)}' ({DIR_KO.get(od, od)}).",
+            {"omega_state_buy": sb, "omega_state_eval": se, "omega_dir": od}))
     b["evidence"].append(evidence(
         "OH-2", f"RI Spread(초과이익 ÷ 전기 자본): 매수일 {s_buy * 100:.1f}% → 평가일 {s_eval * 100:.1f}% "
                 f"({ds * 100:+.1f}%p, {DIR_KO.get(rd, rd)}, 변화 크기 {SIZE_KO.get(size, size)}).",
         {"s_buy_pct": s_buy * 100, "s_eval_pct": s_eval * 100, "delta_s_pp": ds * 100, "ri_dir": rd,
          "ri_change_size": size}))
+    directions = "RI 단독 채점" if od == "excluded" else f"RI {DIR_KO.get(rd, rd)}, ω {DIR_KO.get(od, od)}"
     b["evidence"].append(evidence(
-        "OH-3", f"RI {DIR_KO.get(rd, rd)}, ω {DIR_KO.get(od, od)} → 위험점수 {b['risk_score']}점 (최대 {rm.OHLSON_RISK_MAX}점).",
+        "OH-3", f"{directions} → 위험점수 {b['risk_score']}점 (최대 {rm.OHLSON_RISK_MAX}점).",
         {"risk_score": b["risk_score"]}))
     return b
 
@@ -291,6 +295,54 @@ def build_pack(stock_code, buy_date, eval_date, opinion_text=None, include_dupon
     }
 
 
+def build_published_pack(signal, opinion_text=None):
+    """Use the same versioned score and source evidence served by /portfolio."""
+    if not signal.get("rule_version") or signal.get("release_id") is None or not signal.get("evidence"):
+        raise ValueError("A versioned signal with published evidence is required")
+    cards = load_cards()
+    models = []
+    source = {"release_id": signal["release_id"], "rule_version": signal["rule_version"]}
+    for name, column, render in (
+        ("fscore", "fscore", fscore_block),
+        ("ohlson", "ohlson_score", ohlson_block),
+        ("dupont", "dupont_score", dupont_block),
+    ):
+        item = signal["evidence"][name]
+        detail = item["detail"]
+        score = signal[column]
+        row = dict(detail, interpretable=score is not None, risk_score=score,
+                   hold_reason=item.get("hold_reason") or "no_score")
+        block = render(row, cards[name])
+        for fact in block["evidence"]:
+            fact["source"].update(source)
+            for key in ("rcept_no_buy", "rcept_no_eval", "market_date_buy", "market_date_eval"):
+                if detail.get(key) is not None:
+                    fact["source"][key] = detail[key]
+        models.append(block)
+
+    models.append({
+        "model": "gate", "kind": "gate", "status": "not_computed", "card": cards["gate"],
+        "hold": hold_info("price_gate_not_published"),
+        "evidence": [evidence("GT-1", "이 릴리스에 가격 경보를 제공하지 않는다.", source=source)],
+    })
+    return {
+        "pack_version": PACK_VERSION,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "request": {"stock_code": signal["stock_code"], "company_name": signal["stock_name"],
+                    "buy_date": str(signal["buy_date"]), "eval_date": str(signal["eval_date"])},
+        "rule_version": signal["rule_version"],
+        "data_period": {"from": str(signal["baseline_date"]), "to": str(signal["eval_date"])},
+        "warnings": ["평가 결과가 최신 거래일 기준보다 오래됐다."] if signal["status"] == "stale" else [],
+        "reading_rules": [rule for i, rule in enumerate(READING_RULES) if i != 2] + [
+            "통합 판정은 이 릴리스에 기록된 결과만 사용하고 새로 계산하지 않는다."],
+        "integrated": {"status": "hold" if signal["verdict"] == "유보" else "published",
+                       "reason": "published_signal", "meaning": signal["verdict"]},
+        "inputs": {"investor_opinion": {"text": opinion_text, "untrusted": True},
+                   "models": models, "propositions": None, "input4": None},
+        "evidence_index": [{"id": e["id"], "model": m["model"]} for m in models for e in m["evidence"]],
+    }
+
+
 def validate_pack(pack):
     import jsonschema
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
@@ -303,11 +355,12 @@ def validate_pack(pack):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="근거 묶음(evidence pack) 만들기")
-    ap.add_argument("stock_code")
-    ap.add_argument("buy_date")
-    ap.add_argument("eval_date")
+    ap.add_argument("stock_code", nargs="?")
+    ap.add_argument("buy_date", nargs="?")
+    ap.add_argument("eval_date", nargs="?")
     ap.add_argument("--opinion", help="투자자 의견 글")
     ap.add_argument("--opinion-file", help="투자자 의견 글이 담긴 파일 (UTF-8)")
+    ap.add_argument("--published-signal", type=Path, help="Saved versioned JSON from /signal; use its scores")
     ap.add_argument("--no-dupont", action="store_true", help="DuPont을 계산하지 않음")
     ap.add_argument("--out", help="저장할 JSON 경로 (없으면 화면에만 출력)")
     args = ap.parse_args()
@@ -315,7 +368,15 @@ if __name__ == "__main__":
     opinion = args.opinion
     if args.opinion_file:
         opinion = Path(args.opinion_file).read_text(encoding="utf-8")
-    pack = build_pack(args.stock_code, args.buy_date, args.eval_date, opinion, include_dupont=not args.no_dupont)
+    if args.published_signal:
+        if args.stock_code or args.buy_date or args.eval_date or args.no_dupont:
+            ap.error("--published-signal already specifies the holding and models")
+        signal = json.loads(args.published_signal.read_text(encoding="utf-8"))
+        pack = build_published_pack(signal, opinion)
+    else:
+        if not (args.stock_code and args.buy_date and args.eval_date):
+            ap.error("Pass stock_code, buy_date and eval_date, or --published-signal")
+        pack = build_pack(args.stock_code, args.buy_date, args.eval_date, opinion, include_dupont=not args.no_dupont)
     validate_pack(pack)
     text = json.dumps(pack, ensure_ascii=False, indent=2, allow_nan=False)
     if args.out:

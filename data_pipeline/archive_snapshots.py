@@ -10,10 +10,10 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv("/Users/jihaein/Developer/investment-evidence-system/.env")
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
 SRC = Path(os.environ["RAWDATA_DIR"])
-OUT_DIR = Path("/Users/jihaein/Developer/investment-evidence-system/data_pipeline/_archive")
+OUT_DIR = Path(Path(__file__).resolve().parents[1] / "data_pipeline" / "_archive")
 ZIP = OUT_DIR / "seoseohi_rawdata_2020-2026.zip"
 
 

@@ -24,7 +24,7 @@ from backtest.metrics import cumret, mdd, sortino, sharpe, cash_effect_summary
 DEFAULT_TRIGGER = {"Yes(훼손 우려)"}
 DEFAULT_STOP_PCT = 0.20              # 단순손절 기준: -20%
 
-# ── 두 날짜를 구분한다 (예전엔 하나로 합쳐 버그가 났다) ──────────────────
+# 매수일과 기준선 날짜를 구분한다 (하나로 쓰면 첫 판정이 틀어짐)
 # entry_date  : 실제 매수일(엔진 보유 시작). 단순손절은 이 날 대비 낙폭을 잰다.
 # baseline_date: 서서히 '기준선'. 매수 직후엔 아직 점수화할 재무가 없어서(첫 스냅샷
 #                2015-12 는 지원파일이 비어 FY2014 를 못 매긴다), 매수 후 처음으로

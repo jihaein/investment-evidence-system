@@ -6,9 +6,9 @@
 ## 흐름
 
 1. `build_pack.py` — 입력 1~4를 근거 묶음(JSON) 하나로 만든다. **LLM을 쓰지 않는다** (지금 구현됨)
-2. 분석 단계 — 투자자 의견을 주장으로 나누고, 주장마다 근거(ID)로 지지·반박·근거 없음을 정한다 (예정)
+2. 분석 단계 — `analyze.py`가 투자자 의견을 주장별로 분류하고 근거 ID를 점검한다.
 3. 캐릭터 6개 — 분석 결과를 각자 말투로 설명한다. 사실은 바꾸지 않는다 (예정)
-4. 검증 — 답에 나온 근거 ID·숫자·금지 표현을 코드로 확인한다 (예정)
+4. 검증 — 분석 결과의 근거 ID와 숫자, 표현을 확인한다. 캐릭터 응답 검증은 예정이다.
 
 ## 근거 묶음 (`build_pack.py`)
 
@@ -24,9 +24,19 @@ python backend/llm/build_pack.py 010170 2016-06-30 2019-06-28 --opinion-file 의
 - 임계 모델은 점수가 아니라 경보라서 `risk_score`가 없다
 - 투자자 의견은 원문 그대로 `untrusted: true`로 넣는다. 주장 추출은 분석 단계에서 한다
 - 경제명제(`propositions`)와 입력 4(`input4`)는 자리만 있다 (null)
-- 형식은 `schemas/evidence_pack.schema.json`, 모델 설명서는 `model_cards.json` (코드 없이 고칠 수 있다)
+- 형식은 `schemas/evidence_pack.schema.json`, 모델 설명서는 `cards.json` (코드 없이 고칠 수 있다)
 
 ## 한계
 
 - 모델 데이터가 2015~2019년이라 그 밖의 날짜는 `warnings`가 붙고 대부분 유보가 된다
 - 결과는 임시 규칙(`provisional-0`) 기준이고 통합 판정은 없다(D10)
+
+## 배포된 신호를 설명할 때
+
+```bash
+python backend/llm/build_pack.py --published-signal signal.json --opinion "영업이익률이 좋아질 것" --out pack.json
+python backend/llm/analyze.py --pack pack.json --dry-run
+```
+
+`signal.json`은 `GET /signal` 응답이다. 모델 결과를 다시 계산하지 않고 같은 점수와
+릴리스 번호, 접수번호를 근거로 사용한다. 과거 연구에는 기존 날짜 인수를 사용한다.

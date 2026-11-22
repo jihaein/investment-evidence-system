@@ -47,7 +47,7 @@
       "type": "object",
       "required": ["status", "reason"],
       "properties": {
-        "status": { "const": "hold" },
+        "status": { "enum": ["hold", "published"] },
         "reason": { "type": "string" },
         "meaning": { "type": "string" }
       }
