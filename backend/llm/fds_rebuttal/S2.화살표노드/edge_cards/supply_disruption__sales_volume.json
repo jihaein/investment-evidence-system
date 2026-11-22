@@ -1,0 +1,35 @@
+{
+  "edge_id": "supply_disruption->sales_volume",
+  "sign": "-",
+  "empirical_sign": "n/a",
+  "mechanism": "공급 차질은 출하 가능한 물량을 줄임",
+  "conditions": [
+    "재고·대체 조달로 상쇄되지 않음"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_e2baa40454e6b4c3",
+      "text": "기업 제품 수요이(가) 하락하여 판매량의 상승을 상쇄할 수 있음",
+      "check_node": "market_demand",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_da55feae7ca53514",
+      "text": "생산능력이(가) 하락하여 판매량의 상승을 상쇄할 수 있음",
+      "check_node": "capacity",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1afed6675877509d",
+      "text": "기업 생산량이(가) 하락하여 판매량의 상승을 상쇄할 수 있음",
+      "check_node": "firm_output",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

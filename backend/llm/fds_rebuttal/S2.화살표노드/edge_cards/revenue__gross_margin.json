@@ -1,0 +1,24 @@
+{
+  "edge_id": "revenue->gross_margin",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "매출총이익률 = 1 - 매출원가/매출",
+  "conditions": [
+    "매출 양수",
+    "매출원가 양수 및 일정"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_e0028b6769967703",
+      "text": "매출원가이(가) 상승하여 매출총이익률의 상승을 상쇄할 수 있음",
+      "check_node": "cogs",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_c8ccef82f9b04f74->industry_sales",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "실질 시장가격의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 산업 매출의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00198의 적용 맥락: This analysis uses monthly U.S. data on the prescription H2‑antagonist market from Tagamet’s 1977 launch through May 1993. For the industry‑level demand estimates (this triplet), the unit is the monthly industry aggregate: a Fisher‑Ideal quantity index (patient‑days) and a Fisher‑Ideal real price index constructed from IMS product‑level data for Tagamet, Zantac, Pepcid and Axid. The specification includes cumulative marketing stocks (detailing minutes, medical‑journal pages), FDA‑indication timing (notably GERD), and market‑structure periods (monopoly/duopoly/triopoly/quad)."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_8f42c45db906dcba",
+      "text": "누적 의약품 판촉 설명 시간이(가) 하락하여 산업 매출의 상승을 상쇄할 수 있음",
+      "check_node": "n_a8196ddd0fc2d7d1",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_261e5013fcc7c9b8",
+      "text": "의학 학술지 광고이(가) 하락하여 산업 매출의 상승을 상쇄할 수 있음",
+      "check_node": "n_2d31371f772c5990",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Roles of Marketing, Product Quality and Price Competition in the Growth and Composition of the U.S. Anti-Ulcer Drug Industry (1994, american_economic_review; CSV R00198; https://www.nber.org/papers/w4904)",
+    "author": "Ernst R. Berndt, Linda Bui, David Reiley, Glen Urban",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

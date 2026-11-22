@@ -1,0 +1,37 @@
+{
+  "edge_id": "n_3f5306b6ce8b8119->n_1a69cd362d7425e4",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "야간 수면 처치의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 노동 공급의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08896의 적용 맥락: This paper reports a month-long field RCT in Chennai, India, with 452 low-income urban adults employed in a one-month paid data-entry job (8-day baseline then ~3-week treatment) to study causal effects of increased sleep. Interventions—cross-randomized—included night-sleep treatments (information, sleep-improving devices, and sometimes financial incentives) and workplace half-hour afternoon naps in a comfortable office; outcomes include actigraphy-measured night and nap sleep, labor supply, productivity, cognition, well-being, and economic preferences."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_ae7971eead2aad97",
+      "text": "보조금이(가) 상승하여 노동 공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_e1bfbd656c528913",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_93001df52468140f",
+      "text": "복지급여이(가) 상승하여 노동 공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_19e817c4ee770e64",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9c769b579a54ebb8",
+      "text": "낮잠 처치이(가) 상승하여 노동 공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_d592eb854c2f56fc",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "The Economic Consequences of Increasing Sleep Among the Urban Poor (2020, quarterly_journal_of_economics; CSV R08896; https://www.nber.org/papers/w26746)",
+    "author": "Pedro Bessone, Gautam Rao, Frank Schilbach, Heather Schofield, Mattie Toma",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

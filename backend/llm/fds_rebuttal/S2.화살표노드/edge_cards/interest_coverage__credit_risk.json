@@ -1,0 +1,54 @@
+{
+  "edge_id": "interest_coverage->credit_risk",
+  "sign": "-",
+  "empirical_sign": "n/a",
+  "mechanism": "높은 이자보상배율은 낮은 상환 위험을 시사",
+  "conditions": [
+    "분모와 이익 정의 확인",
+    "자동 인과 전파 금지"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_c95bbf6ad69dd6ad",
+      "text": "은행 평균 유동성 감소이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_e54e7d5bf4042b14",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ad88cdc2dfb3146d",
+      "text": "경기순응적 만기 변동이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_7d3ac8964770172e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_44f1a42013d3f919",
+      "text": "거래형 대출 비중 상승이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_2f1929e3887d4f9f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_57cfb2580b6ca1c7",
+      "text": "좀비기업 신용공급이(가) 상승하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_0810557f4e50d819",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_48191ef1489db072",
+      "text": "기업 재무레버리지이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "leverage",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fe01e6704a3e362b",
+      "text": "기업 재무적 곤경이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "firm_financial_distress",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

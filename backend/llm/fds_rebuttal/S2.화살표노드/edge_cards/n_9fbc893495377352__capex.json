@@ -1,0 +1,67 @@
+{
+  "edge_id": "n_9fbc893495377352->capex",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "신주 발행으로 조달한 자본의 변화가 실물투자의 수익성·조달 여건 경로를 통해 설비투자 지출의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01915의 적용 맥락: This paper analyzes 16,958 IPOs and 12,373 SEOs across 38 countries from 1990–2003, using firm-level data on equity offer proceeds, accounting items, and Tobin’s q. Units are firms issuing public equity (IPOs and SEOs) in global public equity markets; key institutional features include the distinction between primary versus secondary share sales and country-year institutional heterogeneity, which the authors control for. The study links proceeds to subsequent investment, cash holdings, debt reduction, and insider selling to assess financing versus market-timing motives."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_9866654eab82f949",
+      "text": "미국 다국적기업의 해외 설비투자이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_4909e107c2a30075",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_30510d2e0a51a4d9",
+      "text": "해외 자본투자이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_e78da320e45d3558",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_eac2a3d2473f7a9b",
+      "text": "경영자 과신이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfa13a568153b507",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0f9f2eb48280c56b",
+      "text": "인수 방어 조항 제거이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_2bd5a496e1eaeda0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_179c04d578027d1d",
+      "text": "경기침체기에 경력 시작이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_10b72d2b8f5b8e19",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b250e0c20785af41",
+      "text": "기업 불확실성이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "firm_uncertainty",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_fe8d3527f5054642",
+      "text": "반부패 감사에 의한 적발이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_a380357fce8b36c8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4ca09b1fbbaa937e",
+      "text": "기업 자금조달 제약이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "financing_constraint",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Motivations for Public Equity Offers: An International Perspective (2005, journal_of_financial_economics; CSV R01915; https://www.nber.org/papers/w11797)",
+    "author": "Woojin Kim, Michael S. Weisbach",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

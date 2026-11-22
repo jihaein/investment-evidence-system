@@ -1,0 +1,36 @@
+{
+  "edge_id": "innovation->market_demand",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "유효한 제품 혁신은 제품 수요를 확대할 수 있음",
+  "conditions": [
+    "고객 채택과 상업화 성공",
+    "경쟁 대응 검토"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_8600355bd24ea3bf",
+      "text": "가계 소비이(가) 하락하여 기업 제품 수요의 상승을 상쇄할 수 있음",
+      "check_node": "household_consumption",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7d3139e6c9672254",
+      "text": "경제 실질 산출이(가) 하락하여 기업 제품 수요의 상승을 상쇄할 수 있음",
+      "check_node": "gdp",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a31399f959e45950",
+      "text": "산업 매출이(가) 하락하여 기업 제품 수요의 상승을 상쇄할 수 있음",
+      "check_node": "industry_sales",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_7d81864514f4073e->interest_rate",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "통화정책 변화의 변화가 자금 수급·통화정책·가격 설정 경로를 통해 일반 금리의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00305의 적용 맥락: This paper studies U.S. monthly data on Federal Reserve internal \"Green Book\" forecasts (1965–1991) and commercial forecasts (Blue Chip, DRI, SPF), focusing empirically on periods 1974:9–1979:9 and 1984:3–1991:12. Units are monthly forecast observations and forecast errors for the GDP deflator and real GDP; institutional setting is FOMC policy meetings, federal funds rate target changes, and press-reported Fed actions. The analysis tests whether Fed private information is signaled by monetary actions and causes revisions in market inflation expectations and the term structure."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_b83c5fc0af2bd76c",
+      "text": "통화동맹 도입이(가) 상승하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_fa45e53234de1431",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6b4de2bfe451cb0c",
+      "text": "인수주선사의 이사회 참여 금지이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_e9b91aa47e4b5a94",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e0212a7e4f6dc08a",
+      "text": "파산신청 위험 1%포인트 하락이(가) 상승하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_f6fae033cc7a89a7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_57fb7803c98e9639",
+      "text": "지급준비금 이자율이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_68281f2d7787c3bb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c0b0631aa98a4839",
+      "text": "정보 비대칭이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a0923f1d27a5f697",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Federal Reserve Private Information and the Behavior of Interest Rates (1996, american_economic_review; CSV R00305; https://www.nber.org/papers/w5692)",
+    "author": "Christina D. Romer, David H. Romer",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_52b6879b5eff3a29->operating_margin",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "검색 방식 재설계의 변화가 매출 대비 영업비용 경로를 통해 영업이익률의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05350의 적용 맥락: This paper studies the effects of eBay’s 2011 search redesign (introduced May 19, defaulted for several categories June 27–July 2, 2011) and a summer 2012 randomized A/B test on consumer search, posted prices, and seller pricing. It uses detailed eBay browsing and listing data, comparing April–May 2011 (pre) to August–September 2011 (post) and analyzing a 2012 experiment that randomized default search results on 20% of traffic. Units are buyer search sessions, individual listings/sellers and transactions, with detailed structural estimation for a Halo Reach video-game market and several product categories on the eBay platform."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_e1edbecdf2bc019c",
+      "text": "노동 과세이(가) 상승하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c59ee81367b30421",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_bf006f9ab5ae000f",
+      "text": "비공식 부문 활동 비용 증가이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_4e40664422f19994",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8ff62b4a224fbd46",
+      "text": "판매목록 선정에 가격 요소 반영이(가) 상승하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_be0f828b4caa6c17",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1b977814b68075cc",
+      "text": "거시경제 불확실성 증가이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c948928380d4a4c4",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f72998eb35d6857b",
+      "text": "매출총이익률이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "gross_margin",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_463cc28f690205ac",
+      "text": "기업 마크업이(가) 하락하여 영업이익률의 상승을 상쇄할 수 있음",
+      "check_node": "firm_markup",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Consumer Price Search and Platform Design in Internet Commerce (2014, american_economic_review; CSV R05350; https://www.nber.org/papers/w20415)",
+    "author": "Michael Dinerstein, Liran Einav, Jonathan Levin, Neel Sundaresan",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

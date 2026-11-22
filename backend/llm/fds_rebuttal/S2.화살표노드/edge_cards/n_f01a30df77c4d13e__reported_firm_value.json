@@ -1,0 +1,61 @@
+{
+  "edge_id": "n_f01a30df77c4d13e->reported_firm_value",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "효과적인 기업문화의 변화가 미래 현금창출력·위험에 대한 평가 경로를 통해 연구상 기업가치의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06938의 적용 맥락: This study analyzes corporate culture using 18 in-depth interviews and a survey administered in 2014–2015 to 1,348 executives (CEOs/CFOs) at public and private firms in the United States and Canada. It measures stated cultural values, day-to-day norms, and formal institutions and links them via cross-sectional analyses to firm outcomes—ethics/compliance, innovation (risk and creativity), productivity, profitability, and firm value—across industries and firm sizes in North America."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_83c183c589378cef",
+      "text": "재무적 곤경이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_9b5a88b17a895716",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b6a6290159ae0a02",
+      "text": "기대 미래 수익률이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_40bee1a76fc2c43a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9eb6e989e50222fc",
+      "text": "기대 미래 현금흐름이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_4546131b0287ebf9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8e0ce4fd99b18c8a",
+      "text": "정보기술 혁명이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_bda72ebbd6ccdd58",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_2dc70ada2c9fa79c",
+      "text": "인수 발표이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_a18e0264b988025b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9c9c9d1274713482",
+      "text": "평균 미래 수익성에 대한 불확실성이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_0761e51a9641c7f5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7effe75fb170f3bc",
+      "text": "조작 유인 제거이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_ad6d7ebd50331d88",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Corporate Culture: Evidence from the Field (2017, journal_of_financial_economics; CSV R06938; https://www.nber.org/papers/w23255)",
+    "author": "John R. Graham, Campbell R. Harvey, Jillian Popadak, Shivaram Rajgopal",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_9962b91f5e14c78a->shareholder_value",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "큰 손실을 수반하는 인수 발표의 변화가 주주 귀속 현금흐름·권리 보호·기업 평가 경로를 통해 연구상 주주가치의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01396의 적용 맥락: Analyzes U.S. corporate acquisition announcements from 1980–2001, focusing on the 1998–2001 merger wave. Unit of observation is acquiring firms' announcement returns (public, private, and subsidiary acquisitions) drawn from SDC/CRSP/Compustat. The setting is the late-1990s high-valuation equity market with increased equity-financed deals, takeover defenses, and managerial incentives (stock/options). The paper links announcement abnormal and dollar returns to firm valuation (Tobin’s q, BM), deal characteristics, and post-announcement firm performance to infer causal effects of acquisitions and informational signaling."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_1ac29d37598b65fd",
+      "text": "높은 인플레이션의 안정화이(가) 하락하여 연구상 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_0c59f1b243e16d26",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c214dcc01fed319d",
+      "text": "장부가 기준 레버리지이(가) 하락하여 연구상 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_20249c56c7146868",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d7598b50636ae992",
+      "text": "엄격한 감시를 수반한 국제 부채 발행이(가) 하락하여 연구상 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_823c45b8e8368601",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f40124237bb609cb",
+      "text": "인수 발표이(가) 상승하여 연구상 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_a18e0264b988025b",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Wealth Destruction on a Massive Scale? A Study of Acquiring-Firm Returns in the Recent Merger Wave (2004, journal_of_finance; CSV R01396; https://www.nber.org/papers/w10200)",
+    "author": "Sara B. Moeller, Frederik P. Schlingemann, Rene M. Stulz",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

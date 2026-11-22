@@ -1,0 +1,97 @@
+{
+  "edge_id": "n_5c9feacc5e999d7a->innovation",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "부채 상환 압력의 변화가 연구개발 투입·지식 축적·혁신 유인 경로를 통해 기업 혁신 성과의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01134의 적용 맥락: This paper studies UK publicly listed firms over 1968–1997 (panel of firms classified by 2-digit SIC), linking firm-year accounting data to US patent grants (citation-weighted) to estimate how product-market competition (Lerner index / implied α) affects innovation. Identification exploits cross-industry, over-time variation from UK competition policy reforms (European Single Market, MMC investigations, privatisations) and additional industry-level instruments (OECD/US technology measures) to instrument competition and technology-gap measures; unit of observation is the firm-year within industries."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_c37c95084b49e501",
+      "text": "기관투자자 지분 보유이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_5b4ff2e346630fad",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d436dfb846a9ffe5",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_088134f037aab1b2",
+      "text": "외국 모기업을 통한 수출이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_85e921ea9a332a6c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_813d325ac7b68395",
+      "text": "은행의 재무적 곤경이(가) 상승하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_daf752b42c197388",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c5614850c426e86c",
+      "text": "기업 간 회의이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_41e5efb92eb59f8c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9a94a49864de8755",
+      "text": "두 번째 특허 출원 승인이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_9ffbc362d30ea721",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1d575569f0bed8f1",
+      "text": "기업 규모에 따른 노동 규제이(가) 상승하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_ea681eb7d01352f3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_34ec2a760ffa0c98",
+      "text": "시장 규모 충격이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_129208427654f946",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c234aacf3d5d16e0",
+      "text": "정치적 동기의 공공안전 계약 수주이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_2fee6c77a04c5070",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6039e1e4fcb5f665",
+      "text": "연구개발 지출이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "rd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c1486f7bb2c938c3",
+      "text": "기업 연구개발 활동이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "firm_rd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_31f94e15db06096d",
+      "text": "기업 특허 성과이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "patenting",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_70d3714971539de7",
+      "text": "기업 R&D 지출액이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "firm_rd_spend",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Competition and Innovation: An Inverted U Relationship (2002, quarterly_journal_of_economics; CSV R01134; https://www.nber.org/papers/w9269)",
+    "author": "Philippe Aghion, Nicholas Bloom, Richard Blundell, Rachel Griffith, Peter Howitt",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

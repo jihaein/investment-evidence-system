@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_cb7b2092a6afbe84->capital_stock",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "초기 순자산 증가의 변화가 투자·자본 축적·자산 교체 경로를 통해 기업 생산자본의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05926의 적용 맥락: The paper analyzes firm-level manufacturing data (ORBIS-AMADEUS) primarily for Spain from 1999–2012 (pre-crisis 1999–2007 and post-crisis 2008–2012), with extensions to Italy, Portugal and comparisons to Germany, France, and Norway. Units are individual manufacturing firms (production and balance-sheet items). The study situates these firms in the context of euro-era declining real interest rates and capital inflows to Southern Europe, exploring how size-dependent financial frictions and capital allocation affect cross-firm returns to capital and sectoral TFP."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_99730ac9a88c174e",
+      "text": "시장의 범위이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_a8dfba59a7f80671",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_209e7e05a117bf75",
+      "text": "자본소득세이(가) 상승하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_d3a18b2fbba042fe",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e308f67db5033378",
+      "text": "급여세 인하 노출이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2aac6633c92702b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0b1cb5c2dd104847",
+      "text": "생산자본 증가율이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "capital_growth",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Capital Allocation and Productivity in South Europe (2015, quarterly_journal_of_economics; CSV R05926; https://www.nber.org/papers/w21453)",
+    "author": "Gita Gopinath, Sebnem Kalemli-Ozcan, Loukas Karabarbounis, Carolina Villegas-Sanchez",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

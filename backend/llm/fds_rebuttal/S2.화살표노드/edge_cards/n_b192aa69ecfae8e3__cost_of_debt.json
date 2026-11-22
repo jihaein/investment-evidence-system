@@ -1,0 +1,85 @@
+{
+  "edge_id": "n_b192aa69ecfae8e3->cost_of_debt",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "금리·환율 헤지 강도의 변화가 대출자의 위험 보상·자금 비용·가격 설정 경로를 통해 부채 조달금리의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03447의 적용 맥락: This paper analyzes U.S. non-financial firms' interest-rate and FX derivatives use and matched syndicated-loan contracts during 1996–2002. The unit of observation is loan contracts (2,718 loans) and borrowing firms (≈1,185 firms). Authors hand-collect hedging (notional IR/FX) from 10‑K filings and detailed loan covenants; they exclude post‑2002 SFAS 133 disclosure changes. Institutional setting includes the U.S. syndicated loan market and corporate tax code nonlinearities (tax convexity) used as an instrument to study how hedging affects loan spreads, covenant restrictions, and firm investment."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_e23aa1ca472c616a",
+      "text": "신용시장 집중도 상승이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_03434e31c77d8424",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_da06d4e4998efe5c",
+      "text": "채권자 권리의 강도이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_8c5b68548bf4289b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b0842b46c92ed956",
+      "text": "민간 신용 이용 가능성이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_3829d970d7ad038b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6401d3ced1752672",
+      "text": "자산 담보이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_c98b246ba4547f88",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e9ebd7feee71585c",
+      "text": "무형자산이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_7787ed290f7fdeda",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_52b5f9501c68582c",
+      "text": "장부가 대비 시장가 비율(B/M)이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_76ce22d1500c6175",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_02d31674aa3e2c6d",
+      "text": "사모펀드 지원이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_29a522832b9858d4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0a96d1ca7b8b210c",
+      "text": "스트레스테스트 노출이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_6d0f5b8e8d0178d1",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dd16a547fe39201c",
+      "text": "무위험금리이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "risk_free_rate",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e24c8539031c30d3",
+      "text": "기업 신용스프레드이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "credit_spread",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d73f1cd88324bc87",
+      "text": "일반 금리이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "interest_rate",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Real and Financial Implications of Corporate Hedging (2010, journal_of_finance; CSV R03447; https://www.nber.org/papers/w16622)",
+    "author": "Murillo Campello, Chen Lin, Yue Ma, Hong Zou",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

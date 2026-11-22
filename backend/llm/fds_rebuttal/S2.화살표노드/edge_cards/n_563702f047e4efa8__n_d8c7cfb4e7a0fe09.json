@@ -1,0 +1,18 @@
+{
+  "edge_id": "n_563702f047e4efa8->n_d8c7cfb4e7a0fe09",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "심사관의 관대함의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 대출 이용의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07899의 적용 맥락: Using administrative loan-application and outcome data from a large UK high-cost (subprime) lender between May 2012 and December 2014, the paper studies first-time in-person loan applicants (45,687) assigned quasi-randomly to 254 branch loan examiners across 24 branches. Examiners are blind-rotated within branch and nationality; decisions are evaluated on short-run first-loan default while firm profits depend on long-run behavior (top-ups and repeat loans). The analysis exploits this institutional assignment and detailed cash-flow records to test for bias in marginal lending decisions."
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "Measuring Bias in Consumer Lending (2018, review_of_economic_studies; CSV R07899; https://www.nber.org/papers/w24953)",
+    "author": "Will Dobbie, Andres Liberman, Daniel Paravisini, Vikram Pathania",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

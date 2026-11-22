@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_7e704590e55d6313->financing_constraint",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "계약 집행을 개선하는 법률 개혁의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 기업 자금조달 제약의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02225의 적용 맥락: The paper develops a static model of incumbents and outside entrepreneurs in economies with regulatory entry barriers and imperfect contract enforcement, focusing on developing and transition settings where licenses, firm control, and managerial talent matter. It tests model predictions using cross-country × industry data: country-level measures of contract enforcement and industry-level proxies for the importance of the market for control (e.g. M&A activity), with outcomes measured at the industry–country (firm/industry) level such as entry rates and average productivity."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_d8443f52caeabb69",
+      "text": "인수이(가) 상승하여 기업 자금조달 제약의 상승을 상쇄할 수 있음",
+      "check_node": "n_31de312977fc2ebd",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a9e0ffc93c38b9cb",
+      "text": "기업 신용공급이(가) 상승하여 기업 자금조달 제약의 상승을 상쇄할 수 있음",
+      "check_node": "credit_supply",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Economics and Politics of Alternative Institutional Reforms (2007, quarterly_journal_of_economics; CSV R02225; https://www.nber.org/papers/w12833)",
+    "author": "Francesco Caselli, Nicola Gennaioli",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

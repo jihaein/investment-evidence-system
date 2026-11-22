@@ -1,0 +1,18 @@
+{
+  "edge_id": "n_ee01130426d5d02b->firm_unit_cost",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "해외 투입재 가격 상승의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 기업 단위 원가의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08012의 적용 맥락: Using linked Belgian administrative data (VAT B2B transactions, firm annual accounts, customs and intra‑EU trade) for 2002–2014 (focused analyses use 2012), the paper studies private nonfinancial firms (≈98,745 firms in 2012). It evaluates how international trade and import‑price shocks affect firm unit costs and Belgian consumers’ real wages via domestic buyer–supplier networks, estimating a structural model with fixed and endogenous network formation and running counterfactuals (e.g., a 10% import‑price rise and autarky) in a small open economy setting."
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "Trade and Domestic Production Networks (2018, review_of_economic_studies; CSV R08012; https://www.nber.org/papers/w25120)",
+    "author": "Felix Tintelnot, Ayumu Ken Kikkawa, Magne Mogstad, Emmanuel Dhyne",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

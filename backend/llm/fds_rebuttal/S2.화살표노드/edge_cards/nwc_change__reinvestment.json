@@ -1,0 +1,29 @@
+{
+  "edge_id": "nwc_change->reinvestment",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "순재투자 = CAPEX - 감가상각 + 운전자본 증가",
+  "conditions": [
+    "CAPEX와 감가상각 일정"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_7d509bf003370893",
+      "text": "설비투자 지출이(가) 하락하여 순재투자액의 상승을 상쇄할 수 있음",
+      "check_node": "capex",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3f5a9da3503821c5",
+      "text": "감가상각비이(가) 상승하여 순재투자액의 상승을 상쇄할 수 있음",
+      "check_node": "depreciation",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

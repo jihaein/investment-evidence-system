@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_a18e0264b988025b->shareholder_value",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "인수 발표의 변화가 주주 귀속 현금흐름·권리 보호·기업 평가 경로를 통해 연구상 주주가치의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01397의 적용 맥락: Analyzes U.S. acquiring firms' announcement returns for economically significant acquisitions (deal value >1% of the acquirer’s market value of assets) during 1980–2001 with emphasis on the 1998–2001 merger wave. Unit of observation is the acquiring firm (public, private, and subsidiary targets) using SDC/CRSP/Compustat data. The outcome is the acquisition dollar return: the change in the acquirer’s market capitalization over the three days surrounding the announcement, which is summed to obtain aggregate dollar losses (e.g., $240 billion loss, 1998–2001)."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_4c876303d8e6ee00",
+      "text": "높은 인플레이션의 안정화이(가) 하락하여 연구상 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_0c59f1b243e16d26",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_45f32a689958791d",
+      "text": "장부가 기준 레버리지이(가) 하락하여 연구상 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_20249c56c7146868",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1945451b00757ccd",
+      "text": "엄격한 감시를 수반한 국제 부채 발행이(가) 하락하여 연구상 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_823c45b8e8368601",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1432559b4b55ca5a",
+      "text": "큰 손실을 수반하는 인수 발표이(가) 상승하여 연구상 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_9962b91f5e14c78a",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Wealth Destruction on a Massive Scale? A Study of Acquiring-Firm Returns in the Recent Merger Wave (2004, journal_of_finance; CSV R01397; https://www.nber.org/papers/w10200)",
+    "author": "Sara B. Moeller, Frederik P. Schlingemann, Rene M. Stulz",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,30 @@
+{
+  "edge_id": "wage_bill->unit_cost",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "노동 투입 비용 증가가 단위 생산원가를 높일 수 있음",
+  "conditions": [
+    "산출량·생산성 일정",
+    "제조 관련 노동비에 해당"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_75891010e7a8eb60",
+      "text": "원재료 가격이(가) 하락하여 단위당 제조원가의 상승을 상쇄할 수 있음",
+      "check_node": "raw_material_price",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_87baa6a2d2a4a74a",
+      "text": "기업 생산성이(가) 상승하여 단위당 제조원가의 상승을 상쇄할 수 있음",
+      "check_node": "firm_productivity",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

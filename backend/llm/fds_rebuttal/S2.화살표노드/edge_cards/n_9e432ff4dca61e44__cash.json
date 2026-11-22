@@ -1,0 +1,73 @@
+{
+  "edge_id": "n_9e432ff4dca61e44->cash",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "확대된 담보 인정 범위의 변화가 내부현금 창출·현금 유출·예비적 보유 경로를 통해 현금 보유액의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06025의 적용 맥락: This paper studies firm‑level outcomes for manufacturers in Romania and nine other Eastern European countries over 1996–2005, exploiting the staggered adoption of collateral‑law reforms (Romania’s Law 99 in 2000; Poland 1998; Latvia 1999; others reformed earlier or not). Using Amadeus firm data and sectoral indices of movable vs. immovable asset intensity, the authors leverage the legal introduction of non‑possessory security interests and electronic registries for movable assets to identify effects on borrowing, cash holdings, investment, employment, productivity, and sectoral reallocation."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_9c2ee15b21df869d",
+      "text": "신주 발행으로 조달한 자본이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9fbc893495377352",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_48de670e37a93466",
+      "text": "경기침체이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_c836905751e74c2e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fdee5c052a21c625",
+      "text": "인수이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_31de312977fc2ebd",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7a56b815e1b218b9",
+      "text": "경영 위험이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_ca7df404d411b010",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ac34bc935cc2e292",
+      "text": "외생적 유동성 손실이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_427698ffb44cb513",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_aead9e83cb66ba63",
+      "text": "단기 은행신용 비용 증가이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_352d8f471664c5df",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5498656cbf226d87",
+      "text": "불확실성 충격이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_a6d900aebd61fccd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_58063907eb967d62",
+      "text": "배당세 인상이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d0d150ec0651e4cb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_26659919672a8131",
+      "text": "현금 배당 지급액이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "payout",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Enlarging the Contracting Space: Collateral Menus, Access to Credit, and Economic Activity (2015, review_of_financial_studies; CSV R06025; https://www.nber.org/papers/w21690)",
+    "author": "Murillo Campello, Mauricio Larrain",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

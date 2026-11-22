@@ -1,0 +1,79 @@
+{
+  "edge_id": "n_f9ae2e4281a68d08->aggregate_tfp",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "사모펀드 바이아웃의 변화가 기술·자원 배분 효율 경로를 통해 경제 총요소생산성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04898의 적용 맥락: This triplet refers specifically to U.S. manufacturing plants and target firms in the paper’s matched sample of leveraged private-equity buyouts, using ASM and Census of Manufactures plant-level data to measure total factor productivity (TFP). The reported effect is the average change in TFP over the first two years after buyout (two-year post-buyout window), estimated by comparing targets to matched controls and attributed mainly to closing low-TFP plants and opening high-TFP plants."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_c8189217e6ac06e6",
+      "text": "수요에 따른 산출 변동이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_66ea571c5d7a3cd9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fd119c6a77afb68d",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_91cc504ea7502b0f",
+      "text": "재택근무이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_84d702456f93cfe2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b362c3cf1a2c6967",
+      "text": "담보 인정 범위 확대 개혁이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_3923f7e0455f481f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9d7ea691bdc22ede",
+      "text": "S&P 500 지수 편입이(가) 상승하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_4828ef8e8fdf9cf4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_79c5cee04179e81d",
+      "text": "증권사 리서치 부서 폐쇄이(가) 상승하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_1caa058f7381b033",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6020613a92e3eb45",
+      "text": "실제 연구개발 두 배 증가이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_4e825d1f49b5525a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_92ca7e61c9c23411",
+      "text": "현장 직무훈련(TWI)이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f03fef2267c4d671",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dde0332d210a71fc",
+      "text": "업무를 대체하는 기술이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_cb25486ed7e937be",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8115a4510c4136d4",
+      "text": "황금사각형 도로망 개선이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_5daf9e6fa4446728",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Private Equity, Jobs, and Productivity (2013, american_economic_review; CSV R04898; https://www.nber.org/papers/w19458)",
+    "author": "Steven J. Davis, John C. Haltiwanger, Kyle Handley, Ron S. Jarmin, Josh Lerner, Javier Miranda",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

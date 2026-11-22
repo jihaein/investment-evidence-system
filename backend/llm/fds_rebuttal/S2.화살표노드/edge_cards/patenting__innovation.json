@@ -1,0 +1,96 @@
+{
+  "edge_id": "patenting->innovation",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "특허 성과는 혁신 활동을 나타내는 신호",
+  "conditions": [
+    "특허 수·질·인용 구분",
+    "자동 인과 경로 전파 금지"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_3a6b636c3e1633d4",
+      "text": "부채 상환 압력이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_5c9feacc5e999d7a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0a081e8277bd3974",
+      "text": "기관투자자 지분 보유이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_5b4ff2e346630fad",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8e494265c2b2aa1c",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b713f6ae17017146",
+      "text": "외국 모기업을 통한 수출이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_85e921ea9a332a6c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_18c5f908039b3ff2",
+      "text": "은행의 재무적 곤경이(가) 상승하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_daf752b42c197388",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8ed6798b4b2f3954",
+      "text": "기업 간 회의이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_41e5efb92eb59f8c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6ed6fffe00131d63",
+      "text": "두 번째 특허 출원 승인이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_9ffbc362d30ea721",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c43de0991a384d79",
+      "text": "기업 규모에 따른 노동 규제이(가) 상승하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_ea681eb7d01352f3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ed349c831e1fb465",
+      "text": "시장 규모 충격이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_129208427654f946",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d1486f3bcffebac5",
+      "text": "정치적 동기의 공공안전 계약 수주이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_2fee6c77a04c5070",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1b60a352b06962d2",
+      "text": "연구개발 지출이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "rd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_09f2f8e709ebbf8f",
+      "text": "기업 연구개발 활동이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "firm_rd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8c3abd53016af13a",
+      "text": "기업 R&D 지출액이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "firm_rd_spend",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

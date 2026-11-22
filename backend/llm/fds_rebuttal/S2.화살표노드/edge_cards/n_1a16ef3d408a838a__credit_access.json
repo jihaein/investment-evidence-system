@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_1a16ef3d408a838a->credit_access",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "현금흐름(연구 정의)의 변화가 차입 자격·담보·금융 접근성 경로를 통해 기업 신용 접근성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03330의 적용 맥락: This paper studies firms' liquidity management and planned real spending during the 2008–2009 global financial crisis (surveys conducted Q1 2009 with follow-ups in Q2 2009 and June 2010). It uses responses from ~800 CFOs across 31 countries, focusing analyses on a 397-firm U.S. nonfinancial sample. The unit is the firm (public and private). The institutional setting is the severe post‑Lehman credit contraction with stressed bank credit lines, drawdowns, covenant renegotiations, and changes in loan pricing; the paper links cash and credit-line liquidity to investment, technology, and employment plans."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_092688bc9dccb642",
+      "text": "신용시장 집중도 상승이(가) 하락하여 기업 신용 접근성의 상승을 상쇄할 수 있음",
+      "check_node": "n_03434e31c77d8424",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9e9f0f57fd819e5c",
+      "text": "해외 확장적 통화정책 충격이(가) 상승하여 기업 신용 접근성의 상승을 상쇄할 수 있음",
+      "check_node": "n_4a313d0365397c3e",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Liquidity Management and Corporate Investment During a Financial Crisis (2010, review_of_financial_studies; CSV R03330; https://www.nber.org/papers/w16309)",
+    "author": "Murillo Campello, Erasmo Giambona, John R. Graham, Campbell R. Harvey",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

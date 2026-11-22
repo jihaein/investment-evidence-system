@@ -1,0 +1,84 @@
+{
+  "edge_id": "risk_free_rate->cost_of_debt",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "부채 조달금리 = 대응 만기 무위험금리 + 신용스프레드",
+  "conditions": [
+    "신용스프레드 일정",
+    "통화와 만기 일치"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_f22717165f8596cd",
+      "text": "신용시장 집중도 상승이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_03434e31c77d8424",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3cc11303497ab22f",
+      "text": "채권자 권리의 강도이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_8c5b68548bf4289b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_423246bcdfb18212",
+      "text": "민간 신용 이용 가능성이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_3829d970d7ad038b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1f05d639b24547aa",
+      "text": "자산 담보이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_c98b246ba4547f88",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c186ee8bdf6adfa2",
+      "text": "무형자산이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_7787ed290f7fdeda",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c58a3785c7b0c789",
+      "text": "장부가 대비 시장가 비율(B/M)이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_76ce22d1500c6175",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_56f90395118d3a17",
+      "text": "금리·환율 헤지 강도이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_b192aa69ecfae8e3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_906330c6f06f9c5a",
+      "text": "사모펀드 지원이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_29a522832b9858d4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_06ebf1b3abfff745",
+      "text": "스트레스테스트 노출이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_6d0f5b8e8d0178d1",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fb559777762d7c09",
+      "text": "기업 신용스프레드이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "credit_spread",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1cdd23ad2010718c",
+      "text": "일반 금리이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "interest_rate",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

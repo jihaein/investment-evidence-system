@@ -1,0 +1,79 @@
+{
+  "edge_id": "n_66ea571c5d7a3cd9->aggregate_tfp",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "수요에 따른 산출 변동의 변화가 기술·자원 배분 효율 경로를 통해 경제 총요소생산성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00182의 적용 맥락: The paper develops a model of imperfect competition, input-output production, and state-dependent price rigidity (menu costs) and empirically tests its implications using U.S. manufacturing industry data. The empirical analysis uses an annual panel of 21 two-digit SIC manufacturing industries over roughly 1959–1984 (with some results focused on 1962–84), where units are industry-year observations of gross output, value added, inputs, and prices. The setting exploits input-output structure, countercyclical markups, and aggregate-demand instruments (oil prices, military spending, presidential party) to identify demand-driven productivity effects."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_b12ec4bab3e3158f",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_84e8734fa2ec0bbb",
+      "text": "재택근무이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_84d702456f93cfe2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_918ffb8594bf3ac1",
+      "text": "사모펀드 바이아웃이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f9ae2e4281a68d08",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_791c99a618721416",
+      "text": "담보 인정 범위 확대 개혁이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_3923f7e0455f481f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0d455381f318a6c0",
+      "text": "S&P 500 지수 편입이(가) 상승하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_4828ef8e8fdf9cf4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_4dcca4bea275166f",
+      "text": "증권사 리서치 부서 폐쇄이(가) 상승하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_1caa058f7381b033",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_274a9a4bf20f35d2",
+      "text": "실제 연구개발 두 배 증가이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_4e825d1f49b5525a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_be300f78875eb597",
+      "text": "현장 직무훈련(TWI)이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f03fef2267c4d671",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fbe6af23083b801f",
+      "text": "업무를 대체하는 기술이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_cb25486ed7e937be",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3ffb188e37b33ebb",
+      "text": "황금사각형 도로망 개선이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_5daf9e6fa4446728",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Intermediate Goods and Business Cycles: Implications for Productivity   and Welfare (1994, american_economic_review; CSV R00182; https://www.nber.org/papers/w4817)",
+    "author": "Susanto Basu",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

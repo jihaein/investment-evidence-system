@@ -1,0 +1,133 @@
+{
+  "edge_id": "n_9497777de2c84267->leverage",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "합병 경쟁에서 승리의 변화가 차입 수요·부채 이용 비용·자금조달 구조 경로를 통해 기업 재무레버리지의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04069의 적용 맥락: This empirical study uses contested takeover bids from Thomson One merged with CRSP/Compustat/I/B/E/S, primarily covering U.S. public bidders from 1985–2012 (and an international extension). The unit is bidding firms (winners and losers) in contests with multiple public bidders; the authors focus on long-duration (close) contests and track stock and accounting outcomes three years before and after deal completion to estimate the causal effect of winning a merger, using losing bidders as within-contest counterfactuals."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_9d11ff556d37c518",
+      "text": "정치적 위험이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_2586a57e0cf31297",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_efa2f5acb771a715",
+      "text": "현지 법인세율이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_36003f6ef6261be6",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2d43e3295da156cf",
+      "text": "공모 부채시장 접근성이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_ff660d51b99d21f9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c410845d9739eeca",
+      "text": "해외 정치위험 노출이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_725a8026f7d3b5a0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a92bbde7d8e1f5bd",
+      "text": "경영자 과신이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfa13a568153b507",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f441d28e07eaaae3",
+      "text": "채권자 권리 강화이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_938ace6d7ebe57d2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6224f5765a7f85b8",
+      "text": "경기침체기에 경력 시작이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_10b72d2b8f5b8e19",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_2d59e38284c7245e",
+      "text": "Credit Lyonnais 판결이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_90529e95f4aea056",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d94ce067ca3e0610",
+      "text": "법인소득세 인상이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_1e62e05a74ff022c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8808414480aa6c30",
+      "text": "주정부 은행세 인상이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_1558d496837f9664",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_67ce506a179b16b2",
+      "text": "정부 레버리지이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_192634f2465caab5",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_264cc33b2f783c11",
+      "text": "인수주선사의 이사회 참여 금지이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_e9b91aa47e4b5a94",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6407585d336c23a3",
+      "text": "담보 인정 범위 확대 개혁이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_3923f7e0455f481f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_792beef45c7169bf",
+      "text": "신규 스톡옵션 부여 증가이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_7d9c9aafae18c126",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fc025349074eeeff",
+      "text": "군사지출을 도구변수로 한 정부부채 증가이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_13bdae562acb1d2e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_dc556babbe40d1d4",
+      "text": "정부부채이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_8b86b5c9a0608c1a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ec66ab4154a75db8",
+      "text": "국내 정부부채이(가) 상승하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_36b083cc69cdf2bd",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b5ddfb68d0ff249c",
+      "text": "신용 여건이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_27bfcd907e731a41",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e5279005521b5e2a",
+      "text": "기업의 인플레이션 기대이(가) 하락하여 기업 재무레버리지의 상승을 상쇄할 수 있음",
+      "check_node": "n_9f91972ee7c78bc3",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Winning by Losing: Evidence on the Long-Run Effects of Mergers (2012, review_of_financial_studies; CSV R04069; https://www.nber.org/papers/w18024)",
+    "author": "Ulrike Malmendier, Enrico Moretti, Florian S. Peters",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

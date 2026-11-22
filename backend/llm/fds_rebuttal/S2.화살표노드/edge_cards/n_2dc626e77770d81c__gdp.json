@@ -1,0 +1,157 @@
+{
+  "edge_id": "n_2dc626e77770d81c->gdp",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "노동 재배치 기능 붕괴의 변화가 총수요·생산·자원 활용 경로를 통해 경제 실질 산출의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08796의 적용 맥락: This study develops and estimates a structural continuous-time random-matching model of frictional labor markets for the United States, calibrated and estimated to matched employer–employee microdata and aggregate U.S. moments. Units are multi-worker firms and individual workers; the model captures firm entry/exit, job creation/destruction, vacancy posting, and on-the-job search. Empirical exercises match cross-sectional firm-size, hiring and worker-flow moments and simulate counterfactuals including a Great Recession–type decline in firm entry (circa 2007–09) and shocks to match efficiency/discounting."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_d1888391a8cb3bb3",
+      "text": "평균 한계소득세율 인상이(가) 상승하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_004b4a3453b06eb6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1d0b8138db3132c6",
+      "text": "균형재정하의 국방지출 증가이(가) 상승하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_1c9835ccdfdab6f8",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_86d882376547f6bf",
+      "text": "일시적 국방지출 증가이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_59f2ac4d8f2392f3",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_03f5c23bea25bc72",
+      "text": "비교역 부문 생산성이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_f8b39c8c1b41f853",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_260c3b9c804aa56b",
+      "text": "노동 공급이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_1a69cd362d7425e4",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_de344be1c906724a",
+      "text": "재정 변동성 충격이(가) 상승하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_6d1a19c98bdb2fe9",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_471d74c1e78a4d5d",
+      "text": "총혁신 지수이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_3508bbe484785928",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d626accd09baff79",
+      "text": "군사 관련 뉴스 충격이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_797fa239a58152a1",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_75fcec97d94af151",
+      "text": "정부지출 증가이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_d58f331aaa700dd8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bec9d34c52469ec4",
+      "text": "한계세율 인하이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_d4c0cdbfd649022d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_be4df302da28b089",
+      "text": "꼬리위험 증가이(가) 상승하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_f67f550983a41eb1",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c2838ab5283e3846",
+      "text": "불완전 정보이(가) 상승하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_65aae57d6c4f0cd2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_24f37aafe8f2c318",
+      "text": "재무적 곤경이(가) 상승하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_9b5a88b17a895716",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7942996de1833cdb",
+      "text": "하위 90% 계층의 세금 변화이(가) 상승하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_d70ff23c3d943be5",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1412aad051a134a7",
+      "text": "주 세율 상승과 판매세 의존의 역사적 변화이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_7001ad16adee8358",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8f4fe7ed348baabf",
+      "text": "지역 간 생활편의 수준 균등화이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_00a40eb7ff8aa2c2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_06932c1d9b075187",
+      "text": "이주비용과 생활편의 격차 제거이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_2ccbbab3f4ec7c67",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9932e43206e3d716",
+      "text": "이주비용 완전 제거이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_4577cfbaf347141f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3a6f9e643c6f770e",
+      "text": "감세이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_dbcfbdc757bc26b3",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bb5a21777def3e1f",
+      "text": "매칭 효율 두 배 향상이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_b38bd5c0723febd5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5ff49b5de4577cf0",
+      "text": "정부지출 확대이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "n_9598a0df4e27f74b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fae7a7149d1f1a07",
+      "text": "실질 경제성장률이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "gdp_growth",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_266548a5812e05b9",
+      "text": "경제 총요소생산성이(가) 하락하여 경제 실질 산출의 상승을 상쇄할 수 있음",
+      "check_node": "aggregate_tfp",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Firm and Worker Dynamics in a Frictional Labor Market (2019, econometrica; CSV R08796; https://www.nber.org/papers/w26547)",
+    "author": "Adrien G. Bilal, Niklas Engbom, Simon Mongey, Giovanni L. Violante",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

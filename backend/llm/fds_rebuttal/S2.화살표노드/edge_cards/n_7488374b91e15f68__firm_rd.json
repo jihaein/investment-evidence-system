@@ -1,0 +1,37 @@
+{
+  "edge_id": "n_7488374b91e15f68->firm_rd",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "제품시장 경쟁기업의 연구개발의 변화가 연구개발의 비용과 기대수익 경로를 통해 기업 연구개발 활동의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02277의 적용 맥락: This paper empirically separates technology spillovers from product-market rivalry using a panel of U.S. publicly listed firms (715 firms) matched between Compustat (accounting/segment data, 1980–2001) and USPTO patent data (patents 1963–1999). The unit is the firm-year and outcomes include market value, patents, total factor productivity and R&D. The authors construct technology closeness from patent-class shares and product-market closeness from four-digit segment sales (Compustat and BVD), exploiting within-firm time variation with fixed effects, lags and industry controls."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_b0c403a7473c6f31",
+      "text": "투입재 관세 인하이(가) 하락하여 기업 연구개발 활동의 상승을 상쇄할 수 있음",
+      "check_node": "n_191f11137d04148d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_176288a8563bfb4c",
+      "text": "인수 대상이 될 확률이(가) 하락하여 기업 연구개발 활동의 상승을 상쇄할 수 있음",
+      "check_node": "n_9c9da61dcca1891b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5ccecb4a59db3d64",
+      "text": "상품시장 경쟁 강도이(가) 하락하여 기업 연구개발 활동의 상승을 상쇄할 수 있음",
+      "check_node": "competition",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Identifying Technology Spillovers and Product Market Rivalry (2007, econometrica; CSV R02277; https://www.nber.org/papers/w13060)",
+    "author": "Nicholas Bloom, Mark Schankerman, John Van Reenen",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

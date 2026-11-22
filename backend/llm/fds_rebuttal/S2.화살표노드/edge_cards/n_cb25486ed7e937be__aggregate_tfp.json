@@ -1,0 +1,79 @@
+{
+  "edge_id": "n_cb25486ed7e937be->aggregate_tfp",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "업무를 대체하는 기술의 변화가 기술·자원 배분 효율 경로를 통해 경제 총요소생산성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R09871의 적용 맥락: This study examines how automation and offshoring altered the US wage structure from 1980 to 2016. Using industry-level data (BEA, 49 industries, 1987–2016), robot and software adoption measures, and Census/ACS microdata for 500 demographic groups (by gender, age, education, race, nativity) across national regions and commuting zones, the authors link industry labor-share declines and routine-task exposure to group-level changes in wages and employment. The setting is the United States across manufacturing and service sectors, controlling for trade, markups, unionization, and regional specialization."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_f8d573567347b7aa",
+      "text": "수요에 따른 산출 변동이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_66ea571c5d7a3cd9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_82e15432e3c972fc",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_db29a444f1d28e7c",
+      "text": "재택근무이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_84d702456f93cfe2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_50b7d9e135564153",
+      "text": "사모펀드 바이아웃이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f9ae2e4281a68d08",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f0076ee6be3fd494",
+      "text": "담보 인정 범위 확대 개혁이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_3923f7e0455f481f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2bf8ebe42afcd7a6",
+      "text": "S&P 500 지수 편입이(가) 상승하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_4828ef8e8fdf9cf4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8c93d1c3763b43e5",
+      "text": "증권사 리서치 부서 폐쇄이(가) 상승하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_1caa058f7381b033",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d7d9a249e7de8f7d",
+      "text": "실제 연구개발 두 배 증가이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_4e825d1f49b5525a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0c7a6df741281e64",
+      "text": "현장 직무훈련(TWI)이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f03fef2267c4d671",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a7fd051e543d02e9",
+      "text": "황금사각형 도로망 개선이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_5daf9e6fa4446728",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Tasks, Automation, and the Rise in US Wage Inequality (2021, econometrica; CSV R09871; https://www.nber.org/papers/w28920)",
+    "author": "Daron Acemoglu, Pascual Restrepo",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,61 @@
+{
+  "edge_id": "n_ad6d7ebd50331d88->reported_firm_value",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "조작 유인 제거의 변화가 미래 현금창출력·위험에 대한 평가 경로를 통해 연구상 기업가치의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R10131의 적용 맥락: This effect is reported from a counterfactual simulation of the paper’s calibrated dynamic general-equilibrium model: the authors impose an extreme environment with no managerial incentives for either real (intangible) investment or earnings manipulation. In that model (calibrated to U.S. firm data), earnings informativeness rises, the cost of capital falls by 0.14 percentage points, and average firm value rises by 2.4%."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_3d860369d7d49d58",
+      "text": "재무적 곤경이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_9b5a88b17a895716",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_dfee44ab9c52b706",
+      "text": "기대 미래 수익률이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_40bee1a76fc2c43a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5cc911b440459daf",
+      "text": "기대 미래 현금흐름이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_4546131b0287ebf9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3da8081196f2bd9e",
+      "text": "정보기술 혁명이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_bda72ebbd6ccdd58",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a06c3045222a0b28",
+      "text": "인수 발표이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_a18e0264b988025b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_46eb8c297d184a90",
+      "text": "평균 미래 수익성에 대한 불확실성이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_0761e51a9641c7f5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2b6e0b360bae5f58",
+      "text": "효과적인 기업문화이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_f01a30df77c4d13e",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Information versus Investment (2022, review_of_financial_studies; CSV R10131; https://www.nber.org/papers/w29636)",
+    "author": "Stephen J. Terry, Toni M. Whited, Anastasia A. Zakolyukina",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

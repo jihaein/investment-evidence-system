@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_fa4e30af5043a8c1->capital_growth",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "기대 미래 매출 성장률의 변화가 자본 투자·축적 속도 경로를 통해 생산자본 증가율의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02047의 적용 맥락: This paper studies firm-level investment responses to stock-market liberalizations in five emerging economies (India, Jordan, Korea, Malaysia, Thailand) using annual IFC firm data (net fixed assets, sales, dividend-inclusive returns) spanning roughly 1980–1994 around liberalization dates (median 1988). The unit of observation is 369 largest publicly traded non-financial firms; the setting is policy shocks that opened equity markets to foreign investors, producing on-impact stock-price jumps. The authors exploit within-firm pre/post liberalization changes and cross-firm variation in price/risk signals to identify effects."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_6b797b5b8baf17ac",
+      "text": "주식시장 자유화이(가) 하락하여 생산자본 증가율의 상승을 상쇄할 수 있음",
+      "check_node": "n_8fdcdcfaa66543ca",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5b45851e0da2e7eb",
+      "text": "국가별 자본비용 변화이(가) 하락하여 생산자본 증가율의 상승을 상쇄할 수 있음",
+      "check_node": "n_f26684f429cc047d",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Firm-Specific Information and the Efficiency of Investment (2006, journal_of_financial_economics; CSV R02047; https://www.nber.org/papers/w12186)",
+    "author": "Anusha Chari, Peter Blair Henry",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

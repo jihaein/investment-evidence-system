@@ -1,0 +1,18 @@
+{
+  "edge_id": "leverage->net_income_margin",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "기업 재무레버리지의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 순이익률의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03399의 적용 맥락: This empirical study examines 115 highly leveraged Austrian ski hotels that underwent debt restructurings between 1998 and 2005 (with a control sample of 2,095 hotels). The Austrian Hotel- and Tourism Bank (AHTB) mediated restructurings under eligibility rules for “structurally important” hotels; data include pre- and post-restructuring accounting and local weather. The authors use two-year Unexpected Snow (relative to a ten-year average) to distinguish liquidity versus strategic distress and to instrument reductions in leverage, estimating effects on ROA, margins, costs, and sales."
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "Snow and Leverage (2010, review_of_financial_studies; CSV R03399; https://www.nber.org/papers/w16497)",
+    "author": "Xavier Giroud, Holger M. Mueller, Alex Stomper, Arne Westerkamp",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,37 @@
+{
+  "edge_id": "competition->firm_rd",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "상품시장 경쟁 강도의 변화가 연구개발의 비용과 기대수익 경로를 통해 기업 연구개발 활동의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04207의 적용 맥락: This paper examines U.S. publicly traded firms across three-digit SIC industries during 1984–2006, using Compustat-CRSP, SDC M&A records, FRED industrial production, and Census data. It analyzes firm-year R&D responses to downstream demand shocks, industry M&A activity, and a firm's probability of being an acquisition target, emphasizing differences between small and large firms, target bargaining power, and product-market competition within the U.S. corporate acquisition market."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_415a1e4069c0c8f2",
+      "text": "제품시장 경쟁기업의 연구개발이(가) 하락하여 기업 연구개발 활동의 상승을 상쇄할 수 있음",
+      "check_node": "n_7488374b91e15f68",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9adf9f37966a7064",
+      "text": "투입재 관세 인하이(가) 하락하여 기업 연구개발 활동의 상승을 상쇄할 수 있음",
+      "check_node": "n_191f11137d04148d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_57a6281252ec910a",
+      "text": "인수 대상이 될 확률이(가) 하락하여 기업 연구개발 활동의 상승을 상쇄할 수 있음",
+      "check_node": "n_9c9da61dcca1891b",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "R&D and the Incentives from Merger and Acquisition Activity (2012, review_of_financial_studies; CSV R04207; https://www.nber.org/papers/w18346)",
+    "author": "Gordon M. Phillips, Alexei Zhdanov",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

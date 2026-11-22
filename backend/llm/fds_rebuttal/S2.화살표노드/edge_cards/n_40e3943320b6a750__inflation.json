@@ -1,0 +1,103 @@
+{
+  "edge_id": "n_40e3943320b6a750->inflation",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "인플레이션·실업 간 상충관계에 대한 인식의 변화가 수요·공급 비용·가격 및 기대 형성 경로를 통해 물가 상승률의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01622의 적용 맥락: This paper studies U.S. aggregate monthly inflation and unemployment from the post‑WWII era through 2003 (monthly sample March 1960–Dec 2003, with presample 1948–1959), analyzing how Federal Reserve policymakers' evolving, misspecified Phillips‑curve beliefs and macro shocks (notably 1970s shocks and the Volcker disinflation) jointly produced the 1970s inflation surge and early‑1980s disinflation. The unit is aggregate U.S. monthly macroeconomic observations (inflation, unemployment); the institutional setting is U.S. monetary policy optimizing a Phelps‑style quadratic loss under Bayesian/Kalman learning."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_7b5692933d511d80",
+      "text": "연방준비제도의 정책 조치이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_0c4ca84ffc055fa9",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c15e528c8e3631a2",
+      "text": "통화 발행으로 충당한 정부 재정적자이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c3fa105332d3d747",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fe1f370bd7201be0",
+      "text": "외형적인 통화제도 개혁이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_60c07fb7c378c26b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0b88383a0f9771a8",
+      "text": "소비자신뢰의 예상 밖 변화이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_4bf1d901427b3932",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_439a79cc36a3af67",
+      "text": "초과 채권 프리미엄 상승이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_840a448dbe3a322e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7aeea2bcc1b9599e",
+      "text": "재정 변동성 충격이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_6d1a19c98bdb2fe9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_95a0b6c6667cddf1",
+      "text": "은행위기이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_a8200237c77073f5",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_4af79e109b434f57",
+      "text": "기업 채무불이행 위기이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_ca5b293b2d0e7e3e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f49d8983aa7a110d",
+      "text": "긍정적 수요 충격이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c28bd7be3acfd75b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_95df09aad92086c4",
+      "text": "재정 주도 정책 조합의 신뢰성 있는 발표이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_c86b3360887a905a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b208a3836f335ba0",
+      "text": "부채 안정화 정책의 불확실성이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_fc314bc0260a9e64",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_353248aff6c4ca03",
+      "text": "확장적 통화 충격이(가) 상승하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_718cd50bab2a045d",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0e16831e6fb2651f",
+      "text": "미국구제계획법 재정부양이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_feafb698e87f5e8d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a77be6101bb7ae43",
+      "text": "재원 확보 없는 재정 충격이(가) 하락하여 물가 상승률의 상승을 상쇄할 수 있음",
+      "check_node": "n_e3983ce9b17348f1",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Shocks and Government Beliefs: The Rise and Fall of American Inflation (2004, american_economic_review; CSV R01622; https://www.nber.org/papers/w10764)",
+    "author": "Thomas Sargent, Noah Williams, Tao Zha",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

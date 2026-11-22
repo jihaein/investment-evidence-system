@@ -1,0 +1,73 @@
+{
+  "edge_id": "n_352d8f471664c5df->cash",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "단기 은행신용 비용 증가의 변화가 내부현금 창출·현금 유출·예비적 보유 경로를 통해 현금 보유액의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06871의 적용 맥락: This paper studies how Colombian firms (annual firm-year panel of 12,649 firms, 2008–2013) responded to a 2011 change in the bank-account-debit (BAD) tax that made very short‑term bank loans (Treasury Facilities) much more expensive. Using the COP 15,000 million sales cutoff that granted preferential access to Treasury Facilities, the authors exploit the post‑2011 differential slope in short-term borrowing across firm size to trace effects on cash, trade credit, and investment, and use U.S. Compustat industry measures to proxy trade‑credit availability."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_8d607c5535827931",
+      "text": "신주 발행으로 조달한 자본이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9fbc893495377352",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_02c17d4f6f5d9147",
+      "text": "경기침체이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_c836905751e74c2e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b6e4666dcfffd330",
+      "text": "인수이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_31de312977fc2ebd",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5818cf05a57ab974",
+      "text": "확대된 담보 인정 범위이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e432ff4dca61e44",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0c18f8cbd2dad253",
+      "text": "경영 위험이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_ca7df404d411b010",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2059e3e5a0e7f5da",
+      "text": "외생적 유동성 손실이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_427698ffb44cb513",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_2c035df38ef86173",
+      "text": "불확실성 충격이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_a6d900aebd61fccd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2f1acb185469a035",
+      "text": "배당세 인상이(가) 하락하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d0d150ec0651e4cb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_93fc20bffab5cb40",
+      "text": "현금 배당 지급액이(가) 상승하여 현금 보유액의 상승을 상쇄할 수 있음",
+      "check_node": "payout",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Funding Liquidity without Banks: Evidence from a Shock to the Cost of Very Short-Term Debt (2017, journal_of_finance; CSV R06871; https://www.nber.org/papers/w23179)",
+    "author": "Felipe Restrepo, Lina Cardona Sosa, Philip E. Strahan",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

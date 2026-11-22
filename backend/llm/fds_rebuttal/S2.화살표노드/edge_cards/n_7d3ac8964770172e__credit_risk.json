@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_7d3ac8964770172e->credit_risk",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "경기순응적 만기 변동의 변화가 원리금 상환능력·손실 위험 경로를 통해 기업 채무불이행 위험의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04220의 적용 맥락: This triplet is derived from the paper’s calibrated dynamic capital‑structure model and simulation exercises. Calibrated to US corporate parameters, the model examines how pro‑cyclical shifts in firms’ debt maturity across expansions versus recessions affect firm default risk for US nonfinancial firms (firm-level units), accounting for systematic risk (asset betas), leverage, liquidity costs and lumpy maturity structures; the result is from model comparative statics and calibrated simulations rather than from panel regressions."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_80190f4721b8fb3f",
+      "text": "은행 평균 유동성 감소이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_e54e7d5bf4042b14",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2f7aa551e1998fd6",
+      "text": "거래형 대출 비중 상승이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_2f1929e3887d4f9f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_187d502c66bef572",
+      "text": "좀비기업 신용공급이(가) 상승하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_0810557f4e50d819",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_145751757e476cda",
+      "text": "기업 재무레버리지이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "leverage",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_87d17315e8d6cfdf",
+      "text": "기업 재무적 곤경이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "firm_financial_distress",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d93579d02d572e57",
+      "text": "이자보상배율이(가) 상승하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "interest_coverage",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Systematic Risk, Debt Maturity, and the Term Structure of Credit Spreads (2012, journal_of_financial_economics; CSV R04220; https://www.nber.org/papers/w18367)",
+    "author": "Hui Chen, Yu Xu, Jun Yang",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

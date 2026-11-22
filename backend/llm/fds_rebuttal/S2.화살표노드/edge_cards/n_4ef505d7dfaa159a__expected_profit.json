@@ -1,0 +1,18 @@
+{
+  "edge_id": "n_4ef505d7dfaa159a->expected_profit",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "개인별 가격 책정의 변화가 향후 영업성과 기대 경로를 통해 기대 기업이익의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07257의 적용 맥락: This paper studies welfare effects of personalized pricing using two large randomized pricing field experiments run with ZipRecruiter in 2015 (Aug–Sept and Oct–Nov). Units are prospective new employers (primarily small “starter” firms) encountering a paywall for a monthly subscription on the ZipRecruiter platform in the U.S. (with some Canadian observations). The authors combine randomized price assignment with rich self-reported registration features (133 dummies), estimate heterogeneous logit demand, and evaluate firm profits and consumer surplus in the context of data-privacy policy debates (GDPR/CCPA)."
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "Personalized Pricing and Consumer Welfare (2017, journal_of_political_economy; CSV R07257; https://www.nber.org/papers/w23775)",
+    "author": "Jean-Pierre Dubé, Sanjog Misra",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

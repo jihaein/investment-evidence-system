@@ -1,0 +1,23 @@
+{
+  "edge_id": "reinvestment->fcff",
+  "sign": "-",
+  "empirical_sign": "n/a",
+  "mechanism": "FCFF = NOPAT - 순재투자",
+  "conditions": [
+    "NOPAT 일정"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_fa5b85cd85de2b17",
+      "text": "세후영업이익이(가) 하락하여 기업잉여현금흐름의 상승을 상쇄할 수 있음",
+      "check_node": "nopat",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

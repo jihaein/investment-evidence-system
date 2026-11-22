@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_d72d723c1b6aeac2->n_bb27bd4704ce2d60",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "소득 변동성 증가의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 소득 불평등의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01118의 적용 맥락: Analyzes U.S. household-level data (Consumer Expenditure Survey and CPS) for adults aged roughly 25–64 over the 1972–1998 period to document trends in cross-sectional income and consumption distributions. The paper studies how rising after-tax labor income inequality (and increases in idiosyncratic income volatility) coexisted with relatively stable consumption inequality, and interprets this in the U.S. institutional setting of evolving unsecured consumer credit markets and imperfectly enforceable contracts. It combines descriptive decompositions (between/within education-sex groups) with calibrated structural models to explain mechanisms."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_bbe5b4f83be19ab4",
+      "text": "대형 은행 합병에 따른 은행 경쟁 감소이(가) 하락하여 소득 불평등의 상승을 상쇄할 수 있음",
+      "check_node": "n_a525b5de5e195ea7",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_42759594337f6708",
+      "text": "노조 조직률이(가) 상승하여 소득 불평등의 상승을 상쇄할 수 있음",
+      "check_node": "n_2579cbbf3e404de9",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Does Income Inequality Lead to Consumption Inequality? Evidence and Theory (2002, review_of_economic_studies; CSV R01118; https://www.nber.org/papers/w9202)",
+    "author": "Dirk Krueger, Fabrizio Perri",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

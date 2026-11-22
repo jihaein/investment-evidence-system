@@ -1,0 +1,17 @@
+{
+  "edge_id": "inflation->raw_material_price",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "물가 상승이 투입재 가격에 전가될 수 있음",
+  "conditions": [
+    "관련 원재료가 해당 물가지수 충격에 노출",
+    "상대가격·시차 확인"
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_2f1929e3887d4f9f->credit_risk",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "거래형 대출 비중 상승의 변화가 원리금 상환능력·손실 위험 경로를 통해 기업 채무불이행 위험의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04913의 적용 맥락: This triplet is estimated using Italian Bank of Italy credit-registry data at the firm–bank loan level. The treatment is each firm’s share of transactional loans measured in 2008:q2 (pre-Lehman), and the outcome is the firm default probability observed over the six quarters following Lehman’s collapse (2008:q3–2010:q1). Units are firms (the sample covers many tens of thousands). Relationship vs. transaction banks are classified by geographic proximity. The main specification is a marginal probit (cross-sectional) with bank and industry fixed effects; robustness adds firm controls."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_81c355364b1276a4",
+      "text": "은행 평균 유동성 감소이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_e54e7d5bf4042b14",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9dd53689c8912694",
+      "text": "경기순응적 만기 변동이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_7d3ac8964770172e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5ddc6b9ce8fcb402",
+      "text": "좀비기업 신용공급이(가) 상승하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_0810557f4e50d819",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9ba8c2be5f8dac36",
+      "text": "기업 재무레버리지이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "leverage",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_cebff96ba7944c9a",
+      "text": "기업 재무적 곤경이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "firm_financial_distress",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a7e240665031f22d",
+      "text": "이자보상배율이(가) 상승하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "interest_coverage",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Relationship and Transaction Lending in a Crisis (2013, review_of_financial_studies; CSV R04913; https://www.nber.org/papers/w19467)",
+    "author": "Patrick Bolton, Xavier Freixas, Leonardo Gambacorta, Paolo Emilio Mistrulli",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

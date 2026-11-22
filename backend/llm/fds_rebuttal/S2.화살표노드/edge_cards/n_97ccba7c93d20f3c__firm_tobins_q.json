@@ -1,0 +1,85 @@
+{
+  "edge_id": "n_97ccba7c93d20f3c->firm_tobins_q",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "정관에 근거한 시차임기 이사회의 변화가 기업 시장가치와 자산 기준가치의 상대적 평가 경로를 통해 기업 Tobin Q의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01580의 적용 맥락: This paper examines how staggered board provisions affect firm value for U.S. publicly traded firms using IRRC governance data and Compustat/CRSP, focusing on 1995–2002 (with 1990 charter status used for pre‑1990 IPO firms). The unit of observation is firms (S&P‑500 and other large U.S. companies). The institutional setting emphasizes staggered boards (charter vs bylaws), the rise of poison‑pill and state law developments that made staggered boards effective, and Tobin’s Q as the primary outcome, with controls for other governance and firm characteristics."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_8c1b826eabcbc950",
+      "text": "기업 다각화이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_58b7508f0473219f",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9d3af7972093637f",
+      "text": "미국 상장이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_80a71674f5510ab0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ae760dcdedcf0f4c",
+      "text": "시차임기 이사회이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_1237ef2086e84ab2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a26104c4b4610a3c",
+      "text": "은행 사업 다각화이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_dbad4e7dcb196d48",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_01fd5c2d20e870ca",
+      "text": "최대주주의 현금흐름권이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_6ebf9abe0de10346",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f0207a04c2451565",
+      "text": "현금흐름권의 분산이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_42e4d952dff7b1a7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8c9fb7ca84534d65",
+      "text": "신규 자본과 기존 자본의 호환성 하락이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_9371abea531a78c3",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_da37210a260b21e4",
+      "text": "기업지배구조 개선안 통과이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_1b063b2ef3bcfb48",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6d4688b6d534ef0f",
+      "text": "매매자산 비중이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_30875eac9c2aaded",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_039694b53bd90b4a",
+      "text": "은행 자산 규모이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_d13ea3b2852d36d8",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_dab9aeaf54bb8672",
+      "text": "자본에 대한 사회적 근접성이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_a64611fc44507824",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Costs of Entrenched Boards (2004, journal_of_financial_economics; CSV R01580; https://www.nber.org/papers/w10587)",
+    "author": "Lucian Bebchuk, Alma Cohen",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}
