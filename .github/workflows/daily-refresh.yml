@@ -2,6 +2,7 @@
 #
 # Setup (once): Settings → Secrets and variables → Actions
 #   Secrets:   SUPABASE_DB_URL, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, OPENDART_API_KEY, KRX_ID, KRX_PW
+#              optional: UI_SUPABASE_URL, UI_SUPABASE_SERVICE_ROLE_KEY (ReThinking_UI project: prices for the app)
 #   Variable:  CLOUD_SCHEDULE_ENABLED = true   (only after a manual run succeeded and the Mac job is unloaded;
 #              two runners must never publish at the same time)
 # Manual run: Actions → daily-refresh → Run workflow.
@@ -45,6 +46,8 @@ jobs:
       OPENDART_API_KEY: ${{ secrets.OPENDART_API_KEY }}
       KRX_ID: ${{ secrets.KRX_ID }}
       KRX_PW: ${{ secrets.KRX_PW }}
+      UI_SUPABASE_URL: ${{ secrets.UI_SUPABASE_URL }}
+      UI_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.UI_SUPABASE_SERVICE_ROLE_KEY }}
     steps:
       - uses: actions/checkout@v4
 
@@ -82,7 +85,9 @@ jobs:
 
       - name: KRX download check (no publishing)
         if: inputs.krx_check
-        run: python ops/live/krx_check.py
+        run: |
+          python ops/live/krx_check.py
+          python ops/ui/push_prices.py --dry
 
       - name: Refresh KRX and DART, publish signals
         id: refresh
@@ -107,6 +112,14 @@ jobs:
       - name: Check latest session is published
         if: ${{ !inputs.krx_check }}
         run: python ops/live/check_fresh.py
+
+      # UI prices (ReThinking_UI price_daily / stock_names). Skipped until the UI project's secrets are set.
+      - name: Upload prices to the UI
+        if: ${{ !inputs.krx_check && env.UI_SUPABASE_URL != '' }}
+        run: |
+          export UI_SUPABASE_URL="$(printf %s "$UI_SUPABASE_URL" | tr -d '\r\n ')"
+          export UI_SUPABASE_SERVICE_ROLE_KEY="$(printf %s "$UI_SUPABASE_SERVICE_ROLE_KEY" | tr -d '\r\n ')"
+          python ops/ui/push_prices.py
 
       - name: Fail if the refresh failed
         if: steps.refresh.outcome == 'failure'
