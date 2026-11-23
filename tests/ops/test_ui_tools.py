@@ -49,9 +49,11 @@ import push_signals as ps  # noqa: E402
 
 
 def test_real_holdings_skip_virtual_bad_and_duplicate():
-    body = {"holdings": [{"code": "095270", "date": "2025-12-01"}, {"code": "095270", "date": "2025-12-01"},
-                         {"code": "005930", "date": "2026-01-05", "virtual": True}, {"name": "x", "date": "2026-01-01"},
-                         {"code": "12345", "date": "2026-01-01"}, {"code": "018290", "date": "2026-13-01"}]}
+    real = {"real": True}
+    body = {"holdings": [{"code": "095270", "date": "2025-12-01", **real}, {"code": "095270", "date": "2025-12-01", **real},
+                         {"code": "005930", "date": "2026-01-05", "virtual": True, **real}, {"name": "x", "date": "2026-01-01", **real},
+                         {"code": "12345", "date": "2026-01-01", **real}, {"code": "018290", "date": "2026-13-01", **real},
+                         {"code": "086520", "date": "2026-01-05"}]}                 # a mock tree with a code
     assert ps.real_holdings(body) == [("095270", date(2025, 12, 1))]
 
 
