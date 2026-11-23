@@ -1,0 +1,85 @@
+{
+  "edge_id": "n_76ce22d1500c6175->cost_of_debt",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "장부가 대비 시장가 비율(B/M)의 변화가 대출자의 위험 보상·자금 비용·가격 설정 경로를 통해 부채 조달금리의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03252의 적용 맥락: This paper studies U.S. publicly traded non-financial firms using firm-year observations from 1980–2007 (Compustat). It exploits exogenous variation in marginal corporate tax benefits—simulated firm-specific benefit curves and the 1986 Tax Reform Act phase-in—to identify firms’ marginal cost of debt. The setting incorporates corporate tax features (loss carryforwards/carrybacks, AMT), firm characteristics (collateral, size, book-to-market, payouts), and focuses on unconstrained, non-distressed firms to interpret observed debt as equilibrium choices."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_3db475295525a1f3",
+      "text": "신용시장 집중도 상승이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_03434e31c77d8424",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5ddb435bf4bf34d0",
+      "text": "채권자 권리의 강도이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_8c5b68548bf4289b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9ebcc0da653443be",
+      "text": "민간 신용 이용 가능성이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_3829d970d7ad038b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1b6359ce22a51945",
+      "text": "자산 담보이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_c98b246ba4547f88",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b6c7887887c96e56",
+      "text": "무형자산이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_7787ed290f7fdeda",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_53723e007a6d9ab6",
+      "text": "금리·환율 헤지 강도이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_b192aa69ecfae8e3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3392e98d2bc87781",
+      "text": "사모펀드 지원이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_29a522832b9858d4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_4e2e2337da09d621",
+      "text": "스트레스테스트 노출이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_6d0f5b8e8d0178d1",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ecccbccee5426cae",
+      "text": "무위험금리이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "risk_free_rate",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b6e91a617e7fc524",
+      "text": "기업 신용스프레드이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "credit_spread",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_32b55ee57a0e0ede",
+      "text": "일반 금리이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "interest_rate",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Cost of Debt (2010, journal_of_finance; CSV R03252; https://www.nber.org/papers/w16023)",
+    "author": "Jules H. van Binsbergen, John Graham, Jie Yang",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_75c1390969d9c722->operating_profit",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "큰 폭의 통화가치 절하의 변화가 매출과 영업비용 경로를 통해 영업이익의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01549의 적용 맥락: This paper uses firm-level panels (1991–1999) for 25 emerging-market countries (15 experiencing large real depreciations) to compare U.S. multinational affiliates (BEA data) and local publicly-listed firms (Worldscope) in tradable/manufacturing sectors. It studies the effects of large real exchange-rate depreciations (≥25% year-over-year) during 1990s currency crises on firms’ sales, assets, investment, operating profits and leverage, leveraging affiliates’ access to parent internal capital markets to identify the causal role of financing constraints."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_8b35124f2b9b0d5e",
+      "text": "매출총이익이(가) 하락하여 영업이익의 상승을 상쇄할 수 있음",
+      "check_node": "gross_profit",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_35ada39aa6e0ac83",
+      "text": "판매관리비이(가) 상승하여 영업이익의 상승을 상쇄할 수 있음",
+      "check_node": "sga",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c021b75606519c82",
+      "text": "영업이익률이(가) 하락하여 영업이익의 상승을 상쇄할 수 있음",
+      "check_node": "operating_margin",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7bbfc9c60e704efe",
+      "text": "매출액이(가) 하락하여 영업이익의 상승을 상쇄할 수 있음",
+      "check_node": "revenue",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Financial Constraints and Growth: Multinational and Local Firm Responses to Currency Crises (2004, review_of_financial_studies; CSV R01549; https://www.nber.org/papers/w10545)",
+    "author": "Mihir A. Desai, C. Fritz Foley, Kristin J. Forbes",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

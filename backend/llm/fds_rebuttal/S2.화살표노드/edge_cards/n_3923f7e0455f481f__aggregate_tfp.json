@@ -1,0 +1,79 @@
+{
+  "edge_id": "n_3923f7e0455f481f->aggregate_tfp",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "담보 인정 범위 확대 개혁의 변화가 기술·자원 배분 효율 경로를 통해 경제 총요소생산성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06028의 적용 맥락: This paper studies firm‑level outcomes for manufacturers in Romania and nine other Eastern European countries over 1996–2005, exploiting the staggered adoption of collateral‑law reforms (Romania’s Law 99 in 2000; Poland 1998; Latvia 1999; others reformed earlier or not). Using Amadeus firm data and sectoral indices of movable vs. immovable asset intensity, the authors leverage the legal introduction of non‑possessory security interests and electronic registries for movable assets to identify effects on borrowing, cash holdings, investment, employment, productivity, and sectoral reallocation."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_2aef33ef0a12bfe2",
+      "text": "수요에 따른 산출 변동이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_66ea571c5d7a3cd9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c139e9dc0e8b455b",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a4947f529c8e7d53",
+      "text": "재택근무이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_84d702456f93cfe2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e766f5ce9d7ca4e8",
+      "text": "사모펀드 바이아웃이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f9ae2e4281a68d08",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e79e1a0187bfaac4",
+      "text": "S&P 500 지수 편입이(가) 상승하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_4828ef8e8fdf9cf4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c61f9bb4c04b7a77",
+      "text": "증권사 리서치 부서 폐쇄이(가) 상승하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_1caa058f7381b033",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e13b5223d85371e7",
+      "text": "실제 연구개발 두 배 증가이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_4e825d1f49b5525a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_276ce66c24c59507",
+      "text": "현장 직무훈련(TWI)이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f03fef2267c4d671",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d6ba7264000405a9",
+      "text": "업무를 대체하는 기술이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_cb25486ed7e937be",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e58698949dd9ff83",
+      "text": "황금사각형 도로망 개선이(가) 하락하여 경제 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_5daf9e6fa4446728",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Enlarging the Contracting Space: Collateral Menus, Access to Credit, and Economic Activity (2015, review_of_financial_studies; CSV R06028; https://www.nber.org/papers/w21690)",
+    "author": "Murillo Campello, Mauricio Larrain",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

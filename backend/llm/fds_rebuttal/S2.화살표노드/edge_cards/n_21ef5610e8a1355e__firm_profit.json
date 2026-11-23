@@ -1,0 +1,109 @@
+{
+  "edge_id": "n_21ef5610e8a1355e->firm_profit",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "최적화된 단일 가격의 변화가 매출과 비용의 차이 경로를 통해 기업 이익(연구 정의)의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07260의 적용 맥락: This paper studies welfare effects of personalized pricing using two large randomized pricing field experiments run with ZipRecruiter in 2015 (Aug–Sept and Oct–Nov). Units are prospective new employers (primarily small “starter” firms) encountering a paywall for a monthly subscription on the ZipRecruiter platform in the U.S. (with some Canadian observations). The authors combine randomized price assignment with rich self-reported registration features (133 dummies), estimate heterogeneous logit demand, and evaluate firm profits and consumer surplus in the context of data-privacy policy debates (GDPR/CCPA)."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_a3b83f0225caba90",
+      "text": "최적 가격 대비 무료 온라인 가격 적용이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_679cbba0e41123b6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_06c193281e6e6607",
+      "text": "소비자의 정보 수준을 약사 수준으로 향상이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7015bba481737778",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_2912aca4fc50467b",
+      "text": "외국 소매기업 진입이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_0bcc9ca7e9f51415",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0037548723d6dc19",
+      "text": "기업 간 회의이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_41e5efb92eb59f8c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2dadba8287e98057",
+      "text": "상한이 있는 개인별 가격 적용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_ce82f4e00e60bc89",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d21487aec10a3df6",
+      "text": "급여세 인하 노출이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2aac6633c92702b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8484473a32b59e35",
+      "text": "고령 신청자의 대출 이용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_49bdd3466ef912cc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1ce75a7ae4da3b7b",
+      "text": "대출 이용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_d8c7cfb4e7a0fe09",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_abefb1cefd178347",
+      "text": "관개시설 접근성이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_e9df2180c9383572",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_db4ebb1bb5c54b47",
+      "text": "대출자의 차입자 선별 능력이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_80f0ee23818c6c2e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dcaae6f7970c5e72",
+      "text": "전력 공급 배정 시간 1시간 증가이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7cd123507c4698ab",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4c244c0c028715da",
+      "text": "우물 깊이이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_31fd7a36250f2264",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f0a419140fa81f81",
+      "text": "임대 거래비용 감소이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7123ea6a420c5082",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8ca04cfccdafa5aa",
+      "text": "원활하게 작동하는 임대시장이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_bcb6cdc95ea9ed2b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d0304007c1f2d1bc",
+      "text": "지연시간 차익거래 경쟁이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_dfa3d0ac1cf30aaf",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Personalized Pricing and Consumer Welfare (2017, journal_of_political_economy; CSV R07260; https://www.nber.org/papers/w23775)",
+    "author": "Jean-Pierre Dubé, Sanjog Misra",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

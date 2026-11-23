@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_a525b5de5e195ea7->n_bb27bd4704ce2d60",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "대형 은행 합병에 따른 은행 경쟁 감소의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 소득 불평등의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01691의 적용 맥락: Using U.S. microdata from the 1990s (loan and merger data 1992–1999; crime scores 1990, 1995, 2000), the paper studies commercial real estate transactions across 11 states and DC and analyzes neighborhood (15-mile radius), census-tract, county, and state units. It exploits mergers of large, non‑failing banks (≥ $1bn) and state branching deregulation as plausibly exogenous shocks to local bank competition to trace effects on loan terms, construction, property prices, demographic change, and subsequent property crime (CAP Index and FBI UCR measures)."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_58de9d4e8cf88471",
+      "text": "소득 변동성 증가이(가) 하락하여 소득 불평등의 상승을 상쇄할 수 있음",
+      "check_node": "n_d72d723c1b6aeac2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_76b8f8b7ef463382",
+      "text": "노조 조직률이(가) 상승하여 소득 불평등의 상승을 상쇄할 수 있음",
+      "check_node": "n_2579cbbf3e404de9",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Bank Mergers and Crime: The Real and Social Effects of Credit Market Competition (2004, journal_of_finance; CSV R01691; https://www.nber.org/papers/w11006)",
+    "author": "Mark J. Garmaise, Tobias J. Moskowitz",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

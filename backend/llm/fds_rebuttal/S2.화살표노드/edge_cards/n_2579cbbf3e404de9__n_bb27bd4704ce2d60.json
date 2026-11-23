@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_2579cbbf3e404de9->n_bb27bd4704ce2d60",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "노조 조직률의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 소득 불평등의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07715의 적용 맥락: This paper studies the long-run causal impact of unions on U.S. income inequality from 1936 through the late twentieth century (and into recent decades), using household-level survey microdata (primarily Gallup, ANES, CPS) and state-year aggregates across U.S. states. It exploits mid-century institutional shocks (the 1935 Wagner Act, the 1937 Supreme Court decision, and WWII-era War Labor Board default-enrollment on defense contracts), cross-state variation in union density over time, and household union membership to estimate effects on family income and distributional measures."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_2824b30a4ef2ef71",
+      "text": "소득 변동성 증가이(가) 하락하여 소득 불평등의 상승을 상쇄할 수 있음",
+      "check_node": "n_d72d723c1b6aeac2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_062d295e19a60706",
+      "text": "대형 은행 합병에 따른 은행 경쟁 감소이(가) 하락하여 소득 불평등의 상승을 상쇄할 수 있음",
+      "check_node": "n_a525b5de5e195ea7",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Unions and Inequality Over the Twentieth Century: New Evidence from Survey Data (2018, quarterly_journal_of_economics; CSV R07715; https://www.nber.org/papers/w24587)",
+    "author": "Henry S. Farber, Daniel Herbst, Ilyana Kuziemko, Suresh Naidu",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

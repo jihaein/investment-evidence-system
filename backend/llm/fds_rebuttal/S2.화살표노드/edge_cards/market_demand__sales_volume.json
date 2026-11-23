@@ -1,0 +1,36 @@
+{
+  "edge_id": "market_demand->sales_volume",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "제품 수요 증가는 판매량 증가로 이어질 수 있음",
+  "conditions": [
+    "공급능력 충분",
+    "시장점유율·가격 일정"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_d10a00b650c055c5",
+      "text": "생산능력이(가) 하락하여 판매량의 상승을 상쇄할 수 있음",
+      "check_node": "capacity",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7ba09fcdd8f998bb",
+      "text": "공급 차질이(가) 상승하여 판매량의 상승을 상쇄할 수 있음",
+      "check_node": "supply_disruption",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_2ab2d07d15b687c2",
+      "text": "기업 생산량이(가) 하락하여 판매량의 상승을 상쇄할 수 있음",
+      "check_node": "firm_output",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,24 @@
+{
+  "edge_id": "cost_of_debt->interest_expense",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "신규 또는 변동금리 부채 조달금리 상승이 이자부담에 전가",
+  "conditions": [
+    "금리 재설정 대상 부채 존재",
+    "부채잔액 일정"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_090ac640735d0558",
+      "text": "이자부부채 가치이(가) 하락하여 이자비용의 상승을 상쇄할 수 있음",
+      "check_node": "debt",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

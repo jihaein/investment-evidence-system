@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_a0923f1d27a5f697->interest_rate",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "정보 비대칭의 변화가 자금 수급·통화정책·가격 설정 경로를 통해 일반 금리의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R10048의 적용 맥락: This paper analyzes a randomized pricing experiment run by a large Chinese fintech lending platform during January–March 2018. The unit is ~11,000 pre‑approved individual loan applicants offered 12‑month unsecured installment loans; applicants were randomized to either the platform’s standard terms or substantially reduced borrowing costs (roughly 36% vs 21.5% total). The platform provides internal credit ratings (1–4), bundles loans for investors, and records take‑up, default (charge‑offs), and recovery outcomes to assess welfare losses from asymmetric information."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_529db01dee6b4c9c",
+      "text": "통화정책 변화이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_7d81864514f4073e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_88c484f71c04d8bf",
+      "text": "통화동맹 도입이(가) 상승하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_fa45e53234de1431",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f9e0da6abaa7a59d",
+      "text": "인수주선사의 이사회 참여 금지이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_e9b91aa47e4b5a94",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_68b454f7373cdc1d",
+      "text": "파산신청 위험 1%포인트 하락이(가) 상승하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_f6fae033cc7a89a7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9f60ee3cb3680880",
+      "text": "지급준비금 이자율이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_68281f2d7787c3bb",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Measuring the Welfare Cost of Asymmetric Information in Consumer Credit Markets (2021, journal_of_financial_economics; CSV R10048; https://www.nber.org/papers/w29270)",
+    "author": "Anthony A. DeFusco, Huan Tang, Constantine Yannelis",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

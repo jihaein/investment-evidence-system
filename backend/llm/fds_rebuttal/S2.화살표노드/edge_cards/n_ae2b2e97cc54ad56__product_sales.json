@@ -1,0 +1,97 @@
+{
+  "edge_id": "n_ae2b2e97cc54ad56->product_sales",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "세무조사 확률 증가 발표의 변화가 수요·가격·제품 선택 경로를 통해 제품·사업별 판매 규모의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04730의 적용 맥락: This paper studies causal effects of VAT enforcement using two randomized field experiments run with the Chilean Tax Authority in 2008–2009. The Letter Message Experiment mailed deterrence, morale, and placebo letters (early Dec 2008, two waves) to ~445,734 VAT-registered firms in Chile and tracks monthly VAT declarations; the Spillover Experiment randomly pre-announced audits to half of 5,600 suspect micro firms and later audited firms and collected data on ~2,829 trading partners to measure upstream spillovers in the VAT paper-trail. The setting is Chile’s 19% monthly VAT system."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_083a6c7b065090da",
+      "text": "시장 진입 순서이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_f46f9bb29a0fb91a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_4e5fc36b08636d53",
+      "text": "저품질 제품 가격이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_84a699acfcd594f2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_11691a3932db8462",
+      "text": "잭팟 당첨 복권의 판매이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_1b383c5e860d6cf2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_adcaa39aee56b2ad",
+      "text": "주택소유자당 담보권 실행 건수이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_2e36393d0dd36413",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c7398539b4396908",
+      "text": "미생물 수질기준 위반이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_04bc799cbdea10bd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1aba5a39e275bfa8",
+      "text": "원소·화학물질 수질기준 위반이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_dc0fcc47b0d176d4",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c3494c675dd91575",
+      "text": "신제품 출시이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_cd590377a1c4df0e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_39ef116cd4f2ce8d",
+      "text": "준비자산 평가가치 상승이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_4cf73fb28bb462e9",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8ed48bb432302775",
+      "text": "뉴욕타임스 리뷰이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_164c4e1db4fad89f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ef5b87f39379b7dc",
+      "text": "중개 수수료이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfce4a4862f18769",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_29023fadc60451ea",
+      "text": "미 노동부 수탁자 의무 규칙 제안이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_1e24446d45bc919e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c032972c8493a408",
+      "text": "연금상품 비용률이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_bee99bda0408c613",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_196211fe8956083f",
+      "text": "공공 약국 진입이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_895bc1c56cab8186",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "No Taxation without Information: Deterrence and Self-Enforcement in the Value Added Tax (2013, american_economic_review; CSV R04730; https://www.nber.org/papers/w19199)",
+    "author": "Dina Pomeranz",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

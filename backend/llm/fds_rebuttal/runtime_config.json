@@ -1,0 +1,4 @@
+{
+  "allowed_card_review_statuses": ["approved", "draft"],
+  "company_arguments_dir": "S3_fianl/runs/full-2024-2026"
+}

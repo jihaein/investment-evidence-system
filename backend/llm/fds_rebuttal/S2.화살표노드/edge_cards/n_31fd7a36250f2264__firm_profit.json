@@ -1,0 +1,109 @@
+{
+  "edge_id": "n_31fd7a36250f2264->firm_profit",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "우물 깊이의 변화가 매출과 비용의 차이 경로를 통해 기업 이익(연구 정의)의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R09212의 적용 맥락: This paper analyzes agricultural groundwater use in Rajasthan, India, using an original household survey of 4,262 farmers (farmer–crop observations) collected April–August 2017 referencing the Rabi 2016–17 season across six subdivisions served by Jaipur Vidyut Vitran Nigam. The institutional setting is state-managed electricity rationing (six hours/day) with heavily subsidized power (≈INR 0.9/kWh) and no groundwater pricing or defined property rights, amid severe aquifer depletion; geological variation in well depth is exploited to identify impacts and simulate Pigouvian reforms."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_e6e86e380c6115a1",
+      "text": "최적 가격 대비 무료 온라인 가격 적용이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_679cbba0e41123b6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b52d38bf0f994e16",
+      "text": "소비자의 정보 수준을 약사 수준으로 향상이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7015bba481737778",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_aa089a69e250432a",
+      "text": "외국 소매기업 진입이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_0bcc9ca7e9f51415",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_dc6cac8589f95374",
+      "text": "기업 간 회의이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_41e5efb92eb59f8c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dbd778f001b615cf",
+      "text": "상한이 있는 개인별 가격 적용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_ce82f4e00e60bc89",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_82258c9bc5338b93",
+      "text": "최적화된 단일 가격이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_21ef5610e8a1355e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e227240754443da7",
+      "text": "급여세 인하 노출이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2aac6633c92702b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_297a10c2bd1dcbc6",
+      "text": "고령 신청자의 대출 이용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_49bdd3466ef912cc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1c39e65bdb3cf57f",
+      "text": "대출 이용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_d8c7cfb4e7a0fe09",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bd5162459ba831fa",
+      "text": "관개시설 접근성이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_e9df2180c9383572",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d2222b61b0a7e8b5",
+      "text": "대출자의 차입자 선별 능력이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_80f0ee23818c6c2e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4f5312ae8b03dc84",
+      "text": "전력 공급 배정 시간 1시간 증가이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7cd123507c4698ab",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c37eaf116df923cf",
+      "text": "임대 거래비용 감소이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7123ea6a420c5082",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_669e652cce260466",
+      "text": "원활하게 작동하는 임대시장이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_bcb6cdc95ea9ed2b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9d2e66b61d94400a",
+      "text": "지연시간 차익거래 경쟁이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_dfa3d0ac1cf30aaf",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Rationing the Commons (2020, journal_of_political_economy; CSV R09212; https://www.nber.org/papers/w27473)",
+    "author": "Nicholas Ryan, Anant Sudarshan",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

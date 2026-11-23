@@ -2,17 +2,19 @@
 
 ## Current setup (2026-11)
 
-- **Scheduler:** the worker runs on the owner's Mac through launchd (`ops/live/com.jihaein.ies-refresh.plist`),
-  weekdays 08:30, 19:30 and 22:30 KST. Each run is `ops/live/run_daily.sh`: restore missing files from cloud
-  storage, run one `scheduled_refresh --once` tick, upload results, and raise a macOS notification on failure
-  or when the latest session is not published.
+- **Scheduler:** GitHub Actions (`.github/workflows/daily-refresh.yml`), weekdays 08:30, 19:30 and 22:30 KST,
+  enabled by the repository variable `CLOUD_SCHEDULE_ENABLED=true`. Each run restores missing files from cloud
+  storage (a GitHub cache keeps the working copy between runs), extends the calendar, runs one
+  `scheduled_refresh --once` tick, uploads results and checks the latest session is published (`ops/live/check_fresh.py`).
+  GitHub e-mails the owner when a run fails. The Mac launchd job (`ops/live/run_daily.sh`) is a disabled fallback;
+  never run both, because each uploads its own file list.
 - **Serving database:** Supabase project `investment-evidence-project`, migrated with `001_serving.sql`
   (`ops/live/migrate.py` checks keys and RLS and backs up before applying).
 - **Files:** every data folder is mirrored to the private Supabase Storage bucket `ies-data` by
   `ops/cloud/sync.py` (folders listed in `ops/cloud/datasets.json`). `ops/cloud/restore_test.py` restores
   into an empty folder and re-computes the published signals to prove the copy is complete.
-- **Inputs to maintain:** `ops/live/krx_sessions.csv` (extend before 2026-12-30) and
-  `ops/live/stock_coverage.csv` (end a stock's interval when it is delisted or suspended).
+- **Inputs to maintain:** `ops/live/stock_coverage.csv` (end a stock's interval when it is delisted or suspended)
+  and, for unscheduled KRX closures only, `ops/live/krx_closures.csv`. The session calendar extends itself.
 - **Held filings:** `pending_triage.json` in `DART_SNAPSHOT_DIR`. Only `needs_review` items alert.
 
 The sections below describe the general (hosted) deployment.

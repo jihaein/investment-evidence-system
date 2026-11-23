@@ -1,0 +1,25 @@
+{
+  "edge_id": "n_a389dc340248faeb->firm_rd_spend",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "연구개발 기준 충족 기업에 대한 감세의 변화가 연구개발 예산·투자 유인 경로를 통해 기업 R&D 지출액의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07791의 적용 맥락: This paper studies how China’s InnoCom R&D tax-notches affected firm R&D and productivity using administrative corporate tax returns (SAT) and manufacturing survey data over 2006–2011, exploiting the 2008 Enterprise Income Tax reform that created size-dependent R&D-intensity thresholds (3%, 4%, 6%) and a 15% preferential rate for certified high‑tech firms. The unit of observation is Chinese manufacturing firms; institutional features include certification requirements, audits, R&D reported under administrative expenses, and VAT third‑party reporting which shape relabeling and enforcement margins."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_2b6fad26d8e80e64",
+      "text": "기관투자자 지분 보유이(가) 하락하여 기업 R&D 지출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_5b4ff2e346630fad",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Notching R&D Investment with Corporate Income Tax Cuts in China (2018, american_economic_review; CSV R07791; https://www.nber.org/papers/w24749)",
+    "author": "Zhao Chen, Zhikuo Liu, Juan Carlos Suárez Serrato, Daniel Yi Xu",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

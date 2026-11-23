@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_f744eec7f851d8ca->product_revenue",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "할인 유통채널 이용 가능성의 변화가 제품 판매량·가격 경로를 통해 제품·사업별 매출액의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06201의 적용 맥락: This study analyzes online retail on eBay, primarily from October 2013–September 2014 (with supplementary 2010–2015 trend analysis), covering 3,663 new-in-box product SKUs and over one million transactions. The unit of observation includes individual auction bids, posted-price transactions, buyers’ repeated auction participation, and product-level listings. The environment contrasts time-limited discount opportunities (auctions) with higher posted prices; the authors develop a deadline-driven search model and structurally estimate it using observed bids, participation rates, and seller listings to assess reservation-price dynamics, price dispersion, mechanism coexistence, and welfare."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_fb9f8528fb88447a",
+      "text": "현물 식량 이전이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d2a297cb3064a55",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a92cdcb0d2da91a3",
+      "text": "현금 이전이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d1623b1cd4885fb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3d080cacbbbc8cf2",
+      "text": "경매를 통한 배분이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_8145822a4e16c622",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_40352cea1ee48b00",
+      "text": "전문가 리뷰이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d37c97beeb400058",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_cff0f0784f004a05",
+      "text": "주 전체에 적용되는 공시이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d121f562c76114d2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3502fb662c930887",
+      "text": "광고 노출 횟수 감소이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e69827afb3bc7ec",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Discounts and Deadlines in Consumer Search (2016, american_economic_review; CSV R06201; https://www.nber.org/papers/w22038)",
+    "author": "Dominic Coey, Bradley Larsen, Brennan Platt",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

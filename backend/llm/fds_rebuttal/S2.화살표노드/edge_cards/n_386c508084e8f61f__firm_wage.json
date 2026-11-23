@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_386c508084e8f61f->firm_wage",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "주 법인세 인상의 변화가 노동 수요·협상·보상 결정 경로를 통해 기업 근로자 임금의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08378의 적용 맥락: This paper analyzes U.S. local labor markets using Census microdata (Longitudinal Business Database) spanning 1977–2013 (concentration trends) and firm-level panels through 2011/2014 for estimation and calibration. Markets are defined as commuting-zone × 3-digit NAICS; units are firms (firm×market×year employment and payroll) and aggregated workers. The core empirical strategy exploits state corporate tax rate changes as quasi-exogenous shocks to firm labor demand—focusing on tradeable sectors and C‑corporations—combined with firm×market and year fixed effects to estimate size-dependent employment and wage responses."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_e95b7bcf9bae3a9f",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_566108b5f2b8dd16",
+      "text": "기업의 수출 참여이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_4e9770cd8e6c6abc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5b8db919d5ffd7bd",
+      "text": "미국 파산법 Chapter 13 보호이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_1fadff3300befb46",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_eb4361a14433dd86",
+      "text": "수출 수요 5% 증가이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_57aeb5628ca5e0da",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c09226a39d84d994",
+      "text": "조정된 수출 수요 충격이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_21cbe30fb8328f03",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Labor Market Power (2019, american_economic_review; CSV R08378; https://www.nber.org/papers/w25719)",
+    "author": "David W. Berger, Kyle F. Herkenhoff, Simon Mongey",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_3d1623b1cd4885fb->product_revenue",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "현금 이전의 변화가 제품 판매량·가격 경로를 통해 제품·사업별 매출액의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03826의 적용 맥락: This paper analyzes a village-level randomized rollout (2004–05) of Mexico’s Programa de Apoyo Alimentario (PAL) across ~194 poor rural villages in eight southern states, comparing monthly in-kind food boxes (≈206 pesos) versus cash transfers (≈150 pesos) versus control. The study uses store-level price surveys (2003 baseline, 2005 follow-up), household consumption and production data, and exploits high program eligibility (~89%), government-procured trucked-in supplies and variation in village remoteness and Diconsa store presence."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_80dc44e258b6ddb5",
+      "text": "현물 식량 이전이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d2a297cb3064a55",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7127910661a96f7f",
+      "text": "할인 유통채널 이용 가능성이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_f744eec7f851d8ca",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_22724e2071fd26f8",
+      "text": "경매를 통한 배분이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_8145822a4e16c622",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a0da797ee826280b",
+      "text": "전문가 리뷰이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d37c97beeb400058",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_45cf51e74df913eb",
+      "text": "주 전체에 적용되는 공시이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d121f562c76114d2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c0dcc52a1b2bf00e",
+      "text": "광고 노출 횟수 감소이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e69827afb3bc7ec",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Price Effects of Cash Versus In-Kind Transfers (2011, review_of_economic_studies; CSV R03826; https://www.nber.org/papers/w17456)",
+    "author": "Jesse M. Cunha, Giacomo De Giorgi, Seema Jayachandran",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

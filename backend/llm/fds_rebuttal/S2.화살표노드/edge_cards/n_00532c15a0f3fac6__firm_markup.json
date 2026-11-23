@@ -1,0 +1,73 @@
+{
+  "edge_id": "n_00532c15a0f3fac6->firm_markup",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "불확실성 증가의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 기업 마크업의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04238의 적용 맥락: This paper studies the macroeconomic effects of aggregate uncertainty shocks in the U.S. using quarterly data (1986–2014) on implied stock-market volatility (VXO) and aggregate outcomes—GDP, consumption, investment, hours, prices, and monetary policy—at the national level. It combines identified structural VAR evidence (VXO-ordered Cholesky) with a calibrated DSGE model with nominal price rigidity to analyze transmission mechanisms, the role of monetary policy (Taylor rule and Wu–Xia shadow rate), and amplification at the zero lower bound, with emphasis on the 2008 Great Recession."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_b0c5fc0f8e189076",
+      "text": "지역 금융 발전이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_0849e0e487b782d0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e6f6a59096e9eda2",
+      "text": "서유럽 수출이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_6fdbd1327e0a91a5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f1fbabd923324a34",
+      "text": "수출 중단이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_680ab86f18f7a8de",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a719b221e1355d3e",
+      "text": "수출시장 진입이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_a784f6c100e40b55",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2d4d904154a2e585",
+      "text": "수입 비중 증가와 미국 기업 퇴출이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_c72cefcde7504e52",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_4febe9564da536ea",
+      "text": "한계비용 감소이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_941020c7f660f9d9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_701b50679997d374",
+      "text": "산출물 관세 하락이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_dfe115a23deb321b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7bcdb1a3d47ff1d1",
+      "text": "대기업 시장점유율이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_8f14ac6a66361dee",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d3433f63a8c6cc2e",
+      "text": "좀비기업 신용공급이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_0810557f4e50d819",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Uncertainty Shocks in a Model of Effective Demand (2012, econometrica; CSV R04238; https://www.nber.org/papers/w18420)",
+    "author": "Susanto Basu, Brent Bundick",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

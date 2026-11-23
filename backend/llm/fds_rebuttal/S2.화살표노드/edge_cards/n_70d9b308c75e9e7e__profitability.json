@@ -1,0 +1,91 @@
+{
+  "edge_id": "n_70d9b308c75e9e7e->profitability",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "저소득층 신용협동조합 성장의 변화가 매출·자산·자본 대비 이익 창출력 경로를 통해 기업 수익성(연구 정의)의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08671의 적용 맥락: The paper studies U.S. local consumer credit markets around the NCUA’s low‑income credit‑union rule reform and its 2012Q2 notification, using 2008–2015 bank regulatory panels and 2009–2017 Equifax auto‑loan data. Units include credit unions, community banks, non‑bank lenders, banks’ markets defined by 5–10 mile radii, and zip‑code auto‑loan originations. The institutional setting is the NCUA’s relaxation of deposit‑taking restrictions for “low‑income” CUs, which enabled CU expansion into nearby deposit and auto‑lending markets and plausibly exogenous variation in local competition."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_0c726446a5c20ce3",
+      "text": "개인효과 통제 후 기업 임금 수준 상승이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_a56c441948fb8981",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bcac8f63924a1201",
+      "text": "가족 구성원의 CEO 선임이(가) 상승하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_57f66ca933d23297",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ab4c6a39980ecce2",
+      "text": "중국산 수입품과의 경쟁이(가) 상승하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_3131270f74673d4e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_83b3b1ef618b1694",
+      "text": "민간 위탁 서비스 제공(PSP)이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_5e15ae3b0899d5fd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9c20c4c0f7fff804",
+      "text": "전량 할인 리베이트(AUD)이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_20dadfda0dc23ade",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_eb8ef283b6260044",
+      "text": "주주보호법 강화이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_50ee1c864984a155",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1dd389802544f954",
+      "text": "정치적 연계이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_4a4ad42323bcfab3",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7379c174fbf21076",
+      "text": "확대된 담보 인정 범위이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e432ff4dca61e44",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fbb4be06bddf85a5",
+      "text": "신용협동조합의 저소득층 지원기관 지정이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_cbb3ed24bef4fe52",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bead5a74a751ff52",
+      "text": "선구매 후지불(BNPL) 제공이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_41caf6dfb67c3f07",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5d3101bf321104da",
+      "text": "총자산수익률이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "roa",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c912940a3af84340",
+      "text": "사용자본수익률이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "roce",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Effects of Competition in Consumer Credit Market (2019, review_of_financial_studies; CSV R08671; https://www.nber.org/papers/w26183)",
+    "author": "Stefan Gissler, Rodney Ramcharan, Edison Yu",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

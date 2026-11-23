@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_e54e7d5bf4042b14->credit_risk",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "은행 평균 유동성 감소의 변화가 원리금 상환능력·손실 위험 경로를 통해 기업 채무불이행 위험의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02162의 적용 맥락: This paper studies how bank liquidity shocks following the unanticipated May 1998 India–Pakistan nuclear tests affected corporate lending and firm distress in Pakistan. Using the State Bank of Pakistan loan-level panel (July 1996–March 2000) covering ~22,000 loans to ~18,600 firms and 42 commercial banks, the authors exploit cross-bank variation in exposure to dollar deposit accounts and pre/post comparisons to isolate bank lending and firm borrowing channels. Key institutional features include central-bank exchange‑rate insurance of dollar deposits and the government-imposed partial freeze on dollar withdrawals."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_b32e83519801e415",
+      "text": "경기순응적 만기 변동이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_7d3ac8964770172e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_682038ade55c3c87",
+      "text": "거래형 대출 비중 상승이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_2f1929e3887d4f9f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_407dae058095d298",
+      "text": "좀비기업 신용공급이(가) 상승하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_0810557f4e50d819",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b4a2c2b21cb50581",
+      "text": "기업 재무레버리지이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "leverage",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f4252bb1a47df618",
+      "text": "기업 재무적 곤경이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "firm_financial_distress",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5c68d1f54711c04f",
+      "text": "이자보상배율이(가) 상승하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "interest_coverage",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Tracing the Impact of Bank Liquidity Shocks: Evidence from an Emerging Market (2006, american_economic_review; CSV R02162; https://www.nber.org/papers/w12612)",
+    "author": "Atif Mian, Asim Ijaz Khwaja",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

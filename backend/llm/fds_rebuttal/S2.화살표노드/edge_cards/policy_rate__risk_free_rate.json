@@ -1,0 +1,35 @@
+{
+  "edge_id": "policy_rate->risk_free_rate",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "정책금리 변화가 관련 만기 무위험 수익률에 전가될 수 있음",
+  "conditions": [
+    "만기·통화·정책기대·수익률곡선 반응 확인"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_3d1322c594636a8f",
+      "text": "불확실성 증가이(가) 상승하여 무위험금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_00532c15a0f3fac6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e3250d40df90238a",
+      "text": "가계 소비 위험이(가) 상승하여 무위험금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_90dc5aeabec91961",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_705c8350ddc0498e",
+      "text": "인지된 꼬리위험 상승이(가) 상승하여 무위험금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_93dbc6d099aef765",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

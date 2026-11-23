@@ -1,0 +1,37 @@
+{
+  "edge_id": "n_db75db5b27d4f853->roa",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "기업결합법의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 총자산수익률의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02814의 적용 맥락: Using U.S. firm-year panel data (Compustat) from 1976–1995, the paper studies how staggered passage of 30 state business combination (BC) laws (primarily 1985–1991) affected firm performance. Units are U.S. firms defined by state of incorporation and state of location, with industry competition measured by HHIs (3-digit SIC). BC laws constrained hostile takeovers by moratoria on business combinations; identification exploits variation in adoption timing and incorporation-location mismatches, with event dates from contemporary newspaper reports."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_cfd09c5334c16fe5",
+      "text": "기업 재무레버리지이(가) 상승하여 총자산수익률의 상승을 상쇄할 수 있음",
+      "check_node": "leverage",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6b6b005a0570b52a",
+      "text": "13G에서 13D 공시로 전환이(가) 하락하여 총자산수익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_3a3c9f50b7f3944c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_12a03592c6d26eb8",
+      "text": "현장 직무훈련(TWI)이(가) 하락하여 총자산수익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_f03fef2267c4d671",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Does Corporate Governance Matter in Competitive Industries? (2009, journal_of_financial_economics; CSV R02814; https://www.nber.org/papers/w14877)",
+    "author": "Xavier Giroud, Holger M. Mueller",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

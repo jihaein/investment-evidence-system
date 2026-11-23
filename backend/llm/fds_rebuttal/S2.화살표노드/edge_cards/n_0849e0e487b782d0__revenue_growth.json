@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_0849e0e487b782d0->revenue_growth",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "지역 금융 발전의 변화가 수요·판매시장 확대 경로를 통해 기업 매출 성장률의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01024의 적용 맥락: This paper studies how local financial development within Italy during the late 1980s–1990s affects entrepreneurship, firm entry, competition, firm growth, and regional GDP growth. Using household survey data (SHIW 1989–98) on loan rejection/discouragement, province-level firm registers, and firm balance-sheet data (Centrale dei Bilanci) across Italian provinces/regions, the authors analyze individual, firm, and regional outcomes in a politically and regulatorily unified national market, exploiting cross-regional variation and instruments such as judicial inefficiency and social capital."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_c8b340f842ee0c4a",
+      "text": "시차를 둔 GNP 성장률이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_595e13533cd763c8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7ec12cf1782745d5",
+      "text": "외부부채 비율 상승이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_e4626f9fa784b262",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_82309e83f90b6d97",
+      "text": "경기침체기에 경력 시작이(가) 상승하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_10b72d2b8f5b8e19",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d6af58c47424b195",
+      "text": "모기업 매출 성장률이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_9378f4e6caa10dec",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_884f4bfdca442be3",
+      "text": "1인당 농산물 가치 변화이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_b7b9ec9e32abf89c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ff97629d5bcf0c3d",
+      "text": "농산물 가격 상승이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_5588bdee3030d942",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Does Local Financial Development Matter? (2002, quarterly_journal_of_economics; CSV R01024; https://www.nber.org/papers/w8923)",
+    "author": "Luigi Guiso, Paola Sapienza, Luigi Zingales",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

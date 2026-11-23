@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_f6fae033cc7a89a7->interest_rate",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "파산신청 위험 1%포인트 하락의 변화가 자금 수급·통화정책·가격 설정 경로를 통해 일반 금리의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08693의 적용 맥락: This estimate pertains to the U.S. credit‑card market in 2004–2007 and links a one percentage‑point decline in the 12‑month prospective bankruptcy filing probability within a 10‑point credit‑score segment to changes in offered regular APRs on Mintel direct‑mail credit‑card offers. Identification compares pre/post‑BAPCPA (signed April 20, 2005) variation in filing risk across credit‑score segments, using credit‑score‑segment changes in filing risk as the treatment and credit‑card offers as the outcome."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_47ea6cda51172efd",
+      "text": "통화정책 변화이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_7d81864514f4073e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1d936cce74429fad",
+      "text": "통화동맹 도입이(가) 상승하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_fa45e53234de1431",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3e19865a1c2fd3b6",
+      "text": "인수주선사의 이사회 참여 금지이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_e9b91aa47e4b5a94",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5eb12e0ed69cbc00",
+      "text": "지급준비금 이자율이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_68281f2d7787c3bb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f1b376e007babeac",
+      "text": "정보 비대칭이(가) 하락하여 일반 금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a0923f1d27a5f697",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Economic Consequences of Bankruptcy Reform (2019, american_economic_review; CSV R08693; https://www.nber.org/papers/w26254)",
+    "author": "Tal Gross, Raymond Kluender, Feng Liu, Matthew J. Notowidigdo, Jialan Wang",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

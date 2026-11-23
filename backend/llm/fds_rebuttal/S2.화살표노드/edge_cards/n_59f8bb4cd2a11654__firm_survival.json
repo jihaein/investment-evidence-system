@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_59f8bb4cd2a11654->firm_survival",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "기업 소유주 사망의 변화가 사업 수익성·유동성·지속 가능성 경로를 통해 기업 생존 가능성의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08233의 적용 맥락: Using de-identified U.S. administrative tax records linking 11 million S‑corporations and partnerships to owners and W‑2 workers between 2001–2014 (with owner-death events 2005–2010), the paper studies firm- and person-level outcomes in the United States. Units include firms, firm-owner-year observations, and high-income individuals (top 1%, top 0.1%, and million‑dollar earners). The institutional setting emphasizes U.S. tax rules distinguishing pass-throughs and C‑corporations, owner compensation incentives, and vital‑records–based death dates to estimate causal impacts of owner exit (death or retirement) and corporate-form switches on profits and wages."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_538f23e9962f42e8",
+      "text": "고임금 근로자 채용이(가) 하락하여 기업 생존 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f0341cd27b625e7e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_93eae0886cae0a62",
+      "text": "경영 관행이(가) 하락하여 기업 생존 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_68c1a69b23c2d89b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_33c8c068b1d29f63",
+      "text": "자원 오배분 왜곡의 분산 증가이(가) 상승하여 기업 생존 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_423a5d1eb76b97f4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9e9f661036bd68cd",
+      "text": "엔젤투자 자금조달이(가) 하락하여 기업 생존 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_df1cf69eb29f753f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3e6696d2dabaf38d",
+      "text": "대출상품을 통한 금융 접근성이(가) 하락하여 기업 생존 가능성의 상승을 상쇄할 수 있음",
+      "check_node": "n_e15a0c2465a96e6f",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Capitalists in the Twenty-First Century (2019, quarterly_journal_of_economics; CSV R08233; https://www.nber.org/papers/w25442)",
+    "author": "Matthew Smith, Danny Yagan, Owen M. Zidar, Eric Zwick",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

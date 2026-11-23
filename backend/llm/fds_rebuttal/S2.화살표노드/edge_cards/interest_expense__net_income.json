@@ -1,0 +1,24 @@
+{
+  "edge_id": "interest_expense->net_income",
+  "sign": "-",
+  "empirical_sign": "n/a",
+  "mechanism": "이자비용 증가는 세전이익을 줄임",
+  "conditions": [
+    "다른 손익 일정",
+    "한계세율 1 미만"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_45cdc4d106608b83",
+      "text": "순이익률이(가) 하락하여 당기순이익의 상승을 상쇄할 수 있음",
+      "check_node": "net_income_margin",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

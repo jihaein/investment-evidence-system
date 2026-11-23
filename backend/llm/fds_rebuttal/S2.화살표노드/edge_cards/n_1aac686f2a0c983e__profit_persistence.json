@@ -1,0 +1,18 @@
+{
+  "edge_id": "n_1aac686f2a0c983e->profit_persistence",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "혁신의 독창성의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 기업 이익 지속성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07044의 적용 맥락: The paper studies U.S. publicly traded nonfinancial firms matched in Compustat and CRSP, using USPTO patents granted through 2006 to construct a five‑year rolling firm‑level innovative‑originality (InnOrig) measure (patent technology classes). The empirical sample covers roughly 1981–2007. The authors link InnOrig to future profitability (up to five years), gross margins, and abnormal stock returns, controlling for industry, R&D, patents, and other firm characteristics, using patent, accounting, analyst, institutional‑ownership, and monthly return data."
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "Innovative Originality, Profitability, and Stock Returns (2017, review_of_financial_studies; CSV R07044; https://www.nber.org/papers/w23432)",
+    "author": "David Hirshleifer, Po-Hsuan Hsu, Dongmei Li",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

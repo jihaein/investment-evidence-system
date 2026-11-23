@@ -1,0 +1,73 @@
+{
+  "edge_id": "n_680ab86f18f7a8de->firm_markup",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "수출 중단의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 기업 마크업의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02939의 적용 맥락: Using an unbalanced panel of Slovenian manufacturing plants over 1994–2000, the paper estimates firm‑level markups and links them to export participation. The setting is post‑socialist Slovenia undergoing rapid trade reorientation and market restructuring, with large entry/exit and a quadrupling of exporters. The unit of observation is manufacturing establishments with plant‑level accounts (sales, input expenditures, exports and destinations); analyses exploit cross‑industry variation and within‑firm export entry/exit dynamics."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_5fcde35417407684",
+      "text": "지역 금융 발전이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_0849e0e487b782d0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ad87e189b01acaae",
+      "text": "서유럽 수출이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_6fdbd1327e0a91a5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b4d7949d84e6872b",
+      "text": "수출시장 진입이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_a784f6c100e40b55",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c06b6af1425dfd84",
+      "text": "수입 비중 증가와 미국 기업 퇴출이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_c72cefcde7504e52",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c70d704fc6951a59",
+      "text": "한계비용 감소이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_941020c7f660f9d9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1e8325f8052706cf",
+      "text": "산출물 관세 하락이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_dfe115a23deb321b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b1ad84c2cafb7f1d",
+      "text": "불확실성 증가이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_00532c15a0f3fac6",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5f438fe1a00418d9",
+      "text": "대기업 시장점유율이(가) 하락하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_8f14ac6a66361dee",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bd4c7d424e8c3539",
+      "text": "좀비기업 신용공급이(가) 상승하여 기업 마크업의 상승을 상쇄할 수 있음",
+      "check_node": "n_0810557f4e50d819",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Markups and firm-level export status (2009, american_economic_review; CSV R02939; https://www.nber.org/papers/w15198)",
+    "author": "Jan De Loecker, Frederic Warzynski",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

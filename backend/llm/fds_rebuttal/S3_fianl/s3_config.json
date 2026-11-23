@@ -1,0 +1,58 @@
+{
+  "mapping_version": "2026.11.latest-csv.1",
+  "graph": "S1.인과그래프/new_graph.json",
+  "cards": "S2.화살표노드/edge_cards",
+  "company_list": "데이터/07_기업x분기_12개항목_결합 (1).csv",
+  "years": [2024, 2026],
+  "last_update": "2026-09-01",
+  "lookback_observations": 3,
+  "fiscal_year_end_month": 12,
+  "trend_policies": {
+    "KRW": {"method": "relative", "threshold": 0.02},
+    "fraction": {"method": "percentage_points", "threshold": 2.0},
+    "count": {"method": "relative", "threshold": 0.02}
+  },
+  "node_trends": {
+    "capex": null,
+    "operating_cash_flow": null
+  },
+  "sources": {
+    "latest_quarter_csv": {
+      "file": "데이터/07_기업x분기_12개항목_결합 (1).csv",
+      "company_field": "종목코드",
+      "corp_field": "기업 고유번호",
+      "name_field": "기업명",
+      "basis_field": "재무제표",
+      "currency_field": "통화",
+      "period_field": "분기",
+      "public_field": "공시 접수일",
+      "receipt_field": "공시 접수번호",
+      "report_field": "보고서 종류",
+      "status_field": "공시상태",
+      "fiscal_month_field": "결산월",
+      "priority": 10,
+      "valid_basis": ["CFS", "OFS"],
+      "mappings": [
+        {"node_id": "revenue", "field": "revenue", "unit": "KRW", "measure": "quarter_flow"},
+        {"node_id": "operating_profit", "field": "operating_profit", "unit": "KRW", "measure": "quarter_flow"},
+        {"node_id": "cogs", "field": "cogs", "unit": "KRW", "measure": "quarter_flow"},
+        {"node_id": "cash", "field": "cash", "unit": "KRW", "measure": "quarter_end_balance", "min": 0},
+        {"node_id": "shares_outstanding", "field": "shares_outstanding", "unit": "count", "measure": "quarter_end_balance", "min": 0},
+        {"node_id": "capex", "field": "capex", "unit": "KRW", "measure": "reported_quarter_value"},
+        {"node_id": "operating_cash_flow", "field": "operating_cash_flow", "unit": "KRW", "measure": "reported_quarter_value", "override": "CSV 영업현금흐름 원천 열의 수치 자체를 보존. 누적/단독 정의 확인 전 방향 계산 보류"}
+      ]
+    }
+  },
+  "formulas": [
+    {"node_id": "operating_margin", "function": "divide", "inputs": ["operating_profit", "revenue"], "unit": "fraction", "measure": "quarter_flow_ratio"},
+    {"node_id": "gross_margin", "function": "gross_margin", "inputs": ["revenue", "cogs"], "unit": "fraction", "measure": "quarter_flow_ratio"}
+  ],
+  "deferred": {
+    "debt": "원천 debt 열이 S1의 이자부부채 전체를 뜻하는지 정의 자료가 없음",
+    "leverage": "S1 연구 정의 변수의 분자·분모가 원천 leverage 열에 명시되지 않음",
+    "capex_direction": "원천의 부호와 분기 단독/누적 정의 확인 전 관측값만 보존",
+    "operating_cash_flow_direction": "분기 단독/누적 정의 확인 전 관측값만 보존",
+    "macro_fields": "GDP·가계소비·물가 열에 통계 공개일 또는 확정 vintage가 없어 과거 as_of에서 사용 보류",
+    "non_december_fiscal_year": "원천 분기 열은 달력 분기이며 기업별 결산월과 보고서 종류를 fact에 따로 보존"
+  }
+}

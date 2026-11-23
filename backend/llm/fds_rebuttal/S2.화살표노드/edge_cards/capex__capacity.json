@@ -1,0 +1,30 @@
+{
+  "edge_id": "capex->capacity",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "증설투자 완료 시 생산능력 증가",
+  "conditions": [
+    "유지보수 CAPEX 제외",
+    "준공·가동 시차 반영"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_d23ac3370bfb4028",
+      "text": "기업 투자이(가) 하락하여 생산능력의 상승을 상쇄할 수 있음",
+      "check_node": "firm_investment",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4a209e087d6b750b",
+      "text": "기업 생산자본이(가) 하락하여 생산능력의 상승을 상쇄할 수 있음",
+      "check_node": "capital_stock",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

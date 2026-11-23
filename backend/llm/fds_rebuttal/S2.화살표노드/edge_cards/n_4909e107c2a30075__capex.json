@@ -1,0 +1,67 @@
+{
+  "edge_id": "n_4909e107c2a30075->capex",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "미국 다국적기업의 해외 설비투자의 변화가 실물투자의 수익성·조달 여건 경로를 통해 설비투자 지출의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01716의 적용 맥락: This paper examines how outbound FDI relates to domestic capital formation using (a) decade‑average cross‑country (OECD) data for the 1980s and 1990s (20–26 countries) to study national gross capital formation, (b) annual U.S. time‑series data on domestic and foreign capital expenditures of U.S. multinational firms (21 years), and (c) firm‑level panel evidence using an instrument based on host‑country growth. Units range from countries to aggregated U.S. multinationals and individual firms; key context includes measurement distinctions between FDI financing flows and affiliate capital expenditures."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_323dc6aa5907e22a",
+      "text": "해외 자본투자이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_e78da320e45d3558",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_93490a655a5911e6",
+      "text": "신주 발행으로 조달한 자본이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_9fbc893495377352",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_37c2ea7a734e8137",
+      "text": "경영자 과신이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfa13a568153b507",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7b58a194120c3b4f",
+      "text": "인수 방어 조항 제거이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_2bd5a496e1eaeda0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_73b9d843187278b3",
+      "text": "경기침체기에 경력 시작이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_10b72d2b8f5b8e19",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9193fe1f4fd765ae",
+      "text": "기업 불확실성이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "firm_uncertainty",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c49b2790508a84a3",
+      "text": "반부패 감사에 의한 적발이(가) 하락하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "n_a380357fce8b36c8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_369f0383235f4264",
+      "text": "기업 자금조달 제약이(가) 상승하여 설비투자 지출의 상승을 상쇄할 수 있음",
+      "check_node": "financing_constraint",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Foreign Direct Investment and the Domestic Capital Stock (2005, american_economic_review; CSV R01716; https://www.nber.org/papers/w11075)",
+    "author": "Mihir C. Desai, C. Fritz Foley, James R. Hines Jr.",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

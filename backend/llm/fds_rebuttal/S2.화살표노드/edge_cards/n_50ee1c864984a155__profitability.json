@@ -1,0 +1,91 @@
+{
+  "edge_id": "n_50ee1c864984a155->profitability",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "주주보호법 강화의 변화가 매출·자산·자본 대비 이익 창출력 경로를 통해 기업 수익성(연구 정의)의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05681의 적용 맥락: This paper examines how pre-crisis shareholder protection shapes firms' responses to systemic banking crises across 36 countries from 1990–2011. Using firm-level panel data on publicly listed manufacturing firms (≈3,600 firms; ≈23,000 firm-years), the authors link Laeven and Valencia’s crisis start dates to Djankov et al.’s Anti-self-dealing index to study profits, employment, equity issuances, and investment efficiency. The institutional setting contrasts countries’ shareholder-protection legal infrastructure and stock-market financing as a potential “spare tire” when bank credit contracts during systemic crises."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_62e8912acf76a16c",
+      "text": "개인효과 통제 후 기업 임금 수준 상승이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_a56c441948fb8981",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3db809b7546470be",
+      "text": "가족 구성원의 CEO 선임이(가) 상승하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_57f66ca933d23297",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_cb5074d3b0c82886",
+      "text": "중국산 수입품과의 경쟁이(가) 상승하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_3131270f74673d4e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0c7883dbcdd159d2",
+      "text": "민간 위탁 서비스 제공(PSP)이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_5e15ae3b0899d5fd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4d04d6464033c192",
+      "text": "전량 할인 리베이트(AUD)이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_20dadfda0dc23ade",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2a436868b71a2c8c",
+      "text": "정치적 연계이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_4a4ad42323bcfab3",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d070a3c8984865ab",
+      "text": "확대된 담보 인정 범위이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e432ff4dca61e44",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a95289303dfc096e",
+      "text": "신용협동조합의 저소득층 지원기관 지정이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_cbb3ed24bef4fe52",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8c3adf261e27ac01",
+      "text": "저소득층 신용협동조합 성장이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_70d9b308c75e9e7e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_33a2e33af3afd9f8",
+      "text": "선구매 후지불(BNPL) 제공이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_41caf6dfb67c3f07",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_503b76d7e12011a3",
+      "text": "총자산수익률이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "roa",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ca979fe6c1cf3c6a",
+      "text": "사용자본수익률이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "roce",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Spare Tire? Stock Markets, Banking Crises, and Economic Recoveries (2015, journal_of_financial_economics; CSV R05681; https://www.nber.org/papers/w20863)",
+    "author": "Ross Levine, Chen Lin, Wensi Xie",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

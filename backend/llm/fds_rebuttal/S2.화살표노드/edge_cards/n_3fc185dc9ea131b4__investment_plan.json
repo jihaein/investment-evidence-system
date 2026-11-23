@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_3fc185dc9ea131b4->investment_plan",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "인플레이션 기대의 변화가 향후 투자 수익성과 자금조달 전망 경로를 통해 기업 투자계획의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08172의 적용 맥락: Using the Bank of Italy quarterly Survey on Inflation and Growth Expectations (SIGE) and linked administrative data (CCR, INPS, CADS), the paper studies a panel of Italian non-financial firms (50+ employees) from 2012 onward (treatment introduced in 2012Q3; ELB-focused subperiod 2014Q4–2018Q2). A randomized information treatment telling firms recent Italian/Euro-area inflation generated exogenous, time-varying variation in firms’ inflation expectations; the authors analyze causal effects on firm prices, employment, investment and credit in a low-inflation, effective-lower-bound policy environment."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_76bb8c647e426e17",
+      "text": "신용한도 인출이(가) 하락하여 기업 투자계획의 상승을 상쇄할 수 있음",
+      "check_node": "n_b3665612198590d0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fe5d1193cd08fdd6",
+      "text": "전년도 과소지출이(가) 하락하여 기업 투자계획의 상승을 상쇄할 수 있음",
+      "check_node": "n_0720911607948987",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Inflation Expectations and Firm Decisions: New Causal Evidence (2018, quarterly_journal_of_economics; CSV R08172; https://www.nber.org/papers/w25412)",
+    "author": "Olivier Coibion, Yuriy Gorodnichenko, Tiziano Ropele",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

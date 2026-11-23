@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_823c45b8e8368601->shareholder_value",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "엄격한 감시를 수반한 국제 부채 발행의 변화가 주주 귀속 현금흐름·권리 보호·기업 평가 경로를 통해 연구상 주주가치의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00829의 적용 맥락: This effect is estimated for publicly listed non-financial firms in 18 emerging-market countries using debt-issuance data (1980–1997), ownership/control measures circa 1995–96, and firm accounting (primarily 1990–1997). The positive valuation effect refers specifically to internationally issued debt with intensive monitoring—notably initial public U.S. market and international bonds and, especially, subsequent internationally-syndicated term loans—and is strongest for firms with high capital expenditures (where overinvestment risk is greater)."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_3201e661dfd96e54",
+      "text": "높은 인플레이션의 안정화이(가) 하락하여 연구상 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_0c59f1b243e16d26",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2673e8f70057e888",
+      "text": "장부가 기준 레버리지이(가) 하락하여 연구상 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_20249c56c7146868",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_cf0109c418f4998d",
+      "text": "큰 손실을 수반하는 인수 발표이(가) 상승하여 연구상 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_9962b91f5e14c78a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e19a86e364ff665e",
+      "text": "인수 발표이(가) 상승하여 연구상 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_a18e0264b988025b",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "The Effect of Capital Structure When Expected Agency Costs are Extreme (2001, journal_of_financial_economics; CSV R00829; https://www.nber.org/papers/w8452)",
+    "author": "Campbell R. Harvey, Karl V. Lins, Andrew H. Roper",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

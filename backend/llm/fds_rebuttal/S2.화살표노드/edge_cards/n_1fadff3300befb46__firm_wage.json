@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_1fadff3300befb46->firm_wage",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "미국 파산법 Chapter 13 보호의 변화가 노동 수요·협상·보상 결정 경로를 통해 기업 근로자 임금의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05444의 적용 맥락: This paper studies first-time U.S. consumer bankruptcy filers who filed between 1992 and 2005 (analysis draws on court dockets 1992–2009 but requires 5+ years post‑filing), linking individual Chapter 13 filings across federal bankruptcy offices to Social Security Administration tax records and county-level DataQuick foreclosure data. The setting exploits blind rotation judge assignment within bankruptcy offices (pre‑2005 reform) that produces cross‑judge variation in confirmation rates; outcomes analyzed at the individual level include earnings, employment, mortality, and home foreclosure over the subsequent five years."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_9280d8e61f944a27",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d4c71089fc5eb9e2",
+      "text": "기업의 수출 참여이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_4e9770cd8e6c6abc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ba7b16f568262158",
+      "text": "주 법인세 인상이(가) 상승하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_386c508084e8f61f",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_61c5a81e22bc30cf",
+      "text": "수출 수요 5% 증가이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_57aeb5628ca5e0da",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3c7be182bb65de5e",
+      "text": "조정된 수출 수요 충격이(가) 하락하여 기업 근로자 임금의 상승을 상쇄할 수 있음",
+      "check_node": "n_21cbe30fb8328f03",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Debt Relief and Debtor Outcomes: Measuring the Effects of Consumer Bankruptcy Protection (2014, american_economic_review; CSV R05444; https://www.nber.org/papers/w20520)",
+    "author": "Will Dobbie, Jae Song",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_323347846f30e9e0->firm_valuation",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "군 복무의 변화가 미래 현금창출력·위험에 대한 평가 경로를 통해 기업 평가가치(연구 정의)의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05014의 적용 맥락: This paper studies U.S. publicly traded firms' CEOs from 1980–2006 (manager-year panel of ~4,013 CEOs, firms from Forbes 800/ExecuComp), matching biographical data (birth cohorts 1913–1960) to firm outcomes. It exploits cohort-based exogenous variation in draft/mobilization risk (wartime manpower demand across birth cohorts, e.g., WWII/Korea/Vietnam) to instrument CEO military service and examines effects on investment, R&D, leverage, alleged fraud, and firm valuation—especially during industry distress—controlling for industry and year effects."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_4322dc86eaa34cc6",
+      "text": "소수주주에 대한 법적 보호이(가) 하락하여 기업 평가가치(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_27eec5af58d4c298",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fea56bc8aa17c858",
+      "text": "미국 거래소 상장이(가) 하락하여 기업 평가가치(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_ce72db2bcae4b34b",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Military CEOs (2014, journal_of_financial_economics; CSV R05014; https://www.nber.org/papers/w19782)",
+    "author": "Efraim Benmelech, Carola Frydman",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

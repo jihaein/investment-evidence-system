@@ -1,0 +1,37 @@
+{
+  "edge_id": "n_f03fef2267c4d671->roa",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "현장 직무훈련(TWI)의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 총자산수익률의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R09855의 적용 맥락: This paper studies the causal impact of the U.S. Training Within Industry (TWI) program—a government-funded in-plant management training initiative delivered largely 1940–1945—on firm performance and spillovers. It uses a newly assembled panel of 11,575 U.S. war-contractor applicant firms (1935–1955 financials), primarily large manufacturers (covering ~40% of 1939 manufacturing employment), exploiting voluntary application windows, decentralized subdistrict implementation, and variation in instructor assignment. Eligibility required an active war contract; outcomes are firm-level sales, TFP, profitability, managerial practices, and supply-chain links."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_fe54118b80e658d3",
+      "text": "기업결합법이(가) 상승하여 총자산수익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_db75db5b27d4f853",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_aa94cc2d1a922fd4",
+      "text": "기업 재무레버리지이(가) 상승하여 총자산수익률의 상승을 상쇄할 수 있음",
+      "check_node": "leverage",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d9079facac947b49",
+      "text": "13G에서 13D 공시로 전환이(가) 하락하여 총자산수익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_3a3c9f50b7f3944c",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Dynamics and Spillovers of Management Interventions: Evidence from the Training Within Industry Program (2021, journal_of_political_economy; CSV R09855; https://www.nber.org/papers/w28833)",
+    "author": "Nicola Bianchi, Michela Giorcelli",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,30 @@
+{
+  "edge_id": "unemployment->household_income",
+  "sign": "-",
+  "empirical_sign": "n/a",
+  "mechanism": "실업률 상승은 해당 가계의 노동소득을 줄일 수 있음",
+  "conditions": [
+    "실업 노출 가계",
+    "이전소득·임금상승·구성효과로 상쇄되지 않음"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_181f37bc8a721682",
+      "text": "가치관 교육과정이(가) 하락하여 가계 소득의 상승을 상쇄할 수 있음",
+      "check_node": "n_6ca03e3819fb8191",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_619f8ec7b973bf47",
+      "text": "농사 일정과 겹치는 축제이(가) 상승하여 가계 소득의 상승을 상쇄할 수 있음",
+      "check_node": "n_be06e79fccfbc084",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,37 @@
+{
+  "edge_id": "n_191f11137d04148d->firm_rd",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "투입재 관세 인하의 변화가 연구개발의 비용과 기대수익 경로를 통해 기업 연구개발 활동의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02611의 적용 맥락: This paper studies India’s 1991 trade liberalization and its effects on firm product scope during 1989–1997. Using a panel of ~2,927 manufacturing firms (Prowess) with firm–product data and detailed HS import data (1987–2000) mapped via India’s 1993–94 input–output matrix, the authors analyze how differential, unanticipated declines in input tariffs across industries affected imports of intermediate varieties and domestic firms’ new product introductions. The setting exploits sudden tariff cuts, industry heterogeneity, and firm fixed effects to identify causal links between imported input variety/prices and domestic product growth."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_967f6ab7ba6edf4a",
+      "text": "제품시장 경쟁기업의 연구개발이(가) 하락하여 기업 연구개발 활동의 상승을 상쇄할 수 있음",
+      "check_node": "n_7488374b91e15f68",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b939c3bedd539a82",
+      "text": "인수 대상이 될 확률이(가) 하락하여 기업 연구개발 활동의 상승을 상쇄할 수 있음",
+      "check_node": "n_9c9da61dcca1891b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_15af61601816819d",
+      "text": "상품시장 경쟁 강도이(가) 하락하여 기업 연구개발 활동의 상승을 상쇄할 수 있음",
+      "check_node": "competition",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Imported Intermediate Inputs and Domestic Product Growth: Evidence from India (2008, quarterly_journal_of_economics; CSV R02611; https://www.nber.org/papers/w14416)",
+    "author": "Pinelopi K. Goldberg, Amit Khandelwal, Nina Pavcnik, Petia Topalova",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

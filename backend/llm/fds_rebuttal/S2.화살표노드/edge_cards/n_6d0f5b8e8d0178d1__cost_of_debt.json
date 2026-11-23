@@ -1,0 +1,85 @@
+{
+  "edge_id": "n_6d0f5b8e8d0178d1->cost_of_debt",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "스트레스테스트 노출의 변화가 대출자의 위험 보상·자금 비용·가격 설정 경로를 통해 부채 조달금리의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07616의 적용 맥락: This paper studies how Federal Reserve stress tests (CCAR/DFAST) conducted 2012–2016 affected small-business lending by 32 large U.S. bank holding companies and their subsidiary banks. Using subsidiary-bank–county-year CRA loan originations (2012–2015) and micro loan records from the Survey of Terms of Business Lending (Q1 2013–Q4 2016), it links each BHC’s modeled decline in capital under the severely adverse stress scenario to changes in small-business loan quantities and prices across U.S. counties and states, exploiting local employment risk and branch presence."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_7abfc24d866ddae6",
+      "text": "신용시장 집중도 상승이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_03434e31c77d8424",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1e869f44c4612934",
+      "text": "채권자 권리의 강도이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_8c5b68548bf4289b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3c55feccd64e4a01",
+      "text": "민간 신용 이용 가능성이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_3829d970d7ad038b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_bd8007e53d187a6d",
+      "text": "자산 담보이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_c98b246ba4547f88",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d5d644cd665c13bd",
+      "text": "무형자산이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_7787ed290f7fdeda",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d13d9964d874293b",
+      "text": "장부가 대비 시장가 비율(B/M)이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_76ce22d1500c6175",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_294be05a9c9d7c5b",
+      "text": "금리·환율 헤지 강도이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_b192aa69ecfae8e3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_703b1597c4f4eeb0",
+      "text": "사모펀드 지원이(가) 상승하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_29a522832b9858d4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e4ea6d4aa33b3bc3",
+      "text": "무위험금리이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "risk_free_rate",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_91b321f0cd12ca6c",
+      "text": "기업 신용스프레드이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "credit_spread",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9a37873e6348050f",
+      "text": "일반 금리이(가) 하락하여 부채 조달금리의 상승을 상쇄할 수 있음",
+      "check_node": "interest_rate",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Stress Tests and Small Business Lending (2018, journal_of_financial_economics; CSV R07616; https://www.nber.org/papers/w24365)",
+    "author": "Kristle Cortés, Yuliya Demyanyk, Lei Li, Elena Loutskina, Philip E. Strahan",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

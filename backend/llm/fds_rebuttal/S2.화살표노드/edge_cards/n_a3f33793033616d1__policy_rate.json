@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_a3f33793033616d1->policy_rate",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "부정적 주택가격 충격의 변화가 정책 반응·금융 여건 경로를 통해 정책금리의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07173의 적용 맥락: The paper combines a continuous-time theoretical model with empirical analysis using a quarterly panel of 20 advanced countries from 1990–2017. Empirical units are country-quarters, comparing Eurozone/ERM members (sharing monetary policy and hence more constrained local policy rates) to non-Euro/ERM countries with independent rates. Main shocks are negative house-price valuation shocks; outcomes include policy interest rates, GDP/output, firm earnings, and stock prices. Past bank credit expansion is used as a proxy for speculation; the institutional focus is on interest-rate constraints and nominal price rigidities."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_51de65408cf2708b",
+      "text": "인플레이션 민감도 증가이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a416bf413e8f8470",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7c2f3f0cf696eaed",
+      "text": "양의 인플레이션 충격이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_ebe41187a5246810",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_46d4bbeabeb560da",
+      "text": "양의 산출갭 충격이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_d090a25801353e01",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_df4bbac6bc9d999e",
+      "text": "외가격 풋·콜 내재변동성 비율이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_66c2f52b71bf8879",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_25eb9a3ab2bf834c",
+      "text": "주식 등가격 옵션 내재변동성이(가) 상승하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_e0135039a2d7fa07",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_13b793f4704cbc74",
+      "text": "주요 경기순환 충격이(가) 하락하여 정책금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_9bad08cd66f774e4",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "A Risk-centric Model of Demand Recessions and Speculation (2017, quarterly_journal_of_economics; CSV R07173; https://www.nber.org/papers/w23614)",
+    "author": "Ricardo J. Caballero, Alp Simsek",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

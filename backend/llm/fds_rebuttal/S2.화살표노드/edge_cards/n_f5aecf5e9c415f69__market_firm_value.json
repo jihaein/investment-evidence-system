@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_f5aecf5e9c415f69->market_firm_value",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "특허와 기업의 기술적 근접성의 변화가 기대 현금흐름·할인율·시장 평가 경로를 통해 기업 시장가치의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05002의 적용 맥락: This paper studies the U.S. market for patented ideas using patent grant data (USPTO/NBER PDP, 1976–2006), patent reassignment records (USPTO assignment files, 1980–2011), and Compustat firm data (1974–2006). Units of observation include patents, patent transactions, and firms. The analysis documents how technological proximity (via IPC-based citation distances) relates to patent sales, firm value, and post-sale matches, and it embeds those empirical facts in a search-theoretic endogenous-growth model to quantify how secondary-market frictions affect innovation, allocation of ideas, and aggregate growth."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_32fbc9ce26f19871",
+      "text": "부총리 해임과 자본통제 도입이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_2c20de9d44a40a67",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e62bb1b9eff7a181",
+      "text": "정치적 연계 가치 하락이(가) 상승하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_887caea9bead1a55",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f881b8043dbed038",
+      "text": "제품시장 경쟁기업의 연구개발이(가) 상승하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_7488374b91e15f68",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_27509e999ab8f20d",
+      "text": "기술적으로 가까운 기업의 연구개발이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_6725ffded8c3dafb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2327dd7eab651559",
+      "text": "자사 연구개발 축적량이(가) 하락하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_4f843c3efc6d0f7b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dd741a8891cc6242",
+      "text": "애널리스트와 대통령 소속 정당의 불일치이(가) 상승하여 기업 시장가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_0481c6e573d7d263",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Buy, Keep or Sell: Economic Growth and the Market for Ideas (2013, econometrica; CSV R05002; https://www.nber.org/papers/w19763)",
+    "author": "Ufuk Akcigit, Murat Alp Celik, Jeremy Greenwood",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}
