@@ -26,9 +26,8 @@ jobs:
     timeout-minutes: 120
     env:
       TZ: Asia/Seoul
-      IES_DATA: ${{ github.workspace }}/../ies-data
-      RAWDATA_DIR: ${{ github.workspace }}/../ies-data/rawdata
-      DART_SNAPSHOT_DIR: ${{ github.workspace }}/../ies-data/dart_snapshots
+      RAWDATA_DIR: /home/runner/ies-data/rawdata
+      DART_SNAPSHOT_DIR: /home/runner/ies-data/dart_snapshots
       MARKET_CALENDAR_CSV: ${{ github.workspace }}/ops/live/krx_sessions.csv
       MARKET_COVERAGE_CSV: ${{ github.workspace }}/ops/live/stock_coverage.csv
       MARKET_READY_AFTER_KST: "19:00"
@@ -51,12 +50,21 @@ jobs:
 
       - run: pip install -r requirements.txt
 
+      # Secrets pasted with a trailing newline or space break connection strings; trim them once.
+      - name: Trim secrets
+        run: |
+          for name in SUPABASE_DB_URL SUPABASE_URL SUPABASE_SERVICE_ROLE_KEY OPENDART_API_KEY KRX_ID KRX_PW; do
+            value="$(printenv "$name" | tr -d '\r\n' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+            if [ -z "$value" ]; then echo "::error::Secret $name is missing"; exit 1; fi
+            { echo "$name<<__END__"; echo "$value"; echo "__END__"; } >> "$GITHUB_ENV"
+          done
+
       # Working copy of the data between runs; the cloud bucket stays the source of truth.
       - name: Restore data working copy
         uses: actions/cache/restore@v4
         with:
           path: |
-            ${{ github.workspace }}/../ies-data
+            /home/runner/ies-data
             ops/cloud/.hashcache.json
           key: ies-data-${{ github.run_id }}
           restore-keys: ies-data-
@@ -82,7 +90,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: |
-            ${{ github.workspace }}/../ies-data
+            /home/runner/ies-data
             ops/cloud/.hashcache.json
           key: ies-data-${{ github.run_id }}
 

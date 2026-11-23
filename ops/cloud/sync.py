@@ -29,6 +29,7 @@ import sys
 import tempfile
 import threading
 import time
+import unicodedata
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
@@ -152,6 +153,17 @@ def load_datasets(only=None):
     return datasets
 
 
+def nfc(text):
+    """One spelling for Korean paths: macOS writes names decomposed (NFD), Linux keeps them as given."""
+    return unicodedata.normalize("NFC", text)
+
+
+def remote_files(store, name):
+    """The current file list of a dataset, with every path in NFC."""
+    files = (store.get_json(f"manifests/{name}.json.gz") or {}).get("files", {})
+    return {nfc(rel): entry for rel, entry in files.items()}
+
+
 def wanted(rel, dataset):
     include, exclude = dataset.get("include"), dataset.get("exclude", [])
     if include and not any(fnmatch.fnmatch(rel, pattern) for pattern in include):
@@ -170,7 +182,7 @@ def scan(dataset):
             if name in SKIP_NAMES or name.endswith(".lock") or name.startswith(".tmp"):
                 continue
             path = Path(dirpath) / name
-            rel = path.relative_to(root).as_posix()
+            rel = nfc(path.relative_to(root).as_posix())
             if wanted(rel, dataset):
                 files[rel] = path
     return files
@@ -235,7 +247,7 @@ def push(store, datasets, cache):
             if not files:
                 print(f"- {dataset['name']}: no files at {dataset['root']} (skipped)")
                 continue
-            remote = (store.get_json(f"manifests/{dataset['name']}.json.gz") or {}).get("files", {})
+            remote = remote_files(store, dataset["name"])
             todo = {}
             for rel, entry in manifest.items():
                 if entry["sha256"] not in index:
@@ -287,6 +299,7 @@ def pull(store, datasets, cache, dest=None, overwrite=False, only=None):
             print(f"- {dataset['name']}: nothing in the cloud yet")
             continue
         root = (Path(dest) / dataset["name"]) if dest else dataset["root"]
+        remote["files"] = {nfc(rel): entry for rel, entry in remote["files"].items()}
         todo = []
         for rel, entry in remote["files"].items():
             target = root / rel
@@ -380,7 +393,7 @@ def status(store, datasets, cache):
                   f"(restore: sync.py pull --only {dataset['name']} --dest <folder>)")
             continue
         _, manifest = local_manifest(dataset, cache)
-        remote = (store.get_json(f"manifests/{dataset['name']}.json.gz") or {}).get("files", {})
+        remote = remote_files(store, dataset["name"])
         new = sum(1 for r in manifest if r not in remote)
         changed = sum(1 for r, e in manifest.items() if r in remote and remote[r]["sha256"] != e["sha256"])
         cloud_only = sum(1 for r in remote if r not in manifest)
