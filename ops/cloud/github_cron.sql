@@ -57,6 +57,7 @@ select cron.schedule('ies-daily-refresh-1930', '30 10 * * 1-5', $$select public.
 select cron.schedule('ies-daily-refresh-2230', '30 13 * * 1-5', $$select public.dispatch_github_workflow('daily-refresh.yml')$$);   -- 22:30 KST retry
 select cron.schedule('ies-daily-refresh-0830', '30 23 * * 0-4', $$select public.dispatch_github_workflow('daily-refresh.yml')$$);   -- 08:30 KST Mon-Fri
 select cron.schedule('ies-analysis-worker',    '7,37 * * * *',  $$select public.dispatch_github_workflow('analysis-worker.yml')$$); -- every 30 minutes
+select cron.schedule('ies-health-check',       '5 0 * * *',     $$select public.dispatch_github_workflow('health-check.yml')$$);    -- 09:05 KST daily: ops/live/health_check.py
 
 -- Check:   select jobname, schedule, active from cron.job;
 --          select jobname, status, start_time from cron.job_run_details d join cron.job j using (jobid) order by start_time desc limit 10;
