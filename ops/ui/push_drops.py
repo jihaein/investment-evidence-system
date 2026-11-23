@@ -5,13 +5,14 @@ return, z = AR / σ with σ the standard deviation of AR over D-120..D-1, and a 
 within 10 trading days of the first one belongs to the same event. Corporate-action days and the first day after a
 trading halt are not judged.
 
-What is different from the research run: the daily DB (prices) has no exchange 등락률 or volume, so
-  - a day's return is the close-to-close return,
-  - a corporate-action day is a day the listed share count changed (instead of 등락률 vs close return),
-  - a halt is a session missing from the stock's rows (instead of volume 0),
-  - a day beyond the ±30% daily price limit is not judged either: such a move cannot be trading, so it is a base-price
-    reset (split, merger, capital reduction, relisting) the share count did not show on that day.
-The market index comes from pykrx with the KRX login (KRX_ID, KRX_PW), as events.py does.
+Data: closes, market caps and share counts from the daily DB (prices); the exchange's 등락률 and volume per session
+from pykrx (KRX login: KRX_ID, KRX_PW), kept as one small file per session under RAWDATA_DIR/추가자료/시장자료/fluc so
+only new sessions are fetched. With 등락률 the rule runs exactly as in research: a corporate-action day is one whose
+등락률 differs from the close return (권리락·배당락·분할·감자), a halt is volume 0 or a missing session.
+Comparison on the research file (2016-2019, 19 stocks, 2026-11-23): close returns + share-count changes instead of
+등락률 matched 256 of 264 events, missed 8 and added 7-9 false ones (ex-dividend / ex-rights days); with 등락률 the
+method is the research one.
+The market index comes from pykrx too, as events.py does.
 
 Rows are replaced for the recent window only (RECENT_DAYS); older events are dropped from the UI table.
 
@@ -22,6 +23,7 @@ Rows are replaced for the recent window only (RECENT_DAYS); older events are dro
 import argparse
 import os
 import sys
+import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -35,10 +37,10 @@ import events as E  # noqa: E402
 
 KST = ZoneInfo("Asia/Seoul")
 RULE_VERSION = "sudden-events-v1-daily"
-PRICE_LIMIT = 0.30           # KRX daily price limit; beyond it (plus rounding) a close-to-close move is not trading
-LIMIT_SLACK = 0.005
 LOOKBACK_DAYS = 320          # calendar days of prices read: ~210 sessions, enough for σ (120) before the recent window
 RECENT_DAYS = 90             # events whose first drop day D is within this many calendar days are kept in the UI
+FETCH_PAUSE = float(os.environ.get("KRX_FETCH_PAUSE", "1.5"))  # seconds between KRX requests (too many too fast: IP blocked, 2026-11-23)
+FLUC_DIR = Path(os.environ.get("RAWDATA_DIR") or ROOT / "data" / "rawdata") / "추가자료" / "시장자료" / "fluc"
 
 
 def read_prices(connection, since):
@@ -55,8 +57,8 @@ def read_prices(connection, since):
 
 
 def prepare(raw, calendar):
-    """events.py's price frame from DB rows: one row per stock per session of the calendar between its first and
-    last row. A missing session is a halt (volume 0, no close); a changed share count marks a corporate action."""
+    """events.py's price frame from DB rows joined with the session's 등락률 (fluc, %) and volume: one row per stock
+    per session of the calendar between its first and last row. A missing session is a halt (volume 0)."""
     cal = pd.DatetimeIndex(sorted(pd.to_datetime(pd.Series(calendar)).unique()))
     out = []
     for code, g in raw.groupby("stock_code", sort=True):
@@ -66,29 +68,57 @@ def prepare(raw, calendar):
             continue
         f = g.reindex(days)
         present = f["close_prc"].notna()
-        close = pd.to_numeric(f["close_prc"], errors="coerce")
-        shares = pd.to_numeric(f["list_shrs"], errors="coerce")
-        prev_close = close.where(present).ffill().shift(1)
-        prev_shares = shares.where(present & shares.notna()).ffill().shift(1)
-        ret = (close / prev_close - 1).where(present)
-        beyond_limit = ret.abs() > PRICE_LIMIT + LIMIT_SLACK
         frame = pd.DataFrame({
             "stock_code": code,
             "company_name": g["stock_name"].dropna().iloc[-1] if g["stock_name"].notna().any() else code,
             "market": E.market_of(g["market"].dropna().iloc[-1] if g["market"].notna().any() else "KOSDAQ"),
             "trade_date": days,
-            "close": close.to_numpy(),
-            "ret": ret.to_numpy(),
-            "volume": present.astype(int).to_numpy(),
+            "close": pd.to_numeric(f["close_prc"], errors="coerce").to_numpy(),
+            "ret": (pd.to_numeric(f["fluc"], errors="coerce") / 100).where(present).to_numpy(),
+            "volume": pd.to_numeric(f["volume"], errors="coerce").where(present, 0).fillna(0).to_numpy(),
             "mktcap": pd.to_numeric(f["mktcap"], errors="coerce").to_numpy(),
-            "corp_action_hint": ((present & shares.notna() & prev_shares.notna() & (shares != prev_shares))
-                                 | (present & beyond_limit)).to_numpy(),
         })
         out.append(frame)
     if not out:
-        return pd.DataFrame(columns=["stock_code", "company_name", "market", "trade_date", "close", "ret", "volume",
-                                     "mktcap", "corp_action_hint"])
+        return pd.DataFrame(columns=["stock_code", "company_name", "market", "trade_date", "close", "ret", "volume", "mktcap"])
     return pd.concat(out, ignore_index=True)
+
+
+def session_fluc(day, markets=None, fetch=None):
+    """the exchange's 등락률 and volume of every listed stock on one session (cached per session). One request for the
+    whole market ("ALL"): the per-market request (mktId KSQ) came back as an error page on 2026-11-23, while ALL is
+    what data_pipeline/fetch/fetch_krx.py uses every day."""
+    target = FLUC_DIR / f"fluc_{day:%Y-%m-%d}.csv"
+    if target.exists():
+        return pd.read_csv(target, dtype={"stock_code": str})
+    if fetch is None:
+        from pykrx import stock
+        fetch = lambda tag, market: stock.get_market_ohlcv(tag, market=market)
+    try:
+        time.sleep(FETCH_PAUSE)
+        df = fetch(f"{day:%Y%m%d}", "ALL")
+    except Exception as exc:                                     # pykrx raises KeyError on an error page
+        raise RuntimeError(f"pykrx: no 전종목 시세 for {day:%Y-%m-%d} ({type(exc).__name__}: {exc})") from None
+    if df is None or len(df) == 0 or "등락률" not in df.columns:
+        raise RuntimeError(f"pykrx returned no 등락률 for {day:%Y-%m-%d}")
+    out = pd.DataFrame({"stock_code": df.index.astype(str),
+                        "fluc": pd.to_numeric(df["등락률"], errors="coerce").to_numpy(),
+                        "volume": pd.to_numeric(df["거래량"], errors="coerce").to_numpy()})
+    FLUC_DIR.mkdir(parents=True, exist_ok=True)
+    out.to_csv(target, index=False, encoding="utf-8")
+    return out
+
+
+def with_fluc(raw, sessions, markets, fetch=None):
+    """DB rows + each session's 등락률 and volume (only the 120 codes are kept)."""
+    codes = set(raw["stock_code"])
+    parts = []
+    for day in sessions:
+        f = session_fluc(pd.Timestamp(day), markets, fetch)
+        parts.append(f[f["stock_code"].isin(codes)].assign(bas_dd=pd.Timestamp(day).date()))
+    fl = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=["stock_code", "fluc", "volume", "bas_dd"])
+    raw = raw.assign(bas_dd=pd.to_datetime(raw["bas_dd"]).dt.date)
+    return raw.merge(fl, on=["stock_code", "bas_dd"], how="left")
 
 
 def index_returns(index_close):
@@ -152,6 +182,11 @@ def main():
             print(f"warning: index ends {index['trade_date'].max().date()}, prices end {latest}; "
                   "the days after cannot be judged yet")
     calendar = index["trade_date"] if index is not None else pd.to_datetime(raw["bas_dd"])
+    sessions = sorted(d for d in pd.to_datetime(pd.Series(calendar)).unique() if pd.Timestamp(d).date() >= since)
+    raw = with_fluc(raw, sessions, sorted({E.market_of(m) for m in raw["market"].dropna()}))
+    missing = raw["fluc"].isna().sum()
+    if missing:
+        print(f"warning: {missing} price rows have no 등락률 (those days are not judged)")
     prices = prepare(raw, calendar)
     window_start = latest - timedelta(days=args.recent_days)
     found, candidates = detect(prices, index, window_start, latest)

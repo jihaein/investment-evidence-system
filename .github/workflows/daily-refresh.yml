@@ -97,6 +97,17 @@ jobs:
         continue-on-error: true
         run: python -u -m data_pipeline.scheduled_refresh --once
 
+      # 급락 감지 (models/sudden/events.py rule) for the 120 stocks → ReThinking_UI drop_events. Before the cloud save so
+      # the per-session 등락률 files it fetches (rawdata/추가자료/시장자료/fluc) are kept. Its own step: a KRX hiccup
+      # here does not fail the refresh, and the UI keeps yesterday's events until the next run.
+      - name: Upload 급락 events to the UI
+        if: ${{ !inputs.krx_check && env.UI_SUPABASE_URL != '' }}
+        continue-on-error: true
+        run: |
+          export UI_SUPABASE_URL="$(printf %s "$UI_SUPABASE_URL" | tr -d '\r\n ')"
+          export UI_SUPABASE_SERVICE_ROLE_KEY="$(printf %s "$UI_SUPABASE_SERVICE_ROLE_KEY" | tr -d '\r\n ')"
+          python -u ops/ui/push_drops.py
+
       # Only the two datasets this job writes; the other datasets are maintained from the Mac.
       - name: Save new files to cloud storage
         if: ${{ always() && !inputs.krx_check }}
@@ -122,16 +133,6 @@ jobs:
           export UI_SUPABASE_URL="$(printf %s "$UI_SUPABASE_URL" | tr -d '\r\n ')"
           export UI_SUPABASE_SERVICE_ROLE_KEY="$(printf %s "$UI_SUPABASE_SERVICE_ROLE_KEY" | tr -d '\r\n ')"
           python ops/ui/push_prices.py
-
-      # 급락 감지 (models/sudden/events.py rule) for the 120 stocks → ReThinking_UI drop_events. Its own step so a
-      # KRX index hiccup does not undo the prices above; the UI keeps yesterday's events until the next run.
-      - name: Upload 급락 events to the UI
-        if: ${{ !inputs.krx_check && env.UI_SUPABASE_URL != '' }}
-        continue-on-error: true
-        run: |
-          export UI_SUPABASE_URL="$(printf %s "$UI_SUPABASE_URL" | tr -d '\r\n ')"
-          export UI_SUPABASE_SERVICE_ROLE_KEY="$(printf %s "$UI_SUPABASE_SERVICE_ROLE_KEY" | tr -d '\r\n ')"
-          python -u ops/ui/push_drops.py
 
       - name: Fail if the refresh failed
         if: steps.refresh.outcome == 'failure'
