@@ -10,3 +10,4 @@ requests==2.34.2
 pykrx==1.2.9
 jsonschema==4.26.0
 holidays==0.109
+openai>=1.40

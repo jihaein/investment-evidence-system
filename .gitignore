@@ -267,3 +267,6 @@ ops/live/logs/
 ops/live/.run.lock/
 ops/cloud/.hashcache.json
 ops/cloud/.hashcache.tmp
+
+# FDS graph embedding cache (backend/graph/load_graph.py rebuilds it)
+backend/graph/embeddings_cache.json

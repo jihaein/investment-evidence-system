@@ -25,11 +25,45 @@ python backend/llm/build_pack.py 010170 2016-06-30 2019-06-28 --opinion-file 의
 - 투자자 의견은 원문 그대로 `untrusted: true`로 넣는다. 주장 추출은 분석 단계에서 한다
 - 경제명제(`propositions`)와 입력 4(`input4`)는 자리만 있다 (null)
 - 형식은 `schemas/evidence_pack.schema.json`, 모델 설명서는 `cards.json` (코드 없이 고칠 수 있다)
+- 경제명제(`propositions`)는 `--graph`일 때 채운다 (아래). 입력 4(`input4`)는 자리만 있다 (null)
+- 형식은 `schemas/evidence_pack.schema.json`, 모델 설명서는 `model_cards.json` (코드 없이 고칠 수 있다)
+
+## 판정 순서와 코드 확인 (`analyze.py`)
+
+- 사용자 메시지에 `<judging_guide>` 표를 넣는다. 코드가 이번 근거 묶음의 모델 상태로 유형마다 "판정에 쓸 수 있는 근거"와 "고를 수 있는 판정"을 계산한 것이다 (예: DuPont 계산 안 됨 + Ohlson 점수 있음이면 수익성은 OH-1~3으로 지지·반박·엇갈림)
+- 답은 주장마다 `claim_stance`(주장이 대상을 좋다/나쁘다고 하나) → `evidence_ids` → `reason` → `evidence_stance`(근거만 보면 좋음/나쁨/엇갈림/근거 없음) → `verdict` 순서로 쓴다. 판정을 마지막에 고르게 하려는 것이다
+- 코드 확인: 두 방향과 판정이 맞지 않으면 오류 (같으면 지지, 다르면 반박, 엇갈림이면 엇갈림). 어느 쪽이 틀렸는지는 정해 주지 않고 다시 묻는다. 확인할 모델이 점수를 냈는데 판단보류·근거없음이면 오류. 보유 중 가격 경보가 있었는데 주가흐름 근거를 '좋음'으로 보면 오류
+
+같은 의견(대한광통신, DuPont 계산 안 됨)으로 5회씩 잰 결과: 수익성 주장("영업이익률이 떨어질 것", 정답 반박) 정답이 그래프 있음 2/5 → 5/5, 없음 2/5 → 5/5. 시험 사례(`--cases`)는 3회 모두 14/14.
+
+## 경제명제 (`graph_props.py`, `--graph`)
+
+투자자 의견의 인과 주장을 FDS 공통 인과그래프(Supabase에 적재)에서 찾아 근거 `PR-n`으로 넣는다.
+
+```bash
+python backend/llm/build_pack.py 010170 2016-06-30 2019-06-28 --opinion "원자재 가격이 올라 영업이익률이 떨어질 것" --graph
+python backend/llm/analyze.py 010170 2016-06-30 2019-06-28 --opinion "..." --graph
+```
+
+1. OpenAI가 의견에서 "원인 → 결과" 구절만 뽑는다 (예: 원자재 가격 증가 → 영업이익률 감소). 판정은 하지 않는다
+2. 코드가 구절을 임베딩해 그래프 변수 임베딩과 비교해 노드를 찾고, 그래프 경로·누적 부호·경로 위 카드의 깨지는 조건을 가져온다
+3. 근거 문장은 코드가 만든다. 경로마다 `PR-n`(경로, 누적 부호, 주장한 방향과 같은지, 구절 짝짓기, 검토 상태)과 `PR-n+1`(상쇄할 수 있는 조건)
+4. 경로나 확인 조건에 서서히 모델이 재는 변수가 있으면 `values.model_links`와 문장 끝에 어느 근거로 확인하는지 적는다 (예: 영업이익률 → DuPont PM [DP-1]). 연결표는 `graph_model_map.json`이며 코드 없이 고칠 수 있다
+5. 분석 단계에서 PR은 **판정 근거가 아니다**. 판정은 지금처럼 모델 근거(FS/OH/DP/GT)로만 하고, PR은 주장마다 `proposition_ids`와 `graph_note`(그래프 경로와 확인할 조건)로 따로 단다. 코드가 PR을 `evidence_ids`에 쓰거나, graph_note에 모델 근거를 섞으면 잡아낸다
+
+준비:
+- Supabase에 FDS 그래프와 임베딩이 적재돼 있어야 한다: `python backend/graph/load_graph.py` ([backend/graph](../graph/README.md))
+- `.env`: `SUPABASE_DB_URL`, `OPENAI_API_KEY` (선택: `OPENAI_EMBED_MODEL` 기본 text-embedding-3-small. 그래프를 임베딩한 모델과 같아야 한다)
+- 연결·설정이 없으면 `propositions.status: not_computed`와 사유가 남고 나머지는 그대로 돈다
+
+시험: `pytest tests/llm/test_graph_props.py` (가짜 객체). 실제 그래프·OpenAI로는 `GRAPH_LIVE=1`을 붙인다.
 
 ## 한계
 
 - 모델 데이터가 2015~2019년이라 그 밖의 날짜는 `warnings`가 붙고 대부분 유보가 된다
 - 결과는 임시 규칙(`provisional-0`) 기준이고 통합 판정은 없다(D10)
+- 경제명제: g1.1 카드 641개는 팀 결정(2026-11-11)으로 모두 approved다. 다만 실증 카드의 메커니즘 문장은 LLM 초안에서 출발했다(`data/fds_graph/README.md`). 구절과 노드를 임베딩 유사도로 짝짓기 때문에 엉뚱한 변수에 붙을 수 있다 (예: '광통신 수요' → 통화가치 절하). 근거 문장에 짝짓기와 유사도 경고를 남긴다
+- 경제명제: 그래프 변수와 모델 지표의 연결표(`graph_model_map.json`)는 확실한 8개만 넣었다. 총자산회전율(DuPont ATO)은 그래프에 맞는 변수가 없다
 
 ## 배포된 신호를 설명할 때
 
