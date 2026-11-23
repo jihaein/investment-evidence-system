@@ -96,7 +96,10 @@ def summary(result):
     return {"decision": result.get("decision"), "decided_by_rule": result.get("decided_by_rule"),
             "as_of": result.get("as_of"),
             "claims": [{"span": c.get("span"), "tag": item_tag(c)} for c in result.get("claim", [])],
-            "grounds": [{"span": g.get("span"), "tag": item_tag(g)} for g in result.get("grounds", [])]}
+            "grounds": [{"span": g.get("span"), "tag": item_tag(g)} for g in result.get("grounds", [])],
+            "backing": len(result.get("backing") or []), "rebuttal": len(result.get("rebuttal") or []),
+            "unresolved": len(result.get("unresolved_items") or []),
+            "next_questions": [q.get("text") for q in (result.get("question_candidates") or [])][:3]}
 
 
 def kst_date(timestamp):
