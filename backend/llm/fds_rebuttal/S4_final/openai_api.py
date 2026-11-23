@@ -38,6 +38,15 @@ def strict_schema(schema):
     walk(schema)
     return schema
 
+def sampling_temperature(model):
+    """Same conversation → same verdict: sample at 0 unless OPENAI_TEMPERATURE says otherwise.
+    Reasoning models (o-series, gpt-5) reject the parameter, so it is left out for them."""
+    if model.startswith(("o1", "o3", "o4", "gpt-5")):
+        return None
+    value = os.getenv("OPENAI_TEMPERATURE", "").strip()
+    return float(value) if value else 0.0
+
+
 def generate(instructions, input_json, schema, *, model=None, timeout=120, retries=1):
     model = model or os.getenv("OPENAI_MODEL", DEFAULT_MODEL)
     key = load_key()
@@ -47,6 +56,9 @@ def generate(instructions, input_json, schema, *, model=None, timeout=120, retri
     body = dict(model=model, instructions=instructions, input=input_json, store=False,
                 text={"format": {"type": "json_schema", "name": "fds_output",
                                  "strict": True, "schema": strict_schema(wire_schema)}})
+    temperature = sampling_temperature(model)
+    if temperature is not None:
+        body["temperature"] = temperature
     for attempt in range(retries + 1):
         start = time.perf_counter()
         event = dict(model=model, attempt=attempt + 1, outcome="failed")
