@@ -5,10 +5,10 @@ from pathlib import Path
 import re
 from datetime import date
 
-from S4_final import openai_api
-from S5.graph import Graph
+from S4_investor_extraction import openai_api_client as openai_api
+from S5_investor_arguments.graph_loader import Graph
 from runtime_inputs import cached_json, file_sha256
-from S9.run import assemble
+from S9_toulmin_assembly.build_toulmin_output import assemble
 from decimal import Decimal, ROUND_HALF_UP
 import os
 
@@ -504,7 +504,7 @@ def main():
     parser.add_argument("--asked-before", type=Path, help="Optional JSON list of previously asked CC IDs")
     parser.add_argument("--model")
     args = parser.parse_args()
-    output = args.output or args.toulmin.parent.parent / "S10/dialogue.json"
+    output = args.output or args.toulmin.parent.parent / "S10_dialogue_generation/dialogue.json"
     facts = json.loads(args.facts.read_text(encoding="utf-8")) if args.facts else None
     asked = json.loads(args.asked_before.read_text(encoding="utf-8")) if args.asked_before else None
     path, status = run(args.toulmin, output, facts=facts, asked_before=asked, model=args.model)

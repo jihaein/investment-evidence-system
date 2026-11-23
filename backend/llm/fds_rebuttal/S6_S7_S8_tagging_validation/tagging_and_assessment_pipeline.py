@@ -10,20 +10,20 @@ import sqlite3
 from tempfile import NamedTemporaryFile
 from uuid import uuid4
 
-from S5.graph import Graph, read_json, require
+from S5_investor_arguments.graph_loader import Graph, read_json, require
 from collections import Counter, defaultdict
-from S5.validation import verify as verify_argument
-from S4_final import openai_api as provider
-from S4_final.extraction import parse_response
+from S5_investor_arguments.investor_argument_validation import verify as verify_argument
+from S4_investor_extraction import openai_api_client as provider
+from S4_investor_extraction.investor_mention_extraction import parse_response
 from runtime_inputs import cached_json, card_allowed, card_bundle, config, file_sha256, select_company_argument
 import time
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-S3 = ROOT / "S3_fianl"
+S3 = ROOT / "S3_company_arguments"
 PERIODS = ROOT / config()["company_arguments_dir"]
-CARDS = ROOT / "S2.화살표노드/edge_cards"
-GRAPH = ROOT / "S1.인과그래프/new_graph.json"
+CARDS = ROOT / "S2_edge_cards/edge_cards"
+GRAPH = ROOT / "S1_causal_graph/causal_graph.json"
 
 
 def source_path(path):
@@ -398,7 +398,7 @@ def load_s6_inputs(argument_path, stock_code, period, *, mechanical=True,
     registry = period_path.parent / meta["fact_registry"]
     facts = cached_json(registry)["facts"] if company_input is not None or alert_date is not None else read_json(registry)["facts"]
     check_observations(a, co, facts, meta["cutoff"])
-    cfg = read_json(S3 / "s3_config.json")
+    cfg = read_json(S3 / "company_argument_config.json")
     digest = sha256(json.dumps(cfg, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
     require(meta.get("config_sha256", digest) == digest, "S3 trend config hash mismatch")
     policies = {**cfg["trend_policies"], **cfg.get("node_trends", {})}

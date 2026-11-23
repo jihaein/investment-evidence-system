@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 PROJECT = Path(__file__).resolve().parent.parent
-GRAPH = PROJECT / "S1.인과그래프" / "new_graph.json"
+GRAPH = PROJECT / "S1_causal_graph" / "causal_graph.json"
 
 
 def load_graph():

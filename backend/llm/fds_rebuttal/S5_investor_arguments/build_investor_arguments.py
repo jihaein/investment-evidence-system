@@ -1,13 +1,13 @@
 """One S5 pipeline. Mention IDs identify speech; graph IDs identify variables."""
 import json
-from S4_final.extraction import InvalidExtraction, parse_response
-from S4_final.openai_api import ProviderError
+from S4_investor_extraction.investor_mention_extraction import InvalidExtraction, parse_response
+from S4_investor_extraction.openai_api_client import ProviderError
 from collections import defaultdict
 from heapq import heappop, heappush
 from itertools import count, product
 
-from .graph import EDGE_TYPES, propagate, require
-from .mentions import logical_groups, map_mentions
+from .graph_loader import EDGE_TYPES, propagate, require
+from .investor_mentions import logical_groups, map_mentions
 
 
 def add_use(items, key, use):
@@ -250,7 +250,7 @@ def build(s4, message, graph, cfg, session_id, turn_id, *, generate=None):
     require(cfg.get("llm_min_candidates", 2) == 2 and type(cfg.get("llm_enabled", False)) is bool,
             "invalid LLM selection configuration")
     if generate is None and cfg.get("llm_enabled"):
-        from S4_final.openai_api import generate
+        from S4_investor_extraction.openai_api_client import generate
     if cfg.get("llm_enabled"):
         require(isinstance(cfg.get("llm_model"), str) and cfg["llm_model"].strip(), "missing llm_model")
     require(isinstance(session_id, str) and session_id.strip() and type(turn_id) is int and turn_id >= 1,

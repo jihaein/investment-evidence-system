@@ -11,8 +11,8 @@ from datetime import date, timedelta
 from pathlib import Path
 
 sys.dont_write_bytecode = True
-from adapters import FORMULAS, Inputs, Period, Point, cutoff_for, digest, file_hash
-from engine import (Graph, build_company, choose_series, edge_argument, graph_identity, index,
+from .company_argument_adapters import FORMULAS, Inputs, Period, Point, cutoff_for, digest, file_hash
+from .company_argument_engine import (Graph, build_company, choose_series, edge_argument, graph_identity, index,
                     node_argument, read_json)
 
 HERE = Path(__file__).resolve().parent
@@ -307,7 +307,7 @@ def run_batch(mode, dates, graph, data, report):
 
 def main():
     parser = argparse.ArgumentParser(description="S3 company argument (KST point-in-time)")
-    parser.add_argument("--config", type=Path, default=HERE / "s3_config.json")
+    parser.add_argument("--config", type=Path, default=HERE / "company_argument_config.json")
     modes = parser.add_subparsers(dest="mode", required=True)
     inspect = modes.add_parser("inspect")
     inspect.add_argument("--peer-graph", type=Path, help="Optional permitted copy of the S5 source graph")

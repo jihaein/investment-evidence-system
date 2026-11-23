@@ -12,12 +12,12 @@ import sys
 from time import perf_counter
 from uuid import uuid4
 
-from S4_final import openai_api as provider
-from S4_final.run import run_s4
-from S4_final.extraction import normalize_input
+from S4_investor_extraction import openai_api_client as provider
+from S4_investor_extraction.extract_investor_mentions import run_s4
+from S4_investor_extraction.investor_mention_extraction import normalize_input
 from runtime_inputs import card_bundle, company_id, file_sha256, select_company_argument
-from S5.run import run as run_s5
-from S6_S7_S8.pipeline_s6_s7_s8 import PERIODS, ROOT, run_s6, run_s7, run_s8, run_assessment
+from S5_investor_arguments.run_investor_arguments import run as run_s5
+from S6_S7_S8_tagging_validation.tagging_and_assessment_pipeline import PERIODS, ROOT, run_s6, run_s7, run_s8, run_assessment
 
 RUNS = ROOT / "pipeline_runs"
 
@@ -74,7 +74,7 @@ def previous_context(previous, session, turn, code, period, question_cc=None, co
         raise ValueError("이전 최종 S8 평가의 검증 태그 불일치")
     company = s3["companies"][code]
     rebuttals = []
-    cards, _ = card_bundle(ROOT / "S2.화살표노드/edge_cards")
+    cards, _ = card_bundle(ROOT / "S2_edge_cards/edge_cards")
     for row in assessment["item_tags"]:
         if row.get("tag") != "undercut" or not row.get("target", "").startswith("edge:"):
             continue

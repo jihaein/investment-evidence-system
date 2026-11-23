@@ -1,4 +1,4 @@
-"""프로젝트 루트에서 python -B -m S4_final.run 으로 실행한다."""
+"""프로젝트 루트에서 python -B -m S4_investor_extraction.extract_investor_mentions 으로 실행한다."""
 
 import argparse
 from datetime import datetime, timezone
@@ -11,8 +11,8 @@ from pathlib import Path
 import sys
 from uuid import uuid4
 
-from . import extraction
-from . import openai_api as provider
+from . import investor_mention_extraction as extraction
+from . import openai_api_client as provider
 
 
 HERE = Path(__file__).resolve().parent
@@ -48,10 +48,10 @@ def run_s4(investor_message, generate, *, output_dir=None, previous_turn=None, d
         stage = "입력 확인"
         try:
             conversation, answer_text = extraction.normalize_input(investor_message)
-            stage = "new_graph.json 읽기 및 노드 사전 구성"
+            stage = "causal_graph.json 읽기 및 노드 사전 구성"
             graph = extraction.load_graph()
             dictionary = extraction.node_dictionary(graph)
-            log.info("new_graph.json 읽음 · 노드 사전 %d개 · 엣지 %d개는 입력에서 제외",
+            log.info("causal_graph.json 읽음 · 노드 사전 %d개 · 엣지 %d개는 입력에서 제외",
                      len(dictionary), len(graph["edges"]))
             stage = "분석 LLM 호출"
             log.info(stage)

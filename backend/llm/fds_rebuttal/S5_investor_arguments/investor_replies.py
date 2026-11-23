@@ -2,7 +2,7 @@
 from copy import deepcopy
 import re
 
-from .graph import require
+from .graph_loader import require
 
 
 def effective_s4(s4):

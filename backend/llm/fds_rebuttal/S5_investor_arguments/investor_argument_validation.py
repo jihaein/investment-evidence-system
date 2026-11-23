@@ -1,7 +1,7 @@
 """Check the published S5 contract and optional S3 key join. No evidence tags."""
 from collections import Counter
 
-from .graph import propagate, require
+from .graph_loader import propagate, require
 
 
 def verify_route(nodes, edges, graph, start, end):

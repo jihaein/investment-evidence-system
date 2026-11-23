@@ -1,8 +1,8 @@
 """Validate S4 evidence, retaining unresolved graph mappings for inspection."""
 from collections import defaultdict
 
-from S4_final.extraction import CHOICES, InvalidExtraction, grounded_operator, is_excerpt, validate_group
-from .graph import indexed, require
+from S4_investor_extraction.investor_mention_extraction import CHOICES, InvalidExtraction, grounded_operator, is_excerpt, validate_group
+from .graph_loader import indexed, require
 
 
 def map_mentions(out, s4, message, graph):

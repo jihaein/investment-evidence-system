@@ -1,4 +1,4 @@
-"""Run from the project root with python -B -m S5.run."""
+"""Run from the project root with python -B -m S5_investor_arguments.run_investor_arguments."""
 import argparse
 import json
 import os
@@ -6,15 +6,15 @@ from pathlib import Path
 import tempfile
 from uuid import uuid4
 
-from .argument import build
-from .graph import Graph, read_json, require
-from .validation import verify, verify_company_join
-from .replies import attach_lineage, effective_s4, compose_active
-from S4_final.extraction import validate_result
+from .build_investor_arguments import build
+from .graph_loader import Graph, read_json, require
+from .investor_argument_validation import verify, verify_company_join
+from .investor_replies import attach_lineage, effective_s4, compose_active
+from S4_investor_extraction.investor_mention_extraction import validate_result
 from hashlib import sha256
 
 HERE = Path(__file__).resolve().parent
-GRAPH = HERE.parent / "S1.인과그래프" / "new_graph.json"
+GRAPH = HERE.parent / "S1_causal_graph" / "causal_graph.json"
 
 
 def run(mentions_path, session_id, turn_id, output, *, graph_path=GRAPH, config_path=HERE/"config.json",

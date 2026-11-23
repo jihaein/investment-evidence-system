@@ -11,10 +11,10 @@ from unittest.mock import patch
 
 import pipeline
 from runtime_inputs import company_id, select_company_argument
-from S4_final import openai_api
-from S5 import graph as graph_module
-from S5 import argument as argument_module
-from S9.run import assemble
+from S4_investor_extraction import openai_api_client as openai_api
+from S5_investor_arguments import graph_loader as graph_module
+from S5_investor_arguments import build_investor_arguments as argument_module
+from S9_toulmin_assembly.build_toulmin_output import assemble
 
 _SEEN_SNAPSHOTS = set()
 
@@ -50,7 +50,7 @@ def run(request, output, *, extract=None, select=None, nuance=None):
     original_read = graph_module.read_json
     original_connect = argument_module.connect
     immutable_roots = tuple((Path.cwd() / name).resolve() for name in
-                            ("S1.인과그래프", "S2.화살표노드", "S3_fianl"))
+                            ("S1_causal_graph", "S2_edge_cards", "S3_company_arguments"))
     def cached(path):
         path = Path(path)
         stamp = path.stat()
@@ -96,8 +96,8 @@ def run(request, output, *, extract=None, select=None, nuance=None):
                         metrics["file_io_seconds"] += perf_counter() - tick
                         metrics["file_io_operations"] += 1
                 stack.enter_context(patch.object(Path, method, file_io))
-            import S5.run, S6_S7_S8.pipeline_s6_s7_s8 as p
-            for module in (graph_module, S5.run, p):
+            import S5_investor_arguments.run_investor_arguments, S6_S7_S8_tagging_validation.tagging_and_assessment_pipeline as p
+            for module in (graph_module, argument_module, p):
                 stack.enter_context(patch.object(module, "read_json", cached))
             stack.enter_context(patch.object(argument_module, "connect", connect))
             if nuance:

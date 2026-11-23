@@ -1,7 +1,7 @@
 {
   "mapping_version": "2026.11.latest-csv.1",
-  "graph": "S1.인과그래프/new_graph.json",
-  "cards": "S2.화살표노드/edge_cards",
+  "graph": "S1_causal_graph/causal_graph.json",
+  "cards": "S2_edge_cards/edge_cards",
   "company_list": "데이터/07_기업x분기_12개항목_결합 (1).csv",
   "years": [2024, 2026],
   "last_update": "2026-09-01",
