@@ -3,9 +3,11 @@
 Replaces the UI repo's tools/prices/push_prices.py + the teammate PC's daily KRX download. Same tables and rules:
   stock_names  every KOSPI/KOSDAQ stock on the latest uploaded day (code, name, market, close, market value)
   price_daily  daily bars (raw, unadjusted, as KRX shows them) for the stocks the app needs: the top 300 by market
-               value, the 12 journal stocks and every stock in a player's garden (garden_saves)
+               value, the 12 journal stocks, the models' 120 stocks (ops/live/stock_coverage.csv) and every stock in a
+               player's garden (garden_saves)
 Each run uploads the sessions after the last uploaded day (whole market fetched once per session, filtered), and
-a stock wanted for the first time gets its history from --from (one request per stock). Halted days (no open) are
+a stock wanted for the first time gets its history from --from (one request per stock), also on a run with no new
+session (a stock just planted in a garden gets its bars on the next run, not the next trading day). Halted days (no open) are
 skipped. Safe to run again: upserts only.
 
     python ops/ui/push_prices.py --dry      # fetch and count, upload nothing (no UI keys needed)
@@ -29,6 +31,15 @@ sys.path.insert(0, str(ROOT))
 JOURNAL_STOCKS = ['005930', '000660', '373220', '005380', '035420', '035720', '068270', '105560', '012450', '005490',
                   '247540', '196170']
 TOP = 300
+COVERAGE = ROOT / "ops" / "live" / "stock_coverage.csv"
+
+
+def universe_codes():
+    """The models' stocks (서서히, 급락): without their bars a garden line for one of them falls back to a mock tree."""
+    if not COVERAGE.exists():
+        return set()
+    return {line.split(",")[0] for line in COVERAGE.read_text(encoding="utf-8").splitlines()
+            if line[:6].isdigit() and (len(line.split(",")) < 3 or not line.split(",")[2].strip())}
 BATCH = 1000
 KST = ZoneInfo("Asia/Seoul")
 
@@ -145,7 +156,20 @@ def main(argv=None):
     last = date.fromisoformat(last_row["d"]) if last_row else None
     days = sessions_after(last, today) if not a.dry else sessions_after(None, today)[-1:]
     if not days:
-        print(f"price_daily is up to date ({last})")
+        # no new session: still give a stock that is wanted for the first time its history (a fresh garden line)
+        wanted = set(JOURNAL_STOCKS) | universe_codes() | garden_codes(sb)
+        have = {r["code"] for r in sb.req("GET", f"price_daily?select=code&d=eq.{last.isoformat()}&limit=5000")} if last else set()
+        fresh = sorted(wanted - have)
+        if not fresh:
+            print(f"price_daily is up to date ({last})")
+            return 0
+        rows = []
+        for code in fresh:
+            rows += history(code, start, last)
+            time.sleep(0.2)
+        print(f"price_daily is up to date ({last}); history for {len(fresh)} new stock(s): {len(rows)} bars")
+        sb.upsert("price_daily", rows, "code,d")
+        print("uploaded")
         return 0
     markets = {}
     for day in days:
@@ -160,7 +184,7 @@ def main(argv=None):
     names = [{"code": r["code"], "name": r["name"], "mkt": r["mkt"], "close": r["c"], "mktcap": r["mktcap"],
               "as_of": latest.isoformat()} for r in markets[latest]]
     top = [n["code"] for n in sorted(names, key=lambda n: -(n["mktcap"] or 0))[:TOP]]
-    wanted = set(top) | set(JOURNAL_STOCKS) | (garden_codes(sb) if sb else set())
+    wanted = set(top) | set(JOURNAL_STOCKS) | universe_codes() | (garden_codes(sb) if sb else set())
     have = set() if last is None or a.dry else {
         r["code"] for r in sb.req("GET", f"price_daily?select=code&d=eq.{last.isoformat()}&limit=5000")}
     first = min(markets)
