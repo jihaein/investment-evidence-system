@@ -15,6 +15,7 @@
 | `backtest/` | 백테스트 엔진·지표·몬테카를로, 실험 노트북 |
 | `ops/live/` | 이 Mac의 매일 실행(launchd), 상태 점검, DB 마이그레이션, 거래일 달력·종목 범위 |
 | `ops/cloud/` | Supabase Storage 동기화(`sync.py`)와 복원 검증(`restore_test.py`) |
+| `ops/ui/` | UI(ReThinking_UI) 연결: 실제 주가 업로드(`push_prices.py`), 보리 대화 반박 분석 워커(`analysis_worker.py`), UI DB 표(`sql/`) |
 | `ops/staging/` | Render 스테이징 배포 설정 |
 | `backend/graph/`, `data/fds_graph/` | FDS 공통 인과그래프 원본(JSON)과 Supabase 적재 스크립트. LLM 분석의 경제명제(반박 근거)에 쓴다. [README](backend/graph/README.md) |
 | `contracts/` | 연구용 결과 계약 JSON 스키마 |
