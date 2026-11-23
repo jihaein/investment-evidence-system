@@ -16,6 +16,7 @@
 | `ops/live/` | 이 Mac의 매일 실행(launchd), 상태 점검, DB 마이그레이션, 거래일 달력·종목 범위 |
 | `ops/cloud/` | Supabase Storage 동기화(`sync.py`)와 복원 검증(`restore_test.py`) |
 | `ops/staging/` | Render 스테이징 배포 설정 |
+| `backend/graph/`, `data/fds_graph/` | FDS 공통 인과그래프 원본(JSON)과 Supabase 적재 스크립트. LLM 분석의 경제명제(반박 근거)에 쓴다. [README](backend/graph/README.md) |
 | `contracts/` | 연구용 결과 계약 JSON 스키마 |
 | `data/` | 저장소에 포함된 소형 연구 입력(`fscore`, `ohlson`, `llm`). `data/rawdata`는 Git 밖, 클라우드에서 복원 |
 | `tests/` | `pytest` |
