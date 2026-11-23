@@ -68,5 +68,11 @@
       "*.gslides"
     ],
     "about": "Shared Google Drive skku_fds_main/데이터 (older DuPont inputs, KRX, OpenDART, FDS 12 items, DB dumps). Native Google Sheets (.gsheet) are only links: export them as CSV to include them."
+  },
+  {
+    "name": "rebuttal_s3",
+    "env": "REBUTTAL_S3_DIR",
+    "default": "backend/llm/fds_rebuttal/S3_fianl/runs/full-2024-2026",
+    "about": "윤정민 rebuttal pipeline S3 company arguments (also in Git LFS); the cloud copy is what servers read"
   }
 ]

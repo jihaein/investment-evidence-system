@@ -163,7 +163,17 @@ def run(request, output, *, extract=None, select=None, nuance=None):
         manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def load_env():
+    """Repository .env (OPENAI_API_KEY, OPENAI_MODEL ...). Variables already set are kept."""
+    try:
+        from dotenv import load_dotenv
+    except ImportError:
+        return
+    load_dotenv(Path(__file__).resolve().parents[3] / ".env")
+
+
 def main():
+    load_env()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, action="append", required=True,
                         help="Turn JSON; repeat in turn order for a session")
