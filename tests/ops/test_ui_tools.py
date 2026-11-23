@@ -43,3 +43,27 @@ def test_halted_day_has_no_bar_and_numbers_are_parsed():
     assert pp.bar(row, date(2026, 11, 20)) == {"code": "005930", "d": "2026-11-20", "o": 71000.0, "h": 72000.0,
                                                "l": 70500.0, "c": 71500.0, "v": 12345}
     assert pp.bar({**row, "o": pp.num("-")}, date(2026, 11, 20)) is None
+
+
+import push_signals as ps  # noqa: E402
+
+
+def test_real_holdings_skip_virtual_bad_and_duplicate():
+    body = {"holdings": [{"code": "095270", "date": "2025-12-01"}, {"code": "095270", "date": "2025-12-01"},
+                         {"code": "005930", "date": "2026-01-05", "virtual": True}, {"name": "x", "date": "2026-01-01"},
+                         {"code": "12345", "date": "2026-01-01"}, {"code": "018290", "date": "2026-13-01"}]}
+    assert ps.real_holdings(body) == [("095270", date(2025, 12, 1))]
+
+
+def test_rows_say_not_covered_no_signal_and_copy_the_verdict():
+    today = date(2026, 11, 23)
+    out = ps.to_row("p", "005930", date(2026, 1, 5), None, {"095270"}, today)
+    assert out["status"] == "not_covered" and out["verdict"] is None
+    assert ps.to_row("p", "095270", date(2019, 5, 1), {"error": "신호 없음"}, {"095270"}, today)["status"] == "no_signal"
+    signal = {"status": "available", "verdict": "No", "fscore": 0, "ohlson_score": 0, "dupont_score": 0,
+              "sum_total": 0, "eval_date": "2026-11-20", "baseline_date": "2025-09-01", "release_id": 17,
+              "financial_as_of": "2026-11-17", "price_as_of": "2026-11-20", "rule_version": "seoseohi-sum-v1",
+              "evidence": {}, "stock_name": "웨이브일렉트로"}
+    row = ps.to_row("p", "095270", date(2025, 12, 1), signal, {"095270"}, today)
+    assert row["status"] == "available" and row["verdict"] == "No" and row["release_id"] == 17
+    assert "stock_name" not in row and row["buy_date"] == "2025-12-01"
