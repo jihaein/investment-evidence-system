@@ -34,11 +34,13 @@ pytest
 
 ## 매일 운영
 
-- 평일 08:30, 19:30, 22:30에 `ops/live/run_daily.sh`가 실행된다: 클라우드에서 빠진 파일 복원 → KRX·DART 갱신과 발행 → 클라우드 업로드. 실패·지연만 macOS 알림이 온다.
-- 설치: `cp ops/live/com.jihaein.ies-refresh.plist ~/Library/LaunchAgents/ && launchctl load ~/Library/LaunchAgents/com.jihaein.ies-refresh.plist`
-- 점검: `python ops/live/check_status.py`, `python ops/live/verify_signals.py`, 로그 `ops/live/logs/`
-- 보류된 공시: DART 스냅샷 폴더의 `pending_triage.json` (`needs_review`만 사람이 볼 것)
-- 거래일 달력 `ops/live/krx_sessions.csv`는 **2026-12-30까지**다. 연말 전에 2027년 거래일을 추가한다.
+- **GitHub Actions**(`.github/workflows/daily-refresh.yml`)가 평일 08:30, 19:30, 22:30(KST)에 돈다: 클라우드에서 빠진 파일 채우기 → 거래일 달력 연장 → KRX·DART 갱신과 발행 → 클라우드 업로드 → 최신 거래일 발행 확인. 실패하면 GitHub가 이메일을 보낸다.
+- 손으로 돌리기: Actions → daily-refresh → Run workflow ("Only test the KRX download"를 고르면 발행 없이 KRX 다운로드만 확인).
+- 켜고 끄기: 저장소 변수 `CLOUD_SCHEDULE_ENABLED`(true면 예약 실행). 비밀값 6개는 Settings → Secrets and variables → Actions.
+- **두 곳에서 동시에 돌리지 않는다.** Mac용 launchd 설정(`ops/live/com.jihaein.ies-refresh.plist`, `run_daily.sh`)은 예비로 남겨 두었고 꺼져 있다.
+- 점검: `python ops/live/check_status.py`, `python ops/live/verify_signals.py`
+- 보류된 공시: DART 스냅샷 폴더의 `pending_triage.json` (`needs_review`만 사람이 볼 것). DART가 원문 문서를 주지 않는 접수번호는 `_raw_pull/dart/document_missing.json`에 기록만 한다.
+- 거래일 달력은 매 실행마다 1년 앞까지 자동으로 늘어난다(`ops/live/update_calendar.py`). KRX의 임시 휴장은 `ops/live/krx_closures.csv`에 한 줄 추가한다.
 - 자세한 설치·복구·롤백: [운영 안내](docs/operations.md)
 
 ## 데이터 위치
