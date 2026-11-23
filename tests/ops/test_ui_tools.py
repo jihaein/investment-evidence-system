@@ -69,3 +69,9 @@ def test_rows_say_not_covered_no_signal_and_copy_the_verdict():
     row = ps.to_row("p", "095270", date(2025, 12, 1), signal, {"095270"}, today)
     assert row["status"] == "available" and row["verdict"] == "No" and row["release_id"] == 17
     assert "stock_name" not in row and row["buy_date"] == "2025-12-01"
+
+
+def test_alert_date_comes_from_the_packet_when_it_is_there():
+    assert aw.alert_date_of({"alert_date": "2026-11-20"}, "2026-11-23T01:00:00Z") == "2026-11-20"
+    assert aw.alert_date_of({}, "2026-11-22T16:30:00Z") == "2026-11-23"            # arrival day in KST
+    assert aw.alert_date_of({"alert_date": "nope"}, "2026-11-22T14:00:00Z") == "2026-11-22"

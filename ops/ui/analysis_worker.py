@@ -21,7 +21,7 @@ import tempfile
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -106,6 +106,18 @@ def kst_date(timestamp):
     return datetime.fromisoformat(timestamp.replace("Z", "+00:00")).astimezone(KST).date().isoformat()
 
 
+def alert_date_of(packet, received_at):
+    """The day of the loss signal that started the talk: the packet's alert_date (YYYY-MM-DD, asked of the UI team
+    2026-11-23) when it is there and valid, otherwise the day the packet arrived (KST)."""
+    value = packet.get("alert_date") if isinstance(packet, dict) else None
+    if isinstance(value, str):
+        try:
+            return date.fromisoformat(value[:10]).isoformat()
+        except ValueError:
+            pass
+    return kst_date(received_at)
+
+
 def process_inbox(ui, limit):
     rows = ui.req("GET", "analysis_inbox?select=request_id,player_id,route,payload,received_at"
                          f"&analyzed_at=is.null&order=received_at.asc&limit={limit}") or []
@@ -115,7 +127,7 @@ def process_inbox(ui, limit):
         prior = (ui.req("GET", f"analysis_results?select=attempts&request_id=eq.{urllib.parse.quote(rid)}") or [{}])[0]
         attempts = (prior.get("attempts") or 0) + 1
         packet = row["payload"] if isinstance(row["payload"], dict) else json.loads(row["payload"])
-        alert = kst_date(row["received_at"])
+        alert = alert_date_of(packet, row["received_at"])
         record = {"request_id": rid, "player_id": row["player_id"], "company_id": packet.get("company_id"),
                   "alert_date": alert, "attempts": attempts, "analyzed_at": datetime.now(KST).isoformat()}
         close = True
