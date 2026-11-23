@@ -87,7 +87,8 @@ jobs:
         if: inputs.krx_check
         run: |
           python ops/live/krx_check.py
-          python ops/ui/push_prices.py --dry
+          python ops/ui/push_prices.py
+          python ops/ui/push_signals.py --dry
 
       - name: Refresh KRX and DART, publish signals
         id: refresh
@@ -114,7 +115,7 @@ jobs:
         run: python ops/live/check_fresh.py
 
       # UI prices (ReThinking_UI price_daily / stock_names). Skipped until the UI project's secrets are set.
-      - name: Upload prices to the UI
+      - name: Upload prices and 서서히 verdicts to the UI
         if: ${{ !inputs.krx_check && env.UI_SUPABASE_URL != '' }}
         run: |
           export UI_SUPABASE_URL="$(printf %s "$UI_SUPABASE_URL" | tr -d '\r\n ')"

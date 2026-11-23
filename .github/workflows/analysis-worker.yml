@@ -3,7 +3,7 @@
 # Setup (once): secrets UI_SUPABASE_URL, UI_SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY (plus the cloud-storage
 # secrets SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY already used by daily-refresh); run ops/ui/sql/analysis_results.sql
 # in the UI project; then set the repository variable ANALYSIS_SCHEDULE_ENABLED = true.
-# Every 30 minutes it analyses the packets that arrived since the last run. Manual run: Actions → analysis-worker.
+# Every 30 minutes it refreshes the gardens' 서서히 verdicts and analyses the packets that arrived since the last run. Manual run: Actions → analysis-worker.
 name: analysis-worker
 
 on:
@@ -29,6 +29,7 @@ jobs:
       UI_SUPABASE_URL: ${{ secrets.UI_SUPABASE_URL }}
       UI_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.UI_SUPABASE_SERVICE_ROLE_KEY }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
     steps:
       - uses: actions/checkout@v4      # Git LFS files are not downloaded; the S3 files come from cloud storage
 
@@ -37,11 +38,11 @@ jobs:
           python-version: "3.12"
           cache: pip
 
-      - run: pip install requests python-dotenv
+      - run: pip install -r requirements.txt
 
       - name: Trim secrets
         run: |
-          for name in SUPABASE_URL SUPABASE_SERVICE_ROLE_KEY UI_SUPABASE_URL UI_SUPABASE_SERVICE_ROLE_KEY OPENAI_API_KEY; do
+          for name in SUPABASE_DB_URL SUPABASE_URL SUPABASE_SERVICE_ROLE_KEY UI_SUPABASE_URL UI_SUPABASE_SERVICE_ROLE_KEY OPENAI_API_KEY; do
             value="$(printenv "$name" | tr -d '\r\n' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
             if [ -z "$value" ]; then echo "::error::Secret $name is missing"; exit 1; fi
             { echo "$name<<__END__"; echo "$value"; echo "__END__"; } >> "$GITHUB_ENV"
@@ -67,6 +68,10 @@ jobs:
         with:
           path: /home/runner/rebuttal-s3
           key: rebuttal-s3-${{ github.run_id }}
+
+      # a stock planted since the last daily refresh gets its 서서히 verdict within 30 minutes
+      - name: 서서히 verdicts for the gardens
+        run: python -u ops/ui/push_signals.py
 
       - name: Analyse pending packets
         run: python -u ops/ui/analysis_worker.py
