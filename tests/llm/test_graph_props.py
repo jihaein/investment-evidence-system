@@ -274,3 +274,16 @@ def test_live_graph_finds_the_raw_material_path():
     link = b["links"][0]
     assert link["path"][0]["node_id"] == "raw_material_price" and link["net_sign"] == "-"
     assert link["direction_check"] == "same"
+
+
+def test_model_link_named_by_the_graph_evidence_is_allowed(graph_pack):
+    import copy
+    pack = copy.deepcopy(graph_pack)
+    pr1 = next(e for e in pack["inputs"]["propositions"]["evidence"] if e["id"] == "PR-1")
+    pr1["values"]["model_links"] = [{"node_id": "operating_margin", "label": "영업이익률", "where": "path",
+                                     "model": "dupont", "indicator": "영업이익률(PM)", "match": "same",
+                                     "evidence": ["DP-1"]}]
+    ok = an.validate_assessment(answer(graph_note="경로 끝의 영업이익률은 DuPont PM(DP-1)으로 확인하는 변수다(PR-1)."), pack)
+    assert not any("섞임" in i for i in ok)
+    other = an.validate_assessment(answer(graph_note="DuPont PM(DP-1)과 Ohlson(OH-2)도 같은 방향이다(PR-1)."), pack)
+    assert any("섞임" in i and "ohlson" in i and "OH-2" in i and "DP-1" not in i for i in other)

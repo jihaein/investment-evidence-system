@@ -240,6 +240,8 @@ def validate_assessment(assessment, pack):
 
     if opinion.strip() and not assessment["claims"]:
         issues.append("오류: 의견이 있는데 주장이 하나도 없음")
+    pr_links = {e["id"]: (e.get("values") or {}).get("model_links") or []
+                for e in ((pack["inputs"].get("propositions") or {}).get("evidence") or [])}
     for c in assessment["claims"]:
         cid = c["id"]
         c.setdefault("proposition_ids", [])                   # 경제명제 칸이 없던 예전 답도 같은 규칙으로 본다
@@ -260,7 +262,13 @@ def validate_assessment(assessment, pack):
             issues.append(f"경고: {cid} 경제명제 근거를 달았는데 graph_note가 비어 있음")
         if c["graph_note"].strip() and not c["proposition_ids"]:
             issues.append(f"경고: {cid} graph_note가 있는데 경제명제 근거 ID가 없음")
-        mixed = sorted(m for m, words in MODEL_WORDS.items() if any(w in c["graph_note"] for w in words))             + sorted({e for e in ev_model if e not in pr_ids and e in c["graph_note"]})
+        # 경로 근거(PR) 자체가 "이 변수는 DuPont PM [DP-1]으로 확인" 같은 연결을 알려 준다. 그 연결을 옮겨 적는 것은 허용한다
+        linked = [l for pid in c["proposition_ids"] for l in pr_links.get(pid, [])]
+        allowed_models = {l["model"] for l in linked}
+        allowed_ids = {e for l in linked for e in l.get("evidence", [])}
+        mixed = sorted(m for m, words in MODEL_WORDS.items()
+                       if m not in allowed_models and any(w in c["graph_note"] for w in words)) \
+            + sorted({e for e in ev_model if e not in pr_ids and e not in allowed_ids and e in c["graph_note"]})
         if mixed:
             issues.append(f"경고: {cid} graph_note에 모델 근거가 섞임: {mixed} (그래프 이야기만 써야 함)")
         cited_models = {ev_model[e] for e in c["evidence_ids"] if e in ev_model and e not in pr_ids}
