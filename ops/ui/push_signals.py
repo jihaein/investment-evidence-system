@@ -29,10 +29,12 @@ KEEP = ("verdict", "fscore", "ohlson_score", "dupont_score", "sum_total", "eval_
 
 
 def real_holdings(body):
-    """(code, buy_date) of the real holdings in one saved garden, without duplicates."""
+    """(code, buy_date) of the real-price holdings in one saved garden, without duplicates."""
     found = []
     for h in (body or {}).get("holdings") or []:
-        if not isinstance(h, dict) or h.get("virtual"):
+        # only trees on real prices (the app's `real` flag): mock and demo trees carry codes too, and virtual
+        # (coin-bought) ones are a game. The app shows the model's verdict on real trees only.
+        if not isinstance(h, dict) or h.get("virtual") or h.get("real") is not True:
             continue
         code, day = h.get("code"), h.get("date")
         if isinstance(code, str) and re.fullmatch(r"\d{6}", code) and isinstance(day, str) \
@@ -87,7 +89,7 @@ def main():
     if args.holdings:
         ui = None
         per_player = {"(test)": real_holdings({"holdings": [
-            {"code": item.split(":")[0], "date": item.split(":")[1]} for item in args.holdings.split(",") if ":" in item]})}
+            {"code": item.split(":")[0], "date": item.split(":")[1], "real": True} for item in args.holdings.split(",") if ":" in item]})}
         args.dry = True
     else:
         from analysis_worker import UI
@@ -106,7 +108,7 @@ def main():
         rows = [to_row(player, c, b, signals.get((c, b)), universe, today) for c, b in holdings]
         for r in rows:
             counts[r["status"]] = counts.get(r["status"], 0) + 1
-            if args.holdings:
+            if args.holdings or args.dry:
                 print(r["code"], r["buy_date"], r["status"], r["verdict"],
                       f"F{r['fscore']} O{r['ohlson_score']} D{r['dupont_score']}", "eval", r["eval_date"])
         if args.dry:
