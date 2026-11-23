@@ -1,0 +1,25 @@
+{
+  "edge_id": "n_959089fdea58a2a7->wage_bill",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "해외 고용 비중 증가의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 기업 인건비의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08614의 적용 맥락: This paper studies the effects of foreign-owned multinationals on U.S. workers and local firms using linked employer–employee tax records (W-2 and corporate tax filings including Form 5472) for 1999–2017, with main direct-effect estimates focused on 2010–2015. The setting is U.S. commuting zones across industries; units are individual workers (moves between firms) and firms (value added, employment, wage bill). It exploits country-of-origin spatial clustering and worker movers to identify causal direct and indirect wage and productivity spillovers of foreign multinationals."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_1e2b3edab3b6fdc7",
+      "text": "기업 근로자 임금이(가) 하락하여 기업 인건비의 상승을 상쇄할 수 있음",
+      "check_node": "firm_wage",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Effects of Foreign Multinationals on Workers and Firms in the United States (2019, quarterly_journal_of_economics; CSV R08614; https://www.nber.org/papers/w26149)",
+    "author": "Bradley Setzler, Felix Tintelnot",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

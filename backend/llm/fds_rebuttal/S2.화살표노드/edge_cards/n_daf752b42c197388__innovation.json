@@ -1,0 +1,97 @@
+{
+  "edge_id": "n_daf752b42c197388->innovation",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "은행의 재무적 곤경의 변화가 연구개발 투입·지식 축적·혁신 유인 경로를 통해 기업 혁신 성과의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05331의 적용 맥락: This paper studies how local bank distress during the U.S. Great Depression affected firm-level innovation. It matches National Research Council R&D surveys to firm patent and citation records (circa 1920–1938) and links firms’ headquarters counties to FDIC county-level bank suspensions (1920–1936). Exploiting cross-county variation in bank suspensions during the 1930–33 panics, the analysis focuses on R&D-performing firms (private and publicly traded) in U.S. counties where branching restrictions made bank finance local, with particular attention to capital‑intensive industries."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_b7dbf17182e03fb4",
+      "text": "부채 상환 압력이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_5c9feacc5e999d7a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d4a27b46c84796c7",
+      "text": "기관투자자 지분 보유이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_5b4ff2e346630fad",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_758ff2d17f9d862c",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fdc5c99e3e9f4476",
+      "text": "외국 모기업을 통한 수출이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_85e921ea9a332a6c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0d10ef877d0d1674",
+      "text": "기업 간 회의이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_41e5efb92eb59f8c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d4f4f99b1c9c7074",
+      "text": "두 번째 특허 출원 승인이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_9ffbc362d30ea721",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b49475d3164c7380",
+      "text": "기업 규모에 따른 노동 규제이(가) 상승하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_ea681eb7d01352f3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_931a6ef61b596e81",
+      "text": "시장 규모 충격이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_129208427654f946",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f1a7d1244507082c",
+      "text": "정치적 동기의 공공안전 계약 수주이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "n_2fee6c77a04c5070",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1bc6722f9307a1bf",
+      "text": "연구개발 지출이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "rd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_64dca0af1b6e57ee",
+      "text": "기업 연구개발 활동이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "firm_rd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_117b489b89354bd4",
+      "text": "기업 특허 성과이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "patenting",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a36992f7fc8bcc2b",
+      "text": "기업 R&D 지출액이(가) 하락하여 기업 혁신 성과의 상승을 상쇄할 수 있음",
+      "check_node": "firm_rd_spend",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Did Bank Distress Stifle Innovation During the Great Depression? (2014, journal_of_financial_economics; CSV R05331; https://www.nber.org/papers/w20392)",
+    "author": "Ramana Nanda, Tom Nicholas",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

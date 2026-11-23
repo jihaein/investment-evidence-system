@@ -1,0 +1,61 @@
+{
+  "edge_id": "n_d4c0cdbfd649022d->unemployment",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "한계세율 인하의 변화가 채용·고용 유지·구직 여건 경로를 통해 실업률의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04712의 적용 맥락: Using U.S. postwar annual data from 1946–2012, the paper studies tax-unit–level reported market incomes across the income distribution (top 1%, top 5%, bottom 90%, etc.) and aggregate macro outcomes. It constructs average marginal tax rate series (income and payroll taxes) and narrative scores of exogenous federal tax reforms (Romer–Romer style) to isolate surprise marginal-rate innovations, and estimates dynamic effects of these shocks on reported incomes, GDP, unemployment, and income sources."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_98b801d585430dfc",
+      "text": "더스트볼 토양 침식이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_5d1eca681d20e229",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b0adbd23a79f4d98",
+      "text": "실업급여 증가이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_76cc8fb3c4670305",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0aaa18ef4b118838",
+      "text": "할인율 상승이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_795fe4ce2c251b7f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_22fa7bc4b0a70d5e",
+      "text": "GDP 대비 가계부채 증가이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_6b11e51b3c23af68",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8ad5a9758d80a0b3",
+      "text": "명목임금의 하방경직성이(가) 하락하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_d68ffd85ea47a407",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d6924d29e9e98eeb",
+      "text": "감세이(가) 상승하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_dbcfbdc757bc26b3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1de01fd3d017fb23",
+      "text": "주택담보대출 금리 하락이(가) 상승하여 실업률의 상승을 상쇄할 수 있음",
+      "check_node": "n_e7d18756cf85bdc6",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Marginal Tax Rates and Income: New Time Series Evidence (2013, quarterly_journal_of_economics; CSV R04712; https://www.nber.org/papers/w19171)",
+    "author": "Karel Mertens, José L. Montiel Olea",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

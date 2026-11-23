@@ -1,0 +1,48 @@
+{
+  "edge_id": "net_debt->equity_value",
+  "sign": "-",
+  "empirical_sign": "n/a",
+  "mechanism": "주주가치 = 영업자산 가치 + 비영업자산 가치 - 순부채 - 기타 청구권",
+  "conditions": [
+    "다른 항목 일정",
+    "부채와 현금은 가치평가 기준"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_e6d2eb6fa1f017e2",
+      "text": "신규 노조 결성·인증이(가) 상승하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_94c0227e1e9677ff",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_31121d5e51a5a2f3",
+      "text": "기업 차입 감소이(가) 하락하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_4a0405ec03d5f405",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e7304015509a2013",
+      "text": "영업자산 가치이(가) 하락하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "firm_value",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_72977eabd3672304",
+      "text": "비영업자산 가치이(가) 하락하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "nonoperating_assets",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7c257bbc952f217b",
+      "text": "기타 선순위 청구권이(가) 상승하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "other_claims",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

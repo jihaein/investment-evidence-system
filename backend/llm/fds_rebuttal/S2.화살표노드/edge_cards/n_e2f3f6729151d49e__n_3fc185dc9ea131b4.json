@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_e2f3f6729151d49e->n_3fc185dc9ea131b4",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "휘발유 가격 상승 정보의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 인플레이션 기대의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08246의 적용 맥락: Using a large randomized information experiment fielded to ~20,000 U.S. households in the Kilts-Nielsen Homescan panel (waves in June, September, and December 2018), the paper studies how different communications—e.g., 12-month CPI, the Fed’s 2% target, FOMC forecasts/statements, a USA Today article, gasoline/unemployment facts, and a placebo—affect 12-month inflation expectations and subsequent household spending. Outcomes combine survey responses and high-frequency Nielsen scanner purchase data in a low-inflation U.S. monetary policy environment with three- and six-month follow-ups."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_a617c9fabfaf6bd6",
+      "text": "FOMC 성명서 열람이(가) 상승하여 인플레이션 기대의 상승을 상쇄할 수 있음",
+      "check_node": "n_b2fd05f0443e5e7c",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_39747436ca70785e",
+      "text": "FOMC 인플레이션 전망이(가) 상승하여 인플레이션 기대의 상승을 상쇄할 수 있음",
+      "check_node": "n_6dd15a212c16dcb7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b1b61739003c51e5",
+      "text": "연준 인플레이션 목표이(가) 상승하여 인플레이션 기대의 상승을 상쇄할 수 있음",
+      "check_node": "n_ca595a4e8c5bf961",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_51e1b3a6e5066fcf",
+      "text": "USA Today 기사이(가) 상승하여 인플레이션 기대의 상승을 상쇄할 수 있음",
+      "check_node": "n_e68fbb5895702039",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_80ff1297a3dfc5a9",
+      "text": "포워드 가이던스 충격이(가) 상승하여 인플레이션 기대의 상승을 상쇄할 수 있음",
+      "check_node": "n_47bf3b1717ab2cd8",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_eb0661aeec5903f7",
+      "text": "자산매입 충격이(가) 하락하여 인플레이션 기대의 상승을 상쇄할 수 있음",
+      "check_node": "n_a9f7deb4e510af66",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Monetary Policy Communications and their Effects on Household Inflation Expectations (2019, journal_of_political_economy; CSV R08246; https://www.nber.org/papers/w25482)",
+    "author": "Olivier Coibion, Yuriy Gorodnichenko, Michael Weber",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_dff6f2217f153626->real_rate",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "정책 뉴스 충격의 변화가 명목금리와 기대 인플레이션 경로를 통해 실질금리의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R04772의 적용 맥락: Using U.S. financial-market and survey data around scheduled FOMC meetings (primarily 1995–2014, with many Treasury/TIPS analyses from 2000–2014), the paper studies high-frequency (30-minute) surprises in federal-funds/eurodollar futures and the simultaneous responses of nominal and real yields, break-even inflation, and Blue Chip/Greenbook forecasted output growth. Units include tick-by-tick futures, daily zero-coupon yields and forwards, and monthly survey forecasts. The institutional setting is U.S. monetary policy announcements—including forward guidance and ZLB-era episodes—exploiting abrupt FOMC surprises to identify monetary news."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_6309338c6370d3f2",
+      "text": "경제심리 충격이(가) 하락하여 실질금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_ebdb6d62969d5433",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1137b0a0de68d10c",
+      "text": "소비자신뢰의 예상 밖 변화이(가) 하락하여 실질금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_4bf1d901427b3932",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3692880032f127e3",
+      "text": "정부지출 증가이(가) 하락하여 실질금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_d58f331aaa700dd8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c70669354454c902",
+      "text": "인플레이션 기대 상승이(가) 상승하여 실질금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a3187f7f917fe7ea",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_67f8b3d137801649",
+      "text": "금본위제 이탈이(가) 상승하여 실질금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_a91f6903a1723ed6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_8515e9ae1aaa5b8c",
+      "text": "재원 확보 없는 재정 충격이(가) 상승하여 실질금리의 상승을 상쇄할 수 있음",
+      "check_node": "n_e3983ce9b17348f1",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "High Frequency Identification of Monetary Non-Neutrality: The Information Effect (2013, quarterly_journal_of_economics; CSV R04772; https://www.nber.org/papers/w19260)",
+    "author": "Emi Nakamura, Jón Steinsson",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

@@ -1,0 +1,25 @@
+{
+  "edge_id": "n_93dbc6d099aef765->firm_borrowing",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "인지된 꼬리위험 상승의 변화가 차입 수요·신용 공급·차입 조건 경로를 통해 기업 차입 규모의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06057의 적용 맥락: This triplet refers to aggregate borrowing by U.S. non‑financial corporations around the 2008–09 crisis. The paper studies how higher perceived tail risk (from agents' non‑parametric, real‑time estimation of aggregate capital‑quality and financial shocks) induces firms in a calibrated macro model to reduce debt issuance; the model predicts ~17% lower debt in the post‑crisis stochastic steady state, while Flow‑of‑Funds total liabilities of non‑financial corporates show about a 26% drop relative to the pre‑2007 trend."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_7c07ba9b744258ba",
+      "text": "해외 확장적 통화정책 충격이(가) 상승하여 기업 차입 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_4a313d0365397c3e",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "The Tail that Wags the Economy: Beliefs and Persistent Stagnation (2015, journal_of_political_economy; CSV R06057; https://www.nber.org/papers/w21719)",
+    "author": "Julian Kozlowski, Laura Veldkamp, Venky Venkateswaran",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

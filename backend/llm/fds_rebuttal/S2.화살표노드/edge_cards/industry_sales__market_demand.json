@@ -1,0 +1,37 @@
+{
+  "edge_id": "industry_sales->market_demand",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "관련 산업 매출은 시장 수요를 나타내는 신호",
+  "conditions": [
+    "가격·산업 구성 효과 분리",
+    "기업 노출 확인",
+    "자동 인과 전파 금지"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_4ac01ec9515e9a58",
+      "text": "기업 혁신 성과이(가) 하락하여 기업 제품 수요의 상승을 상쇄할 수 있음",
+      "check_node": "innovation",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a1b3dff9f926dc30",
+      "text": "가계 소비이(가) 하락하여 기업 제품 수요의 상승을 상쇄할 수 있음",
+      "check_node": "household_consumption",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e37735025930921e",
+      "text": "경제 실질 산출이(가) 하락하여 기업 제품 수요의 상승을 상쇄할 수 있음",
+      "check_node": "gdp",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

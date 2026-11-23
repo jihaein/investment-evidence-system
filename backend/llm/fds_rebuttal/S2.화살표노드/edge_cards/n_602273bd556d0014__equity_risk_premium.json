@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_602273bd556d0014->equity_risk_premium",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "위험회피와 불확실성의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 주식위험 프리미엄의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02070의 적용 맥락: This paper studies US aggregate asset markets using quarterly data from 1927:Q1 through 2004:Q3 (consumption, dividends, inflation, Treasury yields, and CRSP equity returns). The unit of analysis is aggregate macro/market series; the authors estimate a structural external-habit general equilibrium model and use GMM to decompose how time-varying fundamental uncertainty and stochastic risk aversion drive the term structure, equity prices, risk premiums and return volatility in the US institutional setting."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_091f363c9b0b8b30",
+      "text": "불리한 환경 요인(nt)이(가) 하락하여 주식위험 프리미엄의 상승을 상쇄할 수 있음",
+      "check_node": "n_073a0d589d443a39",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_11d58cc01eda898f",
+      "text": "거시 불확실성이(가) 하락하여 주식위험 프리미엄의 상승을 상쇄할 수 있음",
+      "check_node": "aggregate_uncertainty",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Risk, Uncertainty and Asset Prices (2006, journal_of_financial_economics; CSV R02070; https://www.nber.org/papers/w12248)",
+    "author": "Geert Bekaert, Eric Engstrom, Yuhang Xing",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

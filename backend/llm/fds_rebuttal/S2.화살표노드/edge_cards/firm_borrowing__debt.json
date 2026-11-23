@@ -1,0 +1,17 @@
+{
+  "edge_id": "firm_borrowing->debt",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "추가 차입은 부채 잔액을 늘릴 수 있음",
+  "conditions": [
+    "신규 차입이 상환을 초과",
+    "원금 잔액과 평가가치 차이 조정"
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

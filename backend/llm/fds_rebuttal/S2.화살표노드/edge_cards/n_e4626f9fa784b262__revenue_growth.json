@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_e4626f9fa784b262->revenue_growth",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "외부부채 비율 상승의 변화가 수요·판매시장 확대 경로를 통해 기업 매출 성장률의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03315의 적용 맥락: This study analyzes capital-structure choices of U.S. startups identified at founding in 2004 using the Kauffman Firm Survey (≈4,928 firms; analytic sample ≈3,972) followed through 2007. The unit is the nascent firm (and primary owner), observed across industries and MSAs. The paper exploits cross-sectional and short-panel variation—including Saiz (housing supply elasticity) at the MSA level and state bankruptcy homestead exemptions—to infer how pledgeable collateral and credit conditions affect initial bank debt, trade credit, insider funding, and subsequent survival, employment, and profit growth."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_c28f7d128750c106",
+      "text": "시차를 둔 GNP 성장률이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_595e13533cd763c8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_838b8cfc6dcadc2e",
+      "text": "지역 금융 발전이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_0849e0e487b782d0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f7ef13fc6110ed0e",
+      "text": "경기침체기에 경력 시작이(가) 상승하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_10b72d2b8f5b8e19",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_43f6624f97a4e220",
+      "text": "모기업 매출 성장률이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_9378f4e6caa10dec",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8730f8e1930ec49b",
+      "text": "1인당 농산물 가치 변화이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_b7b9ec9e32abf89c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_47df2e236d2d2f11",
+      "text": "농산물 가격 상승이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_5588bdee3030d942",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Capital Structure Decisions of New Firms (2010, review_of_financial_studies; CSV R03315; https://www.nber.org/papers/w16272)",
+    "author": "Alicia M. Robb, David T. Robinson",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

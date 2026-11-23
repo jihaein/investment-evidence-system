@@ -1,0 +1,97 @@
+{
+  "edge_id": "n_2e36393d0dd36413->product_sales",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "주택소유자당 담보권 실행 건수의 변화가 수요·가격·제품 선택 경로를 통해 제품·사업별 판매 규모의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03474의 적용 맥락: Using U.S. zip‑code, CBSA, county, and state data spanning mainly 2006–2011 (focusing on 2007–2009 during the Great Recession), the paper studies homeowners and local housing markets across U.S. states. It exploits cross‑state differences in foreclosure procedure—judicial versus non‑judicial rules—to instrument variation in foreclosure incidence and estimates effects on house prices, housing inventory, residential investment, and durable consumption (auto sales). The setting leverages state laws, state‑border comparisons, and administrative/MLS/credit datasets. "
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_ca7df9837fcbe95d",
+      "text": "시장 진입 순서이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_f46f9bb29a0fb91a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_673f814526eee965",
+      "text": "저품질 제품 가격이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_84a699acfcd594f2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7bdf952c99468fec",
+      "text": "잭팟 당첨 복권의 판매이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_1b383c5e860d6cf2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_14dbec3f0a7b0ab6",
+      "text": "미생물 수질기준 위반이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_04bc799cbdea10bd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5e6a3d113283f828",
+      "text": "원소·화학물질 수질기준 위반이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_dc0fcc47b0d176d4",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2b124b5e2fe0e101",
+      "text": "세무조사 확률 증가 발표이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_ae2b2e97cc54ad56",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_49ff29cf5eb03723",
+      "text": "신제품 출시이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_cd590377a1c4df0e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3c11f571d4936e1d",
+      "text": "준비자산 평가가치 상승이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_4cf73fb28bb462e9",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d57661daca591ee0",
+      "text": "뉴욕타임스 리뷰이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_164c4e1db4fad89f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5a5788d8731257a7",
+      "text": "중개 수수료이(가) 하락하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_cfce4a4862f18769",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0f0061eb79f93739",
+      "text": "미 노동부 수탁자 의무 규칙 제안이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_1e24446d45bc919e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_4b13a9fe6fe92672",
+      "text": "연금상품 비용률이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_bee99bda0408c613",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b1f793501b0ce56f",
+      "text": "공공 약국 진입이(가) 상승하여 제품·사업별 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_895bc1c56cab8186",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Foreclosures, House Prices, and the Real Economy (2011, journal_of_finance; CSV R03474; https://www.nber.org/papers/w16685)",
+    "author": "Atif Mian, Amir Sufi, Francesco Trebbi",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

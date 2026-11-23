@@ -1,0 +1,85 @@
+{
+  "edge_id": "n_1b063b2ef3bcfb48->firm_tobins_q",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "기업지배구조 개선안 통과의 변화가 기업 시장가치와 자산 기준가치의 상대적 평가 경로를 통해 기업 Tobin Q의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03434의 적용 맥락: This paper studies shareholder-sponsored corporate governance proposals voted at annual meetings of U.S. publicly traded firms (S&P 1500 plus ~500 widely held firms) from 1997 to 2007. The unit of analysis is the firm-meeting/proposal (vote share on governance items, notably anti-takeover G-index provisions). The institutional setting is U.S. proxy voting under SEC Rule 14a-8 where proposals are typically non-binding; outcomes include daily abnormal stock returns around vote day and multi-year firm outcomes (acquisitions, capex, Tobin’s Q)."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_99533c9dcb180537",
+      "text": "기업 다각화이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_58b7508f0473219f",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c9c01de8bc3b82e7",
+      "text": "미국 상장이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_80a71674f5510ab0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2dc66058d26860ca",
+      "text": "정관에 근거한 시차임기 이사회이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_97ccba7c93d20f3c",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ac59d00566a471b3",
+      "text": "시차임기 이사회이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_1237ef2086e84ab2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7206c593ea6caa71",
+      "text": "은행 사업 다각화이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_dbad4e7dcb196d48",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f3ec1c40fca47f90",
+      "text": "최대주주의 현금흐름권이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_6ebf9abe0de10346",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c135dd6a153d762a",
+      "text": "현금흐름권의 분산이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_42e4d952dff7b1a7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_eecca53071796e8b",
+      "text": "신규 자본과 기존 자본의 호환성 하락이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_9371abea531a78c3",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_508c1cb26cd27d9e",
+      "text": "매매자산 비중이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_30875eac9c2aaded",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6f317505b2a52210",
+      "text": "은행 자산 규모이(가) 상승하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_d13ea3b2852d36d8",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9dcdd080ca1d5d00",
+      "text": "자본에 대한 사회적 근접성이(가) 하락하여 기업 Tobin Q의 상승을 상쇄할 수 있음",
+      "check_node": "n_a64611fc44507824",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Vote is Cast: The Effect of Corporate Governance on Shareholder Value (2010, journal_of_finance; CSV R03434; https://www.nber.org/papers/w16574)",
+    "author": "Vicente Cuñat, Mireia Gine, Maria Guadalupe",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

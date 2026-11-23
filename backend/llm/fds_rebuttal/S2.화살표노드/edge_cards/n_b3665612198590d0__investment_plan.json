@@ -1,0 +1,31 @@
+{
+  "edge_id": "n_b3665612198590d0->investment_plan",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "신용한도 인출의 변화가 향후 투자 수익성과 자금조달 전망 경로를 통해 기업 투자계획의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03332의 적용 맥락: This paper studies firms' liquidity management and planned real spending during the 2008–2009 global financial crisis (surveys conducted Q1 2009 with follow-ups in Q2 2009 and June 2010). It uses responses from ~800 CFOs across 31 countries, focusing analyses on a 397-firm U.S. nonfinancial sample. The unit is the firm (public and private). The institutional setting is the severe post‑Lehman credit contraction with stressed bank credit lines, drawdowns, covenant renegotiations, and changes in loan pricing; the paper links cash and credit-line liquidity to investment, technology, and employment plans."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_bce69044074b4794",
+      "text": "인플레이션 기대이(가) 상승하여 기업 투자계획의 상승을 상쇄할 수 있음",
+      "check_node": "n_3fc185dc9ea131b4",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d6d1e84a894d333e",
+      "text": "전년도 과소지출이(가) 하락하여 기업 투자계획의 상승을 상쇄할 수 있음",
+      "check_node": "n_0720911607948987",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Liquidity Management and Corporate Investment During a Financial Crisis (2010, review_of_financial_studies; CSV R03332; https://www.nber.org/papers/w16309)",
+    "author": "Murillo Campello, Erasmo Giambona, John R. Graham, Campbell R. Harvey",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

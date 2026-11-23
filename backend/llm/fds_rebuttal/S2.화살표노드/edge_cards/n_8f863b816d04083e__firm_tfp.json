@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_8f863b816d04083e->firm_tfp",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "IT 투자 증가의 변화가 동일 투입에서의 생산효율 경로를 통해 기업 총요소생산성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03856의 적용 맥락: This paper studies the long-term real effects of hedge‑fund activism in the United States by matching activism events (mainly 1994–2007, with plant data through 2009) to plant‑level manufacturing data (Census CMF/ASM/LBD) and firm databases (Compustat/CRSP). The units are manufacturing plants and their parent firms targeted by activists (identified primarily via SEC Schedule 13D filings). The institutional setting is U.S. capital markets and disclosure rules; activists typically hold concentrated stakes and push strategic, asset‑sale, governance, and capital‑allocation changes, with outcomes measured in plant TFP, asset reallocation, employment, wages, and IT investment."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_76d4fce2df30bc2e",
+      "text": "기술적으로 가까운 기업의 연구개발이(가) 하락하여 기업 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_6725ffded8c3dafb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b66bf8f2a3406524",
+      "text": "13G에서 13D 공시로 전환이(가) 하락하여 기업 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_3a3c9f50b7f3944c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_709daa5e54776ecb",
+      "text": "헤지펀드 주주행동주의이(가) 하락하여 기업 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_e714db61bdce4fcd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_16c89cdc383f3aed",
+      "text": "은행 금융 접근성 확대이(가) 하락하여 기업 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_45ac009befff2a7f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4c72c5c5f742a7da",
+      "text": "실질금리이(가) 하락하여 기업 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "real_rate",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7448eda0b0e86ec8",
+      "text": "기업 규모에 따른 차입 제약이(가) 상승하여 기업 총요소생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_b2cb5609a8644a13",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "The Real Effects of Hedge Fund Activism: Productivity, Asset Allocation, and Labor Outcomes (2011, review_of_financial_studies; CSV R03856; https://www.nber.org/papers/w17517)",
+    "author": "Alon Brav, Wei Jiang, Hyunseob Kim",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

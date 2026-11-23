@@ -1,0 +1,47 @@
+{
+  "edge_id": "other_claims->equity_value",
+  "sign": "-",
+  "empirical_sign": "n/a",
+  "mechanism": "기타 선순위 청구권은 보통주 귀속 가치를 줄임",
+  "conditions": [
+    "다른 항목 일정"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_67576256785af600",
+      "text": "신규 노조 결성·인증이(가) 상승하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_94c0227e1e9677ff",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a010aebb155e2187",
+      "text": "기업 차입 감소이(가) 하락하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_4a0405ec03d5f405",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3046852c4ec0b330",
+      "text": "영업자산 가치이(가) 하락하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "firm_value",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3ef41d4a5e55ba33",
+      "text": "비영업자산 가치이(가) 하락하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "nonoperating_assets",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_798dda8e9cd63744",
+      "text": "순부채 가치이(가) 상승하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "net_debt",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

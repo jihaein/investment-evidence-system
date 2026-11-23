@@ -1,0 +1,42 @@
+{
+  "edge_id": "capital_growth->capital_stock",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "동일 기초 생산자본에서 증가율 상승은 기말 자본 증가",
+  "conditions": [
+    "동일 기초 자본",
+    "기간·감가상각 기준 일치"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_2096326f860584e7",
+      "text": "시장의 범위이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_a8dfba59a7f80671",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8a5f6d7263249f3f",
+      "text": "자본소득세이(가) 상승하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_d3a18b2fbba042fe",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_540c74b02bc80650",
+      "text": "초기 순자산 증가이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_cb7b2092a6afbe84",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c9a360ed217b2186",
+      "text": "급여세 인하 노출이(가) 하락하여 기업 생산자본의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2aac6633c92702b",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

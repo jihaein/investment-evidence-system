@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_9378f4e6caa10dec->revenue_growth",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "모기업 매출 성장률의 변화가 수요·판매시장 확대 경로를 통해 기업 매출 성장률의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06467의 적용 맥락: Using ORBIS firm-level unconsolidated accounts for 34 countries over 2004–2012, the paper studies multinational firms (parents and foreign affiliates) and aggregated source–destination sales to assess how productivity shocks propagate across countries. Units of observation include individual affiliates, parent firms, and aggregated source–destination multinational sales (and country aggregates). The setting spans manufacturing and services, controls for source×destination×sector×year trends, and combines empirical estimates with a calibrated multi‑country structural model to quantify multinationals’ role in business‑cycle transmission."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_0fce29a6d56b032f",
+      "text": "시차를 둔 GNP 성장률이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_595e13533cd763c8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a7a07a30094bf810",
+      "text": "지역 금융 발전이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_0849e0e487b782d0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a1a674c01470ca83",
+      "text": "외부부채 비율 상승이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_e4626f9fa784b262",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f0065fcfcd87eb88",
+      "text": "경기침체기에 경력 시작이(가) 상승하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_10b72d2b8f5b8e19",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e253f169604c52f5",
+      "text": "1인당 농산물 가치 변화이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_b7b9ec9e32abf89c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c7d085a8e81806f2",
+      "text": "농산물 가격 상승이(가) 하락하여 기업 매출 성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_5588bdee3030d942",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Multinational Firms and International Business Cycle Transmission (2016, quarterly_journal_of_economics; CSV R06467; https://www.nber.org/papers/w22498)",
+    "author": "Javier Cravino, Andrei A. Levchenko",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

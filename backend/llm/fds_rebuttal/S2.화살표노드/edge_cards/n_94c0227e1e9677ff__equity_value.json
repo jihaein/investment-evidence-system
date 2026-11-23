@@ -1,0 +1,49 @@
+{
+  "edge_id": "n_94c0227e1e9677ff->equity_value",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "신규 노조 결성·인증의 변화가 주주에게 귀속되는 현금흐름·위험에 대한 평가 경로를 통해 주주가치의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02744의 적용 맥락: This paper studies U.S. National Labor Relations Board (NLRB) representation elections from 1961–1999 by matching election outcomes to publicly traded firms’ monthly CRSP stock returns and Compustat quarterly accounting data. The unit of analysis is the firm/security experiencing an NLRB election; the institutional setting is NLRA secret‑ballot certification elections (and their closure dates). Long event windows (up to ~48 months pre/post) and firm‑level accounting series are used to infer how union victories affect market valuation and firm performance."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_34551eaf573f5228",
+      "text": "기업 차입 감소이(가) 하락하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_4a0405ec03d5f405",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_07e05a3b0880383a",
+      "text": "영업자산 가치이(가) 하락하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "firm_value",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f2301a980f19d013",
+      "text": "비영업자산 가치이(가) 하락하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "nonoperating_assets",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9e355588d051caf2",
+      "text": "순부채 가치이(가) 상승하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "net_debt",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_852b6bf059e37ad8",
+      "text": "기타 선순위 청구권이(가) 상승하여 주주가치의 상승을 상쇄할 수 있음",
+      "check_node": "other_claims",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Long-Run Impacts of Unions on Firms: New Evidence from Financial Markets, 1961-1999 (2009, quarterly_journal_of_economics; CSV R02744; https://www.nber.org/papers/w14709)",
+    "author": "David Lee, Alexandre Mas",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

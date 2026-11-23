@@ -1,0 +1,204 @@
+{
+  "edge_id": "investment_plan->firm_investment",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "투자계획 확대는 실행 투자 증가로 이어질 수 있음",
+  "conditions": [
+    "자금조달·인허가·실행 확인",
+    "계획 취소 및 지연 검토"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_7ce9390eb5f8ed42",
+      "text": "투자기회가 부진할 때의 주식 발행이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_e21970b0ac3495a1",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f0cf3f425d884bf4",
+      "text": "공공지출이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_0e0c4a8fc29f2866",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5453f42911db1850",
+      "text": "노동 관련 세금이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_d405d6cbfa6cc913",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_760eb706f474e251",
+      "text": "정부 인건비이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_be4e18fb65647eda",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b027e323d858750b",
+      "text": "정부지출 증가이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_d58f331aaa700dd8",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d3cc7216a9ddd7b9",
+      "text": "순증세이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_0e5201e6b136849b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_758365c09b0528d7",
+      "text": "통화가치 절하로 인한 레버리지 증가이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_40fb171cf416047d",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_246399b4342368ab",
+      "text": "기업의 해외투자 증가이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_219b5145438d7d03",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0104f4cd882931fb",
+      "text": "채권시장 Tobin Q이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_745069c2908096c2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3cb454edf507624d",
+      "text": "학교채권 발행안 통과이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_8731e186ac84b27b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2e6181c0392cd764",
+      "text": "신규 자본과 기존 자본의 호환성 하락이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_9371abea531a78c3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e81b98ba54b6fe0e",
+      "text": "경제 전체 Tobin Q이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_5fb9d58feabf0214",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_feafb1391f1e3c45",
+      "text": "담보가치 상승이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_ae6e977dc7822ba7",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_68fe6bb0732b370d",
+      "text": "주택 수요 충격이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_47e1fc2d0d8dcb1a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_55f9a2aacec092bc",
+      "text": "헤지펀드 주주행동주의이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_e714db61bdce4fcd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4c5c50c04496dff7",
+      "text": "충격을 받은 신탁회사와의 연계이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_11c3856b53186081",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_bde4afa36863a54d",
+      "text": "민간 위탁 서비스 제공(PSP)이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_5e15ae3b0899d5fd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9b580c47716d6ab0",
+      "text": "군 복무이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_323347846f30e9e0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_1532669fa196f01b",
+      "text": "신용시장 투자심리이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_794a5490befd7738",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_d54a355b5ecc6122",
+      "text": "재기를 지원하는 파산제도 개혁이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_77cddfdc8ef1d330",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_34cf9d8c607d90f9",
+      "text": "최근 결성된 사모펀드이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_55f9bfd168258120",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4e047f060b70a601",
+      "text": "통화정책 충격이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_5146b34ae7fd486b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_bcad14928dcb5250",
+      "text": "애널리스트와 대통령의 정치적 불일치이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_508ca8a9712bfc13",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5fe52d00aafa981a",
+      "text": "부정적 수요 영향이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_9602ef9733ad03ef",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_4fdcff054e5ea09a",
+      "text": "재정 확대 없는 통화 부양이(가) 하락하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_e67f6aa7df152924",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7a70a3adccdcea57",
+      "text": "재해 발생 국가에 자회사를 둔 모기업이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_d490b30e2a7191d6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_a9a93bff8fedfafb",
+      "text": "경기하강 국가에 자회사를 둔 모기업이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_6a6130c7fbec898c",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_cf438fa452f0ccba",
+      "text": "금융회사가 인지한 국가위험이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_b5092c677a71c6ce",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_011165a0df42be34",
+      "text": "인지된 국가위험 증가이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_c9861a1f0c81d6ee",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3e19d5dc8ebe8d68",
+      "text": "기업의 해외위험 증가이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "n_09b87a99f89f72d8",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0e6d3794d97edb21",
+      "text": "실질금리이(가) 상승하여 기업 투자의 상승을 상쇄할 수 있음",
+      "check_node": "real_rate",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

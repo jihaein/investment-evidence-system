@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_d121f562c76114d2->product_revenue",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "주 전체에 적용되는 공시의 변화가 제품 판매량·가격 경로를 통해 제품·사업별 매출액의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R09778의 적용 맥락: This paper analyzes payday loan outcomes using CFPB administrative loan-level data covering July 2011–June 2012 (six months before and after Jan 1, 2012) to evaluate a Texas statewide behaviorally‑motivated disclosure mandate and concurrent Austin and Dallas municipal loan‑size and amortization ordinances. The setting compares loans, stores, and borrowers in Texas to lenders in other states and across Texas cities, exploiting policy timing and enforcement start‑dates (Austin May 1, Dallas June 17, 2012) to study effects on loan volume, renewals, pricing, and compliance."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_c884f7d4943c2047",
+      "text": "현물 식량 이전이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d2a297cb3064a55",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_711f42fe67abdb6e",
+      "text": "현금 이전이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d1623b1cd4885fb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c3f09b2c54290df3",
+      "text": "할인 유통채널 이용 가능성이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_f744eec7f851d8ca",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_ce129e1321967a86",
+      "text": "경매를 통한 배분이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_8145822a4e16c622",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5857eb2170d7c3b9",
+      "text": "전문가 리뷰이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d37c97beeb400058",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_98cb144076c30364",
+      "text": "광고 노출 횟수 감소이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e69827afb3bc7ec",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Eﬀects of Disclosure and Enforcement on Payday Lending in Texas (2021, journal_of_financial_economics; CSV R09778; https://www.nber.org/papers/w28765)",
+    "author": "Jialan Wang, Kathleen Burke",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

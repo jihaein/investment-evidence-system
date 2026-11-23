@@ -1,0 +1,36 @@
+{
+  "edge_id": "risk_free_rate->cost_of_equity",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "CAPM 자기자본비용 = 무위험금리 + 베타 × 주식위험 프리미엄",
+  "conditions": [
+    "CAPM 적용",
+    "베타와 위험 프리미엄 일정"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_5c179bfa8e7dd85c",
+      "text": "주식시장 자유화(원문 구분)이(가) 상승하여 자기자본비용의 상승을 상쇄할 수 있음",
+      "check_node": "n_1bdbca8d0e09f6da",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_77249e745ece711a",
+      "text": "주식 베타이(가) 하락하여 자기자본비용의 상승을 상쇄할 수 있음",
+      "check_node": "beta",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0b909c93debc86dd",
+      "text": "주식위험 프리미엄이(가) 하락하여 자기자본비용의 상승을 상쇄할 수 있음",
+      "check_node": "equity_risk_premium",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

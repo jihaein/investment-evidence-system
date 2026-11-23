@@ -1,0 +1,43 @@
+{
+  "edge_id": "n_d5da1983455d75ed->export_sales",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "은행 건전성 악화의 변화가 해외 수요·수출 비용·시장 접근 경로를 통해 수출 판매 규모의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03076의 적용 맥락: This paper uses Japanese firm-level data spanning the financial crises roughly 1990–2010 to study how deteriorations in banks’ health affected exporters. The setting is Japan, exploiting matched exporter–bank relationships for listed manufacturing firms and detailed bank balance/market data. Units are firms (export and domestic sales) and their main banks; identification leverages within-industry-year variation and episodes including the 1990s banking turmoil and the 2008 Lehman shock. Key institutional details: trade finance instruments (letters of credit, foreign bills), bank market-to-book as bank health, and stable main-bank relationships."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_affc877a2e0a0d49",
+      "text": "모기업의 상대적 숙련노동 풍부도(원문 구분)이(가) 하락하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_c133973cf8c5106b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_58b12c9a53aab0e6",
+      "text": "통화가치 절하이(가) 하락하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d41b9d5632b18c6",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_36647cd7abe2f171",
+      "text": "해외 공장 설립 고정비용이(가) 하락하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_b1a7aca7aeb1ea31",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4a66692aa2f94992",
+      "text": "고속 인터넷 도입이(가) 하락하여 수출 판매 규모의 상승을 상쇄할 수 있음",
+      "check_node": "n_59ae2982f562f9dc",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Exports and Financial Shocks (2009, quarterly_journal_of_economics; CSV R03076; https://www.nber.org/papers/w15556)",
+    "author": "Mary Amiti, David E. Weinstein",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

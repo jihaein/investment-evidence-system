@@ -1,0 +1,25 @@
+{
+  "edge_id": "n_7befea76db732e98->n_5138a960e3e13f60",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "경제위기의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 민주주의의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01749의 적용 맥락: This triplet refers specifically to the postwar country-level panel analysis using five-year intervals (sample for the crisis analysis begins in 1965 and extends through the postwar period). The dependent variable is the Freedom House political-rights/democracy score; economic crises are operationalized as sudden five-year declines in GDP per capita (thresholds of roughly 3–5%). Estimation is performed on country panels (fixed-effects regressions, OLS or GMM) examining transitions to and from democracy."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_14af59022b05e48c",
+      "text": "정착민 사망률이(가) 상승하여 민주주의의 상승을 상쇄할 수 있음",
+      "check_node": "n_bc4a095c9d4e365f",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Income and Democracy (2005, american_economic_review; CSV R01749; https://www.nber.org/papers/w11205)",
+    "author": "Daron Acemoglu, Simon Johnson, James Robinson, Pierre Yared",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

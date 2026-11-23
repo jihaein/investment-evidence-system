@@ -1,0 +1,115 @@
+{
+  "edge_id": "n_0ba8239edc9eaec0->household_consumption",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "주택가격 상승의 변화가 가처분소득·저축 유인·소비 여력 경로를 통해 가계 소비의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06018의 적용 맥락: This triplet refers to the simulated causal effect of aggregate house-price movements on aggregate non-durable consumption of working-age U.S. households (ages 25–59) in a calibrated heterogeneous-agent incomplete-markets model. House prices are calibrated to the FHFA series (matching roughly 1990s–2010s behavior); the model incorporates homeownership versus renting, housing transaction and refinancing costs, mortgage collateral constraints (including long-term amortizing mortgages), and uninsurable idiosyncratic income risk."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_d1372ab0d7182dbd",
+      "text": "부의 영구적 변화이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_d772a8e62051dddc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_95a1d7f5df75afb2",
+      "text": "시장 전반의 소득 이전이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_7bf68d7938d9b426",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_9f57b367dfe059a8",
+      "text": "동료 집단의 소비이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_bdf2fce484f42d1f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_87f9c28f8551c50b",
+      "text": "남편의 동료 집단 소비이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_c75e4dbe44a7e842",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_936ba3c6e397d6aa",
+      "text": "QE1에서 국채 대신 MBS 매입이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_23254ae8908a732b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_50daeebe1d3c00b9",
+      "text": "역사적 국가 역량이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_9c29c58f6a95d65a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7bda2a630ca581e4",
+      "text": "통화 팽창이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_d92279d6504f4371",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d89ab6b39d8c3706",
+      "text": "예상 밖 인플레이션이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2a0209663dda4d2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f9534b826139f973",
+      "text": "실질금리이(가) 상승하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "real_rate",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b3d4b1745f9f0456",
+      "text": "재기를 지원하는 파산제도 개혁이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_77cddfdc8ef1d330",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2fec7cd3c35a8f25",
+      "text": "미실현 자본이득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_67c6d3b209319fcb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8159953605b793c3",
+      "text": "배당소득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_77693c509b901e77",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6458c87715623573",
+      "text": "이주 보조금이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_584afd2d8c566d80",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f834fb1bdfa83d6d",
+      "text": "총소득의 영구적 감소이(가) 상승하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_21dfbf66f3dcc4d6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c8c91aefa8ee16d3",
+      "text": "연속적인 경기부양 지원금 지급이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_893dc58267c154f5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_07387bd93eb74368",
+      "text": "가계 소득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "household_income",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "House Prices and Consumer Spending (2015, review_of_economic_studies; CSV R06018; https://www.nber.org/papers/w21667)",
+    "author": "David Berger, Veronica Guerrieri, Guido Lorenzoni, Joseph Vavra",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

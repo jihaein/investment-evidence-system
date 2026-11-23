@@ -1,0 +1,295 @@
+{
+  "edge_id": "n_d03eb37c0288aac6->firm_productivity",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "인적자본 투자의 변화가 투입 활용 효율·기술·업무 방식 경로를 통해 기업 생산성의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00241의 적용 맥락: This analysis uses the nationally representative Educational Quality of the Workforce National Employers Survey (EQW-NES) of U.S. establishments to examine how school and employer-provided training (human-capital investments) relate to workplace practices and establishment outcomes. The unit of observation is establishments across manufacturing and non-manufacturing sectors; the paper examines determinants and recipients of training, links between human and physical capital, variation by employer size, and the association between human-capital investments and establishment productivity."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_84377d9669e1b186",
+      "text": "공공 인프라 투자이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_6b4bf114f2ce3824",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e68ab026251df0fc",
+      "text": "산출 대비 공공자본 투자 부진이(가) 상승하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_75b22c02a3c9cf07",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c53a0e6e05eb5efd",
+      "text": "고임금 근로자 채용이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f0341cd27b625e7e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5acfdd837dd0c68d",
+      "text": "개인효과 통제 후 기업 임금 수준 상승이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_a56c441948fb8981",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1a2a0099a1a325fe",
+      "text": "법적 책임을 줄이는 제도 개혁이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_723a6c2acf4c7f6f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4a1640828b5da394",
+      "text": "근로자의 평균 교육 수준이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_7d4b35cad3d43240",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_aad2cdcb9fdf8228",
+      "text": "성과급 방식으로 전환이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_0bd415d9a4b2a5ae",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e852e713d02ad2ad",
+      "text": "기술 충격이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_0a617eeeafef96fe",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_29e5f5ceb1a08136",
+      "text": "수요 충격이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_81ecec7b6da18667",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ded84b9bc8e727b7",
+      "text": "높은 IT 및 인적자본 수준이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f72409d5a59c1d21",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_46f1c2250fea0e9c",
+      "text": "국내 연구개발 지출이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_adcccde33d0a9baf",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_55cdb68f2615ce7c",
+      "text": "FTA 관세 양허이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_fcf2142fe34efd2a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_adc041acf16b5653",
+      "text": "진입 규제이(가) 상승하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_df063c6022c36b3e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_af277df2d6461376",
+      "text": "수요 밀도이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_368c9d7e77aafeb6",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7e74ba2fc0f92db4",
+      "text": "기존 근로자 뒤에 근로자 추가 배치이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_e1b908b2a744bf6b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_37cddd1827c396a9",
+      "text": "동료 근로자의 근접 배치이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_e6233218064ed36e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_eb386f5cecf31be8",
+      "text": "계약 집행 개선이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_1a216216e8c0baba",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8ad63afd41b68d48",
+      "text": "쿼터 보호 완화이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_07b6636c5f2d9f67",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_37e14e4bc1a9e8eb",
+      "text": "외국 기업에 의한 인수이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_00e184fc0109378d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7b26fd231e411453",
+      "text": "기업가 교육이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_e658db4b81944b18",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c04029f4bf40eba4",
+      "text": "근로자 교육이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_e3adf3e299f7ab03",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_49c489516bc8be92",
+      "text": "헤지펀드 주주행동주의이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_e714db61bdce4fcd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_55850fbf524c3a3b",
+      "text": "잘못 배분된 쿼터 제거이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_975ff61ecc4b4bdb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_411ce9d9745d55ea",
+      "text": "초기 노동생산성이(가) 상승하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_ca22a275ba9dd6fa",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_869d65042f30397d",
+      "text": "기업 혁신 성과이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "innovation",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a8ee6de1a09ce6ff",
+      "text": "경쟁기업의 혁신 성과이(가) 상승하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_5b3a0d70d4c59793",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7db42254767a9fc6",
+      "text": "소형 전기로 제철소 진입이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_7dbc4f9e58f1d06f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a873034eb5958905",
+      "text": "인구밀도 증가이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_b653392949d2b413",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_23541a0b707a29b0",
+      "text": "인수이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_31de312977fc2ebd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d1d5835b49809602",
+      "text": "백과전서 구독자 밀도이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_76ca4e4629499a5e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_77fef5590c9433c6",
+      "text": "신칸센역 개통이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_b75aa0fbe999c645",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_78f52fb8c329d844",
+      "text": "리더형 CEO 선임이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_4756e84306497840",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fac45863341af4cb",
+      "text": "CEO와 기업의 부적합이(가) 상승하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_db69b6c897ae952a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_dab7f08c4d992d2e",
+      "text": "모든 이주장벽 제거이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_1ea761dbfd7bac94",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ff95b5c10ce1450a",
+      "text": "비용을 연구개발비로 재분류이(가) 상승하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_0ce6d3b203c4f9f7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_467914d409aa212d",
+      "text": "사전 가치가 높은 특허의 최초 허용이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_31ae53c78d86f577",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ba77144d2d914495",
+      "text": "성별 임금 투명성 의무화이(가) 상승하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_5a59170a42340889",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_47c4f6476707bf42",
+      "text": "시장 경쟁이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_59b6250bfc2204a3",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_aaef75d7b17e102e",
+      "text": "이전 시행 경험이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_bd0dfba5d81e3bdb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_317796d0d2d43567",
+      "text": "인지 능력이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_50914afd97f0903d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b3ec324fc30a1ead",
+      "text": "투자 중심 산업과 주요 공급자에 대한 산업별 충격이(가) 상승하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_f397cbd622c37ec3",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7b2091b61cb37317",
+      "text": "중심 산업·공급자 충격의 중요성 증가이(가) 상승하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_4cccc0c97436997b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_92dd288dbebf94fb",
+      "text": "좀비기업 신용공급이(가) 상승하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_0810557f4e50d819",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_db14445777b1cc40",
+      "text": "임대 거래비용 제거이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "n_a2402177834af64d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_df3856aa1a390f5e",
+      "text": "산업 생산성이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "industry_productivity",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_999ff681a28d2063",
+      "text": "기업 총요소생산성이(가) 하락하여 기업 생산성의 상승을 상쇄할 수 있음",
+      "check_node": "firm_tfp",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Beyond the Incidence of Training: Evidence from a National Employers Survey (1995, american_economic_review; CSV R00241; https://www.nber.org/papers/w5231)",
+    "author": "Lisa M. Lynch, Sandra E. Black",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

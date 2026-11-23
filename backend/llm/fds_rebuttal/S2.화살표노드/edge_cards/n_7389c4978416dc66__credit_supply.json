@@ -1,0 +1,61 @@
+{
+  "edge_id": "n_7389c4978416dc66->credit_supply",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "기업집단에 대한 은행의 기존 대출 노출의 변화가 대출자의 자금 여력·차입자 심사·대출 유인 경로를 통해 기업 신용공급의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R10399의 적용 맥락: This paper examines how regional prevalence of business groups altered standalone firms’ investment responses to the Golden Quadrilateral (GQ) highway upgrades in India. Using firm-level financial data (Prowess) and a hand-collected loan registry, the authors exploit staggered GQ construction timing (mostly 2000–2006; panel data 1989–2016) across cities/districts to study firms (standalone vs group-affiliated), regional credit outcomes, and bank–firm lending relationships under India’s NHDP/GQ infrastructure program."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_917e4e1fcbc81bae",
+      "text": "긴축 통화정책(연방기금금리 인상)이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_616526e8724aa264",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_bd1887aa783ab555",
+      "text": "은행의 해외 자금조달 노출이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_04eeaca7e3e30bf7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f1407425f4916761",
+      "text": "초과 채권 프리미엄 상승이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_840a448dbe3a322e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_28634934aed368c6",
+      "text": "투자심리로 인한 신용스프레드 확대이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_5492df3b53fe7fb0",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_efd86200038e9f69",
+      "text": "자본 부족이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_0d208e9eb89c8455",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_39c7db631049b10b",
+      "text": "상환 유예·관용 조치이(가) 상승하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "n_b589640db50f7615",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_f63d20f79f4624e0",
+      "text": "기업 신용 접근성이(가) 하락하여 기업 신용공급의 상승을 상쇄할 수 있음",
+      "check_node": "credit_access",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Business Group Spillovers (2023, review_of_financial_studies; CSV R10399; https://www.nber.org/papers/w31107)",
+    "author": "S. Lakshmi Naaraayanan, Daniel Wolfenzon",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

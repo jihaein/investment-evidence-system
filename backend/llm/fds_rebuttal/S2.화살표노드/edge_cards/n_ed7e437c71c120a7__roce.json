@@ -1,0 +1,25 @@
+{
+  "edge_id": "n_ed7e437c71c120a7->roce",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "주요 거래자와의 관계의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 사용자본수익률의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05080의 적용 맥락: This triplet examines firm-level effects in the Japanese cotton-spinning industry during 1898–1902, a period when demand constraints (after the Boxer Rebellion) tightened. The study constructs a trader-network indicator from an 1898 registry of prominent traders by matching those names to firms’ boards and top shareholders; firms with such ties are “in-network.” The analysis compares in-network versus out-of-network firms’ ROCE, inventories (unrealized output), capacity utilization, and prices."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_4fa41e47bc6185e0",
+      "text": "인수이(가) 하락하여 사용자본수익률의 상승을 상쇄할 수 있음",
+      "check_node": "n_31de312977fc2ebd",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Acquisitions, Productivity, and Profitability: Evidence from the Japanese Cotton Spinning Industry (2014, american_economic_review; CSV R05080; https://www.nber.org/papers/w19901)",
+    "author": "Serguey Braguinsky, Atsushi Ohyama, Tetsuji Okazaki, Chad Syverson",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

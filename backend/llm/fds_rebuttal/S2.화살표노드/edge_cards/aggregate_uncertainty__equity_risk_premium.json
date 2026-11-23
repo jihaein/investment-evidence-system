@@ -1,0 +1,30 @@
+{
+  "edge_id": "aggregate_uncertainty->equity_risk_premium",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "거시 불확실성은 투자자의 위험 보상 요구를 높일 수 있음",
+  "conditions": [
+    "위험회피적 투자자",
+    "불확실성과 가격화된 위험 구분"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_ade2a81fc107aeb9",
+      "text": "위험회피와 불확실성이(가) 하락하여 주식위험 프리미엄의 상승을 상쇄할 수 있음",
+      "check_node": "n_602273bd556d0014",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_c1caa685b0d8418c",
+      "text": "불리한 환경 요인(nt)이(가) 하락하여 주식위험 프리미엄의 상승을 상쇄할 수 있음",
+      "check_node": "n_073a0d589d443a39",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

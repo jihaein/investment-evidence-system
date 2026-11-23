@@ -1,0 +1,90 @@
+{
+  "edge_id": "roa->profitability",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "ROA는 기업 수익성 지표 중 하나",
+  "conditions": [
+    "동일 지표 정의 확인",
+    "신호를 독립 인과로 계산하지 않음"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_5546bbbd0abefdea",
+      "text": "개인효과 통제 후 기업 임금 수준 상승이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_a56c441948fb8981",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_cccf36b53d47df7b",
+      "text": "가족 구성원의 CEO 선임이(가) 상승하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_57f66ca933d23297",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_52bca71b8f1ce84c",
+      "text": "중국산 수입품과의 경쟁이(가) 상승하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_3131270f74673d4e",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3f4da158761f412d",
+      "text": "민간 위탁 서비스 제공(PSP)이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_5e15ae3b0899d5fd",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3e625129a9355e0b",
+      "text": "전량 할인 리베이트(AUD)이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_20dadfda0dc23ade",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_92e17bd805b58d54",
+      "text": "주주보호법 강화이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_50ee1c864984a155",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_401b456aaf28bc6b",
+      "text": "정치적 연계이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_4a4ad42323bcfab3",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a3a992bb6fe271d5",
+      "text": "확대된 담보 인정 범위이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e432ff4dca61e44",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_31eea05e3abe4d8f",
+      "text": "신용협동조합의 저소득층 지원기관 지정이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_cbb3ed24bef4fe52",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6a1828b9866b6ec5",
+      "text": "저소득층 신용협동조합 성장이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_70d9b308c75e9e7e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4c7b46a14b9064e2",
+      "text": "선구매 후지불(BNPL) 제공이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_41caf6dfb67c3f07",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_80ca16500f2224f9",
+      "text": "사용자본수익률이(가) 하락하여 기업 수익성(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "roce",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

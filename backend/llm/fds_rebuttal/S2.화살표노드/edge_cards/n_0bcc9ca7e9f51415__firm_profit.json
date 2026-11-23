@@ -1,0 +1,109 @@
+{
+  "edge_id": "n_0bcc9ca7e9f51415->firm_profit",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "외국 소매기업 진입의 변화가 매출과 비용의 차이 경로를 통해 기업 이익(연구 정의)의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R05809의 적용 맥락: This paper studies the causal effects of foreign supermarket entry in Mexico from January 2002 to March 2014, exploiting variation in the timing of first foreign-store openings across primarily urban municipalities. Units include households, barcode-level transactions, individual stores and store profits, workers, and municipalities. The setting follows Mexico’s 1993 retail FDI liberalization and a major expansion of global chains (notably Walmart), using administrative and survey microdata to assess impacts on prices, household welfare (cost-of-living), employment and retail profits."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_289ebdd7ac6ddc00",
+      "text": "최적 가격 대비 무료 온라인 가격 적용이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_679cbba0e41123b6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_22fa143a6e7079e5",
+      "text": "소비자의 정보 수준을 약사 수준으로 향상이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7015bba481737778",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_fe3476a8f123cfdb",
+      "text": "기업 간 회의이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_41e5efb92eb59f8c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5e9f88e30e081ffb",
+      "text": "상한이 있는 개인별 가격 적용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_ce82f4e00e60bc89",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b220979e06def818",
+      "text": "최적화된 단일 가격이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_21ef5610e8a1355e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e2a921d923cc7915",
+      "text": "급여세 인하 노출이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2aac6633c92702b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_eee2e7c60b913364",
+      "text": "고령 신청자의 대출 이용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_49bdd3466ef912cc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e63989574bbcee9a",
+      "text": "대출 이용이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_d8c7cfb4e7a0fe09",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_36fd9cad49299068",
+      "text": "관개시설 접근성이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_e9df2180c9383572",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3eaa90a43d8c942a",
+      "text": "대출자의 차입자 선별 능력이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_80f0ee23818c6c2e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_94bbec3cc2e527aa",
+      "text": "전력 공급 배정 시간 1시간 증가이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7cd123507c4698ab",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_af609068a291bdab",
+      "text": "우물 깊이이(가) 상승하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_31fd7a36250f2264",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_94ee278b896c55c1",
+      "text": "임대 거래비용 감소이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_7123ea6a420c5082",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dc0d27526584afd4",
+      "text": "원활하게 작동하는 임대시장이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_bcb6cdc95ea9ed2b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_19e4dada9df76174",
+      "text": "지연시간 차익거래 경쟁이(가) 하락하여 기업 이익(연구 정의)의 상승을 상쇄할 수 있음",
+      "check_node": "n_dfa3d0ac1cf30aaf",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Retail Globalization and Household Welfare: Evidence from Mexico (2015, journal_of_political_economy; CSV R05809; https://www.nber.org/papers/w21176)",
+    "author": "David Atkin, Benjamin Faber, Marco Gonzalez-Navarro",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

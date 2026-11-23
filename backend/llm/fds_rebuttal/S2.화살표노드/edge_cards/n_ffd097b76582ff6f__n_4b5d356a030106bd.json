@@ -1,0 +1,18 @@
+{
+  "edge_id": "n_ffd097b76582ff6f->n_4b5d356a030106bd",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "철도망 확장의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 무역 비용의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R03394의 적용 맥락: This analysis uses annually observed retail prices of eight region-specific salt types in Northern India (124 districts) from 1861–1930 to infer bilateral trade costs via salt price gaps. Railroad expansion is represented by a lowest-cost ‘railroad-equivalent’ route distance (LCRED) computed on the mapped transport network; mode-specific per-kilometer costs (α) are estimated by nonlinear least squares, and trade-cost regressions are run by OLS with origin-year and origin-destination fixed effects."
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "Railroads of the Raj: Estimating the Impact of Transportation Infrastructure (2010, american_economic_review; CSV R03394; https://www.nber.org/papers/w16487)",
+    "author": "Dave Donaldson",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

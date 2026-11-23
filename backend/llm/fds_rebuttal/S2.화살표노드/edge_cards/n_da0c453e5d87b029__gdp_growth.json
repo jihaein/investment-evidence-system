@@ -1,0 +1,152 @@
+{
+  "edge_id": "n_da0c453e5d87b029->gdp_growth",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "경상수지의 급격한 반전의 변화가 경제의 생산·수요 확대 경로를 통해 실질 경제성장률의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R01439의 적용 맥락: Using annual country-year data for 157 countries over 1970–2001, this paper studies current-account imbalances, large deficit “reversals,” and “sudden stops.” The unit of observation is the country-year across six regions (industrial, Latin America/Caribbean, Asia, Africa, MENA, Eastern Europe). Analyses relate lagged external debt, reserves, short-term debt, and credit growth to reversal probability and estimate reversal impacts on GDP growth, contextualized by 1970s oil shocks, the 1980s debt crisis, 1990s currency crises, IMF programs, and varying exchange-rate/dollarization regimes.",
+    "원자료 R01444의 적용 맥락: This triplet refers to estimates from the paper's treatment-effects dynamic panel for an emerging-market subsample (equation 1.1). The estimate is based on annual country observations drawn from the 1970–2001 panel (equation 1.1 reports 1,176 country-year observations). Units are countries observed annually; the growth equation includes a current-account-reversal dummy interacted with trade openness, controls (terms of trade, growth gap), and country and year fixed effects, alongside other covariates (financial openness, reserves, external debt, short-term debt share)."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_7c1c3e675920459e",
+      "text": "소득 불평등이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_bb27bd4704ce2d60",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e14cc3af64a75c71",
+      "text": "대외 개방도이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_ce9b52fd129595a3",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_cd8d242efbbe64df",
+      "text": "정치제도의 민주성 강화이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_0b720eabdbf7fc1c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5e5d49306b9b0e14",
+      "text": "지역 금융 발전이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_0849e0e487b782d0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_31f46ce714013fcf",
+      "text": "경상수지 반전과 개방도의 상호작용이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_84edf62583029495",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0fa81d1673543d17",
+      "text": "간헐적인 금융위기이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_0c1c112adf6197c8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ce8cdbda468f9843",
+      "text": "신용 증가율의 왜도이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_e746a88115dbb5f7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_c11218892f7e2f79",
+      "text": "경제 자유화이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_af14a5e8240b2449",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dad6d05a541dba72",
+      "text": "의회민주주의이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_9607b79f046b9289",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_282109b1938d9afa",
+      "text": "기대효과를 통제한 실제 민주주의이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_a766f103f0af258f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_25c9f6f8007c829f",
+      "text": "민주주의이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_5138a960e3e13f60",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_12878c25d9b35ffb",
+      "text": "정권 교체 위험률이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_da66d84071724de9",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_daf84df50093e27a",
+      "text": "대기업 구성의 교체이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_5016775093b6473d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ec12efd9f6299bd6",
+      "text": "대형 기존 기업의 쇠퇴이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_55561e757b647597",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f0cd0aef0a89e39b",
+      "text": "대기업 구성의 안정성이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_90acf9eeccd81440",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_5625b12cfed4d1ae",
+      "text": "은행위기이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_a8200237c77073f5",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_e9bc80154f2098d0",
+      "text": "유럽 GDP 성장률 잔차이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_9bf5bf05f7b88aa7",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e0b8fd402dc8b287",
+      "text": "총요소생산성 충격이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_0ac25c0ef58f3f98",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_23f9ab0cc439fd02",
+      "text": "국방 관련 정부지출 충격이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_d779599fa80e6cdb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7e1ac2e1e6c5e202",
+      "text": "높아진 신용시장 낙관론이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_596852968d0dc221",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_13374d323f3da39c",
+      "text": "탐색 마찰 감소이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_a373ae47ceab46d8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ea4c7cef67c9f703",
+      "text": "불확실성의 2차 적률 충격이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_a31cca0c68348227",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Thirty Years of Current Account Imbalances, Current Account Reversals and Sudden Stops (2004, american_economic_review; CSV R01439; https://www.nber.org/papers/w10276) / Financial Openness, Sudden Stops and Current Account Reversals (2004, american_economic_review; CSV R01444; https://www.nber.org/papers/w10277)",
+    "author": "Sebastian Edwards",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

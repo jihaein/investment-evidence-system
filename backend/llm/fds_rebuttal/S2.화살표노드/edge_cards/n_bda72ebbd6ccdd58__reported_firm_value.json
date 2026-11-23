@@ -1,0 +1,61 @@
+{
+  "edge_id": "n_bda72ebbd6ccdd58->reported_firm_value",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "정보기술 혁명의 변화가 미래 현금창출력·위험에 대한 평가 경로를 통해 연구상 기업가치의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R00667의 적용 맥락: This paper studies U.S. (and leading OECD) stock-market behavior from the post‑war period through the 1990s, centering on a large fall in market‑cap/GDP around 1973 and its later rise. Units include aggregate market capitalization, CRSP/Compustat-listed firms, sectors, firm “vintages,” IPOs, entrants and exits. The institutional background is the emergence and diffusion of information‑technology (microprocessors/PCs/IT investment) beginning c.1971–1973, sectoral heterogeneity, imperfect takeover/merger “policing” of incumbents, and attendant shifts in entry, exit and capital flows."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_6fd96d91c831aa1b",
+      "text": "재무적 곤경이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_9b5a88b17a895716",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0fecdcb1885fb1d7",
+      "text": "기대 미래 수익률이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_40bee1a76fc2c43a",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_da1ffbab15e9dfdd",
+      "text": "기대 미래 현금흐름이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_4546131b0287ebf9",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_24f8d317c7f268e6",
+      "text": "인수 발표이(가) 상승하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_a18e0264b988025b",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_7e4cf3c45fba2259",
+      "text": "평균 미래 수익성에 대한 불확실성이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_0761e51a9641c7f5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_674edda725395419",
+      "text": "효과적인 기업문화이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_f01a30df77c4d13e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_28e2695842f304b7",
+      "text": "조작 유인 제거이(가) 하락하여 연구상 기업가치의 상승을 상쇄할 수 있음",
+      "check_node": "n_ad6d7ebd50331d88",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "The Information Technology Revolution and the Stock Market: Evidence (2000, american_economic_review; CSV R00667; https://www.nber.org/papers/w7684)",
+    "author": "Bart Hobijn, Boyan Jovanovic",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

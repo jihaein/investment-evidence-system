@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_8145822a4e16c622->product_revenue",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "경매를 통한 배분의 변화가 제품 판매량·가격 경로를 통해 제품·사업별 매출액의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R08369의 적용 맥락: This paper studies oil and gas mineral leases on Texas Permanent School Fund lands during 2005–2016 (the shale/fracking boom), comparing lease-level outcomes across allocation mechanisms: state-run first-price auctions versus informal landowner negotiations. The unit of observation is individual leases (≈1,274), with outcomes including upfront bonus payments, royalties and production. Institutional setting: historical Relinquishment Act and subsequent 1973 policy determined whether parcels were auctioned or negotiated; auctions run by the Texas General Land Office. Identification exploits quasi-random mechanism assignment across neighboring parcels transacting at similar times."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_57329d644f0bcb4f",
+      "text": "현물 식량 이전이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d2a297cb3064a55",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9234b6d666e68ca9",
+      "text": "현금 이전이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_3d1623b1cd4885fb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_f39d7ea2bc88d3cf",
+      "text": "할인 유통채널 이용 가능성이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_f744eec7f851d8ca",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3efb72dcd98d77e8",
+      "text": "전문가 리뷰이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d37c97beeb400058",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_60ffddd22adb09c1",
+      "text": "주 전체에 적용되는 공시이(가) 상승하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_d121f562c76114d2",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_561ebf0b1e79a292",
+      "text": "광고 노출 횟수 감소이(가) 하락하여 제품·사업별 매출액의 상승을 상쇄할 수 있음",
+      "check_node": "n_9e69827afb3bc7ec",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Relinquishing Riches: Auctions vs Informal Negotiations in Texas Oil and Gas Leasing (2019, american_economic_review; CSV R08369; https://www.nber.org/papers/w25712)",
+    "author": "Thomas R. Covert, Richard L. Sweeney",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

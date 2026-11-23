@@ -1,0 +1,151 @@
+{
+  "edge_id": "n_a766f103f0af258f->gdp_growth",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "기대효과를 통제한 실제 민주주의의 변화가 경제의 생산·수요 확대 경로를 통해 실질 경제성장률의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02012의 적용 맥락: The paper uses annual country-year data on about 150 countries (main analyses 1960–2000; extended 1850–2000 for expectation analysis) to study effects of regime changes on log per-capita income and investment. It exploits episodes of democratization, autocracy, and economic liberalization (Polity2; Sachs–Warner liberalization), variation in forms of government and electoral rules (presidential vs parliamentary; majoritarian vs proportional), and controls for wars and former Soviet-bloc transitions; expected regime-change hazards (democratic capital) are modeled."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_c8eeffcd8e9e3658",
+      "text": "소득 불평등이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_bb27bd4704ce2d60",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3e2fb64488e67875",
+      "text": "대외 개방도이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_ce9b52fd129595a3",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_ca0368b0e12375b3",
+      "text": "정치제도의 민주성 강화이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_0b720eabdbf7fc1c",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1a0dbe3d6f934b79",
+      "text": "지역 금융 발전이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_0849e0e487b782d0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e8b0ee89b6a18bbe",
+      "text": "경상수지의 급격한 반전이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_da0c453e5d87b029",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6c35abffc294898e",
+      "text": "경상수지 반전과 개방도의 상호작용이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_84edf62583029495",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_d0a1c374278209ca",
+      "text": "간헐적인 금융위기이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_0c1c112adf6197c8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_11b89c6a5c410218",
+      "text": "신용 증가율의 왜도이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_e746a88115dbb5f7",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6959a4f6dba62b83",
+      "text": "경제 자유화이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_af14a5e8240b2449",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0e121edc48b27867",
+      "text": "의회민주주의이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_9607b79f046b9289",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_de8edf87371ef618",
+      "text": "민주주의이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_5138a960e3e13f60",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a69a833b481a2728",
+      "text": "정권 교체 위험률이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_da66d84071724de9",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_387de142dec0cc38",
+      "text": "대기업 구성의 교체이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_5016775093b6473d",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5f7d3fe03aa33433",
+      "text": "대형 기존 기업의 쇠퇴이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_55561e757b647597",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_25019e4f1d50a64e",
+      "text": "대기업 구성의 안정성이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_90acf9eeccd81440",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_0c115b2360a301aa",
+      "text": "은행위기이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_a8200237c77073f5",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b52ed8460b2b36a2",
+      "text": "유럽 GDP 성장률 잔차이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_9bf5bf05f7b88aa7",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_327ddaa8b057ff2c",
+      "text": "총요소생산성 충격이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_0ac25c0ef58f3f98",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fce520870fb7942c",
+      "text": "국방 관련 정부지출 충격이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_d779599fa80e6cdb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4b971c1b295d2469",
+      "text": "높아진 신용시장 낙관론이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_596852968d0dc221",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_6bb2de4c007a8b90",
+      "text": "탐색 마찰 감소이(가) 하락하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_a373ae47ceab46d8",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_88d8c9fc995cfe78",
+      "text": "불확실성의 2차 적률 충격이(가) 상승하여 실질 경제성장률의 상승을 상쇄할 수 있음",
+      "check_node": "n_a31cca0c68348227",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Democracy and Development: The Devil in the Details (2006, american_economic_review; CSV R02012; https://www.nber.org/papers/w11993)",
+    "author": "Torsten Persson, Guido Tabellini",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

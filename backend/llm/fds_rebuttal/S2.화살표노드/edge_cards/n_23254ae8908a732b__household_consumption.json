@@ -1,0 +1,115 @@
+{
+  "edge_id": "n_23254ae8908a732b->household_consumption",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "QE1에서 국채 대신 MBS 매입의 변화가 가처분소득·저축 유인·소비 여력 경로를 통해 가계 소비의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R06535의 적용 맥락: This paper analyzes U.S. mortgage-market responses to Federal Reserve LSAPs (QE1, QE2, MEP/Operation Twist, QE3 and the 2013 taper) during 2008–2013 using loan- and borrower-level data (CRISM), HMDA and county-month aggregates. Units are individual mortgages and households (linked loans), aggregated at county and state levels. Institutional setting includes Fed purchases of Agency MBS via the TBA market restricted to GSE‑guaranteed conforming loans (local conforming loan limits and ~80% LTV), the HARP program, and segmentation between conforming and jumbo mortgage markets."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_3c677ab3f09b8e0e",
+      "text": "부의 영구적 변화이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_d772a8e62051dddc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_44f3ed0947d4e5f3",
+      "text": "주택가격 상승이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_0ba8239edc9eaec0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a067cf7b3d3fd965",
+      "text": "시장 전반의 소득 이전이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_7bf68d7938d9b426",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e95da830018b8e44",
+      "text": "동료 집단의 소비이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_bdf2fce484f42d1f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a96cca6fa8e6af98",
+      "text": "남편의 동료 집단 소비이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_c75e4dbe44a7e842",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0aaa40c471f8bed6",
+      "text": "역사적 국가 역량이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_9c29c58f6a95d65a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5233319c82686a11",
+      "text": "통화 팽창이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_d92279d6504f4371",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dec700ee70be2206",
+      "text": "예상 밖 인플레이션이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_c2a0209663dda4d2",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_a4c5ec948cac9b55",
+      "text": "실질금리이(가) 상승하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "real_rate",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_63588e97eb041e74",
+      "text": "재기를 지원하는 파산제도 개혁이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_77cddfdc8ef1d330",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_212a7720ad301417",
+      "text": "미실현 자본이득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_67c6d3b209319fcb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_6d2d6556df6eb471",
+      "text": "배당소득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_77693c509b901e77",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_56c2ec1573ac09eb",
+      "text": "이주 보조금이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_584afd2d8c566d80",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dfc0f9fbdc687050",
+      "text": "총소득의 영구적 감소이(가) 상승하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_21dfbf66f3dcc4d6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_3c5db8f84eec738a",
+      "text": "연속적인 경기부양 지원금 지급이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_893dc58267c154f5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_cb14dd7c3998c578",
+      "text": "가계 소득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "household_income",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "How Quantitative Easing Works: Evidence on the Refinancing Channel (2016, review_of_economic_studies; CSV R06535; https://www.nber.org/papers/w22638)",
+    "author": "Marco Di Maggio, Amir Kermani, Christopher Palmer",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

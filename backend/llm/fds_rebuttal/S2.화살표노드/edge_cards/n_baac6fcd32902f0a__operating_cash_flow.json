@@ -1,0 +1,18 @@
+{
+  "edge_id": "n_baac6fcd32902f0a->operating_cash_flow",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "높은 산업 투자 수준의 변화가 대상 변수에 영향을 주는 경제적 유인·제약 경로를 통해 영업현금흐름의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R02578의 적용 맥락: This paper studies US publicly traded firms (Compustat–CRSP, 1972–2004; ~108,522 firm‑year observations) organized by three‑digit SIC industries, augmented with Commerce Department and BLS data to capture private firms and compute industry Herfindahls. It examines industry‑level valuation booms (rolling 10‑year predicted vs. actual market‑to‑book), relative investment, and new financing, and evaluates their effects on subsequent firm operating cash flows, analyst forecasts, stock returns and risk—contrasting competitive versus concentrated and high‑growth/high‑risk industry subsamples (financials/utilities excluded)."
+  ],
+  "counterconditions": [],
+  "source": {
+    "title": "Real and Financial Industry Booms and Busts (2008, journal_of_finance; CSV R02578; https://www.nber.org/papers/w14290)",
+    "author": "Gerard Hoberg, Gordon M. Phillips",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

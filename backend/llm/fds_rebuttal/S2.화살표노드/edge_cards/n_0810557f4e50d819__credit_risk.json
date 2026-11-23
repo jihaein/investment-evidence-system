@@ -1,0 +1,55 @@
+{
+  "edge_id": "n_0810557f4e50d819->credit_risk",
+  "sign": "-",
+  "empirical_sign": "-",
+  "mechanism": "좀비기업 신용공급의 변화가 원리금 상환능력·손실 위험 경로를 통해 기업 채무불이행 위험의 감소로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R09057의 적용 맥락: This paper studies the rise of “zombie credit” and its effect on inflation using firm-level (≈1.17 million firms) and product‑level CPI data across 65 industries in 12 European countries (Austria, Belgium, Germany, Denmark, Spain, Finland, France, Italy, Poland, Portugal, Sweden, Slovakia) roughly over 2009–2016 with emphasis on the post‑2012 period. The setting is post‑global financial and sovereign‑debt crises under ultra‑accommodative ECB policies (negative rates, asset purchases), where weakly‑capitalized banks and search‑for‑yield behavior provided cheap credit to impaired firms; units are firms and industry‑country “markets.”"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_0bb9763b1ed5fee9",
+      "text": "은행 평균 유동성 감소이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_e54e7d5bf4042b14",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7eaa1b13abff16f8",
+      "text": "경기순응적 만기 변동이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_7d3ac8964770172e",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_cec53bac3d9e59c9",
+      "text": "거래형 대출 비중 상승이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "n_2f1929e3887d4f9f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b19f29704a14329c",
+      "text": "기업 재무레버리지이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "leverage",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_8e69aaffb0df1ada",
+      "text": "기업 재무적 곤경이(가) 하락하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "firm_financial_distress",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_14b78c820de57f10",
+      "text": "이자보상배율이(가) 상승하여 기업 채무불이행 위험의 상승을 상쇄할 수 있음",
+      "check_node": "interest_coverage",
+      "check_direction": "+"
+    }
+  ],
+  "source": {
+    "title": "Zombie Credit and (Dis-)Inflation: Evidence from Europe (2020, journal_of_finance; CSV R09057; https://www.nber.org/papers/w27158)",
+    "author": "Viral V. Acharya, Matteo Crosignani, Tim Eisert, Christian Eufinger",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}

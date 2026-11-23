@@ -1,0 +1,73 @@
+{
+  "edge_id": "fcff->expected_fcff",
+  "sign": "+",
+  "empirical_sign": "n/a",
+  "mechanism": "관측 FCFF 개선이 지속 가능하다면 미래 FCFF 전망을 높일 수 있음",
+  "conditions": [
+    "일회성·경기순환·재투자 축소 효과 제외",
+    "수주·사업계획 등 전향 근거 확인",
+    "과거 변화만으로 미래를 확정하지 않음"
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_32ec0276115b7ca6",
+      "text": "기업 이익(연구 정의)이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_profit",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e69948eadbbce622",
+      "text": "기업 수익성(연구 정의)이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "profitability",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_1a411ef29302f8e6",
+      "text": "영업현금흐름이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "operating_cash_flow",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_795048aa2d10ed35",
+      "text": "기업 생존 가능성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_survival",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_fbc48b4d771c95db",
+      "text": "기업 퇴출 가능성이(가) 상승하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "firm_exit",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9919494700c8b578",
+      "text": "당기순이익이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "net_income",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_466401e1681e8d27",
+      "text": "기대 기업이익이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "expected_profit",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3091bcffced637f9",
+      "text": "기대 미래 수익성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "future_profitability",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5e5b227388d6ceb9",
+      "text": "기업 이익 지속성이(가) 하락하여 기대 미래 FCFF의 상승을 상쇄할 수 있음",
+      "check_node": "profit_persistence",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "설계서 v4 기반 회계·가치평가 관계 초안",
+    "author": "LLM 초안",
+    "source_class": "team"
+  },
+  "review_status": "draft"
+}

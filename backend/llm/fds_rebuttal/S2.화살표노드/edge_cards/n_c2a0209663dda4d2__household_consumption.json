@@ -1,0 +1,115 @@
+{
+  "edge_id": "n_c2a0209663dda4d2->household_consumption",
+  "sign": "+",
+  "empirical_sign": "+",
+  "mechanism": "예상 밖 인플레이션의 변화가 가처분소득·저축 유인·소비 여력 경로를 통해 가계 소비의 증가로 이어질 수 있다는 조건부 설명 초안이다.",
+  "conditions": [
+    "논문의 처치·결과 정의와 대상 기업의 변수 정의가 일치할 것",
+    "논문의 모집단·시기·제도 및 효과 발생 시차가 적용 대상과 부합할 것",
+    "원자료 R07051의 적용 맥락: This paper studies how monetary policy redistributes across heterogeneous households and thereby affects aggregate consumption, combining theory with micro evidence from household surveys: Italy’s SHIW (2010, self-reported MPCs), the U.S. PSID (1999–2013, semi-structural panel estimates of MPCs) and the U.S. Consumer Expenditure Survey (2001–2002, exploiting tax-rebate timing). Units are households with detailed balance sheets (nominal positions, maturing assets/liabilities); the analysis targets transitory monetary shocks (real rate falls, inflation, output effects) under a closed-economy fiscal rule with lump-sum rebates."
+  ],
+  "counterconditions": [
+    {
+      "cc_id": "cc_d9e4b145d84c4599",
+      "text": "부의 영구적 변화이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_d772a8e62051dddc",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_4164b8f6cc9b8ec1",
+      "text": "주택가격 상승이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_0ba8239edc9eaec0",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0978047468ffc26b",
+      "text": "시장 전반의 소득 이전이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_7bf68d7938d9b426",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_0f2becb9d622fa94",
+      "text": "동료 집단의 소비이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_bdf2fce484f42d1f",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_3261d6a58ef48b70",
+      "text": "남편의 동료 집단 소비이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_c75e4dbe44a7e842",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_5f30ee5240e739ec",
+      "text": "QE1에서 국채 대신 MBS 매입이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_23254ae8908a732b",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_dd9b326e467063fb",
+      "text": "역사적 국가 역량이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_9c29c58f6a95d65a",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_7d69ca0aa5b63a67",
+      "text": "통화 팽창이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_d92279d6504f4371",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_e72333b6a7299778",
+      "text": "실질금리이(가) 상승하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "real_rate",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_b0c442fe8b58d4d4",
+      "text": "재기를 지원하는 파산제도 개혁이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_77cddfdc8ef1d330",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_84de174fd88dc646",
+      "text": "미실현 자본이득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_67c6d3b209319fcb",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_b267347cd0121258",
+      "text": "배당소득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_77693c509b901e77",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_393749127c1e5058",
+      "text": "이주 보조금이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_584afd2d8c566d80",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_cc4cc68dd33d04ad",
+      "text": "총소득의 영구적 감소이(가) 상승하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_21dfbf66f3dcc4d6",
+      "check_direction": "+"
+    },
+    {
+      "cc_id": "cc_9a04e1ba800e839e",
+      "text": "연속적인 경기부양 지원금 지급이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "n_893dc58267c154f5",
+      "check_direction": "-"
+    },
+    {
+      "cc_id": "cc_2ac530d112044edd",
+      "text": "가계 소득이(가) 하락하여 가계 소비의 상승을 상쇄할 수 있음",
+      "check_node": "household_income",
+      "check_direction": "-"
+    }
+  ],
+  "source": {
+    "title": "Monetary Policy and the Redistribution Channel (2017, american_economic_review; CSV R07051; https://www.nber.org/papers/w23451)",
+    "author": "Adrien Auclert",
+    "source_class": "econcausal"
+  },
+  "review_status": "draft"
+}
