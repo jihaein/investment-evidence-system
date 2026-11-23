@@ -90,9 +90,21 @@ def poll(base, key, start, end, *, download=False):
                 except RuntimeError:
                     missing_documents.append(receipt)
                 time.sleep(0.15)
-    if missing_documents:
-        raise RuntimeError(f"DART receipt documents missing: {', '.join(missing_documents)}")
+    record_missing_documents(documents, sorted(set(missing_documents)))
     return new
+
+
+def record_missing_documents(documents, missing):
+    """The original document zips are an archive only; conversion uses the statement API.
+    A document DART does not serve (e.g. an attachment-only amendment) is logged, not fatal."""
+    path = documents.parent / "document_missing.json"
+    known = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    today = datetime.now(KST).date().isoformat()
+    current = {receipt: known.get(receipt, today) for receipt in missing}
+    current.update({r: d for r, d in known.items() if not (documents / f"{r}.zip").exists() and r not in current})
+    save_atomic(path, json.dumps(current, indent=2, sort_keys=True).encode())
+    if missing:
+        print(f"DART documents not available (archive only, conversion unaffected): {', '.join(missing)}", flush=True)
 
 
 def historical_backfill(base, key, end):
