@@ -2,9 +2,9 @@
   "mapping_version": "2026.11.latest-csv.1",
   "graph": "S1.인과그래프/new_graph.json",
   "cards": "S2.화살표노드/edge_cards",
-  "company_list": "데이터/07_기업x분기_12개항목_결합 (1).csv",
+  "company_list": "데이터/07_기업x분기_12개항목_결합.csv",
   "years": [2024, 2026],
-  "last_update": "2026-09-01",
+  "last_update": "2026-12-01",
   "lookback_observations": 3,
   "fiscal_year_end_month": 12,
   "trend_policies": {
@@ -18,7 +18,7 @@
   },
   "sources": {
     "latest_quarter_csv": {
-      "file": "데이터/07_기업x분기_12개항목_결합 (1).csv",
+      "file": "데이터/07_기업x분기_12개항목_결합.csv",
       "company_field": "종목코드",
       "corp_field": "기업 고유번호",
       "name_field": "기업명",

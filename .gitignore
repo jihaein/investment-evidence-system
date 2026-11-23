@@ -270,3 +270,6 @@ ops/cloud/.hashcache.tmp
 
 # FDS graph embedding cache (backend/graph/load_graph.py rebuilds it)
 backend/graph/embeddings_cache.json
+
+# S3 input CSV (cloud dataset rebuttal_inputs)
+backend/llm/fds_rebuttal/데이터/

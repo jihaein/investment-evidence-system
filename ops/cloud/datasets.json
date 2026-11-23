@@ -74,5 +74,10 @@
     "env": "REBUTTAL_S3_DIR",
     "default": "backend/llm/fds_rebuttal/S3_fianl/runs/full-2024-2026",
     "about": "윤정민 rebuttal pipeline S3 company arguments (also in Git LFS); the cloud copy is what servers read"
+  },
+  {
+    "name": "rebuttal_inputs",
+    "path": "backend/llm/fds_rebuttal/데이터",
+    "about": "S3 input: the data team's 07_기업x분기_12개항목_결합.csv (Google Drive skku_fds_main/데이터/FDS_12개항목_2024Q1-2026Q3). Replace it each quarter, then regenerate S3 (backend/llm/fds_rebuttal/S3_fianl/README_S3.md)"
   }
 ]
