@@ -8,7 +8,9 @@ Replaces the UI repo's tools/prices/push_prices.py + the teammate PC's daily KRX
 Each run uploads the sessions after the last uploaded day (whole market fetched once per session, filtered), and
 a stock wanted for the first time gets its history from --from (one request per stock), also on a run with no new
 session (a stock just planted in a garden gets its bars on the next run, not the next trading day). Halted days (no open) are
-skipped. Safe to run again: upserts only.
+skipped; a halted stock that already has bars is not fetched again. The KOSPI and KOSDAQ indexes go in too, under the
+codes 'KOSPI' and 'KOSDAQ' (the UI's market weather), up to the last uploaded session and never past it. Safe to run
+again: upserts only.
 
     python ops/ui/push_prices.py --dry      # fetch and count, upload nothing (no UI keys needed)
     python ops/ui/push_prices.py            # needs UI_SUPABASE_URL, UI_SUPABASE_SERVICE_ROLE_KEY, KRX_ID, KRX_PW
@@ -31,6 +33,7 @@ sys.path.insert(0, str(ROOT))
 JOURNAL_STOCKS = ['005930', '000660', '373220', '005380', '035420', '035720', '068270', '105560', '012450', '005490',
                   '247540', '196170']
 TOP = 300
+INDEXES = {"KOSDAQ": "2001", "KOSPI": "1001"}       # price_daily code → KRX index ticker
 COVERAGE = ROOT / "ops" / "live" / "stock_coverage.csv"
 
 
@@ -113,6 +116,46 @@ def history(code, start, end):
     return out
 
 
+def index_bars(code, start, end):
+    """Daily bars of one KRX index (models/sudden uses the same pykrx call for its market returns)."""
+    from pykrx import stock
+    get = getattr(stock, "get_index_ohlcv", None) or getattr(stock, "get_index_ohlcv_by_date")
+    df = get(f"{start:%Y%m%d}", f"{end:%Y%m%d}", INDEXES[code])
+    out = []
+    for d, r in (df.iterrows() if df is not None else []):
+        o, h, l, cl = (num(r.get(k)) for k in ("시가", "고가", "저가", "종가"))
+        if not cl:
+            continue
+        v = num(r.get("거래량"))
+        out.append({"code": code, "d": d.strftime("%Y-%m-%d"), "o": o or cl, "h": h or cl, "l": l or cl, "c": cl,
+                    "v": int(v) if v is not None else None})
+    return out
+
+
+def push_indexes(sb, start, end):
+    """Each index from its last uploaded day (fetched again, in case it was stored early) to end, the last stock session
+    uploaded: an index bar is never newer than the stocks, so the next run's 'last uploaded day' stays the stocks'."""
+    rows = []
+    for code in INDEXES:
+        last = (sb.req("GET", f"price_daily?select=d&code=eq.{code}&order=d.desc&limit=1") or [None])[0]
+        frm = date.fromisoformat(last["d"]) if last else start
+        if frm > end:
+            continue
+        try:
+            rows += [b for b in index_bars(code, frm, end) if b["d"] <= end.isoformat()]
+        except Exception as e:                      # the weather falls back to its mock; the next run retries
+            print(f"{code} index: {type(e).__name__}: {str(e)[:200]} (retried next run)")
+        time.sleep(0.3)
+    if rows:
+        sb.upsert("price_daily", rows, "code,d")
+    print(f"indexes {', '.join(INDEXES)} to {end}: {len(rows)} bars")
+
+
+def never_loaded(sb, codes):
+    """The codes with no bar at all (a halted stock is missing from the last day but has its history already)."""
+    return sorted(c for c in codes if not sb.req("GET", f"price_daily?select=d&code=eq.{c}&limit=1"))
+
+
 def bar(r, day):
     if not r["c"] or not r["o"]:                      # a halted day has no open; skip it
         return None
@@ -159,7 +202,9 @@ def main(argv=None):
         # no new session: still give a stock that is wanted for the first time its history (a fresh garden line)
         wanted = set(JOURNAL_STOCKS) | universe_codes() | garden_codes(sb)
         have = {r["code"] for r in sb.req("GET", f"price_daily?select=code&d=eq.{last.isoformat()}&limit=5000")} if last else set()
-        fresh = sorted(wanted - have)
+        fresh = never_loaded(sb, wanted - have)
+        if last:
+            push_indexes(sb, start, last)
         if not fresh:
             print(f"price_daily is up to date ({last})")
             return 0
@@ -188,7 +233,7 @@ def main(argv=None):
     have = set() if last is None or a.dry else {
         r["code"] for r in sb.req("GET", f"price_daily?select=code&d=eq.{last.isoformat()}&limit=5000")}
     first = min(markets)
-    fresh = [] if a.dry else sorted(wanted - have)      # empty table: every wanted stock is new
+    fresh = [] if a.dry else never_loaded(sb, wanted - have)      # empty table: every wanted stock is new
     history_end = last or (first - timedelta(days=1))
     rows = [b for day, day_rows in sorted(markets.items()) for r in day_rows
             if r["code"] in wanted and (b := bar(r, day))]
@@ -203,6 +248,7 @@ def main(argv=None):
     sb.upsert("stock_names", names, "code")
     sb.upsert("price_daily", rows, "code,d")
     print("uploaded")
+    push_indexes(sb, start, latest)
     return 0
 
 

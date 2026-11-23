@@ -45,6 +45,42 @@ def test_halted_day_has_no_bar_and_numbers_are_parsed():
     assert pp.bar({**row, "o": pp.num("-")}, date(2026, 11, 20)) is None
 
 
+class FakeSupa:
+    """price_daily as a dict code → sorted days; records upserts."""
+    def __init__(self, days):
+        self.days, self.up = days, []
+
+    def req(self, method, path, body=None, prefer=None):
+        code = path.split("code=eq.")[1].split("&")[0]
+        ds = sorted(self.days.get(code, []), reverse=True)
+        return [{"d": d} for d in ds[:1]]
+
+    def upsert(self, table, rows, on):
+        self.up += rows
+
+
+def test_indexes_start_at_their_last_day_and_never_pass_the_stocks(monkeypatch):
+    import pandas as pd
+    asked = []
+
+    def fake(code, start, end):
+        asked.append((code, start, end))
+        days = pd.bdate_range(start, end + pd.Timedelta(days=3))           # a source that runs ahead of the stocks
+        return [{"code": code, "d": d.strftime("%Y-%m-%d"), "o": 1, "h": 1, "l": 1, "c": 1, "v": 0} for d in days]
+    monkeypatch.setattr(pp, "index_bars", fake)
+    monkeypatch.setattr(pp.time, "sleep", lambda s: None)
+    sb = FakeSupa({"KOSDAQ": ["2026-11-19"]})
+    pp.push_indexes(sb, date(2024, 1, 1), date(2026, 11, 20))
+    assert ("KOSDAQ", date(2026, 11, 19), date(2026, 11, 20)) in asked        # refetch its last day
+    assert ("KOSPI", date(2024, 1, 1), date(2026, 11, 20)) in asked           # never uploaded: from --from
+    assert max(r["d"] for r in sb.up) == "2026-11-20"
+
+
+def test_a_halted_stock_with_history_is_not_fetched_again():
+    sb = FakeSupa({"031860": ["2026-04-03"]})
+    assert pp.never_loaded(sb, {"031860", "999999"}) == ["999999"]
+
+
 import push_signals as ps  # noqa: E402
 
 
