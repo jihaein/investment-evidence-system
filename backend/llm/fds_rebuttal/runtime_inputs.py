@@ -1,6 +1,7 @@
 """Small shared input policy; no stage orchestration."""
 from datetime import date, datetime, time, timedelta, timezone
 import json
+import os
 from hashlib import sha256
 from pathlib import Path
 import re
@@ -16,7 +17,13 @@ KST = timezone(timedelta(hours=9))
 
 
 def config():
-    return json.loads((ROOT / "runtime_config.json").read_text(encoding="utf-8"))
+    """runtime_config.json. REBUTTAL_S3_DIR (absolute path) overrides company_arguments_dir, e.g. a copy
+    restored from cloud storage instead of the Git LFS files."""
+    value = json.loads((ROOT / "runtime_config.json").read_text(encoding="utf-8"))
+    override = os.environ.get("REBUTTAL_S3_DIR", "").strip()
+    if override:
+        value["company_arguments_dir"] = override
+    return value
 
 
 def card_allowed(card):

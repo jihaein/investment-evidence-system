@@ -19,7 +19,7 @@ from runtime_inputs import card_bundle, company_id, file_sha256, select_company_
 from S5.run import run as run_s5
 from S6_S7_S8.pipeline_s6_s7_s8 import PERIODS, ROOT, run_s6, run_s7, run_s8, run_assessment
 
-RUNS = ROOT / "pipeline_runs"
+RUNS = Path(os.environ.get("REBUTTAL_RUNS_DIR", "").strip() or ROOT / "pipeline_runs")  # per-run working files
 
 
 def previous_run(runs, session, turn, code, period):
