@@ -82,12 +82,24 @@ def run_pipeline(request, workdir):
     return json.loads(result.read_text(encoding="utf-8"))
 
 
+def item_tag(item):
+    """The S8 tag of one claim/ground mention: its evaluation, or the reason it has none."""
+    ev = item.get("evaluation")
+    if isinstance(ev, dict):
+        return ev.get("tag")
+    if isinstance(ev, list) and ev:
+        return ",".join(sorted({e.get("tag") for e in ev if isinstance(e, dict) and e.get("tag")})) or None
+    return f"({item.get('mapping_status') or 'no evaluation'})"
+
+
 def summary(result):
     return {"decision": result.get("decision"), "decided_by_rule": result.get("decided_by_rule"),
-            "as_of": result.get("as_of"), "claims": [
-                {"span": c.get("span"), "tag": (c.get("evaluation") or {}).get("tag")} for c in result.get("claim", [])],
-            "grounds": [{"span": g.get("span"), "tag": (g.get("evaluation") or {}).get("tag")}
-                        for g in result.get("grounds", [])]}
+            "as_of": result.get("as_of"),
+            "claims": [{"span": c.get("span"), "tag": item_tag(c)} for c in result.get("claim", [])],
+            "grounds": [{"span": g.get("span"), "tag": item_tag(g)} for g in result.get("grounds", [])],
+            "backing": len(result.get("backing") or []), "rebuttal": len(result.get("rebuttal") or []),
+            "unresolved": len(result.get("unresolved_items") or []),
+            "next_questions": [q.get("text") for q in (result.get("question_candidates") or [])][:3]}
 
 
 def kst_date(timestamp):
@@ -135,6 +147,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--packet", type=Path, help="analyse one packet file (no database)")
     ap.add_argument("--alert-date", help="YYYY-MM-DD for --packet (default today, KST)")
+    ap.add_argument("--out", type=Path, help="with --packet: also save the whole S9 result here")
     ap.add_argument("--limit", type=int, default=20)
     args = ap.parse_args()
     if args.packet:
@@ -142,6 +155,8 @@ def main():
         alert = args.alert_date or datetime.now(KST).date().isoformat()
         with tempfile.TemporaryDirectory(prefix="rebuttal-") as work:
             result = run_pipeline(request_from_packet(packet, alert), work)
+        if args.out:
+            args.out.write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
         print(json.dumps(summary(result), ensure_ascii=False, indent=1))
         return
     process_inbox(UI(), args.limit)
