@@ -1,0 +1,96 @@
+# Daily KRX/DART refresh in the cloud (replaces the Mac launchd job once it has run cleanly).
+#
+# Setup (once): Settings → Secrets and variables → Actions
+#   Secrets:   SUPABASE_DB_URL, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, OPENDART_API_KEY, KRX_ID, KRX_PW
+#   Variable:  CLOUD_SCHEDULE_ENABLED = true   (only after a manual run succeeded and the Mac job is unloaded;
+#              two runners must never publish at the same time)
+# Manual run: Actions → daily-refresh → Run workflow.
+# Failures: GitHub e-mails the repo owner when a run fails (Settings → Notifications → Actions).
+name: daily-refresh
+
+on:
+  schedule:
+    - cron: "30 10 * * 1-5"   # 19:30 KST Mon-Fri, after the 19:00 close-data cutoff
+    - cron: "30 13 * * 1-5"   # 22:30 KST retry
+    - cron: "30 23 * * 0-4"   # 08:30 KST Mon-Fri: overnight DART filings
+  workflow_dispatch:
+
+concurrency:
+  group: daily-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    if: github.event_name == 'workflow_dispatch' || vars.CLOUD_SCHEDULE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      TZ: Asia/Seoul
+      IES_DATA: ${{ github.workspace }}/../ies-data
+      RAWDATA_DIR: ${{ github.workspace }}/../ies-data/rawdata
+      DART_SNAPSHOT_DIR: ${{ github.workspace }}/../ies-data/dart_snapshots
+      MARKET_CALENDAR_CSV: ${{ github.workspace }}/ops/live/krx_sessions.csv
+      MARKET_COVERAGE_CSV: ${{ github.workspace }}/ops/live/stock_coverage.csv
+      MARKET_READY_AFTER_KST: "19:00"
+      MARKET_START_SESSION: "2026-11-12"
+      DART_START_DATE: "2026-09-01"
+      CLOUD_BUCKET: ies-data
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      OPENDART_API_KEY: ${{ secrets.OPENDART_API_KEY }}
+      KRX_ID: ${{ secrets.KRX_ID }}
+      KRX_PW: ${{ secrets.KRX_PW }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      # Working copy of the data between runs; the cloud bucket stays the source of truth.
+      - name: Restore data working copy
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ github.workspace }}/../ies-data
+            ops/cloud/.hashcache.json
+          key: ies-data-${{ github.run_id }}
+          restore-keys: ies-data-
+
+      - name: Fill in missing files from cloud storage
+        run: python ops/cloud/sync.py pull --only rawdata dart_snapshots
+
+      - name: Extend trading calendar
+        run: python ops/live/update_calendar.py
+
+      - name: Refresh KRX and DART, publish signals
+        id: refresh
+        continue-on-error: true
+        run: python -u -m data_pipeline.scheduled_refresh --once
+
+      # Only the two datasets this job writes; the other datasets are maintained from the Mac.
+      - name: Save new files to cloud storage
+        if: always()
+        run: python ops/cloud/sync.py push --only rawdata dart_snapshots
+
+      - name: Keep data working copy
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ github.workspace }}/../ies-data
+            ops/cloud/.hashcache.json
+          key: ies-data-${{ github.run_id }}
+
+      - name: Check latest session is published
+        run: python ops/live/check_fresh.py
+
+      - name: Fail if the refresh failed
+        if: steps.refresh.outcome == 'failure'
+        run: |
+          echo "Refresh failed; see the 'Refresh KRX and DART' step log." >&2
+          exit 1

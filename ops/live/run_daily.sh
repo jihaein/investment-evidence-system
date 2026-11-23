@@ -22,10 +22,18 @@ trap 'rmdir "$LOCK" 2>/dev/null' EXIT
 
 cd "$REPO" || { notify "실패" "저장소 폴더를 찾을 수 없음"; exit 1; }
 echo "===== $(date '+%F %T') start" >> "$LOG"
+# After a wake from sleep the network can take a few minutes; wait up to 10 minutes for it.
+for i in $(seq 1 60); do
+  /usr/bin/curl -s -o /dev/null -m 5 https://opendart.fss.or.kr && break
+  [ "$i" -eq 1 ] && echo "$(date '+%F %T') waiting for network" >> "$LOG"
+  sleep 10
+done
 # 1) Fill in anything missing on this computer from cloud storage (never overwrites local files).
 if ! "$REPO/.venv/bin/python" -u ops/cloud/sync.py pull >> "$LOG" 2>&1; then
   notify "클라우드 복원 실패" "ops/cloud/sync.py pull 오류. 로그 확인"
 fi
+# 2) Extend the trading calendar, then refresh KRX/DART and publish.
+"$REPO/.venv/bin/python" -u ops/live/update_calendar.py >> "$LOG" 2>&1
 # 2) Refresh KRX/DART and publish.
 "$REPO/.venv/bin/python" -u -m data_pipeline.scheduled_refresh --once >> "$LOG" 2>&1
 status=$?
