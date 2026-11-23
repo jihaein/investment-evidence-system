@@ -9,11 +9,10 @@
 # Failures: GitHub e-mails the repo owner when a run fails (Settings → Notifications → Actions).
 name: daily-refresh
 
+# Started by Supabase pg_cron through workflow_dispatch (ops/cloud/github_cron.sql): 19:30 and 22:30 KST Mon-Fri,
+# 08:30 KST Mon-Fri. GitHub's own `schedule:` never fired on this repo (2026-11-23), and keeping both would start
+# each run twice once it did.
 on:
-  schedule:
-    - cron: "30 10 * * 1-5"   # 19:30 KST Mon-Fri, after the 19:00 close-data cutoff
-    - cron: "30 13 * * 1-5"   # 22:30 KST retry
-    - cron: "30 23 * * 0-4"   # 08:30 KST Mon-Fri: overnight DART filings
   workflow_dispatch:
     inputs:
       krx_check:

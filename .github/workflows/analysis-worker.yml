@@ -6,9 +6,9 @@
 # Every 30 minutes it refreshes the gardens' 서서히 verdicts and analyses the packets that arrived since the last run. Manual run: Actions → analysis-worker.
 name: analysis-worker
 
+# Started by Supabase pg_cron through workflow_dispatch (ops/cloud/github_cron.sql) at :07 and :37 every hour.
+# GitHub's own `schedule:` never fired on this repo (2026-11-23).
 on:
-  schedule:
-    - cron: "7,37 * * * *"   # every 30 minutes, off the busy :00/:30 marks (GitHub drops or delays those first)
   workflow_dispatch:
 
 concurrency:
