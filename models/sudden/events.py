@@ -160,6 +160,8 @@ def add_abnormal(prices, index=None):
         g["halted"] = g["volume"].fillna(0) == 0
         g["ret_close"] = g["close"].pct_change()
         g["corp_action"] = ((g["ret"] - g["ret_close"]).abs() > RET_GAP_WARN) & ~g["halted"]
+        if "corp_action_hint" in g:                            # 등락률이 없는 자료(매일 갱신 DB): 상장주식수가 바뀐 날
+            g["corp_action"] = g["corp_action"] | (g["corp_action_hint"].fillna(False).astype(bool) & ~g["halted"])
         g["after_halt"] = g["halted"].shift(1, fill_value=False) & ~g["halted"]
         g["ar"] = g["ret"].where(~g["halted"]) - g["index_ret"]
         g["sigma"] = g["ar"].rolling(SIGMA_WINDOW, min_periods=MIN_OBS).std().shift(1)   # D-120 ~ D-1만
