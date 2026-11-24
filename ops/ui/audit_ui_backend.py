@@ -43,8 +43,7 @@ TABLES = [
 ]
 RPCS = ["has_invite", "redeem_invite", "is_master", "delete_me", "llm_take", "friend_talk_take"]
 # expedition-submit is left out: a draft the UI repo marks "not deployed" (the app shows example rankings instead)
-FUNCTIONS = ["bori-talk", "friend-chat", "jigi-llm", "portfolio-read", "quest-content", "quest-play", "quest-settle",
-             "debate-chat"]
+FUNCTIONS = ["bori-talk", "friend-chat", "jigi-llm", "portfolio-read", "quest-content", "quest-play", "quest-settle"]
 
 
 def call(url, key, method="GET", body=None, bearer=None, prefer=None):

@@ -85,6 +85,18 @@ def convert_receipts(engine, base, out, sessions, as_of, start, *, key=None):
 
 
 RETRY_DAYS = 10   # OpenDART's statement endpoint often lags new filings by a few days
+# Receipts a person has looked at and accepted as held (e.g. OpenDART never published the statement for that filing):
+# listed here they stop alerting; the company keeps its last published financials.
+REVIEWED_CSV = ROOT / "ops" / "live" / "dart_reviewed.csv"
+
+
+def reviewed_receipts(path=None):
+    import csv as _csv
+    path = Path(os.getenv("DART_REVIEWED_CSV") or path or REVIEWED_CSV)
+    if not path.is_file():
+        return set()
+    with open(path, encoding="utf-8-sig") as handle:
+        return {row["rcept_no"].strip() for row in _csv.DictReader(handle) if (row.get("rcept_no") or "").strip()}
 
 
 def triage_pending(base, inbox, pending, processed, as_of):
@@ -93,6 +105,7 @@ def triage_pending(base, inbox, pending, processed, as_of):
     superseded   - the same company has a later filing that was published (e.g. an amendment
                    or the next period), so this version is no longer used for evaluation
     not_covered  - the company is outside the active price coverage (delisted or moved)
+    reviewed     - a person checked it and listed it in ops/live/dart_reviewed.csv
     retrying     - filed recently; retried automatically on every run
     needs_review - none of the above
     """
@@ -105,6 +118,7 @@ def triage_pending(base, inbox, pending, processed, as_of):
             active = {row["stock_code"] for row in _csv.DictReader(handle)
                       if not row["active_until"] or as_of < date.fromisoformat(row["active_until"])}
     receipts = [json_file(path) for path in inbox.glob("*.json")]
+    reviewed = reviewed_receipts()
     result = {}
     for receipt, reason in pending.items():
         entry = json_file(inbox / f"{receipt}.json")
@@ -114,6 +128,8 @@ def triage_pending(base, inbox, pending, processed, as_of):
         filed = date.fromisoformat(entry["rcept_dt"])
         if later:
             status = "superseded"
+        elif receipt in reviewed:
+            status = "reviewed"
         elif active is not None and entry.get("stock_code") not in active:
             status = "not_covered"
         elif (as_of - filed).days <= RETRY_DAYS:
