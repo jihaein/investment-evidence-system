@@ -56,6 +56,12 @@ revoke all on function public.dispatch_github_workflow(text) from public, anon, 
 select cron.schedule('ies-daily-refresh-1930', '30 10 * * 1-5', $$select public.dispatch_github_workflow('daily-refresh.yml')$$);   -- 19:30 KST Mon-Fri
 select cron.schedule('ies-daily-refresh-2230', '30 13 * * 1-5', $$select public.dispatch_github_workflow('daily-refresh.yml')$$);   -- 22:30 KST retry
 select cron.schedule('ies-daily-refresh-0830', '30 23 * * 0-4', $$select public.dispatch_github_workflow('daily-refresh.yml')$$);   -- 08:30 KST Mon-Fri
+-- backups 15 minutes later (2026-11-24: the 08:30 job failed with 'job startup timeout' inside pg_cron, so nothing was
+-- dispatched). daily-refresh.yml has concurrency group daily-refresh, so a backup waits for a run still going, and a
+-- run with nothing new to fetch ends in about 2 minutes.
+select cron.schedule('ies-daily-refresh-1945', '45 10 * * 1-5', $$select public.dispatch_github_workflow('daily-refresh.yml')$$);   -- 19:45 KST backup
+select cron.schedule('ies-daily-refresh-2245', '45 13 * * 1-5', $$select public.dispatch_github_workflow('daily-refresh.yml')$$);   -- 22:45 KST backup
+select cron.schedule('ies-daily-refresh-0845', '45 23 * * 0-4', $$select public.dispatch_github_workflow('daily-refresh.yml')$$);   -- 08:45 KST backup
 select cron.schedule('ies-analysis-worker',    '7,37 * * * *',  $$select public.dispatch_github_workflow('analysis-worker.yml')$$); -- every 30 minutes
 select cron.schedule('ies-health-check',       '5 0 * * *',     $$select public.dispatch_github_workflow('health-check.yml')$$);    -- 09:05 KST daily: ops/live/health_check.py
 
