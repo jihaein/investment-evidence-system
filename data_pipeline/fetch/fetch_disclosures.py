@@ -17,15 +17,27 @@ API = "https://opendart.fss.or.kr/api"
 KST = ZoneInfo("Asia/Seoul")
 
 
-def fetch(session, endpoint, key, params):
-    try:
-        response = session.get(f"{API}/{endpoint}", params={"crtfc_key": key, **params}, timeout=30)
-    except requests.RequestException as exc:
-        # Requests exceptions may include the API key in a URL.
-        raise RuntimeError(f"DART {endpoint} connection error ({type(exc).__name__})") from None
-    if response.status_code != 200:
-        raise RuntimeError(f"DART {endpoint} HTTP {response.status_code}")
-    return response
+RETRY_WAITS = (5, 20)   # seconds before the 2nd and 3rd try (2026-11-24: one ConnectTimeout failed a whole run)
+
+
+def fetch(session, endpoint, key, params, *, waits=RETRY_WAITS):
+    """One OpenDART call; a dropped connection or a 5xx is tried again before the run fails."""
+    for attempt in range(len(waits) + 1):
+        last = attempt == len(waits)
+        try:
+            response = session.get(f"{API}/{endpoint}", params={"crtfc_key": key, **params}, timeout=30)
+        except requests.RequestException as exc:
+            if not last:
+                time.sleep(waits[attempt])
+                continue
+            # Requests exceptions may include the API key in a URL.
+            raise RuntimeError(f"DART {endpoint} connection error ({type(exc).__name__})") from None
+        if response.status_code >= 500 and not last:
+            time.sleep(waits[attempt])
+            continue
+        if response.status_code != 200:
+            raise RuntimeError(f"DART {endpoint} HTTP {response.status_code}")
+        return response
 
 
 def fetch_disclosures(client, key, start, end, corp=None, *, detail=None):
