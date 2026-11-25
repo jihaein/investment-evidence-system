@@ -219,7 +219,7 @@ def prepare_request(context):
             cited = [ids[0]]
             if len(ids) > 1:
                 direction = first.get("series_direction") if ends == first.get("series_periods") else None
-                suffix = {"+": "로 증가했어", "-": "로 감소했어", "0": "로 비슷한 수준이었어"}.get(direction, "였어")
+                suffix = {"+": "로 증가했어", "-": "로 감소했어", "0": "로 비슷한 수준이었어"}.get(direction, "이었어")
                 amount = fact_value(last)
                 if suffix.startswith("로") and amount.endswith("원"):
                     suffix = "으" + suffix
