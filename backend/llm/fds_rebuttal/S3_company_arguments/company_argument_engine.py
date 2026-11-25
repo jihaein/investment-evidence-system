@@ -5,7 +5,7 @@ from collections import Counter, defaultdict
 from datetime import date
 from decimal import Decimal
 
-from adapters import digest, file_hash
+from S3_company_arguments.company_argument_adapters import digest, file_hash
 
 
 def read_json(path):

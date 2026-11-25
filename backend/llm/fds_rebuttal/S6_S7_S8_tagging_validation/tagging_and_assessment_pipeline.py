@@ -401,9 +401,16 @@ def load_s6_inputs(argument_path, stock_code, period, *, mechanical=True,
     registry = period_path.parent / meta["fact_registry"]
     facts = cached_json(registry)["facts"] if company_input is not None or alert_date is not None else read_json(registry)["facts"]
     check_observations(a, co, facts, meta["cutoff"])
-    cfg = read_json(S3 / "s3_config.json")
+    cfg = read_json(S3 / "company_argument_config.json")
     digest = sha256(json.dumps(cfg, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
-    require(meta.get("config_sha256", digest) == digest, "S3 trend config hash mismatch")
+    # Existing S3 snapshots were generated before graph/card paths were renamed.
+    # Reconstruct only those two historical path strings for hash verification;
+    # all runtime file reads continue to use the current paths.
+    historical_cfg = dict(cfg)
+    if cfg.get("graph") == "S1_causal_graph/causal_graph.json" and cfg.get("cards") == "S2_edge_cards/edge_cards":
+        historical_cfg.update(graph="S1.인과그래프/new_graph.json", cards="S2.화살표노드/edge_cards")
+    historical_digest = sha256(json.dumps(historical_cfg, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+    require(meta.get("config_sha256", digest) in {digest, historical_digest}, "S3 trend config hash mismatch")
     policies = {**cfg["trend_policies"], **cfg.get("node_trends", {})}
     require(CARDS.is_dir(), f"S2 card directory missing: {CARDS}")
     all_cards, card_digest = card_bundle(CARDS)
