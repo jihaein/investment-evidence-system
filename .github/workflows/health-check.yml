@@ -1,6 +1,6 @@
 # Daily health check of the chain (ops/live/health_check.py): our DB, the UI tables and the two workflows' recent runs.
 # A failed run e-mails the repo owner (Settings → Notifications → Actions → failed workflows).
-# Started by Supabase pg_cron through workflow_dispatch (ops/cloud/github_cron.sql): 09:05 KST every day.
+# Started by Supabase pg_cron through workflow_dispatch (ops/cloud/github_cron.sql): 10:50 KST every day.
 name: health-check
 
 on:
