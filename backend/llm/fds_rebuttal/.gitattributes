@@ -1,1 +1,2 @@
 S3_company_arguments/runs/full-2024-2026/*.json filter=lfs diff=lfs merge=lfs -text
+S2_edge_cards/edge_cards/*.json -text
