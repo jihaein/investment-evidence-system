@@ -1,4 +1,4 @@
-"""Run one investor turn or resume the first unpublished stage of that run."""
+"""Internal resumable S4-S8 runner. Use run_mixed_pipeline.py for official S4-S10 runs."""
 import argparse
 from contextlib import closing
 from functools import partial
@@ -74,18 +74,36 @@ def previous_context(previous, session, turn, code, period, question_cc=None, co
         raise ValueError("이전 최종 S8 평가의 검증 태그 불일치")
     company = s3["companies"][code]
     rebuttals = []
+    rebuttal_exclusions = []
     cards, _ = card_bundle(ROOT / "S2_edge_cards/edge_cards")
     for row in assessment["item_tags"]:
         if row.get("tag") != "undercut" or not row.get("target", "").startswith("edge:"):
             continue
         eid = row["target"][5:]
-        if (row.get("tentative") or eid not in argument["edges"]
-                or row.get("use_id") not in {u["use_id"] for u in argument["edges"][eid]["uses"]}
-                or row["unverifiable"] != company["edges"][eid]["unverifiable"]):
+        if eid not in argument["edges"] or eid not in company["edges"]:
+            raise ValueError(f"이전 undercut 엣지 참조 불일치: {eid}")
+        use = next((u for u in argument["edges"][eid]["uses"]
+                    if u["use_id"] == row.get("use_id")), None)
+        if use is None:
+            raise ValueError(f"이전 undercut use_id 참조 불일치: {eid}, {row.get('use_id')}")
+        if row["unverifiable"] != company["edges"][eid]["unverifiable"]:
             raise ValueError("이전 undercut 엣지와 S3 관측 불일치")
         card = cards.get(eid)
         known = {c["cc_id"]: c["text"] for c in card["counterconditions"]} if card else {}
-        uv = [dict(cc_id=cc, text=known[cc]) for cc in row["unverifiable"] if cc in known]
+        if any(cc not in known for cc in row["unverifiable"]):
+            raise ValueError(f"이전 undercut cc_id 참조 불일치: {eid}")
+        edge = argument["edges"][eid]
+        fact_ids = {fact for nid in (edge["cause"], edge["effect"])
+                    for fact in company["nodes"][nid]["fact_ids"]}
+        allowed_refs = fact_ids | {eid} | set(known)
+        if any(ref not in allowed_refs for ref in row["evidence_refs"]):
+            raise ValueError(f"이전 undercut fact_id·근거 참조 불일치: {eid}")
+        if row.get("tentative") or use.get("tentative"):
+            rebuttal_exclusions.append({"target": row["target"], "use_id": row["use_id"],
+                                        "source_turn_id": turn - 1,
+                                        "reason": "tentative_path_not_confirmed_rebuttal"})
+            continue
+        uv = [dict(cc_id=cc, text=known[cc]) for cc in row["unverifiable"]]
         rebuttals.append(dict(target=row["target"], tag="undercut", use_id=row["use_id"],
                               unverifiable=uv, source_turn_id=turn - 1,
                               context={"reason": row.get("reason"),
@@ -95,20 +113,25 @@ def previous_context(previous, session, turn, code, period, question_cc=None, co
         raise ValueError("이전 질문 cc_id가 이전 undercut 조건에 없습니다")
     snapshots = [*argument.get("lineage", []),
                  {"source_turn_id": argument["turn_id"], "argument": argument,
-                  "active": argument.get("current_active") or __import__("S5.replies", fromlist=["active_ids"]).active_ids(argument)}]
-    targets, nodes = [], set()
+                  "active": argument.get("current_active") or __import__("S5_investor_arguments.investor_replies", fromlist=["active_ids"]).active_ids(argument)}]
+    targets, nodes, reference_mentions = [], set(), []
     for item in snapshots:
         tid, src, active = item["source_turn_id"], item["argument"], item["active"]
         targets.extend(f"t{tid}:mention:{x}" for x in active["mentions"])
         targets.extend(f"t{tid}:link:{x}" for x in active["links"])
         for mid in active["mentions"]:
             m = next(x for x in src["investor_mentions"]["mentions"] if x["mid"] == mid)
+            if ":" not in mid:
+                reference_mentions.append({"target": f"t{tid}:mention:{mid}",
+                                           "span": m["span"]})
             if m["node_id"]:
                 nodes.add(m["node_id"])
                 targets.append(f"t{tid}:node:{m['node_id']}")
         for pid in active["paths"]:
             targets.extend(f"t{tid}:edge:{eid}" for eid in src["paths"][pid]["edges"])
     return {"turn_id": turn - 1, "nodes": sorted(nodes), "rebuttal_items": rebuttals,
+            "rebuttal_exclusions": rebuttal_exclusions,
+            "reference_mentions": reference_mentions,
             "last_question_cc_id": question_cc, "reference_targets": sorted(set(targets)),
             "source_turn_ids": sorted({s["source_turn_id"] for s in snapshots}),
             "argument_sha256": file_sha256(argument_path),
@@ -156,7 +179,7 @@ def create_run(message, session, turn, stock_code=None, period=None, *, runs=RUN
     with closing(sqlite3.connect(job / "request.sqlite")) as db, db:
         db.execute("CREATE TABLE request(message, session, turn INTEGER, stock_code TEXT, period, model, previous_run_id, last_question_cc_id, alert_date, conversation_json)")
         db.execute("INSERT INTO request VALUES (?,?,?,?,?,?,?,?,?,?)",
-                   (answer_text, session, turn, stock_code, period, os.getenv("OPENAI_MODEL") or provider.DEFAULT_MODEL,
+                   (answer_text, session, turn, stock_code, period, provider.configured_model(stage="S4"),
                     prior.name if prior else None, last_question_cc_id, alert_date,
                     json.dumps(conversation, ensure_ascii=False) if conversation is not None else None))
     return job
@@ -202,14 +225,18 @@ def execute(job, *, extract=None, select=None, diagnostic=None):
                                    company_input=(selected, selected_data))
 
         stages = [
-            ("S4", mentions, lambda: run_s4(message, extract or partial(provider.generate, model=model),
+            ("S4", mentions, lambda: run_s4(message, extract or partial(provider.generate, model=model,
+                s4_cache_prefix=provider.setting("OPENAI_S4_PREFIX_CACHE", "off").lower() in {"1", "true", "on"},
+                s4_cache_disabled=provider.setting("OPENAI_S4_PREFIX_CACHE", "off").lower() not in {"1", "true", "on"}),
                                              output_dir=mentions.parent, previous_turn=previous,
                                              diagnostic=diagnostic, model=model)),
             ("S5", argument, lambda: run_s5(mentions, session, turn, argument, generate=select,
                                              previous_argument_path=prior / "S5/investor_argument.json" if prior else None,
                                              previous_turn=previous)),
             ("S6", draft, mechanical),
-            ("S7", llm, lambda: run_s7(draft, llm.parent, context=s6_context, model=model, diagnostic=diagnostic)),
+            ("S7", llm, lambda: run_s7(draft, llm.parent, context=s6_context,
+                                       model=provider.configured_model(stage="S7"), diagnostic=diagnostic,
+                                       max_workers=int(provider.setting("FDS_S7_MAX_WORKERS", "4")))),
             ("S8", validated, lambda: run_s8(draft, llm, validated.parent, context=s6_context)),
             ("S8-aggregation", assessment, lambda: run_assessment(validated, assessment.parent)),
         ]

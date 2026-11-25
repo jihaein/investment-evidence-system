@@ -66,7 +66,7 @@ def logical_groups(out, s4, message):
     for i, group in enumerate(groups):
         if group.get("source_turn_id") is None:
             try:
-                validate_group(group, s4["mentions"], message)
+                validate_group(group, s4["mentions"], message, s4["links"])
             except InvalidExtraction as exc:
                 out["unresolved"].append({"reason": "invalid_logical_group", "s4_index": i, "detail": str(exc)})
                 continue

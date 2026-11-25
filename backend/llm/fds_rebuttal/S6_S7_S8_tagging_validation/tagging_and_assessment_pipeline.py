@@ -2,12 +2,15 @@
 import argparse
 from copy import deepcopy
 from contextlib import closing
+from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 from hashlib import sha256
 import json
 from pathlib import Path
 import re
 import sqlite3
 from tempfile import NamedTemporaryFile
+from threading import Lock
 from uuid import uuid4
 
 from S5_investor_arguments.graph_loader import Graph, read_json, require
@@ -262,7 +265,7 @@ def tag(argument, company, cards, facts, policies, out):
                 "source_turn_id": argument["turn_id"], "prior_turn_id": prior["source_turn_id"],
                 "prior_edge_use_id": prior["edge_use_id"], "prior_draft_sha256": reply["prior_draft_sha256"],
                 "card_review_status": cards[edge_id]["review_status"],
-                "draft_cc_policy": "undecided" if cards[edge_id]["review_status"] == "draft" else "approved"})
+                "draft_cc_policy": "review_status_ignored"})
 
 
 
@@ -398,7 +401,7 @@ def load_s6_inputs(argument_path, stock_code, period, *, mechanical=True,
     registry = period_path.parent / meta["fact_registry"]
     facts = cached_json(registry)["facts"] if company_input is not None or alert_date is not None else read_json(registry)["facts"]
     check_observations(a, co, facts, meta["cutoff"])
-    cfg = read_json(S3 / "company_argument_config.json")
+    cfg = read_json(S3 / "s3_config.json")
     digest = sha256(json.dumps(cfg, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
     require(meta.get("config_sha256", digest) == digest, "S3 trend config hash mismatch")
     policies = {**cfg["trend_policies"], **cfg.get("node_trends", {})}
@@ -474,7 +477,7 @@ def load_s6_inputs(argument_path, stock_code, period, *, mechanical=True,
                                 "prior_argument_sha256": a["prior_argument_sha256"],
                                 "eligible_cc": eligible,
                                 "last_question_cc_id": previous_context.get("last_question_cc_id"),
-                                "draft_cc_policy": "undecided"}
+                                "draft_cc_policy": "review_status_ignored"}
         require(a["prior_argument_sha256"] == previous_context["argument_sha256"],
                 "previous argument hash mismatch")
         out["sources"]["previous_draft"] = source_path(previous_draft_path)
@@ -535,7 +538,7 @@ PROMPT = """당신은 S7 증거 표현 해석자다. 입력의 투자자 발언�
 target_origin=side이면 side_condition의 required/target_node/via_edge/target_expected_direction을 평가한다.
 source_mention_context는 경로 출발 발언일 뿐 Side 노드의 직접 발언이나 대체 매핑이 아니다.
 related_cc와 대체 관측의 ID는 참고용이다. available_refs에 없는 ID를 evidence_refs에 인용하지 않는다.
-S2 카드가 draft이면 승인된 인과관계 근거로 취급하지 않는다. signal 엣지를 인과 증거로 취급하지 않는다.
+S2 카드의 review_status는 판정 기준이 아니다. draft와 approved를 동일하게 사용한다. signal 엣지는 인과 증거로 취급하지 않는다.
 확신할 수 없거나 자료가 부족하면 status=deferred를 반환한다. 선택한 evidence_refs는 available_refs에서만 고른다.
 relation은 tag가 direction_only일 때만 consistent/against/context_dependent 중 하나를 쓰고, 다른 모든 tag에는 반드시 null을 쓴다.
 결과는 요청된 JSON 객체 하나만 반환한다."""
@@ -623,7 +626,7 @@ def llm_input(row, draft, argument, company, cards):
             "investor": investor, "company": dict(stock_code=draft["stock_code"], period=draft["period"],
                                                as_of=draft["as_of"], observations=obs),
             "python_candidate": row.get("python_candidate"),
-            "card": {eid: {k: cards[eid].get(k) for k in ("sign", "empirical_sign", "review_status")}
+            "card": {eid: {k: cards[eid].get(k) for k in ("sign", "empirical_sign")}
                      for eid in edge_ids if eid in cards},
             "related_cc": related, "available_refs": refs,
             "tag_definitions": TAG_DEFINITIONS, "relation_definitions": RELATIONS,
@@ -632,13 +635,35 @@ def llm_input(row, draft, argument, company, cards):
 
 
 def interpretable_evidence(item):
+    """Select only evidence or language that can change an S7 proposal.
+
+    Missing state alone is not enough for inferred path/Side uses. Direct investor
+    language keeps its nuance review when it is future-facing, qualified, addressed,
+    or has multiple viable mappings. A no-data edge remains interpretable when S2
+    supplies the direction candidate; review_status never changes that decision.
+    """
     obs = item["company"]["observations"]
     primary = obs.get("primary", {})
     edge = obs.get("edge", {})
-    # An observed/missing/unobservable S3 record is evidence context. Requiring a
-    # fact_id here would wrongly exclude valid N-E/qualifier work on missing nodes.
-    return (primary.get("status") in {"observed", "missing", "unobservable"}
-            or edge.get("status") in {"held", "not_held", "no_change", "no_data"})
+    if primary.get("status") == "observed":
+        return True
+    if edge.get("status") in {"held", "not_held", "no_change"}:
+        return True
+    kind = item["target"].partition(":")[0]
+    if kind == "cc":
+        return bool(item.get("card"))
+    if edge.get("status") == "no_data":
+        candidate = item.get("python_candidate") or {}
+        return bool(item.get("card") and candidate.get("tag") == "direction_only")
+    if primary.get("status") not in {"missing", "unobservable"}:
+        return False
+    investor = item.get("investor", {})
+    direct = item.get("target_origin") == "explicit" and bool(investor.get("span"))
+    language_sensitive = (investor.get("horizon") == "future"
+                          or bool(investor.get("qualifiers"))
+                          or investor.get("mapping_status") == "ambiguous"
+                          or bool(investor.get("addresses")))
+    return direct and language_sensitive
 
 
 def select_s7(draft, argument, company, cards):
@@ -728,8 +753,73 @@ def validate_proposal(raw, item):
     return reply
 
 
-def run_s7(draft_path, output_dir, *, context=None, enabled=True, model=provider.DEFAULT_MODEL,
-           prompt_version="s7-v3", timeout=30, retries=1, generate=None, diagnostic=None):
+def _evaluate_s7_item(item, model, timeout, retries, generate, diagnostic, diagnostic_lock):
+    """Keep request state local; the coordinator alone updates the final result."""
+    raw = None
+    event = {"stage": "S7", "request_id": uuid4().hex, "attempt": 1, "model": model,
+             "target": item["target"], "use_id": item["use_id"], "available_refs": item["available_refs"]}
+
+    def trace(update):
+        if "error" not in update:
+            event.pop("error", None)
+        event.update(update)
+        if diagnostic:
+            # Existing diagnostic consumers need not support concurrent callbacks.
+            with diagnostic_lock:
+                diagnostic(dict(event))
+
+    try:
+        trace({"outcome": "started"})
+        raw = (generate(item, model, timeout, retries) if generate else
+               openai_request(item, model, timeout, retries, diagnostic=trace if diagnostic else None))
+        proposal = validate_proposal(raw, item)
+        if item["target"].startswith("cc:") and proposal["status"] == "proposed" and proposal["tag"] != "investor_claimed":
+            raise ValueError("CC explanation cannot be promoted")
+        if proposal["status"] == "deferred":
+            section = "failed_items"
+            entry = dict(target=item["target"], use_id=item["use_id"],
+                         reason="model_deferred", model_reason=proposal["reason"])
+        else:
+            section = "tags"
+            entry = ({k: proposal[k] for k in ("target", "use_id", "tag", "relation", "reason", "evidence_refs")}
+                     | {k: item[k] for k in ("target_origin", "mid", "path_id", "side_id", "link_id", "pending_reasons")}
+                     | {"tagged_by": "llm", "rule_id": "LLM", "tentative": item["investor"]["tentative"]})
+        trace({"outcome": proposal["status"], "raw_response": raw})
+        return section, entry
+    except Exception as exc:
+        trace({"outcome": "failed", "raw_response": raw,
+               "error": str(exc) if isinstance(exc, ValueError) else type(exc).__name__})
+        return "failed_items", dict(target=item["target"], use_id=item["use_id"],
+                                    reason="invalid_response" if isinstance(exc, ValueError) else "api_or_parse_error",
+                                    detail=str(exc) if isinstance(exc, ValueError) else None)
+
+
+def s7_evaluation_key(item):
+    """Reuse only within one run when every semantic input field is identical."""
+    return json.dumps({key: value for key, value in item.items()
+                       if key not in {"use_id", "path_id", "side_id", "link_id"}},
+                      ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+
+
+def s7_reused_response(raw, representative, item):
+    require(s7_evaluation_key(representative) == s7_evaluation_key(item), "S7 reuse content mismatch")
+    reply = validate_proposal(raw, representative)
+    if item["use_id"] != representative["use_id"]:
+        for field in ("use_id", "path_id", "side_id", "link_id"):
+            value = representative.get(field)
+            if value and value != item.get(field) and str(value) in reply["reason"]:
+                raise ValueError("S7 reason contains representative-specific locator")
+    reply = deepcopy(reply)
+    reply["use_id"] = item["use_id"]
+    encoded = json.dumps(reply, ensure_ascii=False)
+    validate_proposal(encoded, item)
+    return encoded
+
+
+def run_s7(draft_path, output_dir, *, context=None, enabled=True, model=None,
+           prompt_version="s7-v3", timeout=30, retries=1, generate=None, diagnostic=None, max_workers=4):
+    require(type(max_workers) is int and 1 <= max_workers <= 8, "S7 max_workers must be between 1 and 8")
+    model = model or provider.configured_model(stage="S7")
     draft = read_json(draft_path)
     require(draft.get("schema_version") == "S6.1", "invalid S6 draft")
     if context is None:
@@ -760,49 +850,69 @@ def run_s7(draft_path, output_dir, *, context=None, enabled=True, model=provider
         result["based_on_turn"] = draft["based_on_turn"]
         result["reply_context"] = draft["reply_context"]
         result["active_lineage"] = draft.get("active_lineage", [])
+    workers = min(max_workers, len(items)) if enabled else 0
     result.update(schema_version="S7.1", draft_path=source_path(draft_path),
                   draft_sha256=file_sha256(draft_path), model=model,
                   prompt_version=prompt_version, tags=[], not_escalated=excluded, failed_items=[],
-                  metadata={"selected_count": len(items), "api_call_count": 0, "enabled": enabled})
-    for item in items:
-        if not enabled:
-            result["failed_items"].append(dict(target=item["target"], use_id=item["use_id"], reason="llm_disabled"))
-            continue
-        raw = None
-        event = {"stage": "S7", "request_id": uuid4().hex, "attempt": 1, "model": model,
-                 "target": item["target"], "use_id": item["use_id"], "available_refs": item["available_refs"]}
-        def trace(update):
-            if "error" not in update:
-                event.pop("error", None)
-            event.update(update)
-            if diagnostic:
-                diagnostic(dict(event))
-        try:
-            result["metadata"]["api_call_count"] += 1
-            trace({"outcome": "started"})
-            raw = (generate(item, model, timeout, retries) if generate else
-                   openai_request(item, model, timeout, retries, diagnostic=trace if diagnostic else None))
-            proposal = validate_proposal(raw, item)
-            if item["target"].startswith("cc:") and proposal["status"] == "proposed" and proposal["tag"] != "investor_claimed":
-                raise ValueError("CC explanation cannot be promoted")
-            if proposal["status"] == "deferred":
-                result["failed_items"].append(dict(target=item["target"], use_id=item["use_id"],
-                                                   reason="model_deferred", model_reason=proposal["reason"]))
-            else:
-                result["tags"].append({k: proposal[k] for k in ("target", "use_id", "tag", "relation",
-                                                                       "reason", "evidence_refs")}
-                                      | {k: item[k] for k in ("target_origin", "mid", "path_id", "side_id",
-                                                                  "link_id", "pending_reasons")}
-                                      | {"tagged_by": "llm", "rule_id": "LLM",
-                                         "tentative": item["investor"]["tentative"]})
-            trace({"outcome": proposal["status"], "raw_response": raw})
-        except Exception as exc:
-            trace({"outcome": "failed", "raw_response": raw,
-                   "error": str(exc) if isinstance(exc, ValueError) else type(exc).__name__})
-            result["failed_items"].append(dict(target=item["target"], use_id=item["use_id"],
-                                               reason="invalid_response" if isinstance(exc, ValueError)
-                                               else "api_or_parse_error",
-                                               detail=str(exc) if isinstance(exc, ValueError) else None))
+                  metadata={"selected_count": len(items), "api_call_count": 0, "enabled": enabled,
+                            "max_workers": max_workers, "effective_workers": workers})
+    if not enabled:
+        result["failed_items"] = [dict(target=item["target"], use_id=item["use_id"], reason="llm_disabled")
+                                  for item in items]
+    elif items:
+        diagnostic_lock = Lock()
+        groups = {}
+        for item in items:
+            groups.setdefault(s7_evaluation_key(item), []).append(item)
+        representatives = [members[0] for members in groups.values()]
+        request_count = 0
+
+        def call_representative(item):
+            try:
+                raw = (generate(item, model, timeout, retries) if generate else
+                       openai_request(item, model, timeout, retries))
+                validate_proposal(raw, item)
+                return raw, None
+            except Exception as exc:
+                return None, exc
+
+        if workers == 1:
+            responses = list(map(call_representative, representatives))
+        else:
+            with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="s7") as executor:
+                futures = [executor.submit(copy_context().run, call_representative, item)
+                           for item in representatives]
+                responses = [future.result() for future in futures]
+        request_count += len(representatives)
+        by_key = dict(zip(groups, responses))
+
+        def evaluate(item):
+            nonlocal request_count
+            members = groups[s7_evaluation_key(item)]
+            representative = members[0]
+            raw, error = by_key[s7_evaluation_key(item)]
+
+            def from_recorded_response(_item, _model, _timeout, _retries):
+                nonlocal request_count
+                if error is not None:
+                    raise error
+                try:
+                    return s7_reused_response(raw, representative, item)
+                except ValueError:
+                    if item is representative:
+                        raise
+                    request_count += 1
+                    return (generate(item, model, timeout, retries) if generate else
+                            openai_request(item, model, timeout, retries))
+
+            return _evaluate_s7_item(item, model, timeout, retries, from_recorded_response,
+                                     diagnostic, diagnostic_lock)
+
+        # Evaluate and publish every original use, including deferred/failed uses.
+        for item in items:
+            section, entry = evaluate(item)
+            result[section].append(entry)
+        result["metadata"]["api_call_count"] = request_count
     require(len(result["tags"]) + len(result["failed_items"]) == len(items), "S7 item coverage")
     path = output_dir / "tagging_llm.json"
     publish_json(path, result)
@@ -942,8 +1052,6 @@ def run_s8(draft_path, llm_path, output_dir, *, context=None):
         risks = set(row.get("pending_reasons", [])) if row else set()
         review_reasons = sorted(risks & {"tentative_mapping", "direction_conflict_review",
                                          "past_present_side_violation", "context_dependent"})
-        if row and row.get("card_review_status") == "draft":
-            review_reasons.append("draft_cc_policy_undecided")
         review = status != "accepted" or bool(review_reasons)
         result["validation_results"].append({
             "target": key[0], "use_id": key[1], "status": status, "rule_id": rule,
@@ -1239,11 +1347,13 @@ def main():
     parser.add_argument("--llm-output", type=Path, help="Existing S7 tagging_llm.json for --s8-only")
     parser.add_argument("--aggregate-only", action="store_true", help="Aggregate existing validated tags without OpenAI")
     parser.add_argument("--validated", type=Path, help="Existing S8 tagging_validated.json for --aggregate-only")
-    parser.add_argument("--model", default=provider.DEFAULT_MODEL)
+    parser.add_argument("--model", default=provider.configured_model(stage="S7"))
     parser.add_argument("--prompt-version", default="s7-v2")
     parser.add_argument("--llm-disabled", action="store_true")
     parser.add_argument("--timeout", type=int, default=30)
     parser.add_argument("--retries", type=int, default=1)
+    parser.add_argument("--s7-workers", type=int, choices=range(1, 9), default=4,
+                        help="S7 simultaneous requests, 1 through 8; default 4")
     args = parser.parse_args()
     try:
         require(args.timeout > 0 and 0 <= args.retries <= 3 and re.fullmatch(r"[A-Za-z0-9._-]+", args.model),
@@ -1278,7 +1388,7 @@ def main():
             s7_dir = root / "S7"
         path, result = run_s7(draft, s7_dir, context=context, enabled=not args.llm_disabled,
                               model=args.model, prompt_version=args.prompt_version,
-                              timeout=args.timeout, retries=args.retries)
+                              timeout=args.timeout, retries=args.retries, max_workers=args.s7_workers)
         validated, verified = run_s8(draft, path, root / "S8", context=context)
         assessment, final = run_assessment(validated, root / "S8")
         print(path)

@@ -20,10 +20,8 @@ def config():
 
 
 def card_allowed(card):
-    statuses = config()["allowed_card_review_statuses"]
-    if not isinstance(statuses, list) or not statuses or not set(statuses) <= {"approved", "draft"}:
-        raise ValueError("invalid allowed_card_review_statuses")
-    return bool(card) and card.get("review_status") in statuses
+    """Card review status is retained as metadata, not an evidence gate."""
+    return bool(card) and card.get("review_status") in {"approved", "draft"}
 
 
 def parse_date(value):

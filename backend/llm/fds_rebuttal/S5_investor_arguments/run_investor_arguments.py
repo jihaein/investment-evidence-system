@@ -17,7 +17,7 @@ HERE = Path(__file__).resolve().parent
 GRAPH = HERE.parent / "S1_causal_graph" / "causal_graph.json"
 
 
-def run(mentions_path, session_id, turn_id, output, *, graph_path=GRAPH, config_path=HERE/"config.json",
+def run(mentions_path, session_id, turn_id, output, *, graph_path=GRAPH, config_path=HERE/"investor_argument_config.json",
         message_path=None, company_path=None, generate=None, previous_argument_path=None,
         previous_turn=None):
     message_path = message_path or mentions_path.with_name("investor_message.txt")
@@ -65,7 +65,7 @@ def main():
     parser.add_argument("--turn-id", required=True, type=int)
     parser.add_argument("--message-file", type=Path)
     parser.add_argument("--graph", type=Path, default=GRAPH)
-    parser.add_argument("--config", type=Path, default=HERE/"config.json")
+    parser.add_argument("--config", type=Path, default=HERE/"investor_argument_config.json")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--company-argument", type=Path, help="Optional read-only S3 graph/key check")
     parser.add_argument("--previous-argument", type=Path, help="Prior immutable S5 argument for a reply")

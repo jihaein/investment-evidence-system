@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import re
 from datetime import date
+from calendar import monthrange
 
 from S4_investor_extraction import openai_api_client as openai_api
 from S5_investor_arguments.graph_loader import Graph
@@ -32,7 +33,8 @@ out_of_scope는 그래프 밖이라는 이유만으로 거부하지 않는다. �
 명백한 모순·논리적 비약이 있으면 이유를 설명하고 보완을 요청한다. 단순히 사실 확인 자료가
 없는 경우에는 논리 오류로 단정하지 않고 가능한 설명으로 인정하되 사실로 확정하지 않는다.
 불명확하면 후자로 신중하게 대응한다. 이 검토는 대화 표현만 위한 것으로 S8 판정을 바꾸지 않는다.
-out_of_scope가 있으면 해당 원문 span의 논리 관계를 우선 다뤄라. 다른 주장으로 대체하지 말라.
+현재 발언에서 투자자가 유지하는 핵심 논리 하나를 고르고 관련 근거와 결론에 집중하라.
+out_of_scope는 그 논리와 관련된 경우에 다루고, 그래프 밖 표현만을 별도 결론처럼 우선하지 말라.
 투자자 원문에만 있는 가격·기능·해외 반응·매출 등은 관측 사실이 아니다. 반드시
 '네가 말한', '그렇다면'처럼 주장으로 귀속해 표현하고 사실인 양 '좋다', '확인됐다',
 '회사 공식 데이터가 보여준다'고 말하지 말라. 실제 확인된 기업 사실은 facts에 해당 근거가
@@ -146,10 +148,41 @@ def fact_value(row):
         rounded = percent.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
         return ("약 " if rounded != percent else "") + f"{rounded:f}%"
     if row["unit"] == "KRW":
-        return f"{value:,f}원"
+        eok_unit, man_unit = Decimal("100000000"), Decimal("10000")
+        man_rounded = (value / man_unit).quantize(Decimal("1"), rounding=ROUND_HALF_UP)
+        unit = (eok_unit if abs(value) >= eok_unit or abs(man_rounded) >= 10000 else
+                man_unit if abs(value) >= man_unit else Decimal("1"))
+        rounded = (value / unit).quantize(Decimal("1"), rounding=ROUND_HALF_UP)
+        approximate = "약 " if rounded * unit != value else ""
+        if unit == Decimal("100000000"):
+            eok = int(rounded)
+            jo, rest = divmod(abs(eok), 10000)
+            sign = "-" if eok < 0 else ""
+            amount = f"{sign}{jo:,}조 {rest:,}억 원" if jo and rest else (
+                     f"{sign}{jo:,}조 원" if jo else f"{eok:,}억 원")
+        elif unit == Decimal("10000"):
+            amount = f"{int(rounded):,}만 원"
+        else:
+            amount = f"{value:,f}원"
+        return approximate + amount
     if row["unit"] == "count" and row["node_id"] == "shares_outstanding":
         return f"{value:,f}주"
     raise ValueError(f"unsupported_fact: unknown unit for {row['node_id']}")
+
+
+def fact_period(row):
+    end = date.fromisoformat(row["period_end"])
+    if (row.get("frequency") == "quarterly" and end.month in (3, 6, 9, 12)
+            and end.day == monthrange(end.year, end.month)[1]):
+        return f"{end.year}년 {end.month // 3}분기"
+    return f"{end.isoformat()} 기준"
+
+
+def object_particle(label):
+    last = label[-1]
+    if "가" <= last <= "힣":
+        return "을" if (ord(last) - ord("가")) % 28 else "를"
+    return " 기록을"
 
 
 def prepare_request(context):
@@ -182,7 +215,7 @@ def prepare_request(context):
             if len(set(ends)) != len(ends):
                 raise ValueError("invalid_fact_period: ambiguous period in evidence")
             first, last = facts[ids[0]], facts[ids[-1]]
-            phrase = f"{first['label']} 기록을 보면 {ends[0]} 기준 {fact_value(first)}"
+            phrase = f"{first['label']}{object_particle(first['label'])} 보면 {fact_period(first)} {fact_value(first)}"
             cited = [ids[0]]
             if len(ids) > 1:
                 direction = first.get("series_direction") if ends == first.get("series_periods") else None
@@ -190,7 +223,7 @@ def prepare_request(context):
                 amount = fact_value(last)
                 if suffix.startswith("로") and amount.endswith("원"):
                     suffix = "으" + suffix
-                phrase += f", {ends[-1]} 기준 {amount}{suffix}."
+                phrase += f"에서 {fact_period(last)} {amount}{suffix}."
                 cited.append(ids[-1])
             else:
                 phrase += "이었어."
@@ -213,7 +246,7 @@ def prepare_request(context):
             wording = text + " 확인할 근거가 있어?"
         else:
             wording = f"‘{text}’에 해당하는 상황인지 확인할 근거가 있어?"
-        questions.append(dict(candidate, question=wording))
+        questions.append(dict(candidate, question=wording, topic_terms=question_terms(text)))
     # Attach provenance at the point of use; keep the original S9 object untouched.
     speech = dict(t)
     for key in ("claim", "grounds", "out_of_scope"):
@@ -256,6 +289,34 @@ FREE_NUMBER = re.compile(r"\d|[①-⑳❶-❿]|[영공일이삼사오육칠팔�
 LINK_REQUEST = re.compile(r"어떻게|어떤|무슨|왜|연결|이어|영향|관계|근거")
 
 
+def question_terms(text):
+    """Conservative topic check for rewritten CC questions, not a semantic proof."""
+    ignored = {"상승", "하락", "증가", "감소", "상쇄", "있음", "있는", "해당", "상황",
+               "확인", "근거", "가능", "여부", "대한", "어떤", "어떻게", "늘었", "늘어",
+               "줄었", "줄어", "되었", "있었", "하는", "했는", "인지", "계속"}
+    return sorted({word[:2] for word in re.findall(r"[가-힣A-Za-z]{2,}", text)
+                   if word[:2] not in ignored})
+
+
+def matches_question_topic(text, candidate):
+    terms = candidate.get("topic_terms", question_terms(candidate["text"]))
+    return not terms or any(term in text for term in terms)
+
+
+def focus_options(context):
+    """Only current investor mentions may anchor the response; never invent a claim."""
+    mentions = {}
+    for key in ("claim", "grounds", "out_of_scope"):
+        for row in context["toulmin"][key]:
+            if (row.get("mid") and row.get("span") and
+                    row.get("source_turn_id", context["turn"]["turn_id"]) == context["turn"]["turn_id"]):
+                mentions.setdefault(row["mid"], {
+                    "mid": row["mid"], "span": row["span"], "role": key,
+                    "horizon": row.get("horizon", "unspecified"),
+                    "direction": row.get("direction"), "certainty": row.get("certainty")})
+    return list(mentions.values())
+
+
 def validate(result, context, *, request=None):
     if not isinstance(result, dict) or set(result) != set(SCHEMA["properties"]):
         raise ValueError("invalid_output_schema: dialogue fields")
@@ -272,21 +333,25 @@ def validate(result, context, *, request=None):
         if quote["text"] not in plain:
             raise ValueError("missing_required_evidence: 검증된 근거 문구 누락 또는 날짜·값 변경")
         plain = plain.replace(quote["text"], "")
+    questions = re.findall(r"[^.!?。！？\n]*[?？]", message)
+    candidates = {q["cc_id"]: q for q in request["question_candidates"]}
+    if asked is not None:
+        if asked not in candidates or asked in context["asked_before"]:
+            raise ValueError("invalid_question: unknown or repeated ID")
+        if len(questions) != 1 or not matches_question_topic(questions[0], candidates[asked]):
+            raise ValueError("invalid_question: 질문 주제와 ID 불일치")
     for q in request["question_candidates"]:
-        present = q["question"] in message
-        if present != (q["cc_id"] == asked):
-            raise ValueError("invalid_question: 질문 문구와 ID 불일치")
-        if present:
+        if q["question"] in message:
+            if q["cc_id"] != asked:
+                raise ValueError("invalid_question: 질문 문구와 ID 불일치")
             plain = plain.replace(q["question"], "")
-    if asked is not None and not any(q["cc_id"] == asked for q in request["question_candidates"]):
-        raise ValueError("invalid_question: unknown or repeated ID")
     if re.search(r"\d{4}[-./년]\s*\d", plain):
         raise ValueError("invalid_fact_period: 날짜는 원장의 값과 묶인 문구로만 인용 가능")
     if "[[" in plain or FREE_NUMBER.search(plain):
         raise ValueError("invalid_amount: 최종 대사에서 근거 문구 밖 수치 발견")
     if not request["facts"] and re.search(r"(?:공시|기업 자료|공식 자료|통계)(?:로|에서|에 따르면)[^.!?]{0,35}(?:확인됐|확인되었|입증됐|증명됐)", plain):
         raise ValueError("unsupported_fact: 확인된 기업 관측이 없어")
-    if any(c["cc_id"] in context["asked_before"] and c["text"] in q
+    if any(c["cc_id"] in context["asked_before"] and matches_question_topic(q, c)
            for q in re.findall(r"[^.!?？]*[?？]", message) for c in context["question_candidates"]):
         raise ValueError("invalid_question: 이전 조건을 다시 질문함")
     for quoted in re.findall(r'["“]([^"”]+)["”]', message):
@@ -338,14 +403,26 @@ def render_draft(response, context, request):
     contradicted = any(row["tag"] == "contradicted" for row in request["rebuttal_boundaries"])
     if contradicted:
         statements = statements[:1]
-    repair = response["repair_question"] if strategy == "leap" else None
-    if repair is not None:
-        if not isinstance(repair, str) or len(split_sentences(repair)) != 1 or not repair.rstrip().endswith(("?", "？")):
-            raise ValueError("invalid_question: repair question must be one question")
+    options = {row["mid"] for row in focus_options(context)}
+    focus = response["focus_mids"]
+    if (not isinstance(focus, list) or any(not isinstance(mid, str) for mid in focus)
+            or len(focus) > 3 or len(set(focus)) != len(focus) or not set(focus) <= options
+            or (options and not focus)):
+        raise ValueError("invalid_output_schema: focus must reference current investor mentions")
+    question = response["question_text"]
+    if question is not None:
+        if (not isinstance(question, str) or len(split_sentences(question)) != 1
+                or not question.rstrip().endswith(("?", "？"))
+                or len(re.findall(r"[?？]", question)) != 1):
+            raise ValueError("invalid_question: question_text must be one question")
+    if asked is not None and question is None:
+        raise ValueError("invalid_question: selected CC requires question_text")
+    if any(re.search(r"[?？]", statement) for statement in statements):
+        raise ValueError("invalid_question: questions belong in question_text")
     if strategy == "leap":
-        if asked is not None or repair is None or not statements or not LINK_REQUEST.search(repair):
+        if asked is not None or question is None or not statements or not LINK_REQUEST.search(question):
             raise ValueError("invalid_question: leap requires an explanation and a missing-link question")
-    authored = statements + ([repair.strip()] if repair else [])
+    authored = statements + ([question.strip()] if question else [])
     for sentence in authored:
         if "[[" in sentence or FREE_NUMBER.search(sentence):
             raise ValueError("invalid_amount: model-authored text cannot contain numbers or evidence references")
@@ -355,31 +432,23 @@ def render_draft(response, context, request):
             raise ValueError("investment recommendation")
 
     parts = [q["text"] for q in request["fact_quotes"].values()]
-    if strategy == "plausible" and not request["facts"]:
-        if not statements:
-            raise ValueError("invalid_output_schema: plausible explanation missing")
-        # Keep the model's context-specific explanation, but attribute its premise
-        # to the investor and reserve a sentence for the missing observation.
-        first = statements[0].strip()
-        statements = [first if first.startswith(("네 말이 맞다면", "네 말대로라면"))
-                      else "네 말이 맞다면, " + first]
-        statements.append("다만 확인된 기업 근거가 없어, 그 조건이 실제인지와 결과에 미치는 크기는 아직 판단하기 어려워.")
-    reserved_after = int(bool(repair)) + int(asked is not None)
+    if not statements:
+        raise ValueError("invalid_output_schema: explanation missing")
+    reserved_after = int(question is not None)
     available = min(4, context["persona"]["max_sentences"]) - len(parts) - reserved_after
     if available < 1:
         raise ValueError("invalid_output_schema: no room for explanation")
     statements = statements[:available]
     parts.extend(statements)
-    if repair:
-        parts.append(repair.strip())
-    if asked is not None:
-        parts.append(candidates[asked])
+    if question is not None:
+        parts.append(question.strip())
     result = dict(character_message=" ".join(parts), emotion_code=response["emotion_code"], asked_cc_id=asked)
     validate(result, context, request=request)
     return result
 
 
 def generate_dialogue(context, *, model=None, audit=None):
+    model = model or openai_api.configured_model(stage="S10")
     request = prepare_request(context)
     current_scope = any(r.get("source_turn_id", context["turn"]["turn_id"]) == context["turn"]["turn_id"]
                         for r in context["toulmin"]["out_of_scope"])
@@ -394,6 +463,12 @@ def generate_dialogue(context, *, model=None, audit=None):
                                     rebuttal_boundaries=request["rebuttal_boundaries"],
                                     evidence_already_reserved=[q["text"] for q in request["fact_quotes"].values()],
                                     current_out_of_scope=current_scope)
+    current_mentions = focus_options(context)
+    focus_ids = [row["mid"] for row in current_mentions]
+    request["response_focus"]["current_mentions"] = current_mentions
+    request["response_focus"]["selection_rule"] = (
+        "투자자의 핵심 논리 하나에 필요한 근거와 결론을 최대 세 언급에서 고른다. "
+        "원문의 마지막 문장이나 그래프 밖 표현이라는 이유로 우선하지 않는다.")
     force_options = ["necessity", "possibility", "other"] if current_scope else ["other"]
     link_options = ["missing", "possible_unverified", "uncertain"] if current_scope else ["not_applicable"]
     schema = {"type": "object", "properties": {
@@ -402,17 +477,36 @@ def generate_dialogue(context, *, model=None, audit=None):
         "link_status": {"type": "string", "enum": link_options},
         "statements": {"type": "array", "items": {"type": "string"},
                        "minItems": 1, "maxItems": free_slots},
-        "repair_question": {"type": ["string", "null"]},
+        "focus_mids": {"type": "array", "items": {"type": "string", "enum": focus_ids} if focus_ids else {"type": "string"},
+                       "minItems": int(bool(focus_ids)), "maxItems": min(3, len(focus_ids))},
+        "question_text": {"type": ["string", "null"]},
         "emotion_code": SCHEMA["properties"]["emotion_code"],
         "asked_cc_id": {"type": ["string", "null"], "enum": [*candidates, None]}},
-        "required": ["scope_reason", "claim_force", "link_status", "statements", "repair_question",
+        "required": ["scope_reason", "claim_force", "link_status", "statements", "focus_mids", "question_text",
                      "emotion_code", "asked_cc_id"], "additionalProperties": False}
     instructions = """너는 논리적이고 다정한 친구 모모야. 투자자에게 친근한 반말로 직접 답해.
 Python이 response_focus.evidence_already_reserved의 검증된 문장을 대사 앞에 자동으로 넣어.
 그 문장과 숫자·날짜·금액·비율을 statements에 복사하지 마. 참조 표시도 출력하지 마.
 sentence_budget.model_authored 개수 이하의 짧은 설명 문장만 statements에 작성해.
-question_candidates에서 조건 질문이 꼭 필요하면 asked_cc_id를 골라. 질문 문구는 Python이 마지막에 넣으니
-statements에 쓰지 마. 선택하지 않으면 null이야. 이전 질문을 반복하지 마.
+먼저 전체 원문에서 투자자가 기대하는 핵심 논리 하나를 골라. 근거 한두 개가 어떤 결론으로
+이어지는지에 집중하고, response_focus.current_mentions 중 해당 mid만 focus_mids에 최대 세 개 담아.
+관련 없는 언급, 자기점검 행동, 마지막에 나온 말만을 중심 결론처럼 다루거나 모든 항목을 나열하지 마.
+그래프 밖 언급도 핵심 논리와 관련된 범위에서 다뤄. 핵심 선택은 표현을 위한 것이며 S8 판정은 바꾸지 않아.
+
+대사는 설명과 질문을 포함해 하나의 자연스러운 대화가 되도록 네가 직접 작성해.
+친근한 반말을 쓰되 '네 말이 맞다면', '근거가 없어' 같은 시작과 결말을 매번 반복하지 마.
+투자자의 기대·조건부 설명과 확인된 사실이 구별되면 특정 어구를 쓸 필요는 없어.
+불확실성을 말할 때는 핵심 논리의 어느 연결이나 실제 발생 여부를 확인하지 못했는지 짚어.
+포괄적으로 '자료가 없다'고 끝내거나 같은 한계를 두 번 설명하지 마.
+
+질문은 정말 필요한 경우 하나만 question_text에 직접 작성하고 statements에는 쓰지 마.
+question_candidates의 조건을 물으면 그 조건의 의미와 시간·방향을 유지하되 현재 대화의 표현으로
+자연스럽게 바꿔 묻고, 원래 조건의 cc_id를 asked_cc_id에 넣어. topic_terms는 조건의 주제를 확인하는 단서야.
+원문을 이어 붙인 질문이나 후보 문구를 그대로 읽는 질문은 피하고, 선택한 핵심 논리와 무관한 후보는 쓰지 마.
+맞는 조건 후보가 없으면 현재 발언에서 검증되지 않은 연결을 묻는 일반 질문을 작성할 수 있어.
+그때 asked_cc_id는 null이야. 질문하지 않으면 question_text와 asked_cc_id를 모두 null로 둬.
+이미 질문한 조건이나 투자자가 답한 내용, 이미 말한 재검토 기준은 다시 묻지 마.
+투자자가 자료를 갖고 있지 않다고 추측하거나 여러 질문을 한 문장에 몰아넣지 마.
 
 rebuttal_boundaries의 span, tag, horizon이 반박 가능한 정확한 범위야.
 contradicted는 그 과거·현재 사실 span만 정정해. 과거 매출 감소로 미래 제품 전망까지 틀렸다고 말하지 마.
@@ -426,15 +520,14 @@ possible_unverified, 모호하면 uncertain이야. Python이 이 두 값으로 �
 necessity와 missing은 명백한 비약이야.
 예: '내 친구가 샀으니 기업가치가 무조건 오른다'는 claim_force=necessity, link_status=missing이야.
 statements에서 빠진 연결을 설명하고,
-repair_question에 '네 친구의 매수가 회사 가치에 어떻게 영향을 준다고 생각해?'처럼 연결을 묻는 질문을 써.
+question_text에 '네 친구의 매수가 회사 가치에 어떻게 영향을 준다고 생각해?'처럼 연결을 묻는 질문을 써.
 투자자의 '내 친구'는 모모에게 '네 친구'야. asked_cc_id는 null이야.
 claim_force=possibility와 link_status=possible_unverified는 가능한 가설·전망이지만 실제 발생·규모가
 확인되지 않은 경우야.
 외국인 매수에 따른 주가 상승 가능성, 제품 가격·기능·반응에 따른 판매 기대는 plausible이야.
-repair_question은 null로 두고, '네 말대로 …라면' 또는 '…라는 주장은 이 입력에서 확인되지 않았어'처럼
-사용자 주장과 확인된 사실을 구분해. 특정 조건형 어미를 기계적으로 반복할 필요는 없어.
-이 경우 statements 첫 문장에 투자자가 말한 구체적 전제와 가능한 결론을 함께 담아. Python이
-앞에 '네 말이 맞다면'을 붙이고 확인된 기업 근거가 없다는 문장을 뒤에 넣어.
+사용자 주장과 확인된 사실을 구분해. 핵심 논리의 기대와 가능한 결론을 자연스럽게 짚고,
+지금 자료로 확인하지 못한 부분을 구체적으로 설명해. 검증에 필요한 질문이 있으면 위 규칙대로 작성해.
+Python은 조건부 서두나 증거 부족 문장을 추가하지 않으므로 필요한 의미를 네 대사에 직접 담아.
 입력에 없는 사실을 보태거나 미검증 전제를 이미 확인된 긍정적 신호로 단정하지 마.
 자료가 입력에 없다는 사실만 말하고 사용자가 아무 자료도 없다고 추측하지 마.
 모호하면 plausible을 선택해.
@@ -462,6 +555,7 @@ signal·draft·추론 경로는 확정된 인과나 연구 결과가 아니야. 
             return result, dict(fallback=False, attempts=attempt+1,
                                 scope_case=strategy, scope_reason=strategy_reason,
                                 claim_force=response["claim_force"], link_status=response["link_status"],
+                                focus_mids=response["focus_mids"], question_text=response["question_text"],
                                 citations=request["fact_quotes"])
         except (ValueError, TypeError, KeyError, AttributeError) as exc:
             error = str(exc)
@@ -476,11 +570,9 @@ signal·draft·추론 경로는 확정된 인과나 연구 결과가 아니야. 
         parts.append("네가 말한 가능성은 이해하지만, 이 입력에는 실제 발생 여부를 확인할 자료가 없어.")
     else:
         parts.append("네 주장에 필요한 조건을 이 입력만으로는 아직 확인하기 어려워.")
-    asked = next(iter(candidates), None)
-    if asked is not None and len(parts) < limit:
-        parts.append(candidates[asked])
-    else:
-        asked = None
+    # A failed generation did not establish which condition fits the discussion.
+    # Do not ask the first available CC merely because it appears first in a list.
+    asked = None
     result = dict(character_message=" ".join(parts[:limit]), emotion_code="thinking", asked_cc_id=asked)
     validate(result, context, request=request)
     return result, dict(fallback=True, attempts=2, reason=error, citations=request["fact_quotes"])
@@ -504,7 +596,7 @@ def main():
     parser.add_argument("--asked-before", type=Path, help="Optional JSON list of previously asked CC IDs")
     parser.add_argument("--model")
     args = parser.parse_args()
-    output = args.output or args.toulmin.parent.parent / "S10_dialogue_generation/dialogue.json"
+    output = args.output or args.toulmin.parent.parent / "S10/dialogue.json"
     facts = json.loads(args.facts.read_text(encoding="utf-8")) if args.facts else None
     asked = json.loads(args.asked_before.read_text(encoding="utf-8")) if args.asked_before else None
     path, status = run(args.toulmin, output, facts=facts, asked_before=asked, model=args.model)

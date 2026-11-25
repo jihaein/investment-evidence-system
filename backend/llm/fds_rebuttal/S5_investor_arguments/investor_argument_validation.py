@@ -57,13 +57,40 @@ def verify(out, graph, s4):
             called = bool(out["config"].get("llm_enabled")) and len(ids) >= 2
             require(audit["called"] == called and audit["model"] == (out["config"]["llm_model"] if called else None)
                     and audit["selected"] == chosen
-                    and set(audit["reasons"]) == set(ids), "selection audit mismatch")
-            if audit["method"] == "llm":
-                require(called and not audit["fallback"] and 1 <= len(chosen) <= 2, "invalid LLM selection")
+                    and set(audit["reasons"]) == set(ids),
+                    "selection audit mismatch")
+            outcome = audit.get("outcome")
+            if outcome is None:
+                # Read-only compatibility for artifacts published before selection
+                # outcomes were explicit. New builds always emit outcome and never
+                # enter this legacy Python-fallback contract.
+                if audit["method"] == "llm":
+                    require(called and not audit["fallback"] and 1 <= len(chosen) <= 2,
+                            "invalid legacy LLM selection")
+                else:
+                    require(audit["method"] == "python" and audit["fallback"] == called
+                            and (not called or audit.get("fallback_reason"))
+                            and chosen == ids[:out["config"]["max_paths_per_segment"]],
+                            "invalid legacy Python selection")
+            elif audit["method"] == "llm":
+                require(called and not audit["fallback"]
+                        and (outcome == "selected" and 1 <= len(chosen) <= 2
+                             or outcome == "deferred" and not chosen),
+                        "invalid LLM selection")
+            elif audit["method"] == "none":
+                require(called and not audit["fallback"] and not chosen and audit.get("error_reason")
+                        and outcome in {"provider_error", "invalid_response"},
+                        "invalid unresolved selection")
             else:
-                require(audit["method"] == "python" and audit["fallback"] == called
-                        and (not called or audit.get("fallback_reason"))
-                        and chosen == ids[:out["config"]["max_paths_per_segment"]], "invalid Python selection")
+                require(audit["method"] == "python" and not called and not audit["fallback"]
+                        and chosen == ids[:out["config"]["max_paths_per_segment"]]
+                        and outcome == ("selected" if chosen else "no_candidates"),
+                        "invalid Python selection")
+            if outcome is not None:
+                expected_status = ("connected" if chosen else
+                                   "selection_deferred" if outcome == "deferred" else
+                                   "selection_error" if ids else s["status"])
+                require(not ids or s["status"] == expected_status, "selection/search status mismatch")
             for p in selected + s["excluded"]:
                 reason = audit["reasons"][f"C{p['rank']}"]
                 require(isinstance(reason, str) and reason.strip()
@@ -156,8 +183,10 @@ def verify(out, graph, s4):
     require(Counter(pairs) == Counter((g, c["mid"]) for g in out["grounds"] for c in claims),
             "ground/claim pair coverage")
     for g in out["logical_groups"]:
+        direct = {link["from"] for link in out["explicit_links"].values()
+                  if link["status"] != "invalid_reference" and link["to"] == g["target_mid"]}
         require(g["operator"] in ("AND", "OR", "UNSPECIFIED") and g["target_mid"] in mentions
-                and set(g["members"]) <= set(out["grounds"]), "logical group reference")
+                and set(g["members"]) <= direct, "logical group reference")
     groups = {g["group_id"] for g in out["logical_groups"]}
     for issue in out["unresolved"]:
         for field, index in (("mid", mentions), ("from_mid", mentions), ("to_mid", mentions),

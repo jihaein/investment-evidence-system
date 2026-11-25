@@ -1,8 +1,10 @@
 """One S5 pipeline. Mention IDs identify speech; graph IDs identify variables."""
 import json
 from S4_investor_extraction.investor_mention_extraction import InvalidExtraction, parse_response
-from S4_investor_extraction.openai_api_client import ProviderError
+from S4_investor_extraction.openai_api_client import ProviderError, configured_model
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 from heapq import heappop, heappush
 from itertools import count, product
 
@@ -113,6 +115,7 @@ def decide_paths(candidates, graph, message, endpoints, link, cfg, generate):
     ids = [f"C{i}" for i in range(1, len(candidates) + 1)]
     picked = ids[:cap]
     audit = {"called": False, "model": None, "fallback": False, "method": "python",
+             "outcome": "selected" if picked else "no_candidates",
              "selected": picked, "reasons": {cid: "within_rank_cap" if cid in picked else "max_paths_per_segment"
                                             for cid in ids}}
     if not cfg.get("llm_enabled", False) or len(ids) < cfg.get("llm_min_candidates", 2):
@@ -137,7 +140,9 @@ def decide_paths(candidates, graph, message, endpoints, link, cfg, generate):
         raw = generate(prompt, json.dumps(payload, ensure_ascii=False), schema, model=audit["model"])
     except Exception as exc:
         # The S4 adapter exposes sanitized ProviderError messages. Other providers may expose credentials.
-        audit.update(fallback=True, fallback_reason=str(exc) if isinstance(exc, ProviderError) else "provider_error")
+        reason = str(exc) if isinstance(exc, ProviderError) else "provider_error"
+        audit.update(method="none", outcome="provider_error", selected=[], fallback=False,
+                     error_reason=reason, reasons={cid: reason for cid in ids})
         return audit
     try:
         rows = parse_response(raw)
@@ -150,18 +155,20 @@ def decide_paths(candidates, graph, message, endpoints, link, cfg, generate):
                     and row["reason"].strip(), "invalid candidate decision")
             decisions[row["id"]] = row
         selected = [cid for cid in ids if decisions[cid]["selected"]]
-        require(selected, "deferred")
         require(len(selected) <= min(2, cap), "too many selections")
     except (TypeError, ValueError) as exc:
-        audit.update(fallback=True, fallback_reason="invalid_json" if isinstance(exc, InvalidExtraction)
-                     else str(exc) if type(exc) is ValueError else "invalid_response")
+        reason = ("invalid_json" if isinstance(exc, InvalidExtraction)
+                  else str(exc) if type(exc) is ValueError else "invalid_response")
+        audit.update(method="none", outcome="invalid_response", selected=[], fallback=False,
+                     error_reason=reason, reasons={cid: reason for cid in ids})
         return audit
-    audit.update(method="llm", selected=selected, reasons={cid: decisions[cid]["reason"] for cid in ids})
+    audit.update(method="llm", outcome="selected" if selected else "deferred", selected=selected,
+                 reasons={cid: decisions[cid]["reason"] for cid in ids})
     return audit
 
 
-def connect(out, graph, a, b, lid, mentions, by_node, cfg, generate):
-    sid = f"Q{len(out['searches'])+1}"
+def connect(out, graph, a, b, lid, mentions, by_node, cfg, generate, executor=None, search_id=None):
+    sid = search_id or f"Q{len(out['searches'])+1}"
     ma, mb = out["mappings"][a], out["mappings"][b]
     u, v = ma["node_id"], mb["node_id"]
     s = {"search_id": sid, "from_mid": a, "to_mid": b, "link_id": lid,
@@ -178,10 +185,23 @@ def connect(out, graph, a, b, lid, mentions, by_node, cfg, generate):
     else:
         candidates, audit = graph.search(u, v, lid is not None, cfg)
         s.update(audit)
-        s["status"] = "connected" if candidates else "search_limited" if audit["limits"] else "no_path"
+        s["status"] = "candidate_paths" if candidates else "search_limited" if audit["limits"] else "no_path"
     link = out["explicit_links"].get(lid)
+    if executor is not None and cfg.get("llm_enabled") and len(candidates) >= cfg.get("llm_min_candidates", 2):
+        decision = executor.submit(copy_context().run, decide_paths, candidates, graph,
+                                   out["investor_message"], (mentions[a], mentions[b]),
+                                   link, cfg, generate)
+        return s, candidates, decision, mentions, by_node, graph, out
     decision = decide_paths(candidates, graph, out["investor_message"], (mentions[a], mentions[b]),
                             link, cfg, generate)
+    return finish_connection(s, candidates, decision, mentions, by_node, graph, out)
+
+
+def finish_connection(s, candidates, decision, mentions, by_node, graph, out):
+    if hasattr(decision, "result"):
+        decision = decision.result()
+    a, b = s["from_mid"], s["to_mid"]
+    sid = s["search_id"]
     s["selection"] = decision
     for rank, candidate in enumerate(candidates, 1):
         cid = f"C{rank}"
@@ -191,6 +211,13 @@ def connect(out, graph, a, b, lid, mentions, by_node, cfg, generate):
             s["path_ids"].append(pid)
         else:
             s["excluded"].append(dict(candidate, rank=rank, reason=decision["reasons"][cid]))
+    if candidates:
+        if s["path_ids"]:
+            s["status"] = "connected"
+        elif decision["outcome"] == "deferred":
+            s["status"] = "selection_deferred"
+        else:
+            s["status"] = "selection_error"
     s.update(found_count=len(candidates), selected_count=len(s["path_ids"]), excluded_count=len(s["excluded"]))
     out["searches"][sid] = s
     if s["status"] != "connected":
@@ -247,6 +274,7 @@ def plan_connections(ground, mentions, graph, explicit, max_depth, *, allow_gaps
 
 
 def build(s4, message, graph, cfg, session_id, turn_id, *, generate=None):
+    cfg = dict(cfg, llm_model=configured_model(cfg.get("llm_model"), stage="S5"))
     require(cfg.get("llm_min_candidates", 2) == 2 and type(cfg.get("llm_enabled", False)) is bool,
             "invalid LLM selection configuration")
     if generate is None and cfg.get("llm_enabled"):
@@ -270,20 +298,44 @@ def build(s4, message, graph, cfg, session_id, turn_id, *, generate=None):
     by_node, explicit = defaultdict(list), defaultdict(list)
     for m in mentions.values():
         by_node[m["node_id"]].append(m)
-    for lid, link in out["explicit_links"].items():
-        if link["status"] == "invalid_reference":
-            continue
-        a, b = link["from"], link["to"]
-        s = connect(out, graph, a, b, lid, mentions, by_node, cfg, generate)
-        link.update(status=s["status"], tentative=s["tentative"], search_id=s["search_id"], path_ids=s["path_ids"])
-        explicit[a].append(link)
+    workers = cfg.get("s5_max_concurrent_requests", 4)
+    require(type(workers) is int and 1 <= workers <= 4, "invalid s5_max_concurrent_requests")
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        pending = []
+        next_sid = len(out["searches"]) + 1
+        for lid, link in out["explicit_links"].items():
+            if link["status"] == "invalid_reference":
+                continue
+            a, b = link["from"], link["to"]
+            pending.append((link, a, connect(out, graph, a, b, lid, mentions, by_node, cfg,
+                                             generate, executor, f"Q{next_sid}")))
+            next_sid += 1
+        for link, a, prepared in pending:
+            s = (finish_connection(*prepared) if isinstance(prepared, tuple) else prepared)
+            link.update(status=s["status"], tentative=s["tentative"], search_id=s["search_id"], path_ids=s["path_ids"])
+            explicit[a].append(link)
     gaps = {}
+    plans_by_ground = {}
     for ground in out["grounds"]:
         plans = plan_connections(ground, mentions, graph, explicit, cfg["max_path_length"], allow_gaps=False)
         if any(c["mid"] not in plans for c in out["claims"]):
             with_gaps = plan_connections(ground, mentions, graph, explicit, cfg["max_path_length"], allow_gaps=True)
             for mid, plan in with_gaps.items():
                 plans.setdefault(mid, plan)
+        plans_by_ground[ground] = plans
+    gap_pairs = dict.fromkeys((a, b) for ground, plans in plans_by_ground.items()
+                              for claim in out["claims"]
+                              for kind, a, b, _ in plans.get(claim["mid"], (("gap", ground, claim["mid"], None),))
+                              if kind == "gap")
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        first_gap_sid = len(out["searches"]) + 1
+        pending_gaps = [(pair, connect(out, graph, *pair, None, mentions, by_node, cfg, generate,
+                                       executor, f"Q{first_gap_sid+i}"))
+                        for i, pair in enumerate(gap_pairs)]
+        for pair, prepared in pending_gaps:
+            s = finish_connection(*prepared) if isinstance(prepared, tuple) else prepared
+            gaps[pair] = s["search_id"]
+    for ground, plans in plans_by_ground.items():
         for claim in out["claims"]:
             goal = claim["mid"]
             plan = plans.get(goal, (("gap", ground, goal, None),))
@@ -292,8 +344,6 @@ def build(s4, message, graph, cfg, session_id, turn_id, *, generate=None):
                 if kind == "link":
                     sid = out["explicit_links"][lid]["search_id"]
                 else:
-                    if (a, b) not in gaps:
-                        gaps[a, b] = connect(out, graph, a, b, None, mentions, by_node, cfg, generate)["search_id"]
                     sid = gaps[a, b]
                 segments.append({"kind": kind, "from_mid": a, "to_mid": b, "link_id": lid, "search_id": sid})
             searches = [out["searches"][seg["search_id"]] for seg in segments]

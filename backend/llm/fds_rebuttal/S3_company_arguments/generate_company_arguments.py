@@ -11,8 +11,8 @@ from datetime import date, timedelta
 from pathlib import Path
 
 sys.dont_write_bytecode = True
-from .company_argument_adapters import FORMULAS, Inputs, Period, Point, cutoff_for, digest, file_hash
-from .company_argument_engine import (Graph, build_company, choose_series, edge_argument, graph_identity, index,
+from adapters import FORMULAS, Inputs, Period, Point, cutoff_for, digest, file_hash
+from engine import (Graph, build_company, choose_series, edge_argument, graph_identity, index,
                     node_argument, read_json)
 
 HERE = Path(__file__).resolve().parent

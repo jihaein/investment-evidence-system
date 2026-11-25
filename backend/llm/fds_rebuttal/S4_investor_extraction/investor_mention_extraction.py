@@ -49,6 +49,10 @@ address_options.alternative_explanation의 target–cc_id는 한 쌍 그대로 �
 이 유형의 target은 edge:...이며 t1:... 접두사를 붙이지 않는다.
 repeat/retraction은 address_options.repeat_retraction_targets의 t1:... 등 턴 포함 참조를
 그대로 사용하며 cc_id를 붙이지 않는다. 후보 CC는 질문 이력이 아니다.
+previous_turn.reference_mentions의 원문을 보고 철회 표현의 대상과 실제 이전 mention을 대조한다.
+철회·취소·더 이상 전제로 두지 않겠다는 표현은 유지·반복과 구분해 retraction으로 기록한다.
+철회 대상이 분명하지 않으면 임의 target을 고르지 않는다. 철회 span에는 대상 표현과 철회 표현을 함께 담는다.
+같은 대상을 repeat와 retraction으로 동시에 기록하지 않는다.
 last_question_cc_id가 null이면 실제 질문이 없으며 질문했다고 추론하지 않는다.
 CC에 대한 설명인지 단순 새 근거/반복인지 불명확하면 alternative_explanation을 강제하지 않는다.
 new_evidence의 근거 표현은 기존 규칙대로 Mention/Link에도 추출한다.
@@ -67,7 +71,9 @@ node_id는 가장 적절한 사전 ID 또는 null이다. 대체 가능한 의미
 alt_node_ids에 다른 실제 ID를 중복 없이 넣는다. 단순히 관련된 노드는 후보가 아니다.
 대안이 없으면 [], 주 매핑이 null이면 []이다.
 
-각 Mention의 속성을 독립적으로 판정한다. role은 결론 claim, 근거 grounds이다.
+각 Mention의 속성을 독립적으로 판정한다. role은 그 Mention의 주된 전역 역할로서 결론 claim,
+근거 grounds이다. 다만 앞선 논증의 claim이 뒤 논증의 근거가 되는 중간 결론일 수 있다.
+이 경우 role을 임의로 grounds로 바꾸지 말고, 중간 claim에서 뒤 결과로 향하는 실제 Link를 남긴다.
 방향은 증가·높아짐 "+", 감소·낮아짐 "-", 유지 "0", 수준·존재·불명확은 null이다.
 시점은 past, present, future, 또는 불특정 unspecified이다. certainty는 투자자 표현의
 언어적 확신도이다. 단정 strong, 추측·유보 hedged, 특정하기 어려우면 none이다.
@@ -94,6 +100,9 @@ to는 결과 mid이다. connective_span은 실제 인과를 표현한 원문의 
 연결되면 결과마다 한 Link를 만든다. 같은 연결 표현을 재사용할 수 있다.
 logical_groups는 여러 근거가 같은 결과에 연결될 때 그 결합 표현만 기록한다.
 members는 서로 다른 근거 mid, target_mid는 결과 mid, span은 해당 근거들의 결합을 나타낸 원문의 인용이다.
+모든 member에는 기존 Link가 그 member에서 해당 target_mid로 직접 향해야 한다.
+member의 전역 role은 grounds일 수도, 앞선 논증의 중간 claim일 수도 있다. Link가 없는 mention을
+그룹 근거로 넣거나 상류 근거로 대체하지 않는다.
 결합 표현을 부정하거나 제한하는 말도 span에 포함한다. 다른 문장의 연결어를 가져오지 않는다.
 둘 다·동시에 등 공동 결합이 명확하면 AND, 둘 중 하나·또는 등 선택이 명확하면 OR이다.
 단순 나열이나 독립 Link만으로는 결합을 결정할 수 없어 UNSPECIFIED로 기록하고 span은 null일 수 있다.
@@ -117,7 +126,21 @@ def normalize_input(value):
     return conversation, "\n".join(turn["answer"] for turn in conversation)
 
 
-def build_input(investor_message, dictionary, previous_turn=None):
+def compact_node_dictionary(dictionary):
+    """Encode every validated node exactly once without repeated object keys."""
+    return [[node["id"], node["label"], node["synonyms"], node["layer"]]
+            for node in dictionary]
+
+
+COMPACT_DICTIONARY_INSTRUCTIONS = """\n실험용 node_dictionary는 배열의 배열이며 각 행은 [id, label, synonyms, layer]다.
+행 순서나 ID의 유사성만으로 매핑하지 않고 모든 계층의 후보를 검토한다.
+판가와 단위 원가의 간격·마크업은 firm_markup에 가장 가까우나 비율과 금액의 차이를
+문맥에서 확인한다. 단순히 관련된 selling_price·unit_cost는 대체 매핑으로 넣지 않는다.
+마진이 매출총이익률인지 영업이익률인지 원문에 없으면 문맥으로 판단하고,
+둘 다 실제 대체 해석일 때만 gross_margin·operating_margin 중 다른 하나를 alt_node_ids에 둔다."""
+
+
+def build_input(investor_message, dictionary, previous_turn=None, *, compact_dictionary=False):
     conversation, answer_text = normalize_input(investor_message)
     prior = previous_turn or {}
     options = {"alternative_explanation": [
@@ -126,7 +149,8 @@ def build_input(investor_message, dictionary, previous_turn=None):
         for r in prior.get("rebuttal_items", []) if r.get("tag") == "undercut"
         for c in r.get("unverifiable", [])],
         "repeat_retraction_targets": prior.get("reference_targets", [])}
-    return json.dumps({"investor_message": answer_text, "conversation": conversation, "node_dictionary": dictionary,
+    nodes = compact_node_dictionary(dictionary) if compact_dictionary else dictionary
+    return json.dumps({"investor_message": answer_text, "conversation": conversation, "node_dictionary": nodes,
                        "previous_turn": previous_turn, "address_options": options},
                       ensure_ascii=False, separators=(",", ":"))
 
@@ -202,6 +226,18 @@ def is_excerpt(value, message):
 _TURN_TARGET = re.compile(r"t(?P<turn>[1-9][0-9]*):(?P<kind>mention|link|node|edge):(?P<value>[^:]+)\Z")
 _ADDRESS_MARKERS = re.compile(r"아까|앞서|이전|그대로|유지|취소|철회|반박|재반박|지적|대신|수정|낮추|높이|계속")
 _NEW_EVIDENCE_MARKERS = re.compile(r"새(?:로운)?\s*(?:근거|자료|증거)|추가\s*(?:근거|자료|증거)")
+_RETRACTION_MARKERS = re.compile(r"철회|취소|전제로\s*두지\s*않|유지하지\s*않")
+
+
+def _shared_concept(a, b):
+    """Conservative surface check; uncertain paraphrases must be retried, not guessed."""
+    clauses = [part for part in re.split(r"[.!?。]+", a) if _RETRACTION_MARKERS.search(part)]
+    if clauses:
+        a = clauses[-1]
+    generic = {"조건", "주장", "확인", "근거", "철회", "취소", "이전", "전망", "가능", "유지"}
+    words = lambda text: {word[:2] for word in re.findall(r"[가-힣]{2,}", text)
+                          if word[:2] not in generic}
+    return bool(words(a) & words(b))
 
 
 def _target_turn(target):
@@ -228,8 +264,16 @@ def validate_result(result, message, node_ids, previous_turn=None):
     require(previous_turn is not None or result["addresses"] == [], "첫 턴 addresses는 빈 배열이어야 합니다")
     if previous_turn is not None and _requires_previous_address(message):
         require(result["addresses"], "이전 발언을 다루는 답변의 addresses 누락")
+    text = "\n".join(message) if isinstance(message, list) else message
+    if previous_turn is not None and _RETRACTION_MARKERS.search(text):
+        require(any(a.get("type") == "retraction" for a in result["addresses"]),
+                "명시적 철회에 대응하는 retraction 주소 누락")
     valid_targets = set(previous_turn.get("reference_targets", [])) if previous_turn else set()
     valid_turns = set(previous_turn.get("source_turn_ids", [previous_turn["turn_id"]])) if previous_turn else set()
+    reference_mentions = {m["target"]: m["span"] for m in previous_turn.get("reference_mentions", [])} if previous_turn else {}
+    repeated = {a.get("target") for a in result["addresses"] if a.get("type") == "repeat"}
+    retracted = {a.get("target") for a in result["addresses"] if a.get("type") == "retraction"}
+    require(not repeated & retracted, "동일 대상의 repeat/retraction 충돌")
     for index, address in enumerate(result["addresses"]):
         path = f"addresses[{index}]"
         require(isinstance(address, dict) and {"type", "span"} <= address.keys()
@@ -251,6 +295,11 @@ def validate_result(result, message, node_ids, previous_turn=None):
                     f"{path} target과 target_turn_id 불일치")
             require(parsed_turn in valid_turns and target in valid_targets and cc is None,
                     f"{path} 이전 대상 참조 오류")
+            if kind == "retraction":
+                require(_RETRACTION_MARKERS.search(address["span"]), f"{path} 명시적 철회 표현 누락")
+                if target in reference_mentions:
+                    require(_shared_concept(address["span"], reference_mentions[target]),
+                            f"{path} 철회 표현과 이전 mention 의미 불일치")
         else:
             if target is None:
                 require(cc is None and target_turn_id is None, f"{path} 독립 새 근거의 target_turn_id 오류")
@@ -292,21 +341,32 @@ def validate_result(result, message, node_ids, previous_turn=None):
         require(link["from"] != link["to"], f"{path} 동일 Mention 자기 참조")
         require(is_excerpt(link["connective_span"], message), f"{path}.connective_span 원문 불일치")
     for group in result.get("logical_groups", []):
-        validate_group(group, result["mentions"], message)
+        validate_group(group, result["mentions"], message, result["links"])
     for index, address in enumerate(result["addresses"]):
         if address["type"] == "new_evidence":
             require(any(m["span"] in address["span"] for m in result["mentions"]),
                     f"addresses[{index}] 새 근거 Mention 누락")
 
 
-def validate_group(group, mentions, message):
+def validate_group(group, mentions, message, links=None):
+    """Validate members by their direct relation to this group target.
+
+    ``role`` remains a single, backward-compatible mention attribute.  A claim can
+    nevertheless be a ground in a later argument only when S4 already extracted
+    that exact claim -> target relation; validation never invents the relation.
+    """
     check_fields(group, GROUP, "logical_groups[]")
     members, target = group["members"], group["target_mid"]
-    grounds = {m["mid"] for m in mentions if m["role"] == "grounds"}
+    by_id = {m["mid"]: m for m in mentions}
+    direct_predecessors = {
+        link["from"] for link in (links or [])
+        if isinstance(link, dict) and link.get("to") == target
+        and isinstance(link.get("from"), str) and link.get("from") in by_id
+    }
     require(isinstance(members, list) and len(members) >= 2
-            and all(isinstance(m, str) and m in grounds for m in members)
+            and all(isinstance(m, str) and m in direct_predecessors for m in members)
             and len(set(members)) == len(members), "logical_groups.members 참조 오류")
-    require(isinstance(target, str) and target in {m["mid"] for m in mentions} and target not in members,
+    require(isinstance(target, str) and target in by_id and target not in members,
             "logical_groups.target_mid 참조 오류")
     require(group["operator"] in ("AND", "OR", "UNSPECIFIED"), "logical_groups.operator 허용값 오류")
     require(is_excerpt(group["span"], message) or (group["span"] is None and group["operator"] == "UNSPECIFIED"),
