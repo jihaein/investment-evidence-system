@@ -1,8 +1,10 @@
-"""Analyse the UI's 보리 conversations with 윤정민's rebuttal pipeline and store the results for the UI.
+"""Analyse the UI's 보리/루온 conversations with 윤정민's rebuttal pipeline and store the results for the UI.
 
 Flow: ReThinking_UI analysis_inbox (packet v2.0: request_id, company_id, conversation[{question, answer}])
-      → backend/llm/fds_rebuttal/run_pipeline.py (S4 extraction … S9 Toulmin)
-      → analysis_results (ops/ui/sql/analysis_results.sql) and analysis_inbox.analyzed_at
+      → backend/llm/fds_rebuttal/run_mixed_pipeline.py (S4 extraction … S9 Toulmin … S10 dialogue)
+      → analysis_results (ReThinking_UI db/migrations/012, 020): result = the S9 Toulmin JSON, dialogue = the S10 line
+        루온 says in the app ({character_message, emotion_code, asked_cc_id} + how it was made)
+      → analysis_inbox.analyzed_at
 
     python ops/ui/analysis_worker.py                       # every pending packet (needs UI_SUPABASE_* and OPENAI_API_KEY)
     python ops/ui/analysis_worker.py --packet p.json       # one packet file, no database: prints the result summary
@@ -13,6 +15,7 @@ alert_date = the packet's KST arrival date unless given; it picks the S3 snapsho
 A failed run is retried on the next run, up to MAX_ATTEMPTS; then it is stored as failed and the packet is closed.
 """
 import argparse
+import ast
 import json
 import os
 import subprocess
@@ -29,7 +32,17 @@ ROOT = Path(__file__).resolve().parents[2]
 PIPELINE = ROOT / "backend" / "llm" / "fds_rebuttal"
 KST = ZoneInfo("Asia/Seoul")
 MAX_ATTEMPTS = 3
-TIMEOUT_SECONDS = 600
+TIMEOUT_SECONDS = int(os.environ.get("REBUTTAL_TIMEOUT_SECONDS") or 900)   # one packet, S4 through S10
+
+
+def stage_models():
+    """The stage models run_mixed_pipeline.py accepts (its EXPECTED); it refuses to run with any other set, so the
+    worker passes exactly these unless OPENAI_MODEL_<stage> is already set in the environment."""
+    tree = ast.parse((PIPELINE / "run_mixed_pipeline.py").read_text(encoding="utf-8"))
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and any(getattr(t, "id", None) == "EXPECTED" for t in node.targets):
+            return ast.literal_eval(node.value)
+    raise RuntimeError("run_mixed_pipeline.py has no EXPECTED stage models")
 
 
 class UI:
@@ -69,17 +82,41 @@ def request_from_packet(packet, alert_date):
 
 
 def run_pipeline(request, workdir):
-    """Run the pipeline in its own process (it imports its stages from its folder). Returns the S9 result."""
+    """Run S4-S10 in its own process (the pipeline imports its stages from its folder).
+    Returns (S9 Toulmin result, S10 dialogue record)."""
     source = Path(workdir) / "request.json"
     source.write_text(json.dumps(request, ensure_ascii=False), encoding="utf-8")
-    output = Path(workdir) / "runs"
-    proc = subprocess.run([sys.executable, "run_pipeline.py", "--input", str(source), "--output", str(output)],
-                          cwd=PIPELINE, capture_output=True, text=True, timeout=TIMEOUT_SECONDS)
-    if proc.returncode != 0:
+    output = Path(workdir) / "run"                            # run_mixed_pipeline.py creates it (must not exist)
+    env = dict(os.environ)
+    for stage, model in stage_models().items():
+        env.setdefault(f"OPENAI_MODEL_{stage}", model)
+    proc = subprocess.run([sys.executable, "run_mixed_pipeline.py", "--input", str(source), "--output", str(output)],
+                          cwd=PIPELINE, env=env, capture_output=True, text=True, timeout=TIMEOUT_SECONDS)
+    summary_path = output / "summary.json"
+    run = json.loads(summary_path.read_text(encoding="utf-8")) if summary_path.is_file() else {}
+    if proc.returncode != 0 or run.get("status") != "completed":
+        if run.get("error"):
+            raise RuntimeError(f"{run.get('error_type', 'Error')}: {run['error']}"[:500])
         tail = (proc.stderr or proc.stdout).strip().splitlines()[-1:] or ["no output"]
         raise RuntimeError(tail[0][:500])
-    result = Path(proc.stdout.strip().splitlines()[-1])
-    return json.loads(result.read_text(encoding="utf-8"))
+    return read_run(run)
+
+
+def read_run(run):
+    """The S9 result and the S10 record from a completed run_mixed_pipeline.py summary."""
+    toulmin = json.loads(Path(run["toulmin"]).read_text(encoding="utf-8"))
+    line = json.loads(Path(run["dialogue"]).read_text(encoding="utf-8"))
+    status = run.get("s10_validation") or {}
+    if not isinstance(line.get("character_message"), str) or not line["character_message"].strip():
+        raise RuntimeError("S10 dialogue has no character_message")
+    dialogue = {"character_message": line["character_message"].strip(), "emotion_code": line.get("emotion_code"),
+                "asked_cc_id": line.get("asked_cc_id"), "speaker": "luon", "persona_id": "luon_v1",
+                "fallback": bool(status.get("fallback")), "attempts": status.get("attempts"),
+                "scope_case": status.get("scope_case"),
+                "fact_ids": sorted({f for c in (status.get("citations") or {}).values() for f in c.get("fact_ids", [])}),
+                "models": run.get("stage_models"), "seconds": run.get("total_runtime_seconds"),
+                "estimated_cost_usd": run.get("estimated_cost_usd")}
+    return toulmin, dialogue
 
 
 def item_tag(item):
@@ -92,8 +129,9 @@ def item_tag(item):
     return f"({item.get('mapping_status') or 'no evaluation'})"
 
 
-def summary(result):
-    return {"decision": result.get("decision"), "decided_by_rule": result.get("decided_by_rule"),
+def summary(result, dialogue=None):
+    return {"luon": (dialogue or {}).get("character_message"), "emotion": (dialogue or {}).get("emotion_code"),
+            "decision": result.get("decision"), "decided_by_rule": result.get("decided_by_rule"),
             "as_of": result.get("as_of"),
             "claims": [{"span": c.get("span"), "tag": item_tag(c)} for c in result.get("claim", [])],
             "grounds": [{"span": g.get("span"), "tag": item_tag(g)} for g in result.get("grounds", [])],
@@ -118,7 +156,16 @@ def alert_date_of(packet, received_at):
     return kst_date(received_at)
 
 
+def check_tables(ui):
+    """Stop before spending on the LLM when the UI database has not got the dialogue column yet."""
+    try:
+        ui.req("GET", "analysis_results?select=request_id,dialogue&limit=1")
+    except RuntimeError as exc:
+        sys.exit(f"analysis_results.dialogue is missing: run ReThinking_UI db/migrations/020_analysis_dialogue.sql ({exc})")
+
+
 def process_inbox(ui, limit):
+    check_tables(ui)
     rows = ui.req("GET", "analysis_inbox?select=request_id,player_id,route,payload,received_at"
                          f"&analyzed_at=is.null&order=received_at.asc&limit={limit}") or []
     print(f"pending packets: {len(rows)}")
@@ -136,8 +183,8 @@ def process_inbox(ui, limit):
         else:
             try:
                 with tempfile.TemporaryDirectory(prefix="rebuttal-") as work:
-                    result = run_pipeline(request_from_packet(packet, alert), work)
-                record.update(status="done", decision=result.get("decision"), result=result,
+                    result, dialogue = run_pipeline(request_from_packet(packet, alert), work)
+                record.update(status="done", decision=result.get("decision"), result=result, dialogue=dialogue,
                               as_of=result.get("as_of"), error=None)
             except Exception as exc:                          # keep going with the other packets
                 record.update(status="failed", error=f"{type(exc).__name__}: {exc}"[:500])
@@ -159,17 +206,18 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--packet", type=Path, help="analyse one packet file (no database)")
     ap.add_argument("--alert-date", help="YYYY-MM-DD for --packet (default today, KST)")
-    ap.add_argument("--out", type=Path, help="with --packet: also save the whole S9 result here")
+    ap.add_argument("--out", type=Path, help="with --packet: also save the whole S9 result and the S10 line here")
     ap.add_argument("--limit", type=int, default=20)
     args = ap.parse_args()
     if args.packet:
         packet = json.loads(args.packet.read_text(encoding="utf-8"))
         alert = args.alert_date or datetime.now(KST).date().isoformat()
         with tempfile.TemporaryDirectory(prefix="rebuttal-") as work:
-            result = run_pipeline(request_from_packet(packet, alert), work)
+            result, dialogue = run_pipeline(request_from_packet(packet, alert), work)
         if args.out:
-            args.out.write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
-        print(json.dumps(summary(result), ensure_ascii=False, indent=1))
+            args.out.write_text(json.dumps({"result": result, "dialogue": dialogue}, ensure_ascii=False, indent=1),
+                                encoding="utf-8")
+        print(json.dumps(summary(result, dialogue), ensure_ascii=False, indent=1))
         return
     process_inbox(UI(), args.limit)
 

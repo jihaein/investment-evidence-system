@@ -1,8 +1,8 @@
-# Rebuttal analysis of the UI's 보리 conversations (ops/ui/analysis_worker.py, 윤정민's S3-S9 pipeline).
+# Rebuttal analysis of the UI's 보리/루온 conversations (ops/ui/analysis_worker.py, 윤정민's S4-S10 pipeline: Toulmin result + 루온's line).
 #
 # Setup (once): secrets UI_SUPABASE_URL, UI_SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY (plus the cloud-storage
 # secrets SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY already used by daily-refresh); run ReThinking_UI
-# db/migrations/012_model_results.sql in the UI project; then set the repository variable ANALYSIS_SCHEDULE_ENABLED = true.
+# db/migrations/012_model_results.sql and 020_analysis_dialogue.sql in the UI project; then set the repository variable ANALYSIS_SCHEDULE_ENABLED = true.
 # Every 30 minutes it refreshes the gardens' 서서히 verdicts and analyses the packets that arrived since the last run. Manual run: Actions → analysis-worker.
 name: analysis-worker
 

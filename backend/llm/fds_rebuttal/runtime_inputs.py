@@ -17,8 +17,8 @@ KST = timezone(timedelta(hours=9))
 
 
 def config():
-    """runtime_config.json. REBUTTAL_S3_DIR (absolute path) overrides company_arguments_dir, e.g. a copy
-    restored from cloud storage instead of the Git LFS files."""
+    """runtime_config.json; REBUTTAL_S3_DIR (absolute path) replaces company_arguments_dir on servers whose S3 files are
+    restored from cloud storage instead of the Git LFS files (ops/cloud/datasets.json rebuttal_s3)."""
     value = json.loads((ROOT / "runtime_config.json").read_text(encoding="utf-8"))
     override = os.environ.get("REBUTTAL_S3_DIR", "").strip()
     if override:
@@ -27,10 +27,8 @@ def config():
 
 
 def card_allowed(card):
-    statuses = config()["allowed_card_review_statuses"]
-    if not isinstance(statuses, list) or not statuses or not set(statuses) <= {"approved", "draft"}:
-        raise ValueError("invalid allowed_card_review_statuses")
-    return bool(card) and card.get("review_status") in statuses
+    """Card review status is retained as metadata, not an evidence gate."""
+    return bool(card) and card.get("review_status") in {"approved", "draft"}
 
 
 def parse_date(value):

@@ -1,0 +1,10 @@
+{
+  "llm_enabled": true,
+  "llm_model": "gpt-6-luna",
+  "llm_min_candidates": 2,
+  "max_path_length": 12,
+  "max_paths_per_segment": 2,
+  "max_candidates": 24,
+  "max_expansions": 20000,
+  "max_side_per_path": 3
+}

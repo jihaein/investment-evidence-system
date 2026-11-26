@@ -52,7 +52,7 @@ OpenDART ─► receipts inbox ─► dart_conversion ─► new PIT snapshot (a
                                                                                                          ├─► backend/api.py
                                                                                                          └─► push_signals ─► UI holding_signals
 pykrx 등락률 + index ─► push_drops (events.py rule) ─► UI drop_events
-UI bori-talk (LLM1) ─► analysis_inbox ─► analysis_worker ─► fds_rebuttal S3–S9 ─► UI analysis_results
+UI bori-talk (LLM1) ─► analysis_inbox ─► analysis_worker ─► fds_rebuttal S3–S10 ─► UI analysis_results (+ 루온의 S10 대사)
 ```
 
 ---
@@ -927,7 +927,7 @@ returns to the app.** System A is the earlier design that checks opinions agains
 
 **No fine-tuning anywhere.** Every call is a base model plus a prompt, a **strict JSON schema** (OpenAI structured
 outputs, `strict: true`, `additionalProperties: false`), temperature 0, and code-side validation with a retry or
-repair. Python calls go through `S4_final/openai_api.py::generate`:
+repair. Python calls go through `S4_investor_extraction/openai_api_client.py::generate`:
 - the Responses API, with `store=False` so OpenAI doesn't keep the data;
 - retries on HTTP 429/5xx or connection errors with backoff;
 - refusals and incomplete responses rejected;
@@ -1008,7 +1008,7 @@ link of it against the company's actual reported numbers. The output is a Toulmi
 backing, qualifier, rebuttal) plus a one-word decision. **LLMs only read language. Numbers and verdicts come from
 code.**
 
-### S1: Causal graph (`S1.인과그래프/new_graph.json`, version g1.1)
+### S1: Causal graph (`S1_causal_graph/causal_graph.json`, version g1.1)
 - **563 nodes.** Layers: LX 486 (research variables), L0 31 (raw financials), L1 19 (ratios), L2 11 (profit/cash-flow
   aggregates), L3 13 (valuation building blocks), L4 3 (value).
 - Each node has: Korean label and synonyms, layer, `observable`, `source_variable`, unit, `can_be_claim`.
@@ -1024,7 +1024,7 @@ code.**
   - Relations whose sign couldn't be set from mixed/None evidence weren't given an invented sign.
   - Relations using stock price as a cause were removed.
 
-### S2: Edge cards (`S2.화살표노드/edge_cards/*.json`, one per edge)
+### S2: Edge cards (`S2_edge_cards/edge_cards/*.json`, one per edge)
 - Fields: sign, `empirical_sign` (+ 324, − 204, n/a 113), `mechanism` (economic explanation), `conditions` (when it
   holds, including the source study's population and period), `source` (paper title, authors, URL, raw row ID),
   `review_status`.
@@ -1039,7 +1039,7 @@ code.**
     ["approved", "draft"]`), and S3 records `draft_cards_allowed: true` and the interpretation "검수 전 카드 기준"
     (based on cards before review).
 
-### S3: Company argument, i.e. what actually happened (`S3_fianl/`, standard library only)
+### S3: Company argument, i.e. what actually happened (`S3_company_arguments/`, standard library only)
 - **Input:** the data team's 12-item CSV `07_기업x분기_12개항목_결합.csv`: company × quarter with revenue, operating
   profit, COGS, cash, shares outstanding, capex, operating cash flow, plus disclosure date and receipt.
 - **Mappings** (`s3_config.json`):
@@ -1076,7 +1076,7 @@ code.**
   - One file per window, `company.argument<year>-<n>.json`, with `effective_from`/`effective_to`.
   - Boundaries are **Apr 1, Jun 1, Sep 1, Dec 1**, after the annual, Q1, half and Q3 filing deadlines.
   - Example: `2026-4` covers 2026-12-01 → 2027-03-31 with cutoff 2026-11-30 23:59 KST.
-  - Regenerated quarterly by hand (`README_S3.md`): get the new CSV, bump `last_update`, run `run_s3.py all`, replace
+  - Regenerated quarterly by hand : get the new CSV, bump `last_update` in `company_argument_config.json`, run `generate_company_arguments.py all`, replace
     the folder, then `sync.py push --only rebuttal_s3 rebuttal_inputs`.
 - **Runtime selection** (`runtime_inputs.select_company_argument`):
   - Exactly one window must contain `alert_date`; otherwise error. **There's no fallback to another window.**
@@ -1089,7 +1089,7 @@ code.**
 - Reproducibility (2026-11-23): regenerating 2025-2 and 2026-3 from the same CSV gave identical nodes, edge statuses,
   directions and values. Only the fact_id hashes changed.
 
-### S4: Extraction, LLM call #1 (`S4_final/`)
+### S4: Extraction, LLM call #1 (`S4_investor_extraction/`)
 - **Input:** the conversation [{question, answer}…], the answer text, the node dictionary (id, label, synonyms,
   layer for all 563 nodes), the previous turn (if any), and the allowed address options.
 - **Instructions** (abridged from `extraction.INSTRUCTIONS`):
@@ -1121,14 +1121,14 @@ code.**
 - **Retry:** one retry with the validation error appended to the instructions; a second failure fails the run.
 - Output: `S4/investor_mentions.json`, `investor_message.txt`, `s4_run.log`. Logs never include raw provider payloads.
 
-### S5: Investor argument (`S5/`)
+### S5: Investor argument (`S5_investor_arguments/`)
 - **Mapping status per mention** (`map_mentions`): `mapped` (one valid node), `ambiguous` (has valid alternatives),
   `unmapped` (no valid node, so out of scope). Claims and grounds are split by role.
 - **Path search** (`Graph.search`):
   - Best-first search over non-signal edges from cause node to effect node.
   - Priority: (lower bound on length, number of empirical edges, number of mechanism edges, edge IDs). That prefers
     short paths made of identity/mechanism edges over empirical ones, with deterministic tie-breaks.
-  - Limits (`S5/config.json`): max path length 12, max candidates 24, max expansions 20,000.
+  - Limits (`S5_investor_arguments/investor_argument_config.json`): max path length 12, max candidates 24, max expansions 20,000.
   - An explicit investor link whose shortest path is 1 edge searches direct edges only.
   - Limits that are hit are recorded (`search_limited`).
 - **Which segments are searched:**
@@ -1157,7 +1157,7 @@ code.**
 - **Multi-turn:** `replies.py` keeps lineage across turns (retractions deactivate earlier mentions or links). Not used
   by the current worker, which sends each packet as turn 1.
 
-### S6: Mechanical tagging (`pipeline_s6_s7_s8.py::tag`, no LLM)
+### S6: Mechanical tagging (`S6_S7_S8_tagging_validation/tagging_and_assessment_pipeline.py::run_s6`, no LLM)
 **Node uses** (the investor said or implied node X moves in direction d at horizon h):
 | Rule | Condition | Tag |
 |---|---|---|
@@ -1240,7 +1240,7 @@ Deferred or rejected items stay **unresolved**; nothing is replaced silently.
   order, minus ones already asked. That's what 보리 asks next ("what about X?").
 - The summary also counts each tag.
 
-### S9: Toulmin assembly (`S9/run.py`, no LLM, pure assembly with hash checks)
+### S9: Toulmin assembly (`S9_toulmin_assembly/build_toulmin_output.py`, no LLM, pure assembly with hash checks)
 | Toulmin part | Built from |
 |---|---|
 | Claim | claim mentions with their evaluation |
@@ -1552,11 +1552,11 @@ the numbers in the `evidence` JSON, never invented ones:
    - Read packets with `analyzed_at IS NULL`, oldest first, up to 20.
    - `alert_date` = the packet's own alert_date if valid, otherwise its arrival date in KST. This picks the S3 window.
    - Packets routed `insufficient_input` are stored as such without analysis.
-   - Others run `run_pipeline.py` in a subprocess (600 s timeout), each as **turn 1 of its own session**.
-   - Result → `analysis_results` (status done, decision, full Toulmin JSON, as_of, attempts).
+   - Others run `run_mixed_pipeline.py` (S4–S10, stage models from its `EXPECTED`) in a subprocess (900 s timeout), each as **turn 1 of its own session**.
+   - Result → `analysis_results` (status done, decision, full Toulmin JSON, as_of, attempts) and `dialogue` (UI migration 016): the S10 line {character_message, emotion_code, asked_cc_id} with fallback/models/cost.
    - On failure: retry on the next run up to **3 attempts**, then store as failed and close the packet. A ValueError,
      meaning bad input, closes immediately.
-6. **Back in the app:** the next load picks up `analysis_results`, and 루온's rebuttal note appears on that tree.
+6. **Back in the app:** the next load picks up `analysis_results`, and 루온's rebuttal note appears on that tree, 루온 saying the S10 line (the decision headline stays).
 
 ## 7.5 UI-side tables (ReThinking_UI `db/migrations/`)
 | Migration | Tables | Written by |
@@ -1677,7 +1677,7 @@ Origin codes:
 | S3 trend dead band | ±2% (KRW, count), ±2%p (ratios) | config, not tuned |
 | S3 lookback | 3 consecutive observations | config |
 | S6 "small change" escalation | < 3 × dead band | config |
-| Path search | max length 12, ≤ 24 candidates, ≤ 20,000 expansions, ≤ 2 paths/segment, ≤ 3 side conditions/path | `S5/config.json`, OPS |
+| Path search | max length 12, ≤ 24 candidates, ≤ 20,000 expansions, ≤ 2 paths/segment, ≤ 3 side conditions/path | `S5_investor_arguments/investor_argument_config.json`, OPS |
 | LLM path selection | only if ≥ 2 candidates | config |
 | Embedding match (analyzer A) | accept ≥ 0.55, warn < 0.8 cosine | INIT |
 | Worker | 3 attempts, 600 s timeout, 20 packets/run | OPS |

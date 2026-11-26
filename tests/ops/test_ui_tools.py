@@ -1,6 +1,7 @@
 """ops/ui: packet → pipeline request mapping (analysis_worker) and price bars (push_prices)."""
 import json
 import sys
+import subprocess
 from datetime import date
 from pathlib import Path
 
@@ -111,3 +112,51 @@ def test_alert_date_comes_from_the_packet_when_it_is_there():
     assert aw.alert_date_of({"alert_date": "2026-11-20"}, "2026-11-23T01:00:00Z") == "2026-11-20"
     assert aw.alert_date_of({}, "2026-11-22T16:30:00Z") == "2026-11-23"            # arrival day in KST
     assert aw.alert_date_of({"alert_date": "nope"}, "2026-11-22T14:00:00Z") == "2026-11-22"
+
+
+# ── S10: the worker runs run_mixed_pipeline.py and stores 루온's line next to the Toulmin result
+
+def test_stage_models_are_the_pipelines_own():
+    models = aw.stage_models()
+    assert set(models) == {"S4", "S5", "S7", "S10"} and all(isinstance(v, str) and v for v in models.values())
+
+
+def _completed_run(tmp_path, line, validation):
+    (tmp_path / "S9").mkdir()
+    (tmp_path / "S10").mkdir()
+    (tmp_path / "S9/toulmin.json").write_text(json.dumps({"decision": "mixed", "as_of": "2026-09-01"}), encoding="utf-8")
+    (tmp_path / "S10/dialogue.json").write_text(json.dumps(line, ensure_ascii=False), encoding="utf-8")
+    return {"status": "completed", "toulmin": str(tmp_path / "S9/toulmin.json"), "dialogue": str(tmp_path / "S10/dialogue.json"),
+            "s10_validation": validation, "stage_models": {"S10": "gpt-6.2-sol"}, "total_runtime_seconds": 41.5,
+            "estimated_cost_usd": 0.031}
+
+
+def test_read_run_keeps_the_line_and_its_evidence(tmp_path):
+    line = {"character_message": "매출액을 보면 2025년 4분기 약 246억 원이었어. 네 말처럼 더 좋아질지는 아직 몰라.",
+            "emotion_code": "thinking", "asked_cc_id": "cc-1"}
+    validation = {"fallback": False, "attempts": 1, "scope_case": "none",
+                  "citations": {"[[F1]]": {"text": "…", "fact_ids": ["S3-b", "S3-a"]}}}
+    result, dialogue = aw.read_run(_completed_run(tmp_path, line, validation))
+    assert result["decision"] == "mixed"
+    assert dialogue["character_message"] == line["character_message"] and dialogue["emotion_code"] == "thinking"
+    assert dialogue["asked_cc_id"] == "cc-1" and dialogue["speaker"] == "luon" and dialogue["fallback"] is False
+    assert dialogue["fact_ids"] == ["S3-a", "S3-b"] and dialogue["estimated_cost_usd"] == 0.031
+
+
+def test_read_run_refuses_an_empty_line(tmp_path):
+    with pytest.raises(RuntimeError):
+        aw.read_run(_completed_run(tmp_path, {"character_message": " ", "emotion_code": "neutral", "asked_cc_id": None}, {}))
+
+
+def test_run_pipeline_reports_the_pipelines_own_error(tmp_path, monkeypatch):
+    def fake_run(argv, cwd, env, **_):
+        assert argv[1] == "run_mixed_pipeline.py" and env["OPENAI_MODEL_S10"] == aw.stage_models()["S10"]
+        out = Path(argv[argv.index("--output") + 1])
+        out.mkdir()
+        (out / "summary.json").write_text(json.dumps({"status": "failed", "error_type": "ValueError",
+                                                      "error": "expected one effective company argument"}))
+        return subprocess.CompletedProcess(argv, 1, "", "Traceback ...")
+    monkeypatch.setattr(aw.subprocess, "run", fake_run)
+    monkeypatch.delenv("OPENAI_MODEL_S10", raising=False)
+    with pytest.raises(RuntimeError, match="ValueError: expected one effective"):
+        aw.run_pipeline({"request_id": "r1"}, tmp_path)
