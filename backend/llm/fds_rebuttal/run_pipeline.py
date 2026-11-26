@@ -1,4 +1,4 @@
-"""Single entry point for one or more linked S3-through-S9 investor turns."""
+"""Internal S3-through-S9 runner. Use run_mixed_pipeline.py for official S4-S10 runs."""
 import argparse
 from contextlib import ExitStack, closing
 from copy import deepcopy
@@ -11,13 +11,10 @@ from unittest.mock import patch
 
 import pipeline
 from runtime_inputs import company_id, select_company_argument
-from S4_final import openai_api
-from S5 import graph as graph_module
-from S5 import argument as argument_module
-from S9.run import assemble
-
-_SEEN_SNAPSHOTS = set()
-
+from S4_investor_extraction import openai_api_client as openai_api
+from S5_investor_arguments import graph_loader as graph_module
+from S5_investor_arguments import build_investor_arguments as argument_module
+from S9_toulmin_assembly.build_toulmin_output import assemble
 
 def existing_turns(output, session):
     turns = []
@@ -34,7 +31,7 @@ def existing_turns(output, session):
     return sorted(turns, key=lambda entry: entry["turn_id"])
 
 
-def run(request, output, *, extract=None, select=None, nuance=None):
+def _run(request, output, *, call_recorder, extract=None, select=None, nuance=None):
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     session = request.get("session_id") or request.get("request_id")
@@ -50,7 +47,7 @@ def run(request, output, *, extract=None, select=None, nuance=None):
     original_read = graph_module.read_json
     original_connect = argument_module.connect
     immutable_roots = tuple((Path.cwd() / name).resolve() for name in
-                            ("S1.인과그래프", "S2.화살표노드", "S3_fianl"))
+                            ("S1_causal_graph", "S2_edge_cards", "S3_company_arguments"))
     def cached(path):
         path = Path(path)
         stamp = path.stat()
@@ -71,20 +68,19 @@ def run(request, output, *, extract=None, select=None, nuance=None):
             return original_connect(*args, **kwargs)
         finally:
             metrics["path_search_seconds"] += perf_counter() - tick
-    call_start = len(openai_api.CALLS)
+    call_start = call_recorder.mark()
     def diagnostic(event):
         if event.get("stage"):
             metrics.setdefault("diagnostics", []).append({k: v for k, v in event.items()
                 if k not in ("raw_response", "available_refs")})
     try:
         tick = perf_counter()
+        prior_turns = existing_turns(output, session)
         path, snapshot = select_company_argument(company_id(request), request["alert_date"])
         metrics["stages"]["S3"] = perf_counter() - tick
         metrics["selected_company_argument"] = str(path)
         metrics["company_argument_object_id"] = id(snapshot)
-        snapshot_key = (str(path.resolve()), path.stat().st_mtime_ns, path.stat().st_size)
-        metrics["company_argument_reused"] = snapshot_key in _SEEN_SNAPSHOTS
-        _SEEN_SNAPSHOTS.add(snapshot_key)
+        metrics["company_argument_reused"] = any(entry["turn_id"] < turn for entry in prior_turns)
         with ExitStack() as stack:
             for method in ("read_text", "read_bytes", "write_text", "write_bytes"):
                 original = getattr(Path, method)
@@ -96,8 +92,8 @@ def run(request, output, *, extract=None, select=None, nuance=None):
                         metrics["file_io_seconds"] += perf_counter() - tick
                         metrics["file_io_operations"] += 1
                 stack.enter_context(patch.object(Path, method, file_io))
-            import S5.run, S6_S7_S8.pipeline_s6_s7_s8 as p
-            for module in (graph_module, S5.run, p):
+            import S5_investor_arguments.run_investor_arguments, S6_S7_S8_tagging_validation.tagging_and_assessment_pipeline as p
+            for module in (graph_module, S5_investor_arguments.run_investor_arguments, p):
                 stack.enter_context(patch.object(module, "read_json", cached))
             stack.enter_context(patch.object(argument_module, "connect", connect))
             if nuance:
@@ -116,13 +112,12 @@ def run(request, output, *, extract=None, select=None, nuance=None):
                         "S8":"run_s8", "S8_aggregation":"run_assessment"}[name]
                 def timed(*a, _fn=fn, _stage=name, **kw):
                     tick = perf_counter()
-                    before = len(openai_api.CALLS)
+                    before = call_recorder.mark()
                     try:
                         return _fn(*a, **kw)
                     finally:
                         metrics["stages"][_stage] = perf_counter() - tick
-                        for record in openai_api.CALLS[before:]:
-                            record["stage"] = _stage
+                        call_recorder.tag_since(before, _stage)
                 stack.enter_context(patch.object(pipeline, attr, timed))
             assessment = pipeline.execute(job, extract=extract, select=select, diagnostic=diagnostic)
             tick = perf_counter()
@@ -137,10 +132,9 @@ def run(request, output, *, extract=None, select=None, nuance=None):
         metrics["errors"].append({"type": type(exc).__name__, "message": str(exc)})
         raise
     finally:
-        metrics["api_calls"] = openai_api.CALLS[call_start:]
+        metrics["api_calls"] = call_recorder.snapshot(call_start)
         metrics["total_seconds"] = perf_counter() - start
-        metrics["api_seconds"] = sum(call.get("seconds", 0) for call in metrics["api_calls"])
-        metrics["python_seconds"] = max(0, metrics["total_seconds"] - metrics["api_seconds"])
+        metrics.update(openai_api.call_timing(metrics["api_calls"], metrics["total_seconds"]))
         metrics_path = output / f"turn_{turn}_metrics.json"
         metrics_path.write_text(json.dumps(metrics, ensure_ascii=False, indent=2), encoding="utf-8")
         if metrics.get("run_id"):
@@ -163,17 +157,17 @@ def run(request, output, *, extract=None, select=None, nuance=None):
         manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def load_env():
-    """Repository .env (OPENAI_API_KEY, OPENAI_MODEL ...). Variables already set are kept."""
-    try:
-        from dotenv import load_dotenv
-    except ImportError:
-        return
-    load_dotenv(Path(__file__).resolve().parents[3] / ".env")
+def run(request, output, *, extract=None, select=None, nuance=None, call_recorder=None):
+    """Run S3-S9 with request-local API metrics, including S7 worker calls."""
+    if call_recorder is not None:
+        return _run(request, output, call_recorder=call_recorder,
+                    extract=extract, select=select, nuance=nuance)
+    with openai_api.capture_calls() as recorder:
+        return _run(request, output, call_recorder=recorder,
+                    extract=extract, select=select, nuance=nuance)
 
 
 def main():
-    load_env()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, action="append", required=True,
                         help="Turn JSON; repeat in turn order for a session")
